@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/npg">
+        <file>resource/blue_business_01.png</file>
+        <file>resource/blue_business_02.png</file>
+        <file>resource/blue_business_03.png</file>
+        <file>resource/blue_business_04.png</file>
+        <file>resource/blue_business_05.png</file>
+        <file>resource/blue_business_06.png</file>
+        <file>resource/blue_business_07.png</file>
+        <file>resource/blue_business_08.png</file>
+        <file>resource/blue_business_09.png</file>
+        <file>resource/blue_business_10.png</file>
+        <file>resource/udp.png</file>
+    </qresource>
+</RCC>

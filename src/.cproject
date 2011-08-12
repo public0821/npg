@@ -16,6 +16,26 @@
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+		<buildTargets>
+			<target name="Qt Release Build" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildTarget>release</buildTarget>
+				<stopOnError>false</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="Qt Debug Build" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildTarget>debug</buildTarget>
+				<stopOnError>false</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+		</buildTargets>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="org.eclipse.cdt.core.pathentry">
 		<pathentry base-path="/usr/include/qt4" include="" kind="inc" path="" system="true"/>
 		<pathentry base-path="/usr/include/qt4" include="QtHelp" kind="inc" path="" system="true"/>
@@ -38,25 +58,14 @@
 		<pathentry base-path="/usr/include/qt4" include="QtXmlPatterns" kind="inc" path="" system="true"/>
 		<pathentry base-path="/usr/include/qt4" include="QtDesigner" kind="inc" path="" system="true"/>
 		<pathentry base-path="/usr/include/qt4" include="QtAssistant" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include/c++/4.4" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include/c++/4.4/backward" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include/c++/4.4/i486-linux-gnu" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/lib/gcc/i486-linux-gnu/4.4.5/include" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/lib/gcc/i486-linux-gnu/4.4.5/include-fixed" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/local/include" kind="inc" path="" system="true"/>
+		<pathentry kind="src" path=""/>
+		<pathentry kind="out" path=""/>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
-		<buildTargets>
-			<target name="Qt Release Build" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
-				<buildCommand>make</buildCommand>
-				<buildTarget>release</buildTarget>
-				<stopOnError>false</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>true</runAllBuilders>
-			</target>
-			<target name="Qt Debug Build" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
-				<buildCommand>make</buildCommand>
-				<buildTarget>debug</buildTarget>
-				<stopOnError>false</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>true</runAllBuilders>
-			</target>
-		</buildTargets>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
