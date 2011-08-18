@@ -10,7 +10,7 @@ class TypeItem : public QWidget
 public:
     TypeItem(const QIcon& icon, const QString& text, QWidget *parent = 0);
     ~TypeItem();
-
+ 
 private:
 };
 
