@@ -59,11 +59,6 @@
 		<pathentry base-path="/usr/include/qt4" include="QtDesigner" kind="inc" path="" system="true"/>
 		<pathentry base-path="/usr/include/qt4" include="QtAssistant" kind="inc" path="" system="true"/>
 		<pathentry include="/usr/include" kind="inc" path="" system="true"/>
-		<pathentry include="/usr/include/c++/4.4" kind="inc" path="" system="true"/>
-		<pathentry include="/usr/include/c++/4.4/backward" kind="inc" path="" system="true"/>
-		<pathentry include="/usr/include/c++/4.4/i486-linux-gnu" kind="inc" path="" system="true"/>
-		<pathentry include="/usr/lib/gcc/i486-linux-gnu/4.4.5/include" kind="inc" path="" system="true"/>
-		<pathentry include="/usr/lib/gcc/i486-linux-gnu/4.4.5/include-fixed" kind="inc" path="" system="true"/>
 		<pathentry include="/usr/local/include" kind="inc" path="" system="true"/>
 		<pathentry kind="src" path=""/>
 		<pathentry kind="out" path=""/>

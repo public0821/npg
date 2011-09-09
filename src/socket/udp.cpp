@@ -12,7 +12,16 @@ Udp::Udp()
 	m_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
-		setErrorStr();
+		SET_ERROR_STR(strerror(errno));
+		return;
+	}
+	int optval = 1;
+	int ret = setsockopt(m_sockfd, SOL_SOCKET, SO_BROADCAST, &optval,
+			sizeof(optval));
+	if (ret == K_SOCKET_ERROR)
+	{
+		SET_ERROR_STR(strerror(errno));
+		return;
 	}
 }
 
@@ -25,8 +34,8 @@ Udp::~Udp()
 
 }
 
-
-bool Udp::send(const char* ip, int port, const char* buffer, int buffer_len)
+bool Udp::sendto(const char* ip, uint16_t port, const char* buffer,
+		int buffer_len)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
@@ -37,12 +46,12 @@ bool Udp::send(const char* ip, int port, const char* buffer, int buffer_len)
 	int ret = inet_pton(AF_INET, ip, &addr);
 	if (ret == 0)
 	{
-		setErrorStr("Not in presentation format");
+		SET_ERROR_STR("Not in presentation format");
 		return false;
 	}
 	else if (ret < 0)
 	{
-		setErrorStr();
+		SET_ERROR_STR(strerror(errno));
 		return false;
 	}
 	struct sockaddr_in serv_addr;
@@ -51,11 +60,11 @@ bool Udp::send(const char* ip, int port, const char* buffer, int buffer_len)
 	serv_addr.sin_addr.s_addr = addr.s_addr;
 	serv_addr.sin_port = htons(port);
 
-	ssize_t len = sendto(m_sockfd, buffer, buffer_len, 0,
+	ssize_t len = ::sendto(m_sockfd, buffer, buffer_len, 0,
 			(struct sockaddr*) &serv_addr, sizeof(serv_addr));
 	if (len == K_SOCKET_ERROR)
 	{
-		setErrorStr();
+		SET_ERROR_STR(strerror(errno));
 		return false;
 	}
 

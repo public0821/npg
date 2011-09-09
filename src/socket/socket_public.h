@@ -1,5 +1,5 @@
-#ifndef	__PUBLIC_H__
-#define __PUBLIC_H__
+#ifndef	__SOCKET_PUBLIC_H__
+#define __SOCKET_PUBLIC_H__
 
 #include    <sys/types.h>       /* basic system data types */
 #include    <sys/socket.h>      /* basic socket definitions */
@@ -18,15 +18,7 @@
 #include    <sys/uio.h>         /* for iovec{} and readv/writev */
 #include    <unistd.h>
 #include    <sys/wait.h>
-
-
-const int	K_SOCKET_ERROR =  -1;
-const int	K_SOCKET_ERROR_BUF_LEN =  512;
-
-inline void fillErrorStr(char* error_buffer, int buffer_len, const char* error_str)
-{
-	snprintf(error_buffer, buffer_len, "%s%d:%s", __FILE__, __LINE__, error_str);
-}
+#include <sys/ioctl.h>
 
 
 #endif

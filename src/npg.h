@@ -5,26 +5,29 @@
 #include "ui_npg.h"
 #include <QListWidget>
 #include <QTabWidget>
+#include <QSplitter>
+#include "main_list_widget.h"
+#include "main_tab_widget.h"
 
-const QString K_UDP = "UDP";
-const QString K_TCP = "TCP";
-
-class npg : public QMainWindow
+class npg: public QMainWindow
 {
-    Q_OBJECT
+Q_OBJECT
 
 public:
-    npg(QWidget *parent = 0);
-    ~npg();
+	npg(QWidget *parent = 0);
+	~npg();
 private slots:
 	void itemDoubleClicked(QListWidgetItem * item);
+	void onClose();
 private:
-    Ui::npgClass ui;
-	QListWidget*	m_typeList;
-	QTabWidget*		m_tabWidget;
+	void saveSettings();
+	void restoreSettings();
+private:
+	Ui::npgClass ui;
+	MainListWidget* m_typeList;
+	MainTabWidget* m_tabWidget;
+	QSplitter* m_mainSplitter;
 //	QStringList m_data_types;
-private:
-	QIcon	m_icon_udp;
 };
 
 #endif // NPG_H

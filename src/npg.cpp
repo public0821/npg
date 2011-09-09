@@ -1,41 +1,33 @@
 #include "npg.h"
-#include <QHBoxLayout>
-#include <qstringlist.h>
 
+#include <qstringlist.h>
+#include <qsettings.h>
 #include "udp_widget.h"
+#include "public.h"
 
 npg::npg(QWidget *parent) :
 		QMainWindow(parent)
 {
 	ui.setupUi(this);
 
-	connect(ui.actionQuit, SIGNAL(triggered(bool)), this, SLOT(close ()));
+	connect(ui.actionQuit, SIGNAL(triggered(bool)), this, SLOT(onClose ()));
 	ui.toolBar->addAction(ui.actionQuit);
 
-	QHBoxLayout *mainLayout = new QHBoxLayout(ui.centralwidget);
+	m_mainSplitter = new QSplitter(Qt::Horizontal);
 
-	m_typeList = new QListWidget(ui.centralwidget);
-	m_tabWidget = new QTabWidget(ui.centralwidget);
+	m_typeList = new MainListWidget();
+	m_tabWidget = new MainTabWidget();
 
-	mainLayout->addWidget(m_typeList);
-	mainLayout->addWidget(m_tabWidget);
-	mainLayout->setStretch(1, 1);
+	m_mainSplitter->addWidget(m_typeList);
+	m_mainSplitter->addWidget(m_tabWidget);
+	m_mainSplitter->setStretchFactor(1, 1);
 
-	m_icon_udp.addFile(QString::fromUtf8(":/npg/resource/udp.png"), QSize(), QIcon::Normal, QIcon::Off);
+	setCentralWidget(m_mainSplitter);
 
-	m_typeList->setViewMode(QListView::IconMode);
-	m_typeList->setFlow(QListView::TopToBottom);
-	QListWidgetItem* udp = new QListWidgetItem(m_icon_udp, K_UDP, m_typeList);
-	QListWidgetItem* tcp = new QListWidgetItem(m_icon_udp, K_TCP, m_typeList);
-	udp->setTextAlignment(Qt::AlignHCenter);
-	tcp->setTextAlignment(Qt::AlignHCenter);
 	connect(m_typeList, SIGNAL(itemDoubleClicked(QListWidgetItem* )), this,
 			SLOT(itemDoubleClicked(QListWidgetItem* )));
 
-
-	m_tabWidget->setTabsClosable(true);
-	m_tabWidget->setMovable(true);
-
+	restoreSettings();
 //	m_tabWidget->addTab(new UdpWidget(m_tabWidget), "udp");
 }
 
@@ -52,8 +44,32 @@ void npg::itemDoubleClicked(QListWidgetItem * item)
 	}
 
 	QString data_type = item->text();
-	if (data_type == K_UDP)
-	{
-		m_tabWidget->addTab(new UdpWidget(m_tabWidget), m_icon_udp, K_UDP);
-	}
+	m_tabWidget->addTab(data_type);
+
+}
+
+void npg::saveSettings()
+{
+	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
+
+	settings.beginGroup("mainWindow");
+	settings.setValue("geometry", saveGeometry());
+	settings.setValue("mainSplitter", m_mainSplitter->saveState());
+	settings.endGroup();
+}
+
+void npg::restoreSettings()
+{
+	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
+
+	settings.beginGroup("mainWindow");
+	restoreGeometry(settings.value("geometry").toByteArray());
+	m_mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+	settings.endGroup();
+}
+
+void npg::onClose()
+{
+	saveSettings();
+	close();
 }
