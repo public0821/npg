@@ -3,8 +3,13 @@ TARGET = npg
 QT += core \
     gui \
     xml
-HEADERS += icmp_widget.h\
-	socket/icmp.h \
+HEADERS += socket/raw_udp.h \
+    socket/ip_raw_socket.h \
+    socket/socket_toolkit.h \
+    arp_widget.h \
+    socket/arp.h \
+    icmp_widget.h \
+    socket/icmp.h \
     send_thread.h \
     socket/socket_public.h \
     socket/tcp.h \
@@ -17,8 +22,13 @@ HEADERS += icmp_widget.h\
     npg.h \
     socket/udp.h \
     udp_widget.h
-SOURCES += icmp_widget.cpp\
-	socket/icmp.cpp \
+SOURCES += socket/raw_udp.cpp \
+    socket/ip_raw_socket.cpp \
+    socket/socket_toolkit.cpp \
+    arp_widget.cpp \
+    socket/arp.cpp \
+    icmp_widget.cpp \
+    socket/icmp.cpp \
     send_thread.cpp \
     socket/tcp.cpp \
     socket/socket_error.cpp \
@@ -30,8 +40,9 @@ SOURCES += icmp_widget.cpp\
     npg.cpp \
     socket/udp.cpp \
     udp_widget.cpp
-FORMS += icmp_widget.ui\
-	tcp_widget.ui \
+FORMS += arp_widget.ui \
+    icmp_widget.ui \
+    tcp_widget.ui \
     udp_widget.ui \
     npg.ui
 RESOURCES += npg.qrc \

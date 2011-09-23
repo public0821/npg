@@ -14,33 +14,23 @@
    <string>UdpWidget</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="1" colspan="2">
-    <widget class="QLineEdit" name="ipEdit"/>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="dstIpEdit"/>
    </item>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>IP</string>
+      <string>DST_IP</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="8">
+   <item row="3" column="0" colspan="9">
     <widget class="QTextEdit" name="dataEdit"/>
    </item>
-   <item row="3" column="0" colspan="8">
+   <item row="4" column="0" colspan="9">
     <layout class="QHBoxLayout" name="sendLayout"/>
    </item>
-   <item row="0" column="3">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>PORT </string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="5" colspan="2">
-    <widget class="QLineEdit" name="portEdit"/>
-   </item>
-   <item row="0" column="7">
+   <item row="1" column="4" colspan="5">
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -52,6 +42,62 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="SrcIp">
+     <property name="text">
+      <string>SRC_IP</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="srcIpEdit"/>
+   </item>
+   <item row="0" column="5" colspan="4">
+    <spacer name="horizontalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="4">
+    <widget class="QCheckBox" name="srcIpBox">
+     <property name="text">
+      <string>default</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="label_3">
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>SRC_PORT </string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QLabel" name="label_2">
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>DST_PORT </string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLineEdit" name="srcPortEdit"/>
+   </item>
+   <item row="1" column="3">
+    <widget class="QLineEdit" name="dstPortEdit"/>
    </item>
   </layout>
  </widget>

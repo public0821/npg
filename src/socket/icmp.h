@@ -16,8 +16,6 @@ class Icmp: public SocketError
 public:
 	Icmp();
 	virtual ~Icmp();
-private:
-	uint16_t inCheckSum(uint16_t * addr, int len);
 public:
 	bool sendto(const char* ip, void* icmp, int len, bool needCalcCheckNum);
 private:

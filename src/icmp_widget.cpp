@@ -198,15 +198,15 @@ QString IcmpWidget::sendData()
 	}
 
 	Icmp npg_icmp;
-	QByteArray ip = ui.ipEdit->text().toLatin1();
+	std::string ip = ui.ipEdit->text().toStdString();
 	if (ui.checkBox->checkState() == Qt::Checked)
 	{
-		npg_icmp.sendto(ip.data(), (void*)&icmp, len, true);
+		npg_icmp.sendto(ip.c_str(), (void*)&icmp, len, true);
 	}
 	else
 	{
 		icmp.icmp_cksum = ui.checkNumEdit->text().toInt();
-		npg_icmp.sendto(ip.data(),(void*) &icmp, len, false);
+		npg_icmp.sendto(ip.c_str(),(void*) &icmp, len, false);
 	}
 
 	return npg_icmp.errorStr();

@@ -10,6 +10,7 @@
 #include "udp_widget.h"
 #include "tcp_widget.h"
 #include "icmp_widget.h"
+#include "arp_widget.h"
 
 MainTabWidget::MainTabWidget()
 {
@@ -55,6 +56,12 @@ int MainTabWidget::addTab(const QString &type)
 		index = QTabWidget::addTab(sheet,
 				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ICMP);
 	}
+	else if (type == K_ARP)
+		{
+			sheet = new ArpWidget(this);
+			index = QTabWidget::addTab(sheet,
+					QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ARP);
+		}
 
 	if (index != -1)
 	{

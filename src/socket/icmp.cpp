@@ -10,7 +10,7 @@
 #include    <netinet/ip.h>
 #include    <netinet/ip_icmp.h>
 #include   <sys/time.h>
-
+#include "socket_toolkit.h"
 Icmp::Icmp()
 {
 	m_sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
@@ -37,36 +37,6 @@ Icmp::~Icmp()
 	// TODO Auto-generated destructor stub
 }
 
-uint16_t Icmp::inCheckSum(uint16_t * addr, int len)
-{
-	int nleft = len;
-	uint32_t sum = 0;
-	uint16_t *w = addr;
-	uint16_t answer = 0;
-
-	/*
-	 * Our algorithm is simple, using a 32 bit accumulator (sum), we add
-	 * sequential 16 bit words to it, and at the end, fold back all the
-	 * carry bits from the top 16 bits into the lower 16 bits.
-	 */
-	while (nleft > 1)
-	{
-		sum += *w++;
-		nleft -= 2;
-	}
-	/* mop up an odd byte, if necessary */
-	if (nleft == 1)
-	{
-		*(unsigned char *) (&answer) = *(unsigned char *) w;
-		sum += answer;
-	}
-
-	/* add back carry outs from top 16 bits to low 16 bits */
-	sum = (sum >> 16) + (sum & 0xffff); /* add hi 16 to low 16 */
-	sum += (sum >> 16); /* add carry */
-	answer = ~sum; /* truncate to 16 bits */
-	return (answer);
-}
 
 bool Icmp::sendto(const char* ip, void* data, int len, bool needCalcCheckNum)
 {
@@ -105,7 +75,8 @@ bool Icmp::sendto(const char* ip, void* data, int len, bool needCalcCheckNum)
 	if (needCalcCheckNum)
 	{
 		icmp->icmp_cksum = 0;
-		icmp->icmp_cksum = inCheckSum((u_short *) icmp, len);
+		SocketToolkit toolkit;
+		icmp->icmp_cksum = toolkit.inCheckSum((u_short *) icmp, len);
 	}
 
 	ret = ::sendto(m_sockfd, icmp, len, 0, (const sockaddr*) &serv_addr,
