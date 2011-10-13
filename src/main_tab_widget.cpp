@@ -2,7 +2,7 @@
  * main_tab_widget.cpp
  *
  *  Created on: 2011-8-19
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "main_tab_widget.h"
@@ -11,6 +11,7 @@
 #include "tcp_widget.h"
 #include "icmp_widget.h"
 #include "arp_widget.h"
+#include "dns_widget.h"
 
 MainTabWidget::MainTabWidget()
 {
@@ -57,12 +58,17 @@ int MainTabWidget::addTab(const QString &type)
 				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ICMP);
 	}
 	else if (type == K_ARP)
-		{
-			sheet = new ArpWidget(this);
-			index = QTabWidget::addTab(sheet,
-					QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ARP);
-		}
-
+	{
+		sheet = new ArpWidget(this);
+		index = QTabWidget::addTab(sheet,
+				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ARP);
+	}
+	else if (type == K_DNS)
+	{
+		sheet = new DnsWidget(this);
+		index = QTabWidget::addTab(sheet,
+				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_DNS);
+	}
 	if (index != -1)
 	{
 		m_tabs.push_back(sheet);

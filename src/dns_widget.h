@@ -1,29 +1,29 @@
 /*
- * arp_widget.h
+ * dns_widget.h
  *
  *  Created on: 2011-10-11
  *      Author: Young <public0821@gmail.com>
  */
 
-#ifndef ARP_WIDGET_H
-#define ARP_WIDGET_H
+#ifndef DNS_WIDGET_H
+#define DNS_WIDGET_H
 
-#include "ui_arp_widget.h"
+#include "ui_dns_widget.h"
 #include "tab_sheet.h"
 
-class ArpWidget: public TabSheet
+class DnsWidget : public TabSheet
 {
     Q_OBJECT
 
 public:
-    ArpWidget(QWidget *parent = 0);
-    ~ArpWidget();
+    DnsWidget(QWidget *parent = 0);
+    ~DnsWidget();
 private:
 	virtual void saveSettings();
 	virtual void restoreSettings();
 	QString sendData();
 private:
-    Ui::ArpWidgetClass ui;
+    Ui::DnsWidgetClass ui;
 };
 
-#endif // ARP_WIDGET_H
+#endif // DNS_WIDGET_H

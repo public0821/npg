@@ -2,7 +2,7 @@
  * tab_sheet.h
  *
  *  Created on: 2011-8-22
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef TAB_SHEET_H_
@@ -16,7 +16,6 @@
 #include <qlineedit.h>
 #include <QHBoxLayout>
 #include <QGroupBox>
-#include <qthread.h>
 
 class SendThread;
 class TabSheet: public QWidget
@@ -33,7 +32,7 @@ protected:
 	void showFailedTip(const QString& tip);
 	bool isAdvance() const
 	{
-		return m_bAdvanced;
+		return m_is_advanced;
 	}
 	;
 private:
@@ -43,7 +42,7 @@ private:
 	virtual void saveSettings()=0;
 	virtual void restoreSettings()=0;
 	virtual QString sendData()=0;
-	virtual QString beforeSendData(){return "";};
+	virtual QString beforeSendData(){return tr("");};
 
 protected slots:
 		void onAdvanced();
@@ -51,20 +50,20 @@ protected slots:
 		void onSendFinish();
 		void counter(int count, int seconds);
 private:
-	QPushButton *m_sendButton;
-	QPushButton *m_advancedButton;
-	QLabel *m_tipLabel;
-	QLabel *m_statusLabel1;
-	QLabel *m_statusLabel2;
+	QPushButton *m_send_button;
+	QPushButton *m_advanced_button;
+	QLabel *m_tip_label;
+	QLabel *m_status_label1;
+	QLabel *m_status_label2;
 
-	QComboBox *m_sendTypeBox;
-	QLineEdit* m_countEdit;
+	QComboBox *m_send_typeBox;
+	QLineEdit* m_count_edit;
 
-	QGroupBox * m_advancedGroup;
+	QGroupBox * m_advanced_group;
 
-	bool m_bAdvanced;
+	bool m_is_advanced;
 
-	SendThread* m_sendThread;
+	SendThread* m_send_thread;
 
 	friend class SendThread;
 };

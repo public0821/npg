@@ -2,10 +2,11 @@
  * Udp.cpp
  *
  *  Created on: 2011-8-11
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "udp.h"
+#include "socket_public.h"
 
 Udp::Udp()
 {

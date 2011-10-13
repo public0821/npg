@@ -1,8 +1,8 @@
 /*
- * TypeListWidget.cpp
+ * main_list_widget.cpp
  *
  *  Created on: 2011-8-19
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "main_list_widget.h"
@@ -26,10 +26,15 @@ MainListWidget::MainListWidget()
 	QListWidgetItem* arp = new QListWidgetItem(
 					QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ARP,
 					this);
+	QListWidgetItem* dns = new QListWidgetItem(
+						QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_DNS,
+						this);
+
 	udp->setTextAlignment(Qt::AlignLeft);
 	tcp->setTextAlignment(Qt::AlignLeft);
 	icmp->setTextAlignment(Qt::AlignLeft);
 	arp->setTextAlignment(Qt::AlignLeft);
+	dns->setTextAlignment(Qt::AlignLeft);
 }
 
 MainListWidget::~MainListWidget()

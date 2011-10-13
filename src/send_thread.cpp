@@ -2,7 +2,7 @@
  * SendThread.cpp
  *
  *  Created on: 2011-8-24
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "send_thread.h"
@@ -21,7 +21,7 @@ SendThread::~SendThread()
 	// TODO Auto-generated destructor stub
 }
 
-void SendThread::start(SendType type, int count)
+void SendThread::start(ESendType type, int count)
 {
 	m_type = type;
 	m_count = count;
@@ -33,8 +33,8 @@ void SendThread::start(SendType type, int count)
 
 void SendThread::run()
 {
-	m_totalSend = 0;
-	m_timeConsuming = 0;
+	m_total_send = 0;
+	m_time_consuming = 0;
 
 	m_error = m_parent->beforeSendData();
 	if (m_error.isEmpty())
@@ -53,14 +53,14 @@ void SendThread::run()
 	}
 
 	emit
-	counter(m_totalSend, m_timeConsuming);
+	counter(m_total_send, m_time_consuming);
 
 	m_running = false;
 }
 
 void SendThread::sendTotal(int count)
 {
-	for (m_totalSend = 0; m_totalSend < count; m_totalSend++)
+	for (m_total_send = 0; m_total_send < count; m_total_send++)
 	{
 		if (!m_running)
 		{
@@ -88,17 +88,17 @@ void SendThread::sendPerSeconds(int count)
 				return;
 			}
 			m_error = m_parent->sendData();
-			m_totalSend++;
+			m_total_send++;
 			if (!m_error.isEmpty())
 			{
 				break;
 			}
-			int timeElapsed = time.elapsed();
+			int time_elapsed = time.elapsed();
 
-			int moreTime = (double) 1000 / count * (i+1) - timeElapsed;
-			if (moreTime > 0)
+			int more_time = (double) 1000 / count * (i+1) - time_elapsed;
+			if (more_time > 0)
 			{
-				msleep(moreTime);
+				msleep(more_time);
 			}
 		}
 	}
@@ -106,8 +106,8 @@ void SendThread::sendPerSeconds(int count)
 
 void SendThread::onTimer()
 {
-	m_timeConsuming++;
-	emit counter(m_totalSend, m_timeConsuming);
+	m_time_consuming++;
+	emit counter(m_total_send, m_time_consuming);
 }
 
 void SendThread::onSendFinish()

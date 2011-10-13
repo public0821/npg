@@ -1,6 +1,14 @@
+/*
+ * icmp_widget.cpp
+ *
+ *  Created on: 2011-10-11
+ *      Author: Young <public0821@gmail.com>
+ */
+
+
 #include "icmp_widget.h"
 #include "socket/icmp.h"
-#include    <netinet/in_systm.h>
+#include   <netinet/in_systm.h>
 #include <qsettings.h>
 #include "public.h"
 #include    <netinet/ip_icmp.h>
@@ -9,29 +17,29 @@ IcmpWidget::IcmpWidget(QWidget *parent) :
 		TabSheet(parent), m_seq(0)
 {
 	ui.setupUi(this);
-	setupUi(ui.sendLayout);
+	setupUi(ui.send_layout);
 
 	initProtocol();
 
-	connect(ui.typeBox, SIGNAL(currentIndexChanged(const QString &)), this,
+	connect(ui.type_box, SIGNAL(currentIndexChanged(const QString &)), this,
 			SLOT( onTypeIndexChanged(const QString &)));
-	connect(ui.codeBox, SIGNAL(currentIndexChanged(const QString &)), this,
+	connect(ui.code_box, SIGNAL(currentIndexChanged(const QString &)), this,
 			SLOT( onCodeIndexChanged(const QString &)));
-	connect(ui.checkBox, SIGNAL(clicked ( bool)), ui.checkNumEdit,
+	connect(ui.checkbox, SIGNAL(clicked ( bool)), ui.checknum_edit,
 			SLOT( setDisabled(bool)));
-	connect(ui.idCheckBox, SIGNAL(clicked ( bool)), ui.idEdit,
+	connect(ui.id_checkbox, SIGNAL(clicked ( bool)), ui.id_edit,
 			SLOT( setDisabled(bool)));
-	connect(ui.seqCheckBox, SIGNAL(clicked ( bool)), ui.seqEdit,
+	connect(ui.seq_checkbox, SIGNAL(clicked ( bool)), ui.seq_edit,
 			SLOT( setDisabled(bool)));
-	connect(ui.moreCheckBox1, SIGNAL(clicked ( bool)), ui.moreEdit1,
+	connect(ui.more_checkbox1, SIGNAL(clicked ( bool)), ui.more_edit1,
 			SLOT( setDisabled(bool)));
-	connect(ui.moreCheckBox2, SIGNAL(clicked ( bool)), ui.moreEdit2,
+	connect(ui.more_checkbox2, SIGNAL(clicked ( bool)), ui.more_edit2,
 			SLOT( setDisabled(bool)));
-	connect(ui.moreCheckBox3, SIGNAL(clicked ( bool)), ui.moreEdit3,
+	connect(ui.more_checkbox3, SIGNAL(clicked ( bool)), ui.more_edit3,
 			SLOT( setDisabled(bool)));
 
-	ui.checkBox->setChecked(true);
-	ui.checkNumEdit->setDisabled(true);
+	ui.checkbox->setChecked(true);
+	ui.checknum_edit->setDisabled(true);
 
 	hideExendedWidget();
 
@@ -39,14 +47,18 @@ IcmpWidget::IcmpWidget(QWidget *parent) :
 	QList<int>::iterator it;
 	for (it = keys.begin(); it != keys.end(); ++it)
 	{
-		ui.typeBox->addItem(QString::number(*it));
+		ui.type_box->addItem(QString::number(*it));
 	}
 
-	ui.typeBox->setValidator(new QIntValidator(this));
-	ui.codeBox->setValidator(new QIntValidator(this));
-	ui.checkNumEdit->setValidator(new QIntValidator(this));
-	ui.idEdit->setValidator(new QIntValidator(this));
-	ui.seqEdit->setValidator(new QIntValidator(this));
+	ui.type_box->setValidator(new QIntValidator(this));
+	ui.code_box->setValidator(new QIntValidator(this));
+	ui.checknum_edit->setValidator(new QIntValidator(this));
+	ui.id_edit->setValidator(new QIntValidator(this));
+	ui.seq_edit->setValidator(new QIntValidator(this));
+
+	ui.tip_lable1->setText("");
+	ui.tip_lable2->setText("");
+	ui.tip_lable3->setText("");
 }
 
 void IcmpWidget::initProtocol()
@@ -130,16 +142,16 @@ IcmpWidget::~IcmpWidget()
 
 QString IcmpWidget::sendData()
 {
-	QString typeStr = ui.typeBox->currentText();
+	QString type_str = ui.type_box->currentText();
 	bool ok;
-	int type = typeStr.toInt(&ok);
+	int type = type_str.toInt(&ok);
 	if (!ok)
 	{
 		return tr("unknown type");
 	}
 
-	QString codeStr = ui.codeBox->currentText();
-	int code = codeStr.toInt(&ok);
+	QString code_str = ui.code_box->currentText();
+	int code = code_str.toInt(&ok);
 	if (!ok)
 	{
 		return tr("unknown code");
@@ -153,22 +165,22 @@ QString IcmpWidget::sendData()
 	icmp.icmp_code = code;
 
 	//ID
-	if (ui.idCheckBox->checkState() == Qt::Checked)
+	if (ui.id_checkbox->checkState() == Qt::Checked)
 	{
 		icmp.icmp_id = getpid();
 	}
 	else
 	{
-		icmp.icmp_id = ui.idEdit->text().toInt();
+		icmp.icmp_id = ui.id_edit->text().toInt();
 	}
 	//seq
-	if (ui.seqCheckBox->checkState() == Qt::Checked)
+	if (ui.seq_checkbox->checkState() == Qt::Checked)
 	{
 		icmp.icmp_seq = m_seq++;
 	}
 	else
 	{
-		icmp.icmp_seq = ui.seqEdit->text().toInt();
+		icmp.icmp_seq = ui.seq_edit->text().toInt();
 	}
 
 	if (type == 8 && code == 0) //ping
@@ -177,35 +189,35 @@ QString IcmpWidget::sendData()
 		gettimeofday(&start, NULL);
 		icmp.icmp_otime = start.tv_sec;
 		icmp.icmp_rtime = start.tv_usec;
-		if (ui.moreCheckBox1->checkState() == Qt::Checked)
+		if (ui.more_checkbox1->checkState() == Qt::Checked)
 		{
 			icmp.icmp_otime = start.tv_sec;
 		}
 		else
 		{
-			icmp.icmp_otime = ui.moreEdit1->text().toInt();
+			icmp.icmp_otime = ui.more_edit1->text().toInt();
 		}
-		if (ui.moreCheckBox2->checkState() == Qt::Checked)
+		if (ui.more_checkbox2->checkState() == Qt::Checked)
 		{
 			icmp.icmp_rtime = start.tv_sec;
 		}
 		else
 		{
-			icmp.icmp_rtime = ui.moreEdit2->text().toInt();
+			icmp.icmp_rtime = ui.more_edit2->text().toInt();
 		}
 
 		len = ICMP_MINLEN + 8;
 	}
 
 	Icmp npg_icmp;
-	std::string ip = ui.ipEdit->text().toStdString();
-	if (ui.checkBox->checkState() == Qt::Checked)
+	std::string ip = ui.ip_edit->text().toStdString();
+	if (ui.checkbox->checkState() == Qt::Checked)
 	{
 		npg_icmp.sendto(ip.c_str(), (void*)&icmp, len, true);
 	}
 	else
 	{
-		icmp.icmp_cksum = ui.checkNumEdit->text().toInt();
+		icmp.icmp_cksum = ui.checknum_edit->text().toInt();
 		npg_icmp.sendto(ip.c_str(),(void*) &icmp, len, false);
 	}
 
@@ -214,7 +226,7 @@ QString IcmpWidget::sendData()
 
 void IcmpWidget::onTypeIndexChanged(const QString &text)
 {
-	ui.codeBox->clear();
+	ui.code_box->clear();
 
 	bool ok;
 	int type = text.toInt(&ok);
@@ -224,20 +236,20 @@ void IcmpWidget::onTypeIndexChanged(const QString &text)
 	}
 
 	QMap<int, QString> values = m_protocol.value(type);
-	QList<int> subKeys = values.keys();
+	QList<int> sub_keys = values.keys();
 	QList<int>::iterator it;
-	for (it = subKeys.begin(); it != subKeys.end(); ++it)
+	for (it = sub_keys.begin(); it != sub_keys.end(); ++it)
 	{
-		ui.codeBox->addItem(QString::number(*it));
+		ui.code_box->addItem(QString::number(*it));
 	}
 
 }
 
 void IcmpWidget::onCodeIndexChanged(const QString &text)
 {
-	QString typeStr = ui.typeBox->currentText();
+	QString type_str = ui.type_box->currentText();
 	bool ok;
-	int type = typeStr.toInt(&ok);
+	int type = type_str.toInt(&ok);
 	if (!ok)
 	{
 		return;
@@ -266,47 +278,47 @@ void IcmpWidget::onCodeIndexChanged(const QString &text)
 
 void IcmpWidget::hideExendedWidget()
 {
-	ui.idLabel->setVisible(false);
-	ui.idEdit->setVisible(false);
-	ui.idCheckBox->setVisible(false);
+	ui.id_label->setVisible(false);
+	ui.id_edit->setVisible(false);
+	ui.id_checkbox->setVisible(false);
 
-	ui.seqLable->setVisible(false);
-	ui.seqCheckBox->setVisible(false);
-	ui.seqEdit->setVisible(false);
+	ui.seq_lable->setVisible(false);
+	ui.seq_checkbox->setVisible(false);
+	ui.seq_edit->setVisible(false);
 
-	ui.moreLabel1->setVisible(false);
-	ui.moreEdit1->setVisible(false);
-	ui.moreCheckBox1->setVisible(false);
-	ui.tipLable1->setVisible(false);
-	ui.moreEdit1->setValidator(NULL);
+	ui.more_label1->setVisible(false);
+	ui.more_edit1->setVisible(false);
+	ui.more_checkbox1->setVisible(false);
+	ui.tip_lable1->setVisible(false);
+	ui.more_edit1->setValidator(NULL);
 
-	ui.moreLabel2->setVisible(false);
-	ui.moreEdit2->setVisible(false);
-	ui.moreCheckBox2->setVisible(false);
-	ui.tipLable2->setVisible(false);
-	ui.moreEdit2->setValidator(NULL);
+	ui.more_label2->setVisible(false);
+	ui.more_edit2->setVisible(false);
+	ui.more_checkbox2->setVisible(false);
+	ui.tip_lable2->setVisible(false);
+	ui.more_edit2->setValidator(NULL);
 
-	ui.moreLabel3->setVisible(false);
-	ui.moreEdit3->setVisible(false);
-	ui.moreCheckBox3->setVisible(false);
-	ui.tipLable3->setVisible(false);
-	ui.moreEdit3->setValidator(NULL);
+	ui.more_label3->setVisible(false);
+	ui.more_edit3->setVisible(false);
+	ui.more_checkbox3->setVisible(false);
+	ui.tip_lable3->setVisible(false);
+	ui.more_edit3->setValidator(NULL);
 }
 
 void IcmpWidget::showIdWidget()
 {
-	ui.idLabel->setVisible(true);
-	ui.idEdit->setVisible(true);
-	ui.idCheckBox->setVisible(true);
+	ui.id_label->setVisible(true);
+	ui.id_edit->setVisible(true);
+	ui.id_checkbox->setVisible(true);
 
-	ui.seqLable->setVisible(true);
-	ui.seqCheckBox->setVisible(true);
-	ui.seqEdit->setVisible(true);
+	ui.seq_lable->setVisible(true);
+	ui.seq_checkbox->setVisible(true);
+	ui.seq_edit->setVisible(true);
 
-	ui.idCheckBox->setChecked(true);
-	ui.seqCheckBox->setChecked(true);
-	ui.idEdit->setDisabled(true);
-	ui.seqEdit->setDisabled(true);
+	ui.id_checkbox->setChecked(true);
+	ui.seq_checkbox->setChecked(true);
+	ui.id_edit->setDisabled(true);
+	ui.seq_edit->setDisabled(true);
 }
 
 void IcmpWidget::showMoreWidgetPing()
@@ -314,8 +326,8 @@ void IcmpWidget::showMoreWidgetPing()
 	showMoreWidget(1, tr("Seconds"));
 	showMoreWidget(2, tr("MicroSeconds"));
 
-	ui.moreEdit1->setValidator(new QIntValidator(this));
-	ui.moreEdit2->setValidator(new QIntValidator(this));
+	ui.more_edit1->setValidator(new QIntValidator(this));
+	ui.more_edit2->setValidator(new QIntValidator(this));
 }
 
 void IcmpWidget::showMoreWidget(int index, const QString& label,
@@ -324,34 +336,34 @@ void IcmpWidget::showMoreWidget(int index, const QString& label,
 	switch (index)
 	{
 	case 1:
-		ui.moreLabel1->setVisible(true);
-		ui.moreLabel1->setText(label);
-		ui.moreCheckBox1->setVisible(true);
-		ui.moreCheckBox1->setChecked(true);
-		ui.moreEdit1->setVisible(true);
-		ui.moreEdit1->setDisabled(true);
-		ui.tipLable1->setVisible(true);
-		ui.tipLable1->setText(tip);
+		ui.more_label1->setVisible(true);
+		ui.more_label1->setText(label);
+		ui.more_checkbox1->setVisible(true);
+		ui.more_checkbox1->setChecked(true);
+		ui.more_edit1->setVisible(true);
+		ui.more_edit1->setDisabled(true);
+		ui.tip_lable1->setVisible(true);
+		ui.tip_lable1->setText(tip);
 		break;
 	case 2:
-		ui.moreLabel2->setVisible(true);
-		ui.moreLabel2->setText(label);
-		ui.moreCheckBox2->setVisible(true);
-		ui.moreCheckBox2->setChecked(true);
-		ui.moreEdit2->setVisible(true);
-		ui.moreEdit2->setDisabled(true);
-		ui.tipLable2->setVisible(true);
-		ui.tipLable2->setText(tip);
+		ui.more_label2->setVisible(true);
+		ui.more_label2->setText(label);
+		ui.more_checkbox2->setVisible(true);
+		ui.more_checkbox2->setChecked(true);
+		ui.more_edit2->setVisible(true);
+		ui.more_edit2->setDisabled(true);
+		ui.tip_lable2->setVisible(true);
+		ui.tip_lable2->setText(tip);
 		break;
 	case 3:
-		ui.moreLabel3->setVisible(true);
-		ui.moreLabel3->setText(label);
-		ui.moreCheckBox3->setVisible(true);
-		ui.moreCheckBox3->setChecked(true);
-		ui.moreEdit3->setVisible(true);
-		ui.moreEdit3->setDisabled(true);
-		ui.tipLable3->setVisible(true);
-		ui.tipLable3->setText(tip);
+		ui.more_label3->setVisible(true);
+		ui.more_label3->setText(label);
+		ui.more_checkbox3->setVisible(true);
+		ui.more_checkbox3->setChecked(true);
+		ui.more_edit3->setVisible(true);
+		ui.more_edit3->setDisabled(true);
+		ui.tip_lable3->setVisible(true);
+		ui.tip_lable3->setText(tip);
 		break;
 	default:
 		break;
@@ -373,7 +385,7 @@ void IcmpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 	settings.beginGroup(K_ICMP);
-	settings.setValue("ip", ui.ipEdit->text());
+	settings.setValue("ip", ui.ip_edit->text());
 	settings.endGroup();
 }
 
@@ -381,6 +393,6 @@ void IcmpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 	settings.beginGroup(K_ICMP);
-	ui.ipEdit->setText(settings.value("ip").toString());
+	ui.ip_edit->setText(settings.value("ip").toString());
 	settings.endGroup();
 }

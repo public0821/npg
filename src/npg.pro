@@ -3,7 +3,9 @@ TARGET = npg
 QT += core \
     gui \
     xml
-HEADERS += socket/raw_udp.h \
+HEADERS += dns_widget.h \
+    socket/dns.h \
+    socket/raw_udp.h \
     socket/ip_raw_socket.h \
     socket/socket_toolkit.h \
     arp_widget.h \
@@ -22,7 +24,9 @@ HEADERS += socket/raw_udp.h \
     npg.h \
     socket/udp.h \
     udp_widget.h
-SOURCES += socket/raw_udp.cpp \
+SOURCES += dns_widget.cpp \
+    socket/dns.cpp \
+    socket/raw_udp.cpp \
     socket/ip_raw_socket.cpp \
     socket/socket_toolkit.cpp \
     arp_widget.cpp \
@@ -40,7 +44,8 @@ SOURCES += socket/raw_udp.cpp \
     npg.cpp \
     socket/udp.cpp \
     udp_widget.cpp
-FORMS += arp_widget.ui \
+FORMS += dns_widget.ui \
+    arp_widget.ui \
     icmp_widget.ui \
     tcp_widget.ui \
     udp_widget.ui \

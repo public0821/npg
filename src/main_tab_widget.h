@@ -2,14 +2,16 @@
  * main_tab_widget.h
  *
  *  Created on: 2011-8-19
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef MAIN_TAB_WIDGET_H_
 #define MAIN_TAB_WIDGET_H_
+
 #include <qtabwidget.h>
 #include <qvector.h>
 #include "tab_sheet.h"
+
 class MainTabWidget: public QTabWidget
 {
 	Q_OBJECT

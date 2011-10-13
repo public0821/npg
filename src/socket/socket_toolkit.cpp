@@ -2,7 +2,7 @@
  * socket_toolkit.cpp
  *
  *  Created on: 2011-9-20
- *      Author: root
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "socket_toolkit.h"
@@ -65,8 +65,8 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 
 	for (char* ptr = buf; ptr < buf + ifc.ifc_len;)
 	{
-		struct ifi_info ifiInfo;
-		bzero(&ifiInfo, sizeof(ifiInfo));
+		struct ifi_info ifi_info;
+		bzero(&ifi_info, sizeof(ifi_info));
 		struct ifreq * ifr = (struct ifreq *) ptr;
 #ifdef   HAVE_SOCKADDR_SA_LEN
 		len = max(sizeof(struct sockaddr), ifr->ifr_addr.sa_len);
@@ -94,8 +94,8 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 			*cptr = 0; /* replace colon with null */
 		}
 
-		memcpy(ifiInfo.ifi_name, ifr->ifr_name, IF_NAMESIZE);
-		ifiInfo.ifi_name[IF_NAMESIZE - 1] = '\0';
+		memcpy(ifi_info.ifi_name, ifr->ifr_name, IF_NAMESIZE);
+		ifi_info.ifi_name[IF_NAMESIZE - 1] = '\0';
 		struct ifreq ifrcopy = *ifr;
 		if (ioctl(sockfd, SIOCGIFFLAGS, &ifrcopy) < 0)
 		{
@@ -105,7 +105,7 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 		if ((ifrcopy.ifr_flags & IFF_UP) == 0)
 			continue; /* ignore if interface not up */
 
-		ifiInfo.ifi_flags = ifrcopy.ifr_flags; /* IFF_xxx values */
+		ifi_info.ifi_flags = ifrcopy.ifr_flags; /* IFF_xxx values */
 
 		struct sockaddr_in * sinptr = NULL;
 		struct sockaddr_in6 * sin6ptr = NULL;
@@ -113,11 +113,11 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 		{
 		case AF_INET:
 			sinptr = (struct sockaddr_in *) &ifr->ifr_addr;
-			memcpy(&ifiInfo.ifi_addr, sinptr, sizeof(struct sockaddr_in));
+			memcpy(&ifi_info.ifi_addr, sinptr, sizeof(struct sockaddr_in));
 			break;
 		case AF_INET6:
 			sin6ptr = (struct sockaddr_in6 *) &ifr->ifr_addr;
-			memcpy(&ifiInfo.ifi_addr, sin6ptr, sizeof(struct sockaddr_in6));
+			memcpy(&ifi_info.ifi_addr, sin6ptr, sizeof(struct sockaddr_in6));
 			break;
 		default:
 			break;
@@ -129,9 +129,9 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 			goto END;
 		}
 
-		memcpy(ifiInfo.ifi_haddr, ifrcopy.ifr_hwaddr.sa_data, IFHWADDRLEN);
+		memcpy(ifi_info.ifi_haddr, ifrcopy.ifr_hwaddr.sa_data, IFHWADDRLEN);
 
-		ifiInfos.push_back(ifiInfo);
+		ifiInfos.push_back(ifi_info);
 	}
 	END: if (buf != NULL)
 	{

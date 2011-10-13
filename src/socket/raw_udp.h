@@ -2,7 +2,7 @@
  * raw_udp.h
  *
  *  Created on: 2011-9-23
- *      Author: root
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef RAW_UDP_H_

@@ -2,80 +2,81 @@
  * tab_sheet.cpp
  *
  *  Created on: 2011-8-22
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
+#include "tab_sheet.h"
+
 #include <QSpacerItem>
 #include <QVBoxLayout>
-#include "tab_sheet.h"
 #include "send_thread.h"
 #include <qmessagebox.h>
 
 TabSheet::TabSheet(QWidget *parent) :
 		QWidget(parent)
 {
-	m_sendThread = new SendThread(this);
+	m_send_thread = new SendThread(this);
 }
 
 TabSheet::~TabSheet()
 {
-	if (m_sendThread->isRunning())
+	if (m_send_thread->isRunning())
 	{
-		m_sendThread->stop();
-		m_sendThread->wait();
+		m_send_thread->stop();
+		m_send_thread->wait();
 	}
-	delete m_sendThread;
+	delete m_send_thread;
 }
 
 void TabSheet::setupUi(QHBoxLayout* layout)
 {
-	QHBoxLayout* simpleLayout = new QHBoxLayout();
+	QHBoxLayout* simple_layout = new QHBoxLayout();
 
-	m_sendButton = new QPushButton(tr("send"));
-	m_advancedButton = new QPushButton(tr("advance"));
-	m_tipLabel = new QLabel();
-	m_statusLabel1 = new QLabel();
-	m_statusLabel2 = new QLabel();
-	QSpacerItem *horizontalSpacer = new QSpacerItem(40, 20,
+	m_send_button = new QPushButton(tr("send"));
+	m_advanced_button = new QPushButton(tr("advance"));
+	m_tip_label = new QLabel();
+	m_status_label1 = new QLabel();
+	m_status_label2 = new QLabel();
+	QSpacerItem *horizontal_spacer = new QSpacerItem(40, 20,
 			QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-	simpleLayout->addWidget(m_tipLabel);
-	simpleLayout->addWidget(m_statusLabel1);
-	simpleLayout->addWidget(m_statusLabel2);
-	simpleLayout->addItem(horizontalSpacer);
-	simpleLayout->addWidget(m_advancedButton);
-	simpleLayout->addWidget(m_sendButton);
+	simple_layout->addWidget(m_tip_label);
+	simple_layout->addWidget(m_status_label1);
+	simple_layout->addWidget(m_status_label2);
+	simple_layout->addItem(horizontal_spacer);
+	simple_layout->addWidget(m_advanced_button);
+	simple_layout->addWidget(m_send_button);
 
-	m_advancedGroup = new QGroupBox(tr("advance:"));
+	m_advanced_group = new QGroupBox(tr("advance:"));
 //	m_advanceGroup->setStyleSheet("margin:5px 0px 0px 5px;padding:10px;border:3px solid red;border-radius:5px");
 //	QString oldStyleSheet = m_advanceGroup->styleSheet();
-	QHBoxLayout* advanceLayout = new QHBoxLayout(m_advancedGroup);
-	advanceLayout->addWidget(new QLabel(tr("sendtype:")));
-	m_sendTypeBox = new QComboBox();
-	m_sendTypeBox->addItem(tr("total"), QVariant((int) E_TOTAL));
-	m_sendTypeBox->addItem(tr("per second"), QVariant((int) E_SPEED));
-	advanceLayout->addWidget(m_sendTypeBox);
-	advanceLayout->addWidget(new QLabel(tr("count:")));
-	m_countEdit = new QLineEdit();
-	advanceLayout->addWidget(m_countEdit);
-	advanceLayout->addItem(
+	QHBoxLayout* advance_layout = new QHBoxLayout(m_advanced_group);
+	advance_layout->addWidget(new QLabel(tr("sendtype:")));
+	m_send_typeBox = new QComboBox();
+	m_send_typeBox->addItem(tr("total"), QVariant((int) E_TOTAL));
+	m_send_typeBox->addItem(tr("per second"), QVariant((int) E_SPEED));
+	advance_layout->addWidget(m_send_typeBox);
+	advance_layout->addWidget(new QLabel(tr("count:")));
+	m_count_edit = new QLineEdit();
+	advance_layout->addWidget(m_count_edit);
+	advance_layout->addItem(
 			new QSpacerItem(40, 20, QSizePolicy::Expanding,
 					QSizePolicy::Minimum));
 
-	QVBoxLayout* vboxLayout = new QVBoxLayout();
-	vboxLayout->addWidget(m_advancedGroup);
-	vboxLayout->addLayout(simpleLayout);
-	layout->addLayout(vboxLayout);
+	QVBoxLayout* vboxlayout = new QVBoxLayout();
+	vboxlayout->addWidget(m_advanced_group);
+	vboxlayout->addLayout(simple_layout);
+	layout->addLayout(vboxlayout);
 //	layout->addWidget(m_sendButton);
-	m_advancedGroup->setVisible(false);
-	m_bAdvanced = false;
+	m_advanced_group->setVisible(false);
+	m_is_advanced = false;
 
-	connect(m_sendButton, SIGNAL(released(void)), this, SLOT(onSend(void)));
+	connect(m_send_button, SIGNAL(released(void)), this, SLOT(onSend(void)));
 //	connect(m_advanceButton, SIGNAL(toggled(bool)), m_advanceGroup, SLOT(setVisible(bool)));
-	connect(m_advancedButton, SIGNAL(released(void)), this,
+	connect(m_advanced_button, SIGNAL(released(void)), this,
 			SLOT(onAdvanced(void)));
-	connect(m_sendThread, SIGNAL(finished(void)), this,
+	connect(m_send_thread, SIGNAL(finished(void)), this,
 			SLOT(onSendFinish(void)));
-	connect(m_sendThread, SIGNAL(counter(int, int)), this,
+	connect(m_send_thread, SIGNAL(counter(int, int)), this,
 			SLOT(counter(int, int)));
 
 	restoreSettings();
@@ -93,56 +94,56 @@ void TabSheet::showSuccessfulTip(const QString& tip)
 
 void TabSheet::showTip(const QString& tip)
 {
-	if (m_tipLabel != NULL)
+	if (m_tip_label != NULL)
 	{
-		m_tipLabel->setText(tip);
+		m_tip_label->setText(tip);
 	}
 }
 
 void TabSheet::onAdvanced()
 {
 
-	if (m_bAdvanced)
+	if (m_is_advanced)
 	{
-		m_advancedGroup->setVisible(false);
-		m_advancedButton->setText(tr("advance"));
-		m_bAdvanced = !m_bAdvanced;
+		m_advanced_group->setVisible(false);
+		m_advanced_button->setText(tr("advance"));
+		m_is_advanced = !m_is_advanced;
 	}
 	else
 	{
-		m_advancedGroup->setVisible(true);
-		m_advancedButton->setText(tr("simple"));
-		m_bAdvanced = !m_bAdvanced;
+		m_advanced_group->setVisible(true);
+		m_advanced_button->setText(tr("simple"));
+		m_is_advanced = !m_is_advanced;
 	}
 }
 
 void TabSheet::onSend()
 {
-	m_tipLabel->setText("");
-	m_statusLabel1->setText("");
-	m_statusLabel2->setText("");
+	m_tip_label->setText("");
+	m_status_label1->setText("");
+	m_status_label2->setText("");
 
 	saveSettings();
-	if (m_sendThread->isRunning()) //running
+	if (m_send_thread->isRunning()) //running
 	{
-		m_sendButton->setText(tr("send"));
-		m_sendThread->stop();
+		m_send_button->setText(tr("send"));
+		m_send_thread->stop();
 		return;
 	}
 
 	//not running
-	if (m_bAdvanced) //multi
+	if (m_is_advanced) //multi
 	{
-		int index = m_sendTypeBox->currentIndex();
-		int count = m_countEdit->text().toInt();
+		int index = m_send_typeBox->currentIndex();
+		int count = m_count_edit->text().toInt();
 //		QMessageBox::information(this, "test", QString("%1").arg(count));
 		if (count == 0)
 		{
-			showFailedTip("please input a valid count");
+			showFailedTip(tr("please input a valid count"));
 			return;
 		}
-		m_sendButton->setText(tr("stop"));
-		m_sendThread->start((SendType) m_sendTypeBox->itemData(index).toInt(),
+		m_send_button->setText(tr("stop"));
+		m_send_thread->start((ESendType) m_send_typeBox->itemData(index).toInt(),
 				count);
 	}
 	else //singel
@@ -161,7 +162,7 @@ void TabSheet::onSend()
 
 void TabSheet::onSendFinish()
 {
-	const QString& error = m_sendThread->getError();
+	const QString& error = m_send_thread->getError();
 	if (error.isEmpty()) //thread exit successful
 	{
 		showSuccessfulTip(tr("finished"));
@@ -171,14 +172,14 @@ void TabSheet::onSendFinish()
 		showFailedTip(error);
 	}
 
-	m_sendButton->setText(tr("send"));
+	m_send_button->setText(tr("send"));
 
 }
 
 void TabSheet::counter(int count, int seconds)
 {
-	m_statusLabel1->setText(
-			QString("total(time):%1(%2)").arg(count).arg(seconds));
+	m_status_label1->setText(
+			QString(tr("total(time):%1(%2)")).arg(count).arg(seconds));
 	double speed = 0;
 	if (seconds == 0)
 	{
@@ -188,5 +189,5 @@ void TabSheet::counter(int count, int seconds)
 	{
 		speed = (double) count / seconds;
 	}
-	m_statusLabel2->setText(QString("speed:%1").arg(speed));
+	m_status_label2->setText(QString(tr("speed:%1")).arg(speed));
 }

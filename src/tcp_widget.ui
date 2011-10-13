@@ -36,19 +36,19 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLineEdit" name="ipEdit"/>
+    <widget class="QLineEdit" name="ip_edit"/>
    </item>
    <item row="0" column="3">
-    <widget class="QLineEdit" name="portEdit"/>
+    <widget class="QLineEdit" name="port_edit"/>
    </item>
    <item row="1" column="1">
-    <widget class="QLineEdit" name="timeoutEdit"/>
+    <widget class="QLineEdit" name="timeout_edit"/>
    </item>
    <item row="2" column="0" colspan="5">
-    <widget class="QTextEdit" name="dataEdit"/>
+    <widget class="QTextEdit" name="data_edit"/>
    </item>
    <item row="3" column="0" colspan="5">
-    <layout class="QHBoxLayout" name="sendLayout"/>
+    <layout class="QHBoxLayout" name="send_layout"/>
    </item>
    <item row="1" column="2" colspan="3">
     <spacer name="horizontalSpacer">

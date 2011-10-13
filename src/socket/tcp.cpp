@@ -2,7 +2,7 @@
  * tcp.cpp
  *
  *  Created on: 2011-8-23
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "tcp.h"
@@ -31,16 +31,16 @@ int Tcp::send(const char* buffer, int buffer_len)
 		return false;
 	}
 
-	int lenRemaining = buffer_len;
-	while (lenRemaining > 0)
+	int len_remaining = buffer_len;
+	while (len_remaining > 0)
 	{
-		ssize_t len = ::send(m_sockfd, buffer, lenRemaining, 0);
+		ssize_t len = ::send(m_sockfd, buffer, len_remaining, 0);
 		if (len == -1)
 		{
 			SET_ERROR_STR(strerror(errno));
 			return K_SOCKET_ERROR;
 		}
-		lenRemaining -= len;
+		len_remaining -= len;
 	}
 	return buffer_len;
 }
@@ -75,7 +75,7 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 	unsigned long ul = 1;
 	ioctl(m_sockfd, FIONBIO, &ul); //set Non-blocking
 
-	bool retValue = false;
+	bool ret_value = false;
 	int retConn = ::connect(m_sockfd, (struct sockaddr*) &serv_addr,
 			sizeof(serv_addr));
 	if (retConn == K_SOCKET_ERROR && errno == EINPROGRESS)
@@ -86,8 +86,8 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 		tm.tv_usec = 0;
 		FD_ZERO(&set);
 		FD_SET(m_sockfd, &set);
-		int retSelect = select(m_sockfd + 1, NULL, &set, NULL, &tm);
-		if (retSelect > 0)
+		int ret_select = select(m_sockfd + 1, NULL, &set, NULL, &tm);
+		if (ret_select > 0)
 		{
 			int error_no = -1;
 			int len = sizeof(error_no);
@@ -101,7 +101,7 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 			{
 				if (error_no == 0)
 				{
-					retValue = true;
+					ret_value = true;
 				}
 				else
 				{
@@ -109,7 +109,7 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 				}
 			}
 		}
-		else if (retSelect == 0) //timeout
+		else if (ret_select == 0) //timeout
 		{
 			SET_ERROR_STR("timeout");
 		}
@@ -133,5 +133,5 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 	ul = 0;
 	ioctl(m_sockfd, FIONBIO, &ul); //设置为阻塞模式
 
-	return retValue;
+	return ret_value;
 }

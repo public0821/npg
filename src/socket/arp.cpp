@@ -2,55 +2,54 @@
  * arp.cpp
  *
  *  Created on: 2011-9-14
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "arp.h"
 #include "socket_public.h"
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netpacket/packet.h>
-#include <net/ethernet.h> /* the L2 protocols */
-#include <netinet/if_ether.h>
+
 #include <string.h>
 #include <stdio.h>
-#include <errno.h>
-#include <netpacket/packet.h>
+
 
 Arp::Arp()
 {
-	// TODO Auto-generated constructor stub
-
+	m_sockfd = socket(AF_PACKET, SOCK_RAW/*SOCK_RAW*/, htons(ETH_P_ALL));
+	if (-1 == m_sockfd)
+	{
+		SET_ERROR_STR(strerror(errno));
+	}
 }
 
 Arp::~Arp()
 {
-	// TODO Auto-generated destructor stub
+	if (K_SOCKET_ERROR != m_sockfd)
+	{
+		close(m_sockfd);
+	}
 }
 
-bool Arp::sendto(int interface, const char* ethToMac, const char* ethFromMac, short op,
-		const char* sendMac, const char* sendIp, const char* recvMac,
-		const char* recvIp)
+bool Arp::sendto(int interface, const char* eth_to_mac, const char* eth_from_mac, short op,
+		const char* send_mac, const char* send_ip, const char* recv_mac,
+		const char* recv_ip)
 {
 	//	int sock = socket(AF_PACKET, SOCK_DGRAM/*SOCK_RAW*/, htons(ETH_P_ARP));
-	int sock = socket(AF_PACKET, SOCK_RAW/*SOCK_RAW*/, htons(ETH_P_ALL));
-	if (-1 == sock)
+	if (K_SOCKET_ERROR == m_sockfd)
 	{
-		SET_ERROR_STR(strerror(errno));
 		return false;
 	}
 
-	uint32_t size = sizeof(struct ethhdr) + sizeof(struct ether_arp);
-	char* buffer = new char[size];
-	bzero(buffer, size);
+	uint32_t arp_size = sizeof(struct ethhdr) + sizeof(struct ether_arp);
+	char* arp_buffer = new char[arp_size];
+	bzero(arp_buffer, arp_size);
 
-	struct ethhdr *ethhdr = (struct ethhdr *) buffer;
+	struct ethhdr *ethhdr = (struct ethhdr *) arp_buffer;
 //	memset(ethhdr->h_dest, 0xFF, sizeof(ethhdr->h_dest));
-	toMac(ethToMac, ethhdr->h_dest);
-	toMac(ethFromMac, ethhdr->h_source);
+	toMac(eth_to_mac, ethhdr->h_dest);
+	toMac(eth_from_mac, ethhdr->h_source);
 	ethhdr->h_proto = htons(ETH_P_ARP);
 
-	struct ether_arp* arp = (struct ether_arp *) (buffer
+	struct ether_arp* arp = (struct ether_arp *) (arp_buffer
 			+ sizeof(struct ethhdr));
 	arp->arp_hrd = htons(ETH_P_802_3); //MAC
 	arp->arp_pro = htons(ETH_P_IP);
@@ -58,24 +57,24 @@ bool Arp::sendto(int interface, const char* ethToMac, const char* ethFromMac, sh
 	arp->arp_hln = ETH_ALEN;
 	arp->arp_op = htons(op); //arp request,arp response, rarp request, rarp response
 
-	if (sendMac != NULL)
+	if (send_mac != NULL)
 	{
-		toMac(sendMac, arp->arp_sha);
+		toMac(send_mac, arp->arp_sha);
 	}
-	if (recvMac != NULL)
+	if (recv_mac != NULL)
 	{
-		toMac(recvMac, arp->arp_tha);
+		toMac(recv_mac, arp->arp_tha);
 	}
-	if (sendIp != NULL)
+	if (send_ip != NULL)
 	{
 		struct in_addr saddr;
-		inet_pton(AF_INET, sendIp, &saddr);
+		inet_pton(AF_INET, send_ip, &saddr);
 		memcpy(arp->arp_spa, (uint8_t*) &saddr.s_addr, 4); /* sender protocol address */
 	}
-	if (recvIp != NULL)
+	if (recv_ip != NULL)
 	{
 		struct in_addr daddr;
-		inet_pton(AF_INET, recvIp, &daddr);
+		inet_pton(AF_INET, recv_ip, &daddr);
 		memcpy(arp->arp_tpa, (uint8_t*) &daddr.s_addr, 4); /* target protocol address */
 	}
 
@@ -91,29 +90,29 @@ bool Arp::sendto(int interface, const char* ethToMac, const char* ethFromMac, sh
 //	memcpy(remote.sll_addr, arp->arp_sha, ETH_ALEN);
 
 
-	int ret = ::sendto(sock, buffer, size, 0, (struct sockaddr*) &remote,
+	int ret = ::sendto(m_sockfd, arp_buffer, arp_size, 0, (struct sockaddr*) &remote,
 			sizeof(remote));
 	if (-1 == ret)
 	{
 		SET_ERROR_STR(strerror(errno));
-		delete[] buffer;
+		delete[] arp_buffer;
 		return false;
 	}
 
-	delete[] buffer;
+	delete[] arp_buffer;
 
 	return true;
 }
 
-void Arp::toMac(const char* macStr, uint8_t* mac)
+void Arp::toMac(const char* mac_str, uint8_t* mac)
 {
-	uint32_t tempMac[6];
-	sscanf(macStr, "%x:%x:%x:%x:%x:%x", &tempMac[0], &tempMac[1], &tempMac[2],
-			&tempMac[3], &tempMac[4], &tempMac[5]);
+	uint32_t temp_mac[6];
+	sscanf(mac_str, "%x:%x:%x:%x:%x:%x", &temp_mac[0], &temp_mac[1], &temp_mac[2],
+			&temp_mac[3], &temp_mac[4], &temp_mac[5]);
 
 	for (int i = 0; i < 6; i++)
 	{
-		mac[i] = tempMac[i];
+		mac[i] = temp_mac[i];
 	}
 
 }

@@ -1,3 +1,10 @@
+/*
+ * udp_widget.h
+ *
+ *  Created on: 2011-8-22
+ *      Author: Young <public0821@gmail.com>
+ */
+
 #ifndef UDPWIDGET_H
 #define UDPWIDGET_H
 
@@ -18,8 +25,6 @@ private:
 	void restoreSettings();
 private:
     Ui::UdpWidgetClass ui;
-private:
-	const  QString m_name;
 };
 
 #endif // UDPWIDGET_H

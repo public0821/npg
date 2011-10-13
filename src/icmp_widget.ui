@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="ipLabel">
+    <widget class="QLabel" name="ip_label">
      <property name="text">
       <string>IP</string>
      </property>
@@ -35,7 +35,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QComboBox" name="typeBox">
+    <widget class="QComboBox" name="type_box">
      <property name="editable">
       <bool>true</bool>
      </property>
@@ -52,7 +52,7 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QComboBox" name="codeBox">
+    <widget class="QComboBox" name="code_box">
      <property name="editable">
       <bool>true</bool>
      </property>
@@ -69,10 +69,10 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QLineEdit" name="checkNumEdit"/>
+    <widget class="QLineEdit" name="checknum_edit"/>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="idLabel">
+    <widget class="QLabel" name="id_label">
      <property name="text">
       <string>ID</string>
      </property>
@@ -82,10 +82,10 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QLineEdit" name="idEdit"/>
+    <widget class="QLineEdit" name="id_edit"/>
    </item>
    <item row="5" column="0">
-    <widget class="QLabel" name="seqLable">
+    <widget class="QLabel" name="seq_lable">
      <property name="text">
       <string>SEQ</string>
      </property>
@@ -95,68 +95,68 @@
     </widget>
    </item>
    <item row="5" column="1">
-    <widget class="QLineEdit" name="seqEdit"/>
+    <widget class="QLineEdit" name="seq_edit"/>
    </item>
    <item row="5" column="2">
-    <widget class="QCheckBox" name="seqCheckBox">
+    <widget class="QCheckBox" name="seq_checkbox">
      <property name="text">
       <string>Default</string>
      </property>
     </widget>
    </item>
    <item row="6" column="0">
-    <widget class="QLabel" name="moreLabel1">
+    <widget class="QLabel" name="more_label1">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
    <item row="6" column="1">
-    <widget class="QLineEdit" name="moreEdit1"/>
+    <widget class="QLineEdit" name="more_edit1"/>
    </item>
    <item row="6" column="4">
-    <widget class="QLabel" name="tipLable1">
+    <widget class="QLabel" name="tip_lable1">
      <property name="text">
-      <string/>
+      <string>default</string>
      </property>
     </widget>
    </item>
    <item row="7" column="0">
-    <widget class="QLabel" name="moreLabel2">
+    <widget class="QLabel" name="more_label2">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
    <item row="7" column="1">
-    <widget class="QLineEdit" name="moreEdit2"/>
+    <widget class="QLineEdit" name="more_edit2"/>
    </item>
    <item row="7" column="4">
-    <widget class="QLabel" name="tipLable2">
+    <widget class="QLabel" name="tip_lable2">
      <property name="text">
-      <string/>
+      <string>default</string>
      </property>
     </widget>
    </item>
    <item row="8" column="0">
-    <widget class="QLabel" name="moreLabel3">
+    <widget class="QLabel" name="more_label3">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
    <item row="8" column="1">
-    <widget class="QLineEdit" name="moreEdit3"/>
+    <widget class="QLineEdit" name="more_edit3"/>
    </item>
    <item row="8" column="4">
-    <widget class="QLabel" name="tipLable3">
+    <widget class="QLabel" name="tip_lable3">
      <property name="text">
-      <string/>
+      <string>default</string>
      </property>
     </widget>
    </item>
    <item row="10" column="0" colspan="4">
-    <spacer name="verticalSpacer">
+    <spacer name="vertical_spacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
@@ -169,10 +169,10 @@
     </spacer>
    </item>
    <item row="0" column="1">
-    <widget class="QLineEdit" name="ipEdit"/>
+    <widget class="QLineEdit" name="ip_edit"/>
    </item>
    <item row="3" column="2">
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="checkbox">
      <property name="text">
       <string>Default</string>
      </property>
@@ -182,35 +182,35 @@
     </widget>
    </item>
    <item row="4" column="2">
-    <widget class="QCheckBox" name="idCheckBox">
+    <widget class="QCheckBox" name="id_checkbox">
      <property name="text">
       <string>Default</string>
      </property>
     </widget>
    </item>
    <item row="6" column="2">
-    <widget class="QCheckBox" name="moreCheckBox1">
+    <widget class="QCheckBox" name="more_checkbox1">
      <property name="text">
       <string>Default</string>
      </property>
     </widget>
    </item>
    <item row="7" column="2">
-    <widget class="QCheckBox" name="moreCheckBox2">
+    <widget class="QCheckBox" name="more_checkbox2">
      <property name="text">
       <string>Default</string>
      </property>
     </widget>
    </item>
    <item row="8" column="2">
-    <widget class="QCheckBox" name="moreCheckBox3">
+    <widget class="QCheckBox" name="more_checkbox3">
      <property name="text">
       <string>Default</string>
      </property>
     </widget>
    </item>
    <item row="6" column="3">
-    <spacer name="horizontalSpacer_4">
+    <spacer name="horizontal_spacer_4">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -223,7 +223,7 @@
     </spacer>
    </item>
    <item row="7" column="3">
-    <spacer name="horizontalSpacer_5">
+    <spacer name="horizontal_spacer_5">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -236,7 +236,7 @@
     </spacer>
    </item>
    <item row="8" column="3">
-    <spacer name="horizontalSpacer_6">
+    <spacer name="horizontal_spacer_6">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -249,7 +249,7 @@
     </spacer>
    </item>
    <item row="2" column="2" colspan="2">
-    <spacer name="horizontalSpacer_2">
+    <spacer name="horizontal_spacer_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -262,7 +262,7 @@
     </spacer>
    </item>
    <item row="0" column="2" colspan="2">
-    <spacer name="horizontalSpacer">
+    <spacer name="horizontal_spacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -275,7 +275,7 @@
     </spacer>
    </item>
    <item row="3" column="3">
-    <spacer name="horizontalSpacer_3">
+    <spacer name="horizontal_spacer_3">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -288,7 +288,7 @@
     </spacer>
    </item>
    <item row="1" column="2" colspan="2">
-    <spacer name="horizontalSpacer_7">
+    <spacer name="horizontal_spacer_7">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -301,7 +301,7 @@
     </spacer>
    </item>
    <item row="4" column="3">
-    <spacer name="horizontalSpacer_8">
+    <spacer name="horizontal_spacer_8">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -314,7 +314,7 @@
     </spacer>
    </item>
    <item row="5" column="3">
-    <spacer name="horizontalSpacer_9">
+    <spacer name="horizontal_spacer_9">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -327,7 +327,7 @@
     </spacer>
    </item>
    <item row="11" column="0" colspan="4">
-    <layout class="QHBoxLayout" name="sendLayout"/>
+    <layout class="QHBoxLayout" name="send_layout"/>
    </item>
   </layout>
  </widget>

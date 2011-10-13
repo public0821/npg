@@ -1,3 +1,9 @@
+/*
+ * icmp_widget.h
+ *
+ *  Created on: 2011-10-11
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef ICMP_WIDGET_H
 #define ICMP_WIDGET_H
 

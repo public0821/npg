@@ -1,10 +1,14 @@
+/*
+ * npg.h
+ *
+ *  Created on: 2011-8-19
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef NPG_H
 #define NPG_H
 
 #include <QtGui/QMainWindow>
 #include "ui_npg.h"
-#include <QListWidget>
-#include <QTabWidget>
 #include <QSplitter>
 #include "main_list_widget.h"
 #include "main_tab_widget.h"
@@ -24,9 +28,9 @@ private:
 	void restoreSettings();
 private:
 	Ui::npgClass ui;
-	MainListWidget* m_typeList;
-	MainTabWidget* m_tabWidget;
-	QSplitter* m_mainSplitter;
+	MainListWidget* m_type_list;
+	MainTabWidget* m_tab_widget;
+	QSplitter* m_main_splitter;
 //	QStringList m_data_types;
 };
 

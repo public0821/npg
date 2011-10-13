@@ -2,12 +2,11 @@
  * ip_raw_socket.cpp
  *
  *  Created on: 2011-9-23
- *      Author: root
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "ip_raw_socket.h"
 #include "socket_public.h"
-#include <netinet/ip.h>
 
 #define TTL_OUT     64          /* outgoing TTL */
 
@@ -31,10 +30,13 @@ IpRawSocket::IpRawSocket()
 
 IpRawSocket::~IpRawSocket()
 {
-	// TODO Auto-generated destructor stub
+	if (K_SOCKET_ERROR != m_sockfd)
+	{
+		close(m_sockfd);
+	}
 }
 
-bool IpRawSocket::sendto(const char* srcip, const char* dstip, int protocolType,
+bool IpRawSocket::sendto(const char* srcip, const char* dstip, int protocol_type,
 		const char* data, int datalen)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
@@ -80,7 +82,7 @@ bool IpRawSocket::sendto(const char* srcip, const char* dstip, int protocolType,
 	ip->ip_id = 0; /* let IP set this */
 	ip->ip_off = 0; /* frag offset, MF and DF flags */
 	ip->ip_ttl = TTL_OUT;
-	ip->ip_p = protocolType;
+	ip->ip_p = protocol_type;
 
 	ip->ip_src.s_addr = src_addr.s_addr;
 	ip->ip_dst.s_addr = dst_addr.s_addr;

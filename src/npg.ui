@@ -24,15 +24,15 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File(&amp;F)</string>
     </property>
-    <addaction name="actionTest"/>
-    <addaction name="actionQuit"/>
+    <addaction name="action_test"/>
+    <addaction name="action_quit"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -58,7 +58,7 @@
    </attribute>
    <addaction name="separator"/>
   </widget>
-  <action name="actionTest">
+  <action name="action_test">
    <property name="icon">
     <iconset resource="npg.qrc">
      <normaloff>:/npg/resource/blue_business_05.png</normaloff>:/npg/resource/blue_business_05.png</iconset>
@@ -76,7 +76,7 @@
     <bool>true</bool>
    </property>
   </action>
-  <action name="actionQuit">
+  <action name="action_quit">
    <property name="icon">
     <iconset resource="npg.qrc">
      <normaloff>:/npg/resource/blue_business_10.png</normaloff>:/npg/resource/blue_business_10.png</iconset>

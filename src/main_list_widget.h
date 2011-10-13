@@ -1,8 +1,8 @@
 /*
- * TypeListWidget.h
+ * main_list_widget.h
  *
  *  Created on: 2011-8-19
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef TYPELISTWIDGET_H_

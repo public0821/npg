@@ -2,12 +2,11 @@
  * raw_udp.cpp
  *
  *  Created on: 2011-9-23
- *      Author: root
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "raw_udp.h"
 #include "socket_public.h"
-#include <netinet/udp.h>
 #include "socket_toolkit.h"
 
 RawUdp::RawUdp()
@@ -42,12 +41,10 @@ bool RawUdp::sendto(const char* srcip, const char* dstip, uint16_t srcport, uint
 	if(!ret)
 	{
 		SET_ERROR_STR(m_ipRawSocket.errorStr());
-		delete[] buf;
-		return false;
 	}
 
 	delete[] buf;
-	return true;
+	return ret;
 }
 
 

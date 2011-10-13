@@ -2,15 +2,13 @@
  * icmp.cpp
  *
  *  Created on: 2011-9-7
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "icmp.h"
-#include    <netinet/in_systm.h>
-#include    <netinet/ip.h>
-#include    <netinet/ip_icmp.h>
-#include   <sys/time.h>
 #include "socket_toolkit.h"
+#include "socket_public.h"
+
 Icmp::Icmp()
 {
 	m_sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
@@ -27,18 +25,21 @@ Icmp::Icmp()
 		SET_ERROR_STR(strerror(errno));
 		return;
 	}
-	m_pid = getpid();
-	setuid(getuid());
+//	m_pid = getpid();
+//	setuid(getuid());
 	m_seq = 0;
 }
 
 Icmp::~Icmp()
 {
-	// TODO Auto-generated destructor stub
+	if (K_SOCKET_ERROR != m_sockfd)
+	{
+		close(m_sockfd);
+	}
 }
 
 
-bool Icmp::sendto(const char* ip, void* data, int len, bool needCalcCheckNum)
+bool Icmp::sendto(const char* ip, void* data, int len, bool need_calc_checknum)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
@@ -72,7 +73,7 @@ bool Icmp::sendto(const char* ip, void* data, int len, bool needCalcCheckNum)
 //	gettimeofday(&start, NULL);
 //	icmp.icmp_otime = start.tv_sec;
 //	icmp.icmp_rtime = start.tv_usec;
-	if (needCalcCheckNum)
+	if (need_calc_checknum)
 	{
 		icmp->icmp_cksum = 0;
 		SocketToolkit toolkit;

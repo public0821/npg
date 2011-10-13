@@ -2,12 +2,12 @@
  * Udp.h
  *
  *  Created on: 2011-8-11
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef UDP_H_
 #define UDP_H_
-#include "socket_public.h"
+
 #include "socket_error.h"
 
 class Udp:public SocketError

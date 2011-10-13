@@ -2,7 +2,7 @@
  * arp.h
  *
  *  Created on: 2011-9-14
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef ARP_H_
@@ -16,10 +16,12 @@ public:
 	Arp();
 	virtual ~Arp();
 public:
-	bool sendto(int interface, const char* ethToMac, const char* ethFromMac, short op, const char* sendMac, const char* sendIp,
-			const char* recvMac, const char* recvIp);
+	bool sendto(int interface, const char* eth_to_mac, const char* eth_from_mac, short op, const char* send_mac, const char* send_ip,
+			const char* recv_mac, const char* recv_ip);
 private:
-	void toMac(const char* macStr, uint8_t* mac);
+	void toMac(const char* mac_str, uint8_t* mac);
+private:
+	int m_sockfd;
 };
 
 #endif /* ARP_H_ */

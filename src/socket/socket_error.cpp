@@ -2,7 +2,7 @@
  * socket_error.cpp
  *
  *  Created on: 2011-8-23
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #include "socket_error.h"

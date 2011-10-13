@@ -2,7 +2,7 @@
  * tcp.h
  *
  *  Created on: 2011-8-23
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef TCP_H_

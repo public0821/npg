@@ -1,7 +1,13 @@
+/*
+ * tcp_widget.h
+ *
+ *  Created on: 2011-8-22
+ *      Author: Young <public0821@gmail.com>
+ */
+
 #ifndef TCP_WIDGET_H
 #define TCP_WIDGET_H
 
-#include <QtGui/QWidget>
 #include "ui_tcp_widget.h"
 #include "tab_sheet.h"
 
@@ -20,7 +26,6 @@ private:
 	void restoreSettings();
 private:
     Ui::TcpWidgetClass ui;
-	const  QString m_name;
 };
 
 #endif // TCP_WIDGET_H

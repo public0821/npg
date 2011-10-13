@@ -2,7 +2,7 @@
  * ip_raw_socket.h
  *
  *  Created on: 2011-9-23
- *      Author: root
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef IP_RAW_SOCKET_H_
@@ -16,7 +16,7 @@ public:
 	IpRawSocket();
 	virtual ~IpRawSocket();
 public:
-	virtual bool sendto(const char* srcip, const char* dstip, int protocolType, const char* data, int datalen);
+	virtual bool sendto(const char* srcip, const char* dstip, int protocol_type, const char* data, int datalen);
 protected:
 	int m_sockfd;
 };

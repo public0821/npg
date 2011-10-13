@@ -2,7 +2,7 @@
  * socket_error.h
  *
  *  Created on: 2011-8-23
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef SOCKET_ERROR_H_
@@ -12,6 +12,8 @@ const int K_SOCKET_ERROR = -1;
 const int K_SOCKET_ERROR_BUF_LEN = 512;
 
 #include "socket_public.h"
+#include <errno.h>
+
 class SocketError
 {
 public:

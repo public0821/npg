@@ -1,8 +1,13 @@
+/*
+ * npg.cpp
+ *
+ *  Created on: 2011-8-19
+ *      Author: Young <public0821@gmail.com>
+ */
 #include "npg.h"
 
 #include <qstringlist.h>
 #include <qsettings.h>
-#include "udp_widget.h"
 #include "public.h"
 
 npg::npg(QWidget *parent) :
@@ -10,21 +15,21 @@ npg::npg(QWidget *parent) :
 {
 	ui.setupUi(this);
 
-	connect(ui.actionQuit, SIGNAL(triggered(bool)), this, SLOT(onClose ()));
-	ui.toolBar->addAction(ui.actionQuit);
+	connect(ui.action_quit, SIGNAL(triggered(bool)), this, SLOT(onClose ()));
+	ui.toolBar->addAction(ui.action_quit);
 
-	m_mainSplitter = new QSplitter(Qt::Horizontal);
+	m_main_splitter = new QSplitter(Qt::Horizontal);
 
-	m_typeList = new MainListWidget();
-	m_tabWidget = new MainTabWidget();
+	m_type_list = new MainListWidget();
+	m_tab_widget = new MainTabWidget();
 
-	m_mainSplitter->addWidget(m_typeList);
-	m_mainSplitter->addWidget(m_tabWidget);
-	m_mainSplitter->setStretchFactor(1, 1);
+	m_main_splitter->addWidget(m_type_list);
+	m_main_splitter->addWidget(m_tab_widget);
+	m_main_splitter->setStretchFactor(1, 1);
 
-	setCentralWidget(m_mainSplitter);
+	setCentralWidget(m_main_splitter);
 
-	connect(m_typeList, SIGNAL(itemDoubleClicked(QListWidgetItem* )), this,
+	connect(m_type_list, SIGNAL(itemDoubleClicked(QListWidgetItem* )), this,
 			SLOT(itemDoubleClicked(QListWidgetItem* )));
 
 	restoreSettings();
@@ -44,7 +49,7 @@ void npg::itemDoubleClicked(QListWidgetItem * item)
 	}
 
 	QString data_type = item->text();
-	m_tabWidget->addTab(data_type);
+	m_tab_widget->addTab(data_type);
 
 }
 
@@ -54,7 +59,7 @@ void npg::saveSettings()
 
 	settings.beginGroup("mainWindow");
 	settings.setValue("geometry", saveGeometry());
-	settings.setValue("mainSplitter", m_mainSplitter->saveState());
+	settings.setValue("mainSplitter", m_main_splitter->saveState());
 	settings.endGroup();
 }
 
@@ -64,7 +69,7 @@ void npg::restoreSettings()
 
 	settings.beginGroup("mainWindow");
 	restoreGeometry(settings.value("geometry").toByteArray());
-	m_mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
+	m_main_splitter->restoreState(settings.value("mainSplitter").toByteArray());
 	settings.endGroup();
 }
 

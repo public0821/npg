@@ -2,7 +2,7 @@
  * socket_toolkit.h
  *
  *  Created on: 2011-9-20
- *      Author: root
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef SOCKET_TOOLKIT_H_

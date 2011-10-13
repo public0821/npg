@@ -2,7 +2,7 @@
  * SendThread.h
  *
  *  Created on: 2011-8-24
- *      Author: wuyangchun
+ *      Author: Young <public0821@gmail.com>
  */
 
 #ifndef SENDTHREAD_H_
@@ -11,7 +11,7 @@
 #include <qthread.h>
 #include <qtimer.h>
 
-enum SendType
+enum ESendType
 {
 	E_SPEED = 1, E_TOTAL
 };
@@ -28,7 +28,7 @@ public:
 	{
 		m_running = false;
 	}
-	void start(SendType type, int count);
+	void start(ESendType type, int count);
 
 	const QString& getError() const
 	{
@@ -54,11 +54,11 @@ private:
 	volatile bool m_running;
 	QString m_error;
 
-	SendType m_type;
+	ESendType m_type;
 	int m_count;
 
-	int m_totalSend;
-	int m_timeConsuming;
+	int m_total_send;
+	int m_time_consuming;
 	QTimer m_timer;
 };
 #endif /* SENDTHREAD_H_ */
