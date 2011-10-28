@@ -8,7 +8,7 @@
 
 #include <qstringlist.h>
 #include <qsettings.h>
-#include "public.h"
+#include "widget/npg_define.h"
 
 npg::npg(QWidget *parent) :
 		QMainWindow(parent)

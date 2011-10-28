@@ -11,8 +11,11 @@
 const int K_SOCKET_ERROR = -1;
 const int K_SOCKET_ERROR_BUF_LEN = 512;
 
-#include "socket_public.h"
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "system/types.h"
 
 class SocketError
 {
@@ -28,22 +31,12 @@ protected:
 
 #define SET_ERROR_STR(error_str) {snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
 		__FILE__, __LINE__,error_str);}
-//	void fillErrorStr(char* error_buffer, int buffer_len, const char* error_str)
-//	{
-//		snprintf(error_buffer, buffer_len, "%s(%d):%s", __FILE__, __LINE__,
-//				error_str);
-//	}
-//	;
-//	void SET_ERROR_STR(const char* error_str)
-//	{
-//		fillErrorStr(m_error, sizeof(m_error), error_str);
-//	}
-//	;
-//	void setErrorStr()
-//	{
-//		fillErrorStr(m_error, sizeof(m_error), strerror(errno));
-//	}
-//	;
+
+	#define SET_ERROR_NO(errorno) {char buf[K_SOCKET_ERROR_BUF_LEN]; npg_strerror(errorno, buf, sizeof(buf));\
+		snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
+		__FILE__, __LINE__,buf);}
+
+
 protected:
 	char m_error[K_SOCKET_ERROR_BUF_LEN];
 };

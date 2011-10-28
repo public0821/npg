@@ -14,15 +14,15 @@ Icmp::Icmp()
 	m_sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
-		SET_ERROR_STR(strerror(errno));
+		SET_ERROR_NO(npg_errno);
 		return;
 	}
 	int optval = 1;
-	int ret = setsockopt(m_sockfd, SOL_SOCKET, SO_BROADCAST, &optval,
+	int ret = setsockopt(m_sockfd, SOL_SOCKET, SO_BROADCAST, (const char*)&optval,
 			sizeof(optval));
 	if (ret == K_SOCKET_ERROR)
 	{
-		SET_ERROR_STR(strerror(errno));
+		SET_ERROR_NO(npg_errno);
 		return;
 	}
 //	m_pid = getpid();
@@ -34,7 +34,7 @@ Icmp::~Icmp()
 {
 	if (K_SOCKET_ERROR != m_sockfd)
 	{
-		close(m_sockfd);
+		closesocket(m_sockfd);
 	}
 }
 
@@ -47,15 +47,10 @@ bool Icmp::sendto(const char* ip, void* data, int len, bool need_calc_checknum)
 	}
 
 	struct in_addr addr;
-	int ret = inet_pton(AF_INET, ip, &addr);
-	if (ret == 0)
+	addr.s_addr = inet_addr(ip);
+	if (addr.s_addr == INADDR_NONE)
 	{
 		SET_ERROR_STR(("Not in presentation format"));
-		return false;
-	}
-	else if (ret < 0)
-	{
-		SET_ERROR_STR(strerror(errno));
 		return false;
 	}
 
@@ -80,11 +75,11 @@ bool Icmp::sendto(const char* ip, void* data, int len, bool need_calc_checknum)
 		icmp->icmp_cksum = toolkit.inCheckSum((u_short *) icmp, len);
 	}
 
-	ret = ::sendto(m_sockfd, icmp, len, 0, (const sockaddr*) &serv_addr,
+	int ret = ::sendto(m_sockfd, (const char*)icmp, len, 0, (const sockaddr*) &serv_addr,
 			sizeof(serv_addr));
 	if (ret < 0)
 	{
-		SET_ERROR_STR(strerror(errno));
+		SET_ERROR_NO(npg_errno);
 		return false;
 	}
 

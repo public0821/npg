@@ -8,7 +8,7 @@
 
 #include "dns_widget.h"
 #include <qsettings.h>
-#include "public.h"
+#include "npg_define.h"
 #include "socket/dns.h"
 
 DnsWidget::DnsWidget(QWidget *parent) :

@@ -20,6 +20,8 @@ SocketToolkit::~SocketToolkit()
 	// TODO Auto-generated destructor stub
 }
 
+#ifdef LINUX32
+#include <net/if.h>
 std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 {
 //	struct ifi_info *ifi, *ifihead, **ifipnext;
@@ -44,9 +46,9 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 		ifc.ifc_buf = buf;
 		if (ioctl(sockfd, SIOCGIFCONF, &ifc) < 0)
 		{
-			if (errno != EINVAL || lastlen != 0)
+			if (npg_errno != EINVAL || lastlen != 0)
 			{
-				SET_ERROR_STR(strerror(errno));
+				SET_ERROR_NO(npg_errno);
 				goto END;
 			}
 
@@ -99,7 +101,7 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 		struct ifreq ifrcopy = *ifr;
 		if (ioctl(sockfd, SIOCGIFFLAGS, &ifrcopy) < 0)
 		{
-			SET_ERROR_STR(strerror(errno));
+			SET_ERROR_NO(npg_errno);
 			goto END;
 		}
 		if ((ifrcopy.ifr_flags & IFF_UP) == 0)
@@ -125,7 +127,7 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 
 		if (ioctl(sockfd, SIOCGIFHWADDR, &ifrcopy) < 0)
 		{
-			SET_ERROR_STR(strerror(errno));
+			SET_ERROR_NO(npg_errno);
 			goto END;
 		}
 
@@ -140,12 +142,117 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 	return ifiInfos; /* pointer to first structure in linked list */
 }
 
-uint16_t SocketToolkit::inCheckSum(uint16_t * addr, int len)
+#include <sys/ioctl.h>
+int SocketToolkit::getMacAddress(const char* name, char* mac)
+{
+	int sock = socket (PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+	if (sock == -1)
+	{
+		return -1;
+	}
+
+	struct ifreq ifr;
+	strcpy (ifr.ifr_name , name);
+	int status = ioctl (sock, SIOCGIFHWADDR, &ifr);
+	if (status < 0)
+	{
+		closesocket (sock);
+		return -2;
+	}
+
+	memcpy(mac, ifr.ifr_hwaddr.sa_data, 6);
+
+	return 0;
+}
+#endif
+#ifdef WIN32
+#include "pcap.h"
+std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
+{
+	std::vector<ifi_info> ifi_infos;
+
+	char errbuf[PCAP_ERRBUF_SIZE];
+	pcap_if_t *alldevs = NULL;
+
+	/* get all device */
+	if (pcap_findalldevs(&alldevs, errbuf) == -1)
+	{
+		SET_ERROR_STR((sstring("Error in pcap_findalldevs: ") + errbuf).c_str());
+		return ifi_infos;
+	}
+	if (alldevs == NULL)
+	{
+		SET_ERROR_STR("No interfaces found! Make sure WinPcap is installed.");
+		return ifi_infos;
+	}
+
+	pcap_if_t *device = NULL;
+	for (device = alldevs; device; device = device->next)
+	{
+		struct ifi_info ifi;
+		strncpy(ifi.ifi_name, device->name, sizeof(ifi.ifi_name));
+		pcap_addr_t *local_address;
+		//get ip address and netmask
+		for (local_address = device->addresses; local_address != NULL; local_address = local_address->next)
+		{
+			if (local_address->addr->sa_family != AF_INET)
+			{
+				continue;
+			}
+			ifi.ifi_addr = *(local_address->addr);
+			struct sockaddr_in * sin = (struct sockaddr_in *) &(ifi.ifi_addr);
+			int ret = getMacAddress(inet_ntoa(sin->sin_addr), ifi.ifi_haddr);
+			if(-1 != ret)
+			{
+				ifi_infos.push_back(ifi);
+			}
+			break;
+		}	
+	}
+
+	pcap_freealldevs(alldevs);
+
+	return ifi_infos;
+}
+int SocketToolkit::getMacAddress(const char* ip, char* mac)
+{
+	IP_ADAPTER_INFO * info = NULL;
+	IP_ADAPTER_INFO * pos = NULL;
+	DWORD size = 0;
+
+	GetAdaptersInfo(info, &size);
+
+	info = (IP_ADAPTER_INFO *) malloc(size);
+
+	GetAdaptersInfo(info, &size);
+
+	for (pos = info; pos != NULL; pos = pos->Next)
+	{
+		IP_ADDR_STRING *ip_addr = &pos->IpAddressList;
+		do
+		{
+			if (strcmp(ip, ip_addr->IpAddress.String) == 0)
+			{
+				memcpy(mac, pos->Address, 6);
+				free(info);
+				return 0;
+			}
+		} while (ip_addr->Next != NULL);
+	}
+
+	free(info);
+
+	return -1;
+}
+#endif
+
+
+u_int16_t SocketToolkit::inCheckSum(u_int16_t * addr, int len)
 {
 	int nleft = len;
-	uint32_t sum = 0;
-	uint16_t *w = addr;
-	uint16_t answer = 0;
+	u_int32_t sum = 0;
+	u_int16_t *w = addr;
+	u_int16_t answer = 0;
 
 	/*
 	 * Our algorithm is simple, using a 32 bit accumulator (sum), we add
@@ -169,4 +276,30 @@ uint16_t SocketToolkit::inCheckSum(uint16_t * addr, int len)
 	sum += (sum >> 16); /* add carry */
 	answer = ~sum; /* truncate to 16 bits */
 	return (answer);
+}
+
+
+bool SocketToolkit::toMac(const char* mac_str, u_int8_t* mac)
+{
+	u_int32_t temp_mac[6];
+	int n = sscanf(mac_str, "%x:%x:%x:%x:%x:%x", &temp_mac[0], &temp_mac[1], &temp_mac[2],
+		&temp_mac[3], &temp_mac[4], &temp_mac[5]);
+
+	if (n != 6)
+	{
+		n = sscanf(mac_str, "%x-%x-%x-%x-%x-%x", &temp_mac[0], &temp_mac[1], &temp_mac[2],
+			&temp_mac[3], &temp_mac[4], &temp_mac[5]);
+	}
+	
+	if (n != 6)
+	{
+		return false;
+	}
+
+	for (int i = 0; i < 6; i++)
+	{
+		mac[i] = temp_mac[i];
+	}
+
+	return true;
 }

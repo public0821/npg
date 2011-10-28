@@ -14,7 +14,7 @@
    <string>Network Packet Generator</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="npg.qrc">
+   <iconset resource="../npg.qrc">
     <normaloff>:/npg/resource/blue_business_06.png</normaloff>:/npg/resource/blue_business_06.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
@@ -24,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -60,7 +60,7 @@
   </widget>
   <action name="action_test">
    <property name="icon">
-    <iconset resource="npg.qrc">
+    <iconset resource="../npg.qrc">
      <normaloff>:/npg/resource/blue_business_05.png</normaloff>:/npg/resource/blue_business_05.png</iconset>
    </property>
    <property name="text">
@@ -78,7 +78,7 @@
   </action>
   <action name="action_quit">
    <property name="icon">
-    <iconset resource="npg.qrc">
+    <iconset resource="../npg.qrc">
      <normaloff>:/npg/resource/blue_business_10.png</normaloff>:/npg/resource/blue_business_10.png</iconset>
    </property>
    <property name="text">
@@ -93,7 +93,7 @@
   </action>
  </widget>
  <resources>
-  <include location="npg.qrc"/>
+  <include location="../npg.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -1,5 +1,7 @@
-#ifndef	__PUBLIC_H__
-#define __PUBLIC_H__
+#ifndef	__NPG_DEFINE_H__
+#define __NPG_DEFINE_H__
+
+#include <qstring.h>
 
 const QString K_UDP = "UDP";
 const QString K_TCP = "TCP";

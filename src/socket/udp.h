@@ -1,5 +1,5 @@
 /*
- * Udp.h
+ * udp.h
  *
  *  Created on: 2011-8-11
  *      Author: Young <public0821@gmail.com>
@@ -16,7 +16,7 @@ public:
 	Udp();
 	virtual ~Udp();
 public:
-	bool sendto(const char* ip, uint16_t port, const char* buffer, int buffer_len);
+	bool sendto(const char* ip, u_int16_t port, const char* buffer, int buffer_len);
 private:
 
 private:

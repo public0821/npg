@@ -31,6 +31,10 @@
 					<value>make</value>
 				</dictionary>
 				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.location</key>
+					<value></value>
+				</dictionary>
+				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.target.auto</key>
 					<value>debug</value>
 				</dictionary>

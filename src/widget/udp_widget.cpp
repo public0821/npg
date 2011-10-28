@@ -8,7 +8,7 @@
 #include <qmessagebox.h>
 #include <qsettings.h>
 #include <string>
-#include "public.h"
+#include "npg_define.h"
 #include "socket/udp.h"
 #include "socket/raw_udp.h"
 
@@ -60,7 +60,7 @@ QString UdpWidget::sendData()
 				data.c_str(), data.length());
 		if (!ret)
 		{
-			return QString(raw_udp.errorStr());
+			return QString(tr(raw_udp.errorStr()));
 		}
 	}
 	else
@@ -71,7 +71,7 @@ QString UdpWidget::sendData()
 				data.length());
 		if (!ret)
 		{
-			return QString(udp.errorStr());
+			return QString(tr(udp.errorStr()));
 		}
 	}
 	return QString();

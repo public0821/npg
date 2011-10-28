@@ -6,6 +6,7 @@
  */
 
 #include "dns.h"
+#include "socket_public.h"
 
 Dns::Dns() :
 		m_seq(1)
@@ -32,9 +33,9 @@ bool Dns::sendto(const char* ip, const char* request, EDnsRequestType type)
 
 	int total_len = sizeof(struct dns_header) + formatted_request_len;
 
-	char* buff = new char[total_len];
+	char* buf = new char[total_len];
 
-	struct dns_header* dns_header = (struct dns_header*) buff;
+	struct dns_header* dns_header = (struct dns_header*) buf;
 
 	bzero(dns_header, sizeof(struct dns_header));
 
@@ -48,16 +49,16 @@ bool Dns::sendto(const char* ip, const char* request, EDnsRequestType type)
 	dns_header->op_flag = htons(dns_header->op_flag);
 	dns_header->query_num = htons(1);
 
-	memcpy(buff + sizeof(struct dns_header), formatted_request,
+	memcpy(buf + sizeof(struct dns_header), formatted_request,
 			formatted_request_len);
 
-	bool ret = m_udp.sendto(ip, 53, buff, total_len);
+	bool ret = m_udp.sendto(ip, 53, buf, total_len);
 	if (!ret)
 	{
 		SET_ERROR_STR(m_udp.errorStr());
 	}
 
-	delete[] buff;
+	delete[] buf;
 
 	return ret;
 }
@@ -104,8 +105,8 @@ void DnsRequest::setRequest(const char* request, EDnsRequestType type)
 	int request_len = strlen(request);
 	int max_len = request_len * 2 + 1;
 	max_len += ptr_request_tail_len;
-	max_len += sizeof(uint16_t); //used to store type
-	max_len += sizeof(uint16_t); //used to store class
+	max_len += sizeof(u_int16_t); //used to store type
+	max_len += sizeof(u_int16_t); //used to store class
 
 	m_request = new char[max_len];
 	bzero(m_request, max_len);
@@ -150,13 +151,13 @@ void DnsRequest::setRequest(const char* request, EDnsRequestType type)
 	}
 
 	size_t actual_len = strlen(m_request) + 1;
-	uint16_t dnstype = htons((uint16_t) m_type);
-	uint16_t dnsclass = htons(m_class);
+	u_int16_t dnstype = htons((u_int16_t) m_type);
+	u_int16_t dnsclass = htons(m_class);
 	memcpy(m_request + actual_len, &dnstype, sizeof(dnstype));
-	memcpy(m_request + actual_len + sizeof(uint16_t), &dnsclass,
+	memcpy(m_request + actual_len + sizeof(u_int16_t), &dnsclass,
 			sizeof(dnsclass));
 
-	m_length = actual_len + sizeof(uint16_t) + sizeof(uint16_t);
+	m_length = actual_len + sizeof(u_int16_t) + sizeof(u_int16_t);
 }
 
 //void DnsRequest::setType(EDnsRequestType type)
@@ -179,7 +180,7 @@ int DnsRequest::getFormattedRequestLen()
 //	return m_type;
 //}
 //
-//uint16_t DnsRequest::getClass()
+//u_int16_t DnsRequest::getClass()
 //{
 //	return m_class;
 //}

@@ -6,6 +6,7 @@
  */
 
 #include "socket_error.h"
+#include "system/os.h"
 
 SocketError::SocketError()
 {

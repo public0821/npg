@@ -6,7 +6,7 @@
  */
 
 #include "send_thread.h"
-#include "tab_sheet.h"
+#include "widget/tab_sheet.h"
 #include <QTime>
 
 SendThread::SendThread(TabSheet*parent) :

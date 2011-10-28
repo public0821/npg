@@ -12,12 +12,12 @@
 
 struct dns_header
 {
-	uint16_t seq;
-	uint16_t op_flag;
-	uint16_t query_num;
-	uint16_t resources_num;
-	uint16_t authorized_res_num;
-	uint16_t additional_res_num;
+	u_int16_t seq;
+	u_int16_t op_flag;
+	u_int16_t query_num;
+	u_int16_t resources_num;
+	u_int16_t authorized_res_num;
+	u_int16_t additional_res_num;
 };
 
 enum EDnsRequestType
@@ -38,13 +38,13 @@ public:
 	const char* getFormattedRequest();
 	int getFormattedRequestLen();
 //	EDnsRequestType getType();
-//	uint16_t getClass();
+//	u_int16_t getClass();
 //private:
 //	void reverseString(char* start, size_t len);
 private:
 	char* m_request;
 	EDnsRequestType m_type;
-	uint16_t m_class;
+	u_int16_t m_class;
 	int m_length;
 //	bool m_isReverse;
 };
@@ -58,7 +58,7 @@ public:
 	bool sendto(const char* ip, const char* request, EDnsRequestType type);
 private:
 	Udp	m_udp;
-	uint16_t m_seq;
+	u_int16_t m_seq;
 };
 
 #endif /* DNS_H_ */

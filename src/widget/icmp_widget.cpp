@@ -8,10 +8,10 @@
 
 #include "icmp_widget.h"
 #include "socket/icmp.h"
-#include   <netinet/in_systm.h>
 #include <qsettings.h>
-#include "public.h"
-#include    <netinet/ip_icmp.h>
+#include "npg_define.h"
+#include "system/os.h"
+#include "socket/socket_public.h"
 
 IcmpWidget::IcmpWidget(QWidget *parent) :
 		TabSheet(parent), m_seq(0)
@@ -72,28 +72,28 @@ void IcmpWidget::initProtocol()
 	temp.insert(1, tr("host unreachable"));
 	temp.insert(2, tr("protocol unreachable"));
 	temp.insert(3, tr("port unreachable"));
-	temp.insert(4, tr("需要分片但设置了不分片比特"));
-	temp.insert(5, tr("源站选路失败"));
-	temp.insert(6, tr("目的网络不认识"));
-	temp.insert(7, tr("目的主机不认识"));
-	temp.insert(9, tr("目的网络被强制禁止"));
-	temp.insert(10, tr("目的主机被强制禁止"));
-	temp.insert(11, tr("由于服务类型TOS，网络不可达"));
-	temp.insert(12, tr("由于服务类型TOS，主机不可达"));
-	temp.insert(13, tr("由于过滤，通讯被强制禁止"));
-	temp.insert(14, tr("主机越权"));
-	temp.insert(15, tr("优先权终止生效"));
+	//temp.insert(4, tr("需要分片但设置了不分片比特"));
+	//temp.insert(5, tr("源站选路失败"));
+	//temp.insert(6, tr("目的网络不认识"));
+	//temp.insert(7, tr("目的主机不认识"));
+	//temp.insert(9, tr("目的网络被强制禁止"));
+	//temp.insert(10, tr("目的主机被强制禁止"));
+	//temp.insert(11, tr("由于服务类型TOS，网络不可达"));
+	//temp.insert(12, tr("由于服务类型TOS，主机不可达"));
+	//temp.insert(13, tr("由于过滤，通讯被强制禁止"));
+	//temp.insert(14, tr("主机越权"));
+	//temp.insert(15, tr("优先权终止生效"));
 	m_protocol.insert(3, temp);
 
 	temp.clear();
-	temp.insert(0, tr("源端被关闭"));
+	temp.insert(0, tr("Source is shutdown"));
 	m_protocol.insert(4, temp);
 
 	temp.clear();
-	temp.insert(0, tr("对网络重定向"));
-	temp.insert(1, tr("对主机重定向"));
-	temp.insert(2, tr("对服务类型和网络重定向"));
-	temp.insert(3, tr("对服务类型和主机重定向"));
+	temp.insert(0, tr("Redirect for network"));
+	temp.insert(1, tr("Redirect for host"));
+	temp.insert(2, tr("Redirect for network and type of service"));
+	temp.insert(3, tr("Redirect for host and type of service"));
 	m_protocol.insert(5, temp);
 
 	temp.clear();
@@ -101,37 +101,37 @@ void IcmpWidget::initProtocol()
 	m_protocol.insert(8, temp);
 
 	temp.clear();
-	temp.insert(0, tr("路由器通告"));
+	temp.insert(0, tr("Router advertisement"));
 	m_protocol.insert(9, temp);
 
 	temp.clear();
-	temp.insert(0, tr("路由器请求"));
+	temp.insert(0, tr("Router request"));
 	m_protocol.insert(10, temp);
 
 	temp.clear();
-	temp.insert(0, tr("传输期间生存时间为0"));
-	temp.insert(1, tr("在数据报组装期间生存时间为0"));
+	//temp.insert(0, tr("传输期间生存时间为0"));
+	//temp.insert(1, tr("在数据报组装期间生存时间为0"));
 	m_protocol.insert(11, temp);
 
 	temp.clear();
-	temp.insert(0, tr("怀的IP首部"));
-	temp.insert(1, tr("缺少必须的选项"));
+	temp.insert(0, tr("Pregnant for the IP header"));
+	temp.insert(1, tr("The lack of the necessary options"));
 	m_protocol.insert(12, temp);
 
 	temp.clear();
-	temp.insert(0, tr("时间戳请求"));
+	temp.insert(0, tr("Timestamp request"));
 	m_protocol.insert(13, temp);
 
 	temp.clear();
-	temp.insert(0, tr("时间戳应答"));
+	temp.insert(0, tr("Timestamp response"));
 	m_protocol.insert(14, temp);
 
 	temp.clear();
-	temp.insert(0, tr("地址掩码请求"));
+	temp.insert(0, tr("Netmask request"));
 	m_protocol.insert(17, temp);
 
 	temp.clear();
-	temp.insert(0, tr("地址掩码应答"));
+	temp.insert(0, tr("Netmask reply"));
 	m_protocol.insert(18, temp);
 }
 

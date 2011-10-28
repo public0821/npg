@@ -6,13 +6,14 @@
  */
 
 #include "tcp.h"
+#include "socket_public.h"
 
 Tcp::Tcp()
 {
 	m_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
-		SET_ERROR_STR(strerror(errno));
+		SET_ERROR_NO(npg_errno);
 	}
 }
 
@@ -20,7 +21,7 @@ Tcp::~Tcp()
 {
 	if (K_SOCKET_ERROR != m_sockfd)
 	{
-		close(m_sockfd);
+		closesocket(m_sockfd);
 	}
 }
 
@@ -34,10 +35,10 @@ int Tcp::send(const char* buffer, int buffer_len)
 	int len_remaining = buffer_len;
 	while (len_remaining > 0)
 	{
-		ssize_t len = ::send(m_sockfd, buffer, len_remaining, 0);
+		size_t len = ::send(m_sockfd, buffer, len_remaining, 0);
 		if (len == -1)
 		{
-			SET_ERROR_STR(strerror(errno));
+			SET_ERROR_NO(npg_errno);
 			return K_SOCKET_ERROR;
 		}
 		len_remaining -= len;
@@ -46,7 +47,7 @@ int Tcp::send(const char* buffer, int buffer_len)
 }
 
 //#include <iostream>
-bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
+bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
@@ -54,15 +55,10 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 	}
 
 	struct in_addr addr;
-	int ret = inet_pton(AF_INET, ip, &addr);
-	if (ret == 0)
+	addr.s_addr = inet_addr(ip);
+	if (addr.s_addr == INADDR_NONE)
 	{
 		SET_ERROR_STR(("Not in presentation format"));
-		return false;
-	}
-	else if (ret < 0)
-	{
-		SET_ERROR_STR(strerror(errno));
 		return false;
 	}
 
@@ -73,12 +69,12 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 	serv_addr.sin_port = htons(port);
 
 	unsigned long ul = 1;
-	ioctl(m_sockfd, FIONBIO, &ul); //set Non-blocking
+	npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set Non-blocking
 
 	bool ret_value = false;
 	int retConn = ::connect(m_sockfd, (struct sockaddr*) &serv_addr,
 			sizeof(serv_addr));
-	if (retConn == K_SOCKET_ERROR && errno == EINPROGRESS)
+	if (retConn == K_SOCKET_ERROR && npg_errno == EINPROGRESS)
 	{
 		timeval tm;
 		fd_set set;
@@ -91,11 +87,11 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 		{
 			int error_no = -1;
 			int len = sizeof(error_no);
-			ret = getsockopt(m_sockfd, SOL_SOCKET, SO_ERROR, &error_no,
+			int ret = getsockopt(m_sockfd, SOL_SOCKET, SO_ERROR, (char*)&error_no,
 					(socklen_t *) &len);
 			if (ret == K_SOCKET_ERROR)
 			{
-				SET_ERROR_STR(strerror(errno));
+				SET_ERROR_NO(npg_errno);
 			}
 			else
 			{
@@ -115,23 +111,23 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 		}
 		else //error
 		{
-			if (errno == EINPROGRESS)
+			if (npg_errno == EINPROGRESS)
 			{
 				SET_ERROR_STR("timeout");
 			}
 			else
 			{
-				SET_ERROR_STR(strerror(errno));
+				SET_ERROR_NO(npg_errno);
 			}
 		}
 	}
 	else if (retConn == K_SOCKET_ERROR)
 	{
-		SET_ERROR_STR(strerror(errno));
+		SET_ERROR_NO(npg_errno);
 	}
 
 	ul = 0;
-	ioctl(m_sockfd, FIONBIO, &ul); //设置为阻塞模式
+	npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set blocking
 
 	return ret_value;
 }

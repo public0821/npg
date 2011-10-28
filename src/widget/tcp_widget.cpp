@@ -7,7 +7,7 @@
 #include "tcp_widget.h"
 #include <qsettings.h>
 #include <string>
-#include "public.h"
+#include "npg_define.h"
 #include "socket/tcp.h"
 
 TcpWidget::TcpWidget(QWidget *parent) :
@@ -68,13 +68,13 @@ QString TcpWidget::sendData()
 	bool ret = tcp.connect(ip.c_str(), port, timeout);
 	if (!ret)
 	{
-		return QString(tcp.errorStr());
+		return QString(tr(tcp.errorStr()));
 	}
 
 	int len = tcp.send(data.c_str(), data.length());
 	if (len == K_SOCKET_ERROR)
 	{
-		return QString(tcp.errorStr());
+		return QString(tr(tcp.errorStr()));
 	}
 
 	return QString();

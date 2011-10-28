@@ -10,8 +10,8 @@
 #include <QtGui/QMainWindow>
 #include "ui_npg.h"
 #include <QSplitter>
-#include "main_list_widget.h"
-#include "main_tab_widget.h"
+#include "widget/main_list_widget.h"
+#include "widget/main_tab_widget.h"
 
 class npg: public QMainWindow
 {

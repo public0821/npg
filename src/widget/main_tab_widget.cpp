@@ -6,7 +6,7 @@
  */
 
 #include "main_tab_widget.h"
-#include "public.h"
+#include "npg_define.h"
 #include "udp_widget.h"
 #include "tcp_widget.h"
 #include "icmp_widget.h"

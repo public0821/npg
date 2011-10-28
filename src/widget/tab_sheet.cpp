@@ -148,6 +148,7 @@ void TabSheet::onSend()
 	}
 	else //singel
 	{
+		m_send_button->setEnabled(false);
 		QString ret = sendData();
 		if (!ret.isNull() && !ret.isEmpty())
 		{
@@ -157,6 +158,7 @@ void TabSheet::onSend()
 		{
 			showSuccessfulTip(tr("Successful !"));
 		}
+		m_send_button->setEnabled(true);
 	}
 }
 

@@ -12,18 +12,18 @@
 
 IpRawSocket::IpRawSocket()
 {
-	m_sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_IP);
+	m_sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);//IPPROTO_IP);
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
-		SET_ERROR_STR(strerror(errno));
+		SET_ERROR_NO(npg_errno);
 		return;
 	}
 	int optval = 1;
-	int ret = setsockopt(m_sockfd, IPPROTO_IP, IP_HDRINCL, &optval,
+	int ret = setsockopt(m_sockfd, IPPROTO_IP, IP_HDRINCL, (const char*)&optval,
 			sizeof(optval));
 	if (ret == K_SOCKET_ERROR)
 	{
-		SET_ERROR_STR(strerror(errno));
+		SET_ERROR_NO(npg_errno);
 		return;
 	}
 }
@@ -32,7 +32,7 @@ IpRawSocket::~IpRawSocket()
 {
 	if (K_SOCKET_ERROR != m_sockfd)
 	{
-		close(m_sockfd);
+		closesocket(m_sockfd);
 	}
 }
 
@@ -45,28 +45,18 @@ bool IpRawSocket::sendto(const char* srcip, const char* dstip, int protocol_type
 	}
 
 	struct in_addr src_addr;
-	int ret = inet_pton(AF_INET, srcip, &src_addr);
-	if (ret == 0)
+	src_addr.s_addr = inet_addr(srcip);
+	if (src_addr.s_addr == INADDR_NONE)
 	{
 		SET_ERROR_STR(("Not in presentation format"));
-		return false;
-	}
-	else if (ret < 0)
-	{
-		SET_ERROR_STR(strerror(errno));
 		return false;
 	}
 
 	struct in_addr dst_addr;
-	ret = inet_pton(AF_INET, dstip, &dst_addr);
-	if (ret == 0)
+	dst_addr.s_addr = inet_addr(dstip);
+	if (dst_addr.s_addr == INADDR_NONE)
 	{
 		SET_ERROR_STR(("Not in presentation format"));
-		return false;
-	}
-	else if (ret < 0)
-	{
-		SET_ERROR_STR(strerror(errno));
 		return false;
 	}
 
@@ -92,11 +82,11 @@ bool IpRawSocket::sendto(const char* srcip, const char* dstip, int protocol_type
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = dst_addr.s_addr;
 
-	ret = ::sendto(m_sockfd, buf, sizeof(struct ip) + datalen, 0,
+	int ret = ::sendto(m_sockfd, buf, sizeof(struct ip) + datalen, 0,
 			(const sockaddr*) &serv_addr, sizeof(serv_addr));
 	if (ret < 0)
 	{
-		SET_ERROR_STR(strerror(errno));
+		SET_ERROR_NO(npg_errno);
 		delete[] buf;
 		return false;
 	}

@@ -8,13 +8,15 @@
 #include "socket/arp.h"
 #include <string>
 #include <qsettings.h>
-#include "public.h"
+#include "npg_define.h"
 #include "socket/socket_toolkit.h"
 
 const int K_OP_ARP_REQUEST = 1;
 const int K_OP_ARP_RESPONSE = 2;
 const int K_OP_RARP_REQUEST = 3;
 const int K_OP_RARP_RESPONSE = 4;
+
+Q_DECLARE_METATYPE(ifi_info)
 
 ArpWidget::ArpWidget(QWidget *parent) :
 		TabSheet(parent)
@@ -29,28 +31,37 @@ ArpWidget::ArpWidget(QWidget *parent) :
 
 	SocketToolkit toolkit;
 	std::vector<ifi_info> ifiInfos = toolkit.getIfiInfo();
+	if(strlen(toolkit.errorStr()) > 0)
+	{
+		showFailedTip(toolkit.errorStr());
+	}
+	
 	std::vector<ifi_info>::iterator it;
 	int index = 0;
 	for (it = ifiInfos.begin(); it != ifiInfos.end(); ++it)
 	{
 		index++;
-		if (it->ifi_flags & IFF_LOOPBACK)
+#ifdef LINUX32
+		if (it->ifi_flags & IFF_LOOPBACK)// ignore loopback
 		{
 			continue;
 		}
+#endif		
 		struct sockaddr_in * sin = (struct sockaddr_in *) &(it->ifi_addr);
 		char ip[INET_ADDRSTRLEN];
 		bzero(ip, sizeof(ip));
-		inet_ntop(AF_INET, &sin->sin_addr, ip, sizeof(ip));
+		//inet_ntop(AF_INET, &sin->sin_addr, ip, sizeof(ip));
+		strncpy(ip, inet_ntoa(sin->sin_addr), sizeof(ip));
 		char mac[256];
 		bzero(mac, sizeof(mac));
 		sprintf(mac, "%2.2x:%2.2x:%2.2x:%2.2x:%2.2x:%2.2x",
-				(uint8_t) it->ifi_haddr[0], (uint8_t) it->ifi_haddr[1],
-				(uint8_t) it->ifi_haddr[2], (uint8_t) it->ifi_haddr[3],
-				(uint8_t) it->ifi_haddr[4], (uint8_t) it->ifi_haddr[5]);
+				(u_int8_t) it->ifi_haddr[0], (u_int8_t) it->ifi_haddr[1],
+				(u_int8_t) it->ifi_haddr[2], (u_int8_t) it->ifi_haddr[3],
+				(u_int8_t) it->ifi_haddr[4], (u_int8_t) it->ifi_haddr[5]);
+		it->ifi_index = index;
 		ui.interface_box->addItem(
 				QString("%1-%2-%3").arg(it->ifi_name).arg(ip).arg(mac),
-				QVariant(index));
+				QVariant::fromValue(*it));
 	}
 
 }
@@ -100,10 +111,11 @@ QString ArpWidget::sendData()
 	std::string recv_ip = ui.recv_ip_edit->text().toStdString();
 
 	index = ui.interface_box->currentIndex();
-	int interface = ui.interface_box->itemData(index).toInt();
+	ifi_info dev = ui.interface_box->itemData(index).value<ifi_info>();
+//	int adapter = ui.interface_box->itemData(index).toInt();
 
 	Arp arp;
-	arp.sendto(interface, to_mac.c_str(), from_mac.c_str(), op, send_mac.c_str(),
+	arp.sendto(dev, to_mac.c_str(), from_mac.c_str(), op, send_mac.c_str(),
 			send_ip.c_str(), recv_mac.c_str(), recv_ip.c_str());
 
 	return arp.errorStr();

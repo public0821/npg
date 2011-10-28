@@ -7,7 +7,7 @@
 
 #include "main_list_widget.h"
 #include <qicon.h>
-#include "public.h"
+#include "npg_define.h"
 
 MainListWidget::MainListWidget()
 {
