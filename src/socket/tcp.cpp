@@ -35,7 +35,7 @@ int Tcp::send(const char* buffer, int buffer_len)
 	int len_remaining = buffer_len;
 	while (len_remaining > 0)
 	{
-		size_t len = ::send(m_sockfd, buffer, len_remaining, 0);
+		int len = ::send(m_sockfd, buffer, len_remaining, 0);
 		if (len == -1)
 		{
 			SET_ERROR_NO(npg_errno);

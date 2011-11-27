@@ -57,7 +57,7 @@ bool Udp::sendto(const char* ip, u_int16_t port, const char* buffer,
 	serv_addr.sin_addr.s_addr = addr.s_addr;
 	serv_addr.sin_port = htons(port);
 
-	size_t len = ::sendto(m_sockfd, buffer, buffer_len, 0,
+	int len = ::sendto(m_sockfd, buffer, buffer_len, 0,
 			(struct sockaddr*) &serv_addr, sizeof(serv_addr));
 	if (len == K_SOCKET_ERROR)
 	{
