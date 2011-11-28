@@ -343,6 +343,32 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\ui\protocol_widget.ui"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; -o &quot;.\GeneratedFiles\ui_$(InputName).h&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe"
+						Outputs="&quot;.\GeneratedFiles\ui_$(InputName).h&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; -o &quot;.\GeneratedFiles\ui_$(InputName).h&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe"
+						Outputs="&quot;.\GeneratedFiles\ui_$(InputName).h&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\ui\tcp_widget.ui"
 				>
 				<FileConfiguration
@@ -444,14 +470,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\socket\dns.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\socket\dns.h"
-				>
-			</File>
-			<File
 				RelativePath=".\socket\icmp.cpp"
 				>
 			</File>
@@ -512,30 +530,30 @@
 				>
 			</File>
 			<Filter
-				Name="protocol"
+				Name="net"
 				>
 				<File
-					RelativePath=".\socket\protocol\ethernet.h"
+					RelativePath=".\socket\net\ethernet.h"
 					>
 				</File>
 				<File
-					RelativePath=".\socket\protocol\if_arp.h"
+					RelativePath=".\socket\net\if_arp.h"
 					>
 				</File>
 				<File
-					RelativePath=".\socket\protocol\if_ether.h"
+					RelativePath=".\socket\net\if_ether.h"
 					>
 				</File>
 				<File
-					RelativePath=".\socket\protocol\ip.h"
+					RelativePath=".\socket\net\ip.h"
 					>
 				</File>
 				<File
-					RelativePath=".\socket\protocol\ip_icmp.h"
+					RelativePath=".\socket\net\ip_icmp.h"
 					>
 				</File>
 				<File
-					RelativePath=".\socket\protocol\udp.h"
+					RelativePath=".\socket\net\udp.h"
 					>
 				</File>
 			</Filter>
@@ -847,6 +865,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GeneratedFiles\ui_protocol_widget.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GeneratedFiles\ui_tcp_widget.h"
 				>
 			</File>
@@ -1106,6 +1128,18 @@
 					</FileConfiguration>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="protocol"
+			>
+			<File
+				RelativePath=".\protocol\dns.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\protocol\dns.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

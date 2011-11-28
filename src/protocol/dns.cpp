@@ -6,7 +6,7 @@
  */
 
 #include "dns.h"
-#include "socket_public.h"
+#include "socket/socket_public.h"
 
 Dns::Dns() :
 		m_seq(1)

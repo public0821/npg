@@ -9,7 +9,7 @@
 #include "dns_widget.h"
 #include <qsettings.h>
 #include "npg_define.h"
-#include "socket/dns.h"
+#include "protocol/dns.h"
 
 DnsWidget::DnsWidget(QWidget *parent) :
 		TabSheet(parent)

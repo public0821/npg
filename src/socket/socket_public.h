@@ -23,12 +23,12 @@
 	#include <windows.h>
 	#include <iphlpapi.h>
 
-	#include "protocol/ethernet.h"
-	#include "protocol/if_ether.h"
-	#include "protocol/if_arp.h"
-	#include "protocol/ip.h"
-	#include "protocol/ip_icmp.h"
-	#include "protocol/udp.h"
+	#include "net/ethernet.h"
+	#include "net/if_ether.h"
+	#include "net/if_arp.h"
+	#include "net/ip.h"
+	#include "net/ip_icmp.h"
+	#include "net/udp.h"
 
 
 	#define EINPROGRESS WSAEINPROGRESS

@@ -8,7 +8,7 @@
 #ifndef DNS_H_
 #define DNS_H_
 
-#include "udp.h"
+#include "socket/udp.h"
 
 struct dns_header
 {

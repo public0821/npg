@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Npg>
+    <Protocols>
+        <Protocol Name="HTTP" Icon=":/npg/resource/udp.png">
+            <Field Name="type" Type="string" Method="select" Tail=" ">
+                <Item Name="GET"/> 
+                <Item Name="POST"/> 
+                <Item Name="DELETE"/> 
+                <Item Name="DELETE"/> 
+            </Field>
+            <Field Name="uri" Type="string" Method="edit" Tail=" "/>
+            <Field Name="type" Type="string" Method="select" Tail=" ">
+                <Item Name="GET"/> 
+                <Item Name="POST"/> 
+                <Item Name="DELETE"/> 
+                <Item Name="DELETE"/> 
+            </Field>
+        </Protocol>
+    </Protocols>
+</Npg>
