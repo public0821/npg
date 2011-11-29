@@ -113,7 +113,7 @@
 /*
  *	This is an Ethernet frame header.
  */
-#ifdef WIN32
+#ifdef _MSC_VER
 	#pragma pack(push) 
 	#pragma pack(1)
 	struct ethhdr {

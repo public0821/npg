@@ -1,4 +1,4 @@
-#ifdef LINUX32
+#ifdef __GNUC__
 
 /*
  * arp.cpp

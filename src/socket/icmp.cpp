@@ -39,7 +39,7 @@ Icmp::~Icmp()
 }
 
 
-bool Icmp::sendto(const char* ip, void* data, int len, bool need_calc_checknum)
+bool Icmp::sendto(const char* ip, void* data, u_int16_t len, bool need_calc_checknum)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
 	{

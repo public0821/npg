@@ -9,7 +9,7 @@
 #define SOCKET_ERROR_H_
 
 const int K_SOCKET_ERROR = -1;
-const int K_SOCKET_ERROR_BUF_LEN = 512;
+const size_t K_SOCKET_ERROR_BUF_LEN = 512;
 
 #include <errno.h>
 #include <stdlib.h>

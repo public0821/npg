@@ -24,14 +24,14 @@ bool Dns::sendto(const char* ip, const char* request, EDnsRequestType type)
 {
 	DnsRequest dnsRequest(request, type);
 	const char* formatted_request = dnsRequest.getFormattedRequest();
-	int formatted_request_len = dnsRequest.getFormattedRequestLen();
+	size_t formatted_request_len = dnsRequest.getFormattedRequestLen();
 	if (formatted_request == NULL)
 	{
 		SET_ERROR_STR("NULL Request");
 		return false;
 	}
 
-	int total_len = sizeof(struct dns_header) + formatted_request_len;
+	size_t total_len = sizeof(struct dns_header) + formatted_request_len;
 
 	char* buf = new char[total_len];
 
@@ -100,10 +100,10 @@ void DnsRequest::setRequest(const char* request, EDnsRequestType type)
 	m_type = type;
 
 	char ptr_request_tail[] = "\007in-addr\004arpa";
-	int ptr_request_tail_len = strlen(ptr_request_tail);
+	size_t ptr_request_tail_len = strlen(ptr_request_tail);
 
-	int request_len = strlen(request);
-	int max_len = request_len * 2 + 1;
+	size_t request_len = strlen(request);
+	size_t max_len = request_len * 2 + 1;
 	max_len += ptr_request_tail_len;
 	max_len += sizeof(u_int16_t); //used to store type
 	max_len += sizeof(u_int16_t); //used to store class
@@ -170,7 +170,7 @@ const char* DnsRequest::getFormattedRequest()
 	return (const char*) m_request;
 }
 
-int DnsRequest::getFormattedRequestLen()
+size_t DnsRequest::getFormattedRequestLen()
 {
 	return m_length;
 }

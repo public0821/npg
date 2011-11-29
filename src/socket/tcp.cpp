@@ -25,25 +25,25 @@ Tcp::~Tcp()
 	}
 }
 
-int Tcp::send(const char* buffer, int buffer_len)
+bool Tcp::send(const char* buffer, size_t buffer_len)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
 		return false;
 	}
 
-	int len_remaining = buffer_len;
+	size_t len_remaining = buffer_len;
 	while (len_remaining > 0)
 	{
 		int len = ::send(m_sockfd, buffer, len_remaining, 0);
-		if (len == -1)
+		if (len == K_SOCKET_ERROR)
 		{
 			SET_ERROR_NO(npg_errno);
-			return K_SOCKET_ERROR;
+			return false;
 		}
 		len_remaining -= len;
 	}
-	return buffer_len;
+	return true;
 }
 
 //#include <iostream>

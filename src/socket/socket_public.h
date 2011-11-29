@@ -13,7 +13,7 @@
 
 #include "system/os.h"
 
-#ifdef WIN32
+#ifdef _MSC_VER
 	#define npg_errno   WSAGetLastError()
 //	#define sock_last_error()   ""//WSAGetLastError()
 
@@ -41,8 +41,9 @@
 	inline int npg_strerror(int errorno, char* buf, int buflen)
 	{
 #define TEMP_BUF_SIZE 512
+		bzero(buf, buflen);
 		WCHAR tempBuf[TEMP_BUF_SIZE];
-		FormatMessage( 
+		DWORD ret = FormatMessage( 
 		FORMAT_MESSAGE_FROM_SYSTEM | 
 		FORMAT_MESSAGE_IGNORE_INSERTS,
 		NULL,
@@ -52,6 +53,12 @@
 		TEMP_BUF_SIZE,
 		NULL 
 		);
+	
+		if (ret == 0)
+		{
+			return 0;
+		}
+		
 
 		WideCharToMultiByte(   CP_ACP,   
 			0,   
@@ -66,7 +73,7 @@
 	}
 #endif
 
-#ifdef LINUX32
+#ifdef __GNUC__
 	#include    <sys/socket.h>
 	#include    <sys/time.h>
 	#include    <time.h>
@@ -105,9 +112,9 @@
 //	#define npg_strerror   strerror
 	inline int npg_strerror(int errorno, char* buf, int buflen)
 	{
-		char* result = strerror_r(errorno, buf, buflen);
-		strncpy(buf, result, buflen);
-		return 0;
+		bzero(buf, buflen);
+		int ret = strerror_r(errorno, buf, buflen);
+		return ret;
 	}
 
 #endif

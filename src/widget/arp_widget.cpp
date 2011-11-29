@@ -41,7 +41,7 @@ ArpWidget::ArpWidget(QWidget *parent) :
 	for (it = ifiInfos.begin(); it != ifiInfos.end(); ++it)
 	{
 		index++;
-#ifdef LINUX32
+#ifdef __GNUC__
 		if (it->ifi_flags & IFF_LOOPBACK)// ignore loopback
 		{
 			continue;

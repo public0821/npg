@@ -9,8 +9,12 @@
 
 #include "types.h"
 
-#ifdef WIN32
-#include "os_windows.h"
+#if defined(WIN32)
+	#include "os_windows.h"
+#elif defined(__GNUC__)
+
+#else
+	#error "Unsupported platform"
 #endif
 
 #endif

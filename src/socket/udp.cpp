@@ -36,7 +36,7 @@ Udp::~Udp()
 }
 
 bool Udp::sendto(const char* ip, u_int16_t port, const char* buffer,
-		int buffer_len)
+		size_t buffer_len)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
 	{

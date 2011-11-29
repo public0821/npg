@@ -20,7 +20,7 @@ SocketToolkit::~SocketToolkit()
 	// TODO Auto-generated destructor stub
 }
 
-#ifdef LINUX32
+#ifdef __GNUC__
 #include <net/if.h>
 std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 {
@@ -165,7 +165,7 @@ int SocketToolkit::getMacAddress(const char* name, char* mac)
 	return 0;
 }
 #endif
-#ifdef WIN32
+#ifdef _MSC_VER
 #include "pcap.h"
 std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 {
@@ -247,7 +247,7 @@ int SocketToolkit::getMacAddress(const char* ip, char* mac)
 #endif
 
 
-u_int16_t SocketToolkit::inCheckSum(u_int16_t * addr, int len)
+u_int16_t SocketToolkit::inCheckSum(u_int16_t * addr, size_t len)
 {
 	int nleft = len;
 	u_int32_t sum = 0;

@@ -158,7 +158,7 @@ QString IcmpWidget::sendData()
 	}
 
 	struct icmp icmp;
-	int len = ICMP_MINLEN;
+	size_t len = ICMP_MINLEN;
 	bzero(&icmp, sizeof(icmp));
 
 	icmp.icmp_type = type;

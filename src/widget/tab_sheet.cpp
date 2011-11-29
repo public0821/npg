@@ -76,8 +76,8 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 			SLOT(onAdvanced(void)));
 	connect(m_send_thread, SIGNAL(finished(void)), this,
 			SLOT(onSendFinish(void)));
-	connect(m_send_thread, SIGNAL(counter(int, int)), this,
-			SLOT(counter(int, int)));
+	connect(m_send_thread, SIGNAL(counter(int, time_t)), this,
+			SLOT(counter(int, time_t)));
 
 	restoreSettings();
 }
@@ -178,7 +178,7 @@ void TabSheet::onSendFinish()
 
 }
 
-void TabSheet::counter(int count, int seconds)
+void TabSheet::counter(int count, time_t seconds)
 {
 	m_status_label1->setText(
 			QString(tr("total(time):%1(%2)")).arg(count).arg(seconds));

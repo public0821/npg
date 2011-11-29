@@ -36,8 +36,8 @@ IpRawSocket::~IpRawSocket()
 	}
 }
 
-bool IpRawSocket::sendto(const char* srcip, const char* dstip, int protocol_type,
-		const char* data, int datalen)
+bool IpRawSocket::sendto(const char* srcip, const char* dstip, u_int8_t protocol_type,
+		const char* data, u_int16_t datalen)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
 	{

@@ -41,7 +41,7 @@ public:
 //	}
 signals:
 //	void error(const QString&);
-	void counter(int, int);
+	void counter(int, time_t);
 private slots:
 	void onTimer();
 	void onSendFinish();
@@ -58,7 +58,7 @@ private:
 	int m_count;
 
 	int m_total_send;
-	int m_time_consuming;
+	time_t m_time_consuming;
 	QTimer m_timer;
 };
 #endif /* SENDTHREAD_H_ */

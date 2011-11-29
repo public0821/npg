@@ -43,7 +43,7 @@ QString UdpWidget::sendData()
 {
 
 	std::string dstip = ui.dst_ip_edit->text().toStdString();
-	int dstport = ui.dst_port_edit->text().toInt();
+	u_int16_t dstport = ui.dst_port_edit->text().toUShort();
 	std::string data = ui.data_edit->toPlainText().toStdString();
 	if (dstip.empty() || dstport <= 0 || data.empty())
 	{
@@ -54,7 +54,7 @@ QString UdpWidget::sendData()
 	if (is_raw_socket)
 	{
 		std::string srcip = ui.src_ip_edit->text().toStdString();
-		int srcport = ui.src_port_edit->text().toInt();
+		u_int16_t srcport = ui.src_port_edit->text().toUShort();
 		RawUdp raw_udp;
 		bool ret = raw_udp.sendto(srcip.c_str(), dstip.c_str(), srcport, dstport,
 				data.c_str(), data.length());

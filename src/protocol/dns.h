@@ -36,7 +36,7 @@ public:
 	void setRequest(const char* request, EDnsRequestType type);
 //	void setType(EDnsRequestType type);
 	const char* getFormattedRequest();
-	int getFormattedRequestLen();
+	size_t getFormattedRequestLen();
 //	EDnsRequestType getType();
 //	u_int16_t getClass();
 //private:
@@ -45,7 +45,7 @@ private:
 	char* m_request;
 	EDnsRequestType m_type;
 	u_int16_t m_class;
-	int m_length;
+	size_t m_length;
 //	bool m_isReverse;
 };
 

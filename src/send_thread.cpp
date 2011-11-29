@@ -94,8 +94,8 @@ void SendThread::sendPerSeconds(int count)
 				break;
 			}
 			int time_elapsed = time.elapsed();
-
-			int more_time = (double) 1000 / count * (i+1) - time_elapsed;
+			const int MILLISECOND_SECOND = 1000;
+			int more_time = (double) MILLISECOND_SECOND / count * (i+1) - time_elapsed;
 			if (more_time > 0)
 			{
 				msleep(more_time);

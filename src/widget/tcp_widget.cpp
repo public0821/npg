@@ -51,8 +51,8 @@ QString TcpWidget::sendData()
 {
 //	showTip("");
 	std::string ip = ui.ip_edit->text().toStdString();
-	int port = ui.port_edit->text().toInt();
-	int timeout = ui.timeout_edit->text().toInt();
+	u_int16_t port = ui.port_edit->text().toUShort();
+	time_t timeout = ui.timeout_edit->text().toInt();
 	std::string data = ui.data_edit->toPlainText().toStdString();
 	if (ip.empty() || port <= 0 || data.empty())
 	{
@@ -71,8 +71,8 @@ QString TcpWidget::sendData()
 		return QString(tr(tcp.errorStr()));
 	}
 
-	int len = tcp.send(data.c_str(), data.length());
-	if (len == K_SOCKET_ERROR)
+	ret = tcp.send(data.c_str(), data.length());
+	if (!ret)
 	{
 		return QString(tr(tcp.errorStr()));
 	}

@@ -38,7 +38,7 @@ public:
 	virtual ~SocketToolkit();
 public:
 	std::vector<ifi_info> getIfiInfo(int family = 0, int doaliases = 0);
-	u_int16_t inCheckSum(u_int16_t * addr, int len);
+	u_int16_t inCheckSum(u_int16_t * addr, size_t len);
 	int getMacAddress(const char* ip, char* mac);
 	bool toMac(const char* mac_str, u_int8_t* mac);
 };

@@ -25,7 +25,7 @@
 #include "system/types.h"
 #include "if_ether.h"     /* IEEE 802.3 Ethernet constants */
 
-#ifdef WIN32
+#ifdef _MSC_VER
 	#pragma pack(push) 
 	#pragma pack(1)
 	/* This is a name for the 48 bit ethernet address available on many

@@ -17,7 +17,7 @@ public:
 	virtual ~Tcp();
 public:
 	bool connect(const char* ip, u_int16_t port, time_t timeout);
-	int send(const char* buffer, int buffer_len);
+	bool send(const char* buffer, size_t buffer_len);
 private:
 	int m_sockfd;
 };

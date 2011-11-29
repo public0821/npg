@@ -20,9 +20,9 @@ RawUdp::~RawUdp()
 	// TODO Auto-generated destructor stub
 }
 
-bool RawUdp::sendto(const char* srcip, const char* dstip, u_int16_t srcport, u_int16_t dstport, const char* data, int datalen)
+bool RawUdp::sendto(const char* srcip, const char* dstip, u_int16_t srcport, u_int16_t dstport, const char* data, u_int16_t datalen)
 {
-	int len = sizeof(struct udphdr) + datalen;
+	u_int16_t len = sizeof(struct udphdr) + datalen;
 	char * buf = new char[len];
 	bzero(buf, sizeof(struct udphdr));
 	memcpy(buf+sizeof(struct udphdr), data, datalen);

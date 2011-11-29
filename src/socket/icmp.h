@@ -16,7 +16,7 @@ public:
 	Icmp();
 	virtual ~Icmp();
 public:
-	bool sendto(const char* ip, void* icmp, int len, bool need_calc_checknum);
+	bool sendto(const char* ip, void* icmp, u_int16_t len, bool need_calc_checknum);
 private:
 	int m_sockfd;
 //	pid_t m_pid;

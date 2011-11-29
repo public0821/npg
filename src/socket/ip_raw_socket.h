@@ -16,7 +16,7 @@ public:
 	IpRawSocket();
 	virtual ~IpRawSocket();
 public:
-	virtual bool sendto(const char* srcip, const char* dstip, int protocol_type, const char* data, int datalen);
+	virtual bool sendto(const char* srcip, const char* dstip, u_int8_t protocol_type, const char* data, u_int16_t datalen);
 protected:
 	int m_sockfd;
 };

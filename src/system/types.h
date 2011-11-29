@@ -13,7 +13,7 @@
 typedef std::string sstring;
 
 
-#ifdef WIN32
+#ifdef _MSC_VER
 	typedef unsigned char u_char;
 	typedef unsigned char u_int8_t;
 	typedef unsigned short u_int16_t;
@@ -27,11 +27,13 @@ typedef std::string sstring;
 	typedef signed short int16_t;
 	typedef signed int int32_t;
 	typedef signed __int64 int64_t;
-
 #endif
 
-#ifdef LINUX32
+#ifdef __GNUC__
 	#include <sys/types.h>
 #endif
+
+	typedef unsigned char u_char;
+
 
 #endif

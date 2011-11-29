@@ -16,7 +16,7 @@ public:
 	Udp();
 	virtual ~Udp();
 public:
-	bool sendto(const char* ip, u_int16_t port, const char* buffer, int buffer_len);
+	bool sendto(const char* ip, u_int16_t port, const char* buffer, size_t buffer_len);
 private:
 
 private:

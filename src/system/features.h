@@ -17,6 +17,5 @@
 
 #define __BYTE_ORDER __LITTLE_ENDIAN
 
-//WIN32 LINUX32
 
 #endif

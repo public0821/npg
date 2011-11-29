@@ -4,7 +4,7 @@
 #include <QApplication>
 #include <qtextcodec.h>
 #include <qmessagebox.h>
-#ifdef WIN32
+#ifdef _MSC_VER
 	#include <winsock2.h>
 #endif
 
@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));//("UTF-8"));
-#ifdef WIN32
+#ifdef _MSC_VER
 	WSADATA wsaData;
 	int err = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (err != 0) {
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     npg w;
     w.show();
     int ret = a.exec();
-#ifdef WIN32
+#ifdef _MSC_VER
 	WSACleanup();
 #endif
 
