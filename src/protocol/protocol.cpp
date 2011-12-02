@@ -1,7 +1,8 @@
 #include "protocol.h"
 
-Protocol::Protocol(void)
+Protocol::Protocol(bool empty)
 {
+	m_empty = empty;
 }
 
 Protocol::~Protocol(void)
@@ -50,4 +51,9 @@ void Protocol::setDependence(const sstring& dependence)
 void Protocol::setIcon(const sstring& icon)
 {
 	m_icon = icon;
+}
+
+bool Protocol::empty()const
+{
+	return m_empty;
 }

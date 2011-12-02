@@ -44,7 +44,7 @@ void Category::setName(const sstring& name)
 	m_name = name;
 }
 
-void Category::setIsMany(bool is_many)
+void Category::setMany(bool is_many)
 {
 	m_is_many = is_many;
 }

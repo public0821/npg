@@ -74,7 +74,7 @@ int MainTabWidget::addTab(const QString &type)
 	else
 	{
 		Protocol protocol = ProtocolFactory::instance().protocol(type.toStdString());
-		if (!protocol.name().empty())
+		if (!protocol.empty())
 		{
 			sheet = new ProtocolWidget(protocol, this);
 			index = QTabWidget::addTab(sheet,

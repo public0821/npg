@@ -7,6 +7,7 @@
 
 #include "main_list_widget.h"
 #include <qicon.h>
+#include <qmessagebox.h>
 #include "npg_define.h"
 #include "protocol/protocol_factory.h"
 
@@ -31,7 +32,12 @@ MainListWidget::MainListWidget()
 						QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_DNS,
 						this);
 
-	const std::vector<Protocol>& protocols = ProtocolFactory::instance().protocols();
+	ProtocolFactory& protocol_factory = ProtocolFactory::instance();
+	if (protocol_factory.isError())
+	{
+		QMessageBox::information(this, "tip", protocol_factory.errorStr());
+	}	
+	const std::vector<Protocol>& protocols = protocol_factory.protocols();
 	std::vector<Protocol>::const_iterator it;
 	for (it = protocols.begin(); it != protocols.end(); ++it)
 	{

@@ -20,6 +20,9 @@ public:
 private:
 	void loadXml();
 	void loadProtocolElement(QDomElement* element);
+	Category loadCategoryElement(QDomElement* element);
+	Field loadFieldElement(QDomElement* element);
+
 private:
 	std::vector<Protocol> m_protocols;
 };

@@ -17,7 +17,7 @@ public:
 	bool isMany() const;
 	sstring text() const;
 	void setName(const sstring& name);
-	void setIsMany(bool is_many);
+	void setMany(bool is_many);
 	void setText(const sstring& text);
 
 private:
