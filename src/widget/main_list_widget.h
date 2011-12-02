@@ -16,7 +16,7 @@ class MainListWidget: public QListWidget
 
 public:
 	MainListWidget();
-	virtual ~MainListWidget();
+	~MainListWidget();
 };
 
 #endif /* TYPELISTWIDGET_H_ */

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>ProtocolWidgetClass</class>
+ <widget class="QWidget" name="ProtocolWidgetClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="2" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout"/>
+    <layout class="QHBoxLayout" name="advanced_layout"/>
    </item>
    <item row="0" column="0" colspan="2">
     <widget class="QTreeWidget" name="treeWidget">

@@ -17,7 +17,7 @@ class MainTabWidget: public QTabWidget
 	Q_OBJECT
 public:
 	MainTabWidget();
-	virtual ~MainTabWidget();
+	~MainTabWidget();
 public:
 	int addTab(const QString &type);
 private slots:

@@ -13,7 +13,7 @@
 
 enum ESendType
 {
-	E_SPEED = 1, E_TOTAL
+	E_SEND_TYPE_SPEED = 1, E_SEND_TYPE_TOTAL
 };
 
 class TabSheet;
@@ -22,7 +22,7 @@ class SendThread: public QThread
 Q_OBJECT
 public:
 	SendThread(TabSheet*parent);
-	virtual ~SendThread();
+	~SendThread();
 public:
 	void stop()
 	{

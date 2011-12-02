@@ -10,8 +10,10 @@
 
 #include "system/features.h"
 #include "system/types.h"
-
 #include "system/os.h"
+
+const int K_SOCKET_ERROR = -1;
+const size_t K_SOCKET_ERROR_BUF_LEN = 512;
 
 #ifdef _MSC_VER
 	#define npg_errno   WSAGetLastError()

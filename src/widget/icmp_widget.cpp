@@ -72,17 +72,17 @@ void IcmpWidget::initProtocol()
 	temp.insert(1, tr("host unreachable"));
 	temp.insert(2, tr("protocol unreachable"));
 	temp.insert(3, tr("port unreachable"));
-	//temp.insert(4, tr("需要分片但设置了不分片比特"));
-	//temp.insert(5, tr("源站选路失败"));
-	//temp.insert(6, tr("目的网络不认识"));
-	//temp.insert(7, tr("目的主机不认识"));
-	//temp.insert(9, tr("目的网络被强制禁止"));
-	//temp.insert(10, tr("目的主机被强制禁止"));
-	//temp.insert(11, tr("由于服务类型TOS，网络不可达"));
-	//temp.insert(12, tr("由于服务类型TOS，主机不可达"));
-	//temp.insert(13, tr("由于过滤，通讯被强制禁止"));
-	//temp.insert(14, tr("主机越权"));
-	//temp.insert(15, tr("优先权终止生效"));
+	temp.insert(4, tr("Fragmentation Required but not fragment bit set"));
+	temp.insert(5, tr("Source Routing failure"));
+	temp.insert(6, tr("Do not know the destination network"));
+	temp.insert(7, tr("Do not know the destination host"));
+	temp.insert(9, tr("The destination network administratively prohibited"));
+	temp.insert(10, tr("The destination host administratively prohibited"));
+	temp.insert(11, tr("As the type of service TOS, the network is not up to"));
+	temp.insert(12, tr("As the type of service TOS, the host is not up to"));
+	temp.insert(13, tr("As the filter, communication administratively prohibited"));
+	temp.insert(14, tr("Host ultra vires"));
+	temp.insert(15, tr("Priority cease to have effect"));
 	m_protocol.insert(3, temp);
 
 	temp.clear();
@@ -109,8 +109,8 @@ void IcmpWidget::initProtocol()
 	m_protocol.insert(10, temp);
 
 	temp.clear();
-	//temp.insert(0, tr("传输期间生存时间为0"));
-	//temp.insert(1, tr("在数据报组装期间生存时间为0"));
+	temp.insert(0, tr("the survival time is zero during transmission"));
+	temp.insert(1, tr("the survival time is zero during packet assembly"));
 	m_protocol.insert(11, temp);
 
 	temp.clear();
@@ -210,7 +210,7 @@ QString IcmpWidget::sendData()
 	}
 
 	Icmp npg_icmp;
-	std::string ip = ui.ip_edit->text().toStdString();
+	sstring ip = ui.ip_edit->text().toStdString();
 	if (ui.checkbox->checkState() == Qt::Checked)
 	{
 		npg_icmp.sendto(ip.c_str(), (void*)&icmp, len, true);

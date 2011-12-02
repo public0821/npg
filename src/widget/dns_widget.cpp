@@ -45,12 +45,12 @@ void DnsWidget::restoreSettings()
 
 QString DnsWidget::sendData()
 {
-	std::string ip = ui.server_edit->text().toStdString();
-	std::string request = ui.request_edit->text().toStdString();
-	EDnsRequestType type = E_DNS_A;
+	sstring ip = ui.server_edit->text().toStdString();
+	sstring request = ui.request_edit->text().toStdString();
+	EDnsRequestType type = E_DNS_REQUEST_TYPE_A;
 	if(ui.reverse_checkbox->checkState() == Qt::Checked)
 	{
-		type = E_DNS_PTR;
+		type = E_DNS_REQUEST_TYPE_PTR;
 	}
 
 	Dns dns;

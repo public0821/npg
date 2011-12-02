@@ -12,6 +12,8 @@
 #include "icmp_widget.h"
 #include "arp_widget.h"
 #include "dns_widget.h"
+#include "protocol/protocol_factory.h"
+#include "protocol_widget.h"
 
 MainTabWidget::MainTabWidget()
 {
@@ -68,6 +70,17 @@ int MainTabWidget::addTab(const QString &type)
 		sheet = new DnsWidget(this);
 		index = QTabWidget::addTab(sheet,
 				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_DNS);
+	}
+	else
+	{
+		Protocol protocol = ProtocolFactory::instance().protocol(type.toStdString());
+		if (!protocol.name().empty())
+		{
+			sheet = new ProtocolWidget(protocol, this);
+			index = QTabWidget::addTab(sheet,
+				QIcon(QString::fromUtf8(protocol.icon().c_str())), type);
+		}
+		
 	}
 	if (index != -1)
 	{

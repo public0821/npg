@@ -8,13 +8,13 @@
 #ifndef TCP_H_
 #define TCP_H_
 
-#include "socket_error.h"
+#include "system/error.h"
 
-class Tcp: public SocketError
+class Tcp: public Error
 {
 public:
 	Tcp();
-	virtual ~Tcp();
+	~Tcp();
 public:
 	bool connect(const char* ip, u_int16_t port, time_t timeout);
 	bool send(const char* buffer, size_t buffer_len);

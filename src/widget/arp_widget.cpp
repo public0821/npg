@@ -30,7 +30,7 @@ ArpWidget::ArpWidget(QWidget *parent) :
 	ui.operation_box->addItem(tr("RARP Response"), QVariant(K_OP_RARP_RESPONSE));
 
 	SocketToolkit toolkit;
-	std::vector<ifi_info> ifiInfos = toolkit.getIfiInfo();
+	std::vector<ifi_info> ifiInfos = toolkit.ifiInfo();
 	if(strlen(toolkit.errorStr()) > 0)
 	{
 		showFailedTip(toolkit.errorStr());
@@ -102,13 +102,13 @@ QString ArpWidget::sendData()
 {
 	int index = ui.operation_box->currentIndex();
 	int op = ui.operation_box->itemData(index).toInt();
-	std::string to_mac = ui.to_mac_edit->text().toStdString();
-	std::string from_mac = ui.from_mac_edit->text().toStdString();
+	sstring to_mac = ui.to_mac_edit->text().toStdString();
+	sstring from_mac = ui.from_mac_edit->text().toStdString();
 
-	std::string send_mac = ui.send_mac_edit->text().toStdString();
-	std::string send_ip = ui.send_ip_edit->text().toStdString();
-	std::string recv_mac = ui.recv_mac_edit->text().toStdString();
-	std::string recv_ip = ui.recv_ip_edit->text().toStdString();
+	sstring send_mac = ui.send_mac_edit->text().toStdString();
+	sstring send_ip = ui.send_ip_edit->text().toStdString();
+	sstring recv_mac = ui.recv_mac_edit->text().toStdString();
+	sstring recv_ip = ui.recv_ip_edit->text().toStdString();
 
 	index = ui.interface_box->currentIndex();
 	ifi_info dev = ui.interface_box->itemData(index).value<ifi_info>();

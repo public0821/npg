@@ -23,8 +23,8 @@ Dns::~Dns()
 bool Dns::sendto(const char* ip, const char* request, EDnsRequestType type)
 {
 	DnsRequest dnsRequest(request, type);
-	const char* formatted_request = dnsRequest.getFormattedRequest();
-	size_t formatted_request_len = dnsRequest.getFormattedRequestLen();
+	const char* formatted_request = dnsRequest.formattedRequest();
+	size_t formatted_request_len = dnsRequest.formattedRequestLen();
 	if (formatted_request == NULL)
 	{
 		SET_ERROR_STR("NULL Request");
@@ -64,7 +64,7 @@ bool Dns::sendto(const char* ip, const char* request, EDnsRequestType type)
 }
 
 DnsRequest::DnsRequest() :
-		m_request(NULL), m_type(E_DNS_A), m_class(1), m_length(0)
+		m_request(NULL), m_type(E_DNS_REQUEST_TYPE_A), m_class(1), m_length(0)
 {
 
 }
@@ -78,7 +78,7 @@ DnsRequest::~DnsRequest()
 }
 
 DnsRequest::DnsRequest(const char* request, EDnsRequestType type) :
-		m_request(NULL), m_type(E_DNS_A), m_class(1), m_length(0)
+		m_request(NULL), m_type(E_DNS_REQUEST_TYPE_A), m_class(1), m_length(0)
 {
 	DnsRequest();
 //	setType(type);
@@ -113,7 +113,7 @@ void DnsRequest::setRequest(const char* request, EDnsRequestType type)
 	char* start = m_request;
 	char* to_it = start + 1;
 
-	if (m_type == E_DNS_A) //\003www\006google\003com
+	if (m_type == E_DNS_REQUEST_TYPE_A) //\003www\006google\003com
 	{
 		for (const char* from_it = request; *from_it != '\0'; from_it++)
 		{
@@ -128,7 +128,7 @@ void DnsRequest::setRequest(const char* request, EDnsRequestType type)
 			to_it++;
 		}
 	}
-	else if (m_type == E_DNS_PTR) //\0015\003209\00296\003202\007in-addr\004arpa
+	else if (m_type == E_DNS_REQUEST_TYPE_PTR) //\0015\003209\00296\003202\007in-addr\004arpa
 	{
 		for (const char* it = request + request_len - 1;; it--)
 		{
@@ -165,12 +165,12 @@ void DnsRequest::setRequest(const char* request, EDnsRequestType type)
 //	m_type = type;
 //}
 
-const char* DnsRequest::getFormattedRequest()
+const char* DnsRequest::formattedRequest()
 {
 	return (const char*) m_request;
 }
 
-size_t DnsRequest::getFormattedRequestLen()
+size_t DnsRequest::formattedRequestLen()
 {
 	return m_length;
 }

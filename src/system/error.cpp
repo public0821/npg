@@ -5,15 +5,16 @@
  *      Author: Young <public0821@gmail.com>
  */
 
-#include "socket_error.h"
+#include "error.h"
 #include "system/os.h"
 
-SocketError::SocketError()
+Error::Error()
+:m_is_error(false)
 {
 	bzero(m_error, sizeof(m_error));
 }
 
-SocketError::~SocketError()
+Error::~Error()
 {
 	// TODO Auto-generated destructor stub
 }

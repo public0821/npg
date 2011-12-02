@@ -50,10 +50,10 @@ void TcpWidget::restoreSettings()
 QString TcpWidget::sendData()
 {
 //	showTip("");
-	std::string ip = ui.ip_edit->text().toStdString();
+	sstring ip = ui.ip_edit->text().toStdString();
 	u_int16_t port = ui.port_edit->text().toUShort();
 	time_t timeout = ui.timeout_edit->text().toInt();
-	std::string data = ui.data_edit->toPlainText().toStdString();
+	sstring data = ui.data_edit->toPlainText().toStdString();
 	if (ip.empty() || port <= 0 || data.empty())
 	{
 		return tr("ip and port and data must set");

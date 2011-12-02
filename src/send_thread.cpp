@@ -41,10 +41,10 @@ void SendThread::run()
 	{
 		switch (m_type)
 		{
-		case E_TOTAL:
+		case E_SEND_TYPE_TOTAL:
 			sendTotal(m_count);
 			break;
-		case E_SPEED:
+		case E_SEND_TYPE_SPEED:
 			sendPerSeconds(m_count);
 			break;
 		default:

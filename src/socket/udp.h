@@ -8,13 +8,13 @@
 #ifndef UDP_H_
 #define UDP_H_
 
-#include "socket_error.h"
+#include "system/error.h"
 
-class Udp:public SocketError
+class Udp:public Error
 {
 public:
 	Udp();
-	virtual ~Udp();
+	~Udp();
 public:
 	bool sendto(const char* ip, u_int16_t port, const char* buffer, size_t buffer_len);
 private:

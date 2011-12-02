@@ -19,8 +19,8 @@ public:
     DnsWidget(QWidget *parent = 0);
     ~DnsWidget();
 private:
-	virtual void saveSettings();
-	virtual void restoreSettings();
+	void saveSettings();
+	void restoreSettings();
 	QString sendData();
 private:
     Ui::DnsWidgetClass ui;

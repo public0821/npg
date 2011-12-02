@@ -22,7 +22,7 @@ SocketToolkit::~SocketToolkit()
 
 #ifdef __GNUC__
 #include <net/if.h>
-std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
+std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases)
 {
 //	struct ifi_info *ifi, *ifihead, **ifipnext;
 //	int sockfd, len, lastlen, flags, myflags, idx = 0, hlen = 0;
@@ -143,7 +143,7 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 }
 
 #include <sys/ioctl.h>
-int SocketToolkit::getMacAddress(const char* name, char* mac)
+int SocketToolkit::macAddress(const char* name, char* mac)
 {
 	int sock = socket (PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock == -1)
@@ -167,7 +167,7 @@ int SocketToolkit::getMacAddress(const char* name, char* mac)
 #endif
 #ifdef _MSC_VER
 #include "pcap.h"
-std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
+std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases)
 {
 	std::vector<ifi_info> ifi_infos;
 
@@ -201,7 +201,7 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 			}
 			ifi.ifi_addr = *(local_address->addr);
 			struct sockaddr_in * sin = (struct sockaddr_in *) &(ifi.ifi_addr);
-			int ret = getMacAddress(inet_ntoa(sin->sin_addr), ifi.ifi_haddr);
+			int ret = macAddress(inet_ntoa(sin->sin_addr), ifi.ifi_haddr);
 			if(-1 != ret)
 			{
 				ifi_infos.push_back(ifi);
@@ -214,7 +214,7 @@ std::vector<ifi_info> SocketToolkit::getIfiInfo(int family, int doaliases)
 
 	return ifi_infos;
 }
-int SocketToolkit::getMacAddress(const char* ip, char* mac)
+int SocketToolkit::macAddress(const char* ip, char* mac)
 {
 	IP_ADAPTER_INFO * info = NULL;
 	IP_ADAPTER_INFO * pos = NULL;

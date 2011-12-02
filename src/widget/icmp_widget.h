@@ -22,8 +22,8 @@ public:
 	IcmpWidget(QWidget *parent = 0);
 	~IcmpWidget();
 private:
-	virtual void saveSettings();
-	virtual void restoreSettings();
+	void saveSettings();
+	void restoreSettings();
 	QString sendData();
 private slots:
 	void onTypeIndexChanged(const QString &text);

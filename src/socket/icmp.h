@@ -8,13 +8,13 @@
 #ifndef ICMP_H_
 #define ICMP_H_
 
-#include "socket_error.h"
+#include "system/error.h"
 
-class Icmp: public SocketError
+class Icmp: public Error
 {
 public:
 	Icmp();
-	virtual ~Icmp();
+	~Icmp();
 public:
 	bool sendto(const char* ip, void* icmp, u_int16_t len, bool need_calc_checknum);
 private:

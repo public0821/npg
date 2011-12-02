@@ -10,11 +10,11 @@
 
 #include "ip_raw_socket.h"
 
-class RawUdp: public SocketError
+class RawUdp: public Error
 {
 public:
 	RawUdp();
-	virtual ~RawUdp();
+	~RawUdp();
 public:
 	bool sendto(const char* srcip, const char* dstip, u_int16_t srcport, u_int16_t dstport, const char* data, u_int16_t datalen);
 private:

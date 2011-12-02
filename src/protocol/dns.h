@@ -22,8 +22,8 @@ struct dns_header
 
 enum EDnsRequestType
 {
-	E_DNS_A = 1,
-	E_DNS_PTR = 12,
+	E_DNS_REQUEST_TYPE_A = 1,
+	E_DNS_REQUEST_TYPE_PTR = 12,
 };
 
 class DnsRequest
@@ -35,8 +35,8 @@ public:
 public:
 	void setRequest(const char* request, EDnsRequestType type);
 //	void setType(EDnsRequestType type);
-	const char* getFormattedRequest();
-	size_t getFormattedRequestLen();
+	const char* formattedRequest();
+	size_t formattedRequestLen();
 //	EDnsRequestType getType();
 //	u_int16_t getClass();
 //private:
@@ -49,11 +49,11 @@ private:
 //	bool m_isReverse;
 };
 
-class Dns: public SocketError
+class Dns: public Error
 {
 public:
 	Dns();
-	virtual ~Dns();
+	~Dns();
 public:
 	bool sendto(const char* ip, const char* request, EDnsRequestType type);
 private:

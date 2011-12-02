@@ -52,8 +52,8 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 	QHBoxLayout* advance_layout = new QHBoxLayout(m_advanced_group);
 	advance_layout->addWidget(new QLabel(tr("sendtype:")));
 	m_send_typeBox = new QComboBox();
-	m_send_typeBox->addItem(tr("total"), QVariant((int) E_TOTAL));
-	m_send_typeBox->addItem(tr("per second"), QVariant((int) E_SPEED));
+	m_send_typeBox->addItem(tr("total"), QVariant((int) E_SEND_TYPE_TOTAL));
+	m_send_typeBox->addItem(tr("per second"), QVariant((int) E_SEND_TYPE_SPEED));
 	advance_layout->addWidget(m_send_typeBox);
 	advance_layout->addWidget(new QLabel(tr("count:")));
 	m_count_edit = new QLineEdit();

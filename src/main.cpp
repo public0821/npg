@@ -7,6 +7,9 @@
 #ifdef _MSC_VER
 	#include <winsock2.h>
 #endif
+#ifdef __GNUC__
+	#include <signal.h>
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +22,11 @@ int main(int argc, char *argv[])
 		QMessageBox::about(NULL, QObject::tr("tip"), QString(QObject::tr("WSAStartup failed with error: %1")).arg(err));
 		return -1;
 	}
+#endif
+#ifdef __GNUC__
+	struct   sigaction   sa; 
+	sa.sa_handler   =   SIG_IGN; 
+	sigaction(   SIGPIPE,   &sa,   0   );
 #endif
     npg w;
     w.show();

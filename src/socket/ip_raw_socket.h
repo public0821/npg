@@ -8,15 +8,15 @@
 #ifndef IP_RAW_SOCKET_H_
 #define IP_RAW_SOCKET_H_
 
-#include "socket_error.h"
+#include "system/error.h"
 
-class IpRawSocket: public SocketError
+class IpRawSocket: public Error
 {
 public:
 	IpRawSocket();
-	virtual ~IpRawSocket();
+	~IpRawSocket();
 public:
-	virtual bool sendto(const char* srcip, const char* dstip, u_int8_t protocol_type, const char* data, u_int16_t datalen);
+	bool sendto(const char* srcip, const char* dstip, u_int8_t protocol_type, const char* data, u_int16_t datalen);
 protected:
 	int m_sockfd;
 };

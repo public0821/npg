@@ -19,8 +19,8 @@ public:
     ArpWidget(QWidget *parent = 0);
     ~ArpWidget();
 private:
-	virtual void saveSettings();
-	virtual void restoreSettings();
+	void saveSettings();
+	void restoreSettings();
 	QString sendData();
 private:
     Ui::ArpWidgetClass ui;

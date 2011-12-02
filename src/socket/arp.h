@@ -8,14 +8,14 @@
 #ifndef ARP_H_
 #define ARP_H_
 
-#include "socket_error.h"
+#include "system/error.h"
 #include "socket_toolkit.h"
 
-class Arp: public SocketError
+class Arp: public Error
 {
 public:
 	Arp();
-	virtual ~Arp();
+	~Arp();
 public:
 	bool sendto(const ifi_info& dev, const char* eth_to_mac, const char* eth_from_mac, short op, const char* send_mac, const char* send_ip,
 			const char* recv_mac, const char* recv_ip);

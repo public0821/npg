@@ -9,7 +9,7 @@
 #define SOCKET_TOOLKIT_H_
 
 #include <vector>
-#include "socket_error.h"
+#include "system/error.h"
 #include "socket_public.h"
 
 
@@ -31,15 +31,15 @@ struct ifi_info
 //	struct ifi_info *ifi_next; /* next of these structures */
 };
 
-class SocketToolkit: public SocketError
+class SocketToolkit: public Error
 {
 public:
 	SocketToolkit();
-	virtual ~SocketToolkit();
+	~SocketToolkit();
 public:
-	std::vector<ifi_info> getIfiInfo(int family = 0, int doaliases = 0);
+	std::vector<ifi_info> ifiInfo(int family = 0, int doaliases = 0);
 	u_int16_t inCheckSum(u_int16_t * addr, size_t len);
-	int getMacAddress(const char* ip, char* mac);
+	int macAddress(const char* ip, char* mac);
 	bool toMac(const char* mac_str, u_int8_t* mac);
 };
 

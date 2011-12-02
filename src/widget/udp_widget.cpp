@@ -42,9 +42,9 @@ UdpWidget::~UdpWidget()
 QString UdpWidget::sendData()
 {
 
-	std::string dstip = ui.dst_ip_edit->text().toStdString();
+	sstring dstip = ui.dst_ip_edit->text().toStdString();
 	u_int16_t dstport = ui.dst_port_edit->text().toUShort();
-	std::string data = ui.data_edit->toPlainText().toStdString();
+	sstring data = ui.data_edit->toPlainText().toStdString();
 	if (dstip.empty() || dstport <= 0 || data.empty())
 	{
 		return tr("ip and port and data must set");
@@ -53,7 +53,7 @@ QString UdpWidget::sendData()
 	bool is_raw_socket = !(ui.src_ip_box->checkState() == Qt::Checked);
 	if (is_raw_socket)
 	{
-		std::string srcip = ui.src_ip_edit->text().toStdString();
+		sstring srcip = ui.src_ip_edit->text().toStdString();
 		u_int16_t srcport = ui.src_port_edit->text().toUShort();
 		RawUdp raw_udp;
 		bool ret = raw_udp.sendto(srcip.c_str(), dstip.c_str(), srcport, dstport,

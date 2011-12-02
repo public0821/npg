@@ -494,14 +494,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\socket\socket_error.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\socket\socket_error.h"
-				>
-			</File>
-			<File
 				RelativePath=".\socket\socket_public.h"
 				>
 			</File>
@@ -716,6 +708,36 @@
 				>
 			</File>
 			<File
+				RelativePath=".\widget\protocol_widget.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\widget\protocol_widget.h"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_XML_LIB &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DQT_XML_LIB &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\widget\tab_sheet.cpp"
 				>
 			</File>
@@ -809,6 +831,14 @@
 		<Filter
 			Name="system"
 			>
+			<File
+				RelativePath=".\system\error.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\system\error.h"
+				>
+			</File>
 			<File
 				RelativePath=".\system\features.h"
 				>
@@ -954,6 +984,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\GeneratedFiles\Release\moc_protocol_widget.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\GeneratedFiles\Release\moc_send_thread.cpp"
 					>
 					<FileConfiguration
@@ -1080,6 +1122,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_protocol_widget.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\GeneratedFiles\Debug\moc_send_thread.cpp"
 					>
 					<FileConfiguration
@@ -1133,11 +1187,43 @@
 			Name="protocol"
 			>
 			<File
+				RelativePath=".\protocol\category.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\protocol\category.h"
+				>
+			</File>
+			<File
 				RelativePath=".\protocol\dns.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\protocol\dns.h"
+				>
+			</File>
+			<File
+				RelativePath=".\protocol\field.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\protocol\field.h"
+				>
+			</File>
+			<File
+				RelativePath=".\protocol\protocol.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\protocol\protocol.h"
+				>
+			</File>
+			<File
+				RelativePath=".\protocol\protocol_factory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\protocol\protocol_factory.h"
 				>
 			</File>
 		</Filter>

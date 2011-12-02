@@ -5,40 +5,47 @@
  *      Author: Young <public0821@gmail.com>
  */
 
-#ifndef SOCKET_ERROR_H_
-#define SOCKET_ERROR_H_
-
-const int K_SOCKET_ERROR = -1;
-const size_t K_SOCKET_ERROR_BUF_LEN = 512;
+#ifndef _ERROR_H_
+#define _ERROR_H_
 
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include "system/types.h"
+#include "system/os.h"
 
-class SocketError
+const size_t K_ERROR_BUF_LEN = 512;
+
+class Error
 {
 public:
-	SocketError();
-	virtual ~SocketError();
+	Error();
+	~Error();
 public:
 	const char* errorStr() const
 	{
 		return m_error;
 	}
+	bool isError() const
+	{
+		return m_is_error;
+	}
 protected:
 
 #define SET_ERROR_STR(error_str) {snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
-		__FILE__, __LINE__,error_str);}
+		__FILE__, __LINE__,error_str);\
+		 m_is_error = true;}
 
 	#define SET_ERROR_NO(errorno) {char buf[K_SOCKET_ERROR_BUF_LEN]; npg_strerror(errorno, buf, sizeof(buf));\
 		snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
-		__FILE__, __LINE__,buf);}
+		__FILE__, __LINE__,buf);\
+		 m_is_error = true;}
 
 
 protected:
-	char m_error[K_SOCKET_ERROR_BUF_LEN];
+	char m_error[K_ERROR_BUF_LEN];
+	bool m_is_error;
 };
 
-#endif /* SOCKET_ERROR_H_ */
+#endif /* _ERROR_H_ */
