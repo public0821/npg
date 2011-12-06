@@ -44,7 +44,7 @@ MainListWidget::MainListWidget()
 		QListWidgetItem* item = new QListWidgetItem(
 			QIcon(QString::fromUtf8(it->icon().c_str())), it->name().c_str(),
 			this);
-		dns->setTextAlignment(Qt::AlignLeft);
+		item->setTextAlignment(Qt::AlignLeft);
 	}
 	
 

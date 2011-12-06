@@ -5,9 +5,9 @@
 #include <qaction.h>
 #include "protocol/protocol.h"
 
-class ProtocolTree : public QTreeWidget
+class ProtocolTree: public QTreeWidget
 {
-	Q_OBJECT
+Q_OBJECT
 
 public:
 	ProtocolTree(QWidget *parent);
@@ -20,8 +20,9 @@ private slots:
 	void onAdd();
 private:
 	QTreeWidgetItem* getSelectedItem();
-	QTreeWidgetItem* addChildItem(QTreeWidgetItem* parent,
-		const QString& name, const QString& tip);
+	QTreeWidgetItem* addChildItem(QTreeWidgetItem* parent, const QString& name,
+			const QString& tip);
+	QWidget* getFieldWidget(const Field& field);
 private:
 	QAction* m_delete_action;
 	QAction* m_add_action;

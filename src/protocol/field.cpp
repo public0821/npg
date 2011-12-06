@@ -34,7 +34,7 @@ void Field::setLength(size_t length)
 
 void Field::setText(const sstring& text)
 {
-	m_text = m_text;
+	m_text = text;
 }
 void Field::setTip(const sstring& tip)
 {

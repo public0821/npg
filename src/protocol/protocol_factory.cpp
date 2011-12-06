@@ -46,7 +46,7 @@ void ProtocolFactory::loadXml()
 		return;
 	}
 
-	QFile file("./Conf/ngp.xml");
+	QFile file("./conf/ngp.xml");
 	if (!file.open(QFile::ReadOnly | QFile::Text)) 
 	{
 		SET_ERROR_STR(file.errorString().toStdString().c_str());

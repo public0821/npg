@@ -5,18 +5,25 @@ QT += core \
     xml
 
 # Input
-HEADERS += npg.h \
+HEADERS += widget/protocol_tree.h \
+    protocol/category.h \
+    protocol/field.h \
+    protocol/protocol.h \
+    protocol/protocol_factory.h \
+    system/error.h \
+    widget/protocol_widget.h \
+    protocol/dns.h \
+    socket/net/ethernet.h \
+    socket/net/if_arp.h \
+    socket/net/if_ether.h \
+    socket/net/ip.h \
+    socket/net/ip_icmp.h \
+    socket/net/udp.h \
+    npg.h \
     send_thread.h \
     socket/arp.h \
-    socket/dns.h \
     socket/icmp.h \
     socket/ip_raw_socket.h \
-    socket/protocol/ethernet.h \
-    socket/protocol/if_arp.h \
-    socket/protocol/if_ether.h \
-    socket/protocol/ip.h \
-    socket/protocol/ip_icmp.h \
-    socket/protocol/udp.h \
     socket/raw_udp.h \
     socket/socket_error.h \
     socket/socket_public.h \
@@ -36,22 +43,29 @@ HEADERS += npg.h \
     widget/tab_sheet.h \
     widget/tcp_widget.h \
     widget/udp_widget.h
-FORMS += ui/arp_widget.ui \
+FORMS += ui/protocol_widget.ui \
+    ui/arp_widget.ui \
     ui/dns_widget.ui \
     ui/icmp_widget.ui \
     ui/npg.ui \
     ui/tcp_widget.ui \
     ui/udp_widget.ui
-SOURCES += main.cpp \
+SOURCES += widget/protocol_tree.cpp \
+    protocol/category.cpp \
+    protocol/field.cpp \
+    protocol/protocol.cpp \
+    protocol/protocol_factory.cpp \
+    system/error.cpp \
+    widget/protocol_widget.cpp \
+    protocol/dns.cpp \
+    main.cpp \
     npg.cpp \
     send_thread.cpp \
     socket/arp.cpp \
     socket/arp_pacp.cpp \
-    socket/dns.cpp \
     socket/icmp.cpp \
     socket/ip_raw_socket.cpp \
     socket/raw_udp.cpp \
-    socket/socket_error.cpp \
     socket/socket_toolkit.cpp \
     socket/tcp.cpp \
     socket/udp.cpp \

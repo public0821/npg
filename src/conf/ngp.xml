@@ -28,8 +28,7 @@
                 <Field Name="flow_sequence" Type="int" InputMethod="edit" Length="4" Tip="Sequence counter of total flows seen"/>
                 <Field Name="engine_type" Type="int" InputMethod="edit" Length="1" Tip="Type of flow-switching engine"/>
                 <Field Name="engine_id" Type="int" InputMethod="edit" Length="1" Tip="Slot number of the flow-switching engine"/>
-                <Field Name="sampling_interval" Type="int" InputMethod="edit" Length="2" Tip="First two bits hold the sampling mode; remaining 14 bits hold value of sampling interval
-"/>
+                <Field Name="sampling_interval" Type="int" InputMethod="edit" Length="2" Tip="First two bits hold the sampling mode; remaining 14 bits hold value of sampling interval"/>
             </Category>
             <Category Name="Record" Many="true">
                 <Field Name="srcaddr" Type="ip" InputMethod="edit"/>

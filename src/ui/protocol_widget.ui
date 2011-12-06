@@ -32,7 +32,7 @@
   <customwidget>
    <class>ProtocolTree</class>
    <extends>QTreeWidget</extends>
-   <header>protocol_tree.h</header>
+   <header>widget/protocol_tree.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
