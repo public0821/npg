@@ -53,3 +53,13 @@ void Category::setText(const sstring& text)
 {
 	m_text = text;
 }
+
+sstring Category::tip() const
+{
+	return m_tip;
+}
+
+void Category::setTip(const sstring& tip)
+{
+	m_tip = tip;
+}

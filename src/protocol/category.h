@@ -16,15 +16,18 @@ public:
 	sstring name() const;
 	bool isMany() const;
 	sstring text() const;
+	sstring tip() const;
 	void setName(const sstring& name);
 	void setMany(bool is_many);
 	void setText(const sstring& text);
+	void setTip(const sstring& tip);
 
 private:
 	std::vector<Field> m_fields;
 	sstring m_name;
 	sstring m_text;
 	bool m_is_many;
+	sstring m_tip;
 
 };
 #endif

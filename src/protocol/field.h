@@ -6,16 +6,16 @@
 
 enum EFiledType
 {
-	E_FILED_TYPE_INT = 1
-	, E_FILED_TYPE_STRING
-	, E_FILED_TYPE_IP
+	E_FIELD_TYPE_INT = 1
+	, E_FIELD_TYPE_STRING
+	, E_FIELD_TYPE_IP
 };
 
 enum EFiledInputMethod
 {
-	E_FILED_INPUT_METHOD_NONE = 0
-	, E_FILED_INPUT_METHOD_INPUT
-	, E_FILED_INPUT_METHOD_SELECT
+	E_FIELD_INPUT_METHOD_NONE = 0
+	, E_FIELD_INPUT_METHOD_EDIT
+	, E_FIELD_INPUT_METHOD_SELECT
 };
 
 
@@ -30,6 +30,7 @@ public:
 	void setInputMethod(EFiledInputMethod input_method);
 	void setLength(size_t length);
 	void setText(const sstring& text);
+	void setTip(const sstring& tip);
 	void setDefaultValue(const sstring& default_value);
 
 	sstring name() const;
@@ -37,6 +38,7 @@ public:
 	EFiledInputMethod inputMethod() const;
 	size_t length() const;
 	sstring text() const;
+	sstring tip() const;
 	sstring defaultValue() const;
 private:
 	sstring m_name;
@@ -45,6 +47,7 @@ private:
 	size_t m_length;
 	sstring m_text;
 	sstring m_default_value;
+	sstring m_tip;
 	
 };
 

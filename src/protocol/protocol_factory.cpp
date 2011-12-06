@@ -121,6 +121,7 @@ Category ProtocolFactory::loadCategoryElement(QDomElement* element)
 		category.setMany(true);
 	}
 	category.setText(category_element.attribute("Text").toStdString());
+	category.setTip(category_element.attribute("Tip").toStdString());
 
 	QDomElement field_element = category_element.firstChildElement("Field");
 	while(!field_element.isNull())
@@ -138,10 +139,47 @@ Field ProtocolFactory::loadFieldElement(QDomElement* element)
 
 	Field field;
 	field.setName(field_element.attribute("Name", "Unknown").toStdString());
-	sstring many_str = field_element.attribute("Many").toStdString();
-	if (many_str == "true")
+
+	sstring type_str = field_element.attribute("Type").toStdString();
+	if (type_str == "int")
 	{
-		category.setMany(true);
+		field.setType(E_FIELD_TYPE_INT);
 	}
-	category.setText(field_element.attribute("Text").toStdString());
+	else if (type_str == "ip")
+	{
+		field.setType(E_FIELD_TYPE_IP);
+	}
+	else if (type_str == "string")
+	{
+		field.setType(E_FIELD_TYPE_STRING);
+	}
+	else
+	{
+		SET_ERROR_STR((sstring("Unknown field type:")+type_str).c_str());
+	}
+
+	sstring input_method_str = field_element.attribute("InputMethod").toStdString();
+	if (input_method_str == "edit")
+	{
+		field.setInputMethod(E_FIELD_INPUT_METHOD_EDIT);
+	}
+	else if (input_method_str == "none")
+	{
+		field.setInputMethod(E_FIELD_INPUT_METHOD_NONE);
+	}
+	else if (input_method_str == "select")
+	{
+		field.setInputMethod(E_FIELD_INPUT_METHOD_SELECT);
+	}
+	else
+	{
+		SET_ERROR_STR((sstring("Unknown field input method:")+type_str).c_str());
+	}
+
+	field.setLength(field_element.attribute("Length").toInt());
+	field.setText(field_element.attribute("Text").toStdString());
+	field.setDefaultValue(field_element.attribute("DefaultValue").toStdString());
+	field.setTip(field_element.attribute("Tip").toStdString());
+
+	return field;
 }

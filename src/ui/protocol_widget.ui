@@ -14,11 +14,11 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="2" column="0" colspan="2">
+   <item row="1" column="0" colspan="2">
     <layout class="QHBoxLayout" name="advanced_layout"/>
    </item>
    <item row="0" column="0" colspan="2">
-    <widget class="QTreeWidget" name="treeWidget">
+    <widget class="ProtocolTree" name="treeWidget">
      <column>
       <property name="text">
        <string notr="true">1</string>
@@ -26,14 +26,15 @@
      </column>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QTextEdit" name="textEdit"/>
-   </item>
-   <item row="1" column="1">
-    <widget class="QTextEdit" name="textEdit_2"/>
-   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ProtocolTree</class>
+   <extends>QTreeWidget</extends>
+   <header>protocol_tree.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

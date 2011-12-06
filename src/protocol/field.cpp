@@ -1,8 +1,8 @@
 #include "field.h"
 
 Field::Field(void)
-:m_type(E_FILED_TYPE_INT)
-,m_input_method(E_FILED_INPUT_METHOD_NONE)
+:m_type(E_FIELD_TYPE_INT)
+,m_input_method(E_FIELD_INPUT_METHOD_NONE)
 ,m_length(0)
 {
 }
@@ -36,7 +36,10 @@ void Field::setText(const sstring& text)
 {
 	m_text = m_text;
 }
-
+void Field::setTip(const sstring& tip)
+{
+	m_tip = tip;
+}
 void Field::setDefaultValue(const sstring& default_value)
 {
 	m_default_value = default_value;
@@ -74,4 +77,9 @@ sstring Field::text() const
 sstring Field::defaultValue() const
 {
 	return m_default_value;
+
+}
+sstring Field::tip() const
+{
+	return m_tip;
 }

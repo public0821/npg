@@ -15,6 +15,7 @@ ProtocolWidget::ProtocolWidget(Protocol protocol, QWidget *parent) :
 {
 	ui.setupUi(this);
 	setupUi(ui.advanced_layout);
+	ui.treeWidget->setup(protocol);
 }
 
 ProtocolWidget::~ProtocolWidget()
