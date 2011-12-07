@@ -5,6 +5,12 @@
 #include <qaction.h>
 #include "protocol/protocol.h"
 
+enum EItemType
+{
+	E_ITEM_TYPE_CATEGORY = 1, E_ITEM_TYPE_FIELD = 2,
+};
+
+
 class ProtocolTree: public QTreeWidget
 {
 Q_OBJECT
@@ -20,8 +26,11 @@ private slots:
 	void onAdd();
 private:
 	QTreeWidgetItem* getSelectedItem();
-	QTreeWidgetItem* addChildItem(QTreeWidgetItem* parent, const QString& name,
-			const QString& tip);
+		QTreeWidgetItem* addChildItem(QTreeWidgetItem* parent,
+			EItemType item_type, const QString& name, const QString& text, const QString& tip);
+
+		QTreeWidgetItem* addTopLevelItem(EItemType item_type, const QString& name, const QString& text, const QString& tip);
+
 	QWidget* getFieldWidget(const Field& field);
 private:
 	QAction* m_delete_action;

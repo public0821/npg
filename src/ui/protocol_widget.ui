@@ -19,6 +19,24 @@
    </item>
    <item row="0" column="0" colspan="2">
     <widget class="ProtocolTree" name="treeWidget">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="midLineWidth">
+      <number>0</number>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
+     <attribute name="headerHighlightSections">
+      <bool>true</bool>
+     </attribute>
      <column>
       <property name="text">
        <string notr="true">1</string>

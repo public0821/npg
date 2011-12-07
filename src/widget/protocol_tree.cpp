@@ -4,11 +4,6 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 
-enum EItemType
-{
-	E_ITEM_TYPE_CATEGORY = 1, E_ITEM_TYPE_FIELD = 2,
-};
-
 ProtocolTree::ProtocolTree(QWidget *parent) :
 		QTreeWidget(parent)
 {
@@ -37,30 +32,33 @@ void ProtocolTree::setup(Protocol protocol)
 	connect(m_delete_action, SIGNAL(triggered()), this, SLOT(onDelete()));
 	connect(m_add_action, SIGNAL(triggered()), this, SLOT(onAdd()));
 
-	QStringList protocol_text;
-	protocol_text << protocol.name().c_str();
-	QTreeWidgetItem *protocol_item = new QTreeWidgetItem(this, protocol_text);
+	//QStringList protocol_text;
+	//protocol_text << protocol.name().c_str();
+	//QTreeWidgetItem *protocol_item = new QTreeWidgetItem(this, protocol_text);
 	std::vector<Category>& categorys = protocol.Categorys();
 	std::vector<Category>::iterator it_category;
 	for (it_category = categorys.begin(); it_category != categorys.end();
 			++it_category)
 	{
-		QTreeWidgetItem *catetory_item = addChildItem(protocol_item,
+		QTreeWidgetItem *catetory_item = addTopLevelItem(E_ITEM_TYPE_CATEGORY,it_category->name().c_str(),
 				it_category->text().c_str(), it_category->tip().c_str());
-
+		catetory_item->setBackground(0, QBrush(QColor(0,255,255)));
 		std::vector<Field>& fields = it_category->fields();
 		std::vector<Field>::iterator it_field;
 		for (it_field = fields.begin(); it_field != fields.end(); ++it_field)
 		{
-			QTreeWidgetItem *field_item = addChildItem(catetory_item,
+			QTreeWidgetItem *field_item = addChildItem(catetory_item,E_ITEM_TYPE_FIELD,it_category->name().c_str(),
 					it_field->text().c_str(), it_field->tip().c_str());
 			QWidget* widget = getFieldWidget(*it_field);
 			setItemWidget(field_item, 1, widget);
+			//QBrush (QColor (255,255,255));
+			//field_item->setBackground()
 		}
 	}
 
 	expandAll();
 	resizeColumnToContents(0);
+	resizeColumnToContents(1);
 	resizeColumnToContents(2);
 }
 
@@ -126,33 +124,58 @@ QTreeWidgetItem* ProtocolTree::getSelectedItem()
 }
 
 QTreeWidgetItem* ProtocolTree::addChildItem(QTreeWidgetItem* parent,
-		const QString& name, const QString& tip)
+		EItemType item_type, const QString& name, const QString& text, const QString& tip)
 {
 	QStringList text_list;
-	text_list << name << "" << tip;
-	QTreeWidgetItem *leaf = new QTreeWidgetItem(parent, text_list);
+	text_list << text << "" << tip;
+	QTreeWidgetItem *item = new QTreeWidgetItem(parent, text_list);
+	item->setData(0, Qt::UserRole, QVariant(item_type));
+	item->setData(1, Qt::UserRole, QVariant(name));
 
-	return leaf;
+	return item;
+}
+
+QTreeWidgetItem* ProtocolTree::addTopLevelItem(EItemType item_type, const QString& name, const QString& text, const QString& tip)
+{
+	QStringList text_list;
+	text_list << text << "" << tip;
+	QTreeWidgetItem *item = new QTreeWidgetItem(this, text_list);
+	item->setData(0, Qt::UserRole, QVariant(item_type));
+	item->setData(1, Qt::UserRole, QVariant(name));
+
+	return item;
 }
 
 QWidget* ProtocolTree::getFieldWidget(const Field& field)
 {
 	QWidget* widget = NULL;
 
-	switch (field.inputMethod())
+	if (field.inputMethod() == E_FIELD_INPUT_METHOD_EDIT)
 	{
-	case E_FIELD_INPUT_METHOD_EDIT:
+		QLineEdit* edit = new QLineEdit(field.defaultValue().c_str());
+		switch (field.type())
+		{
+		case E_FIELD_TYPE_INT:	
+			edit->setValidator(new QIntValidator(field.min(), field.max(), this));	
+//			edit->setLineWidth(10);
+			break;
+		case E_FIELD_TYPE_IP:
+			edit->setInputMask("000.000.000.000");
+			break;
+		default:
+			break;
+		}
+		widget = edit;
+	}
+	else if(field.inputMethod() == E_FIELD_INPUT_METHOD_SELECT) 
+	{
 		widget = new QLineEdit(field.defaultValue().c_str());
-		break;
-	case E_FIELD_INPUT_METHOD_SELECT:
-		widget = new QLineEdit(field.defaultValue().c_str());
-		break;
-	case E_FIELD_INPUT_METHOD_NONE:
-	default:
+	}
+	else
+	{
 		QLabel* label = new QLabel(field.defaultValue().c_str());
 		label->setAlignment(Qt::AlignCenter);
 		widget = label;
-		break;
 	}
 
 	return widget;

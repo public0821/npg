@@ -36,6 +36,7 @@ void Field::setText(const sstring& text)
 {
 	m_text = text;
 }
+
 void Field::setTip(const sstring& tip)
 {
 	m_tip = tip;
@@ -79,7 +80,61 @@ sstring Field::defaultValue() const
 	return m_default_value;
 
 }
+
 sstring Field::tip() const
 {
 	return m_tip;
+}
+
+int64_t Field::min() const
+{
+	int64_t min;
+
+	switch(length())
+	{
+	case 0:
+		min = 0;
+		break;
+	case 1:
+		min = INT8_MIN;
+		break;
+	case 2:
+		min = INT16_MIN;
+		break;
+	case 4:
+		min = INT32_MIN;
+		break;
+	case 8:
+	default:
+		min = INT64_MIN;
+		break;
+	}
+	return min;
+}
+
+u_int64_t Field::max() const
+{
+	u_int64_t max;
+
+	switch(length())
+	{
+	case 0:
+		max = 0;
+		break;
+	case 1:
+		max = UINT8_MAX;
+		break;
+	case 2:
+		max = UINT16_MAX;
+		break;
+	case 4:
+		max = UINT32_MAX;
+		break;
+	case 8:
+	default:
+		max = UINT64_MAX;
+		break;
+	}
+
+	return max;
 }

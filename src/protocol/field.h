@@ -40,6 +40,8 @@ public:
 	sstring text() const;
 	sstring tip() const;
 	sstring defaultValue() const;
+	int64_t min() const;
+	u_int64_t max() const;
 private:
 	sstring m_name;
 	EFiledType m_type;
@@ -48,6 +50,8 @@ private:
 	sstring m_text;
 	sstring m_default_value;
 	sstring m_tip;
+	//int64_t m_min;
+	//u_int64_t m_max;
 	
 };
 
