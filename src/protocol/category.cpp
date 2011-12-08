@@ -1,7 +1,7 @@
 #include "category.h"
 
-Category::Category(void)
-:m_is_many(false)
+Category::Category(bool empty)
+:m_is_many(false),m_empty(empty)
 {
 }
 
@@ -14,7 +14,7 @@ void Category::addField(const Field& field)
 	m_fields.push_back(field);
 }
 
-std::vector<Field>& Category::fields()
+const std::vector<Field>& Category::fields() const
 {
 	return m_fields;
 }

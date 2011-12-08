@@ -18,7 +18,7 @@
                 <Item Name="DELETE"/> 
             </Field>
         </Protocol>-->
-        <Protocol Name="NETFLOW_V5" Icon=":/npg/resource/udp.png" Dependence="UDP">
+        <Protocol Name="NETFLOW_V5" Icon=":/npg/protocol_udp" Dependence="UDP">
             <Category Name="Header">
                 <Field Name="version" Type="int" InputMethod="none" Length="1" Text="version" DefaultValue="5" Tip="NetFlow export format version number"/>
                 <Field Name="count" Type="int" InputMethod="edit" Length="2" Tip="Number of flows exported in this packet (1-30)"/>

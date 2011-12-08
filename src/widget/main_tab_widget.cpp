@@ -45,31 +45,31 @@ int MainTabWidget::addTab(const QString &type)
 	{
 		sheet = new UdpWidget(this);
 		index = QTabWidget::addTab(sheet,
-				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_UDP);
+				QIcon(":/npg/protocol_udp"), K_UDP);
 	}
 	else if (type == K_TCP)
 	{
 		sheet = new TcpWidget(this);
 		index = QTabWidget::addTab(sheet,
-				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_TCP);
+				QIcon(":/npg/protocol_udp"), K_TCP);
 	}
 	else if (type == K_ICMP)
 	{
 		sheet = new IcmpWidget(this);
 		index = QTabWidget::addTab(sheet,
-				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ICMP);
+				QIcon(":/npg/protocol_udp"), K_ICMP);
 	}
 	else if (type == K_ARP)
 	{
 		sheet = new ArpWidget(this);
 		index = QTabWidget::addTab(sheet,
-				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ARP);
+				QIcon(":/npg/protocol_udp"), K_ARP);
 	}
 	else if (type == K_DNS)
 	{
 		sheet = new DnsWidget(this);
 		index = QTabWidget::addTab(sheet,
-				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_DNS);
+				QIcon(":/npg/protocol_udp"), K_DNS);
 	}
 	else
 	{

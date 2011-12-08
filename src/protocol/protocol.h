@@ -8,7 +8,8 @@ public:
 	~Protocol(void);
 public:
 	void addCategory(const Category& category);
-	std::vector<Category>& Categorys();
+	const  std::vector<Category>& categorys()const ;
+	Category  category(const sstring& name)const ;
 public:
 	sstring name() const;
 	sstring dependence() const;

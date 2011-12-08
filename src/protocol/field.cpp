@@ -1,4 +1,6 @@
 #include "field.h"
+#include <time.h>
+#include "system/os.h"
 
 Field::Field(void)
 :m_type(E_FIELD_TYPE_INT)
@@ -77,6 +79,14 @@ sstring Field::text() const
 
 sstring Field::defaultValue() const
 {
+	if (m_default_value== "now")
+	{
+		time_t now = time(NULL);
+		char buf[64];
+		bzero(buf, sizeof(buf));
+		snprintf(buf, sizeof(buf), "%ld", now);
+		return buf;
+	}
 	return m_default_value;
 
 }
@@ -86,7 +96,7 @@ sstring Field::tip() const
 	return m_tip;
 }
 
-int64_t Field::min() const
+int64_t Field::minValue() const
 {
 	int64_t min;
 
@@ -112,7 +122,7 @@ int64_t Field::min() const
 	return min;
 }
 
-u_int64_t Field::max() const
+u_int64_t Field::maxValue() const
 {
 	u_int64_t max;
 

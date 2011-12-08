@@ -32,9 +32,11 @@ private:
 		QTreeWidgetItem* addTopLevelItem(EItemType item_type, const QString& name, const QString& text, const QString& tip);
 
 	QWidget* getFieldWidget(const Field& field);
+	void addCategoryItem(const Category& category);
 private:
 	QAction* m_delete_action;
 	QAction* m_add_action;
+	Protocol m_protocol;
 };
 
 #endif // PROTOCOL_TREE_H

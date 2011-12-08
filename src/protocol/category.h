@@ -7,11 +7,11 @@
 class Category
 {
 public:
-	Category(void);
+	Category(bool empty=false);
 	~Category(void);
 public:
 	void addField(const Field& field);
-	std::vector<Field>& fields();
+	const std::vector<Field>& fields()const;
 	
 	sstring name() const;
 	bool isMany() const;
@@ -22,12 +22,15 @@ public:
 	void setText(const sstring& text);
 	void setTip(const sstring& tip);
 
+	bool empty()const;
+
 private:
 	std::vector<Field> m_fields;
 	sstring m_name;
 	sstring m_text;
 	bool m_is_many;
 	sstring m_tip;
+	bool m_empty;
 
 };
 #endif

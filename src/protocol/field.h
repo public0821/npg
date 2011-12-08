@@ -40,8 +40,8 @@ public:
 	sstring text() const;
 	sstring tip() const;
 	sstring defaultValue() const;
-	int64_t min() const;
-	u_int64_t max() const;
+	int64_t minValue() const;
+	u_int64_t maxValue() const;
 private:
 	sstring m_name;
 	EFiledType m_type;

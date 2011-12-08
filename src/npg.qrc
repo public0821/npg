@@ -1,15 +1,7 @@
 <RCC>
     <qresource prefix="/npg">
-        <file>resource/blue_business_01.png</file>
-        <file>resource/blue_business_02.png</file>
-        <file>resource/blue_business_03.png</file>
-        <file>resource/blue_business_04.png</file>
-        <file>resource/blue_business_05.png</file>
-        <file>resource/blue_business_06.png</file>
-        <file>resource/blue_business_07.png</file>
-        <file>resource/blue_business_08.png</file>
-        <file>resource/blue_business_09.png</file>
-        <file>resource/blue_business_10.png</file>
-        <file>resource/udp.png</file>
+        <file alias="protocol_udp">resource/udp.png</file>
+        <file alias="category_delete">resource/npg_delete_32px.png</file>
+        <file alias="category_add">resource/npg_add_32px.png</file>
     </qresource>
 </RCC>

@@ -17,19 +17,19 @@ MainListWidget::MainListWidget()
 //	setViewMode(QListView::IconMode);
 //	setFlow(QListView::TopToBottom);
 	QListWidgetItem* udp = new QListWidgetItem(
-			QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_UDP,
+			QIcon(":/npg/protocol_udp"), K_UDP,
 			this);
 	QListWidgetItem* tcp = new QListWidgetItem(
-			QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_TCP,
+			QIcon(":/npg/protocol_udp"), K_TCP,
 			this);
 	QListWidgetItem* icmp = new QListWidgetItem(
-				QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ICMP,
+				QIcon(":/npg/protocol_udp"), K_ICMP,
 				this);
 	QListWidgetItem* arp = new QListWidgetItem(
-					QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_ARP,
+					QIcon(":/npg/protocol_udp"), K_ARP,
 					this);
 	QListWidgetItem* dns = new QListWidgetItem(
-						QIcon(QString::fromUtf8(":/npg/resource/udp.png")), K_DNS,
+						QIcon(":/npg/protocol_udp"), K_DNS,
 						this);
 
 	ProtocolFactory& protocol_factory = ProtocolFactory::instance();
