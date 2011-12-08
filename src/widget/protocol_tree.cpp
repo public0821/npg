@@ -27,10 +27,12 @@ void ProtocolTree::setup(Protocol protocol)
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	setDragDropMode(NoDragDrop);
 
-	m_delete_action = new QAction(QIcon(":/npg/category_delete"), tr("delete(&D)"), this);
+	m_delete_action = new QAction(QIcon(":/npg/category_delete"), tr("Delete(&A)"), this);
 	m_delete_action->setShortcut(QKeySequence::fromString("Ctrl+D"));
 	m_add_action = new QAction(QIcon(":/npg/category_add"), tr("add(&A)"), this);
 	m_add_action->setShortcut(QKeySequence::fromString("Ctrl+A"));
+	m_delete_action->setIconVisibleInMenu(true);
+	m_add_action->setIconVisibleInMenu(true);
 
 	connect(m_delete_action, SIGNAL(triggered()), this, SLOT(onDelete()));
 	connect(m_add_action, SIGNAL(triggered()), this, SLOT(onAdd()));

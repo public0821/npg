@@ -10,7 +10,7 @@
 #if defined(WIN32)
 	#include "os_windows.h"
 #elif defined(__GNUC__)
-
+	#include "os_linux.h"
 #else
 	#error "Unsupported platform"
 #endif

@@ -1,5 +1,7 @@
 #include "field.h"
 #include <time.h>
+#include <stdio.h>
+#include <string.h>
 #include "system/os.h"
 
 Field::Field(void)

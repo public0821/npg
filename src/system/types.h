@@ -27,8 +27,15 @@ typedef std::string sstring;
 	typedef signed short int16_t;
 	typedef signed int int32_t;
 	typedef signed __int64 int64_t;
+#endif
 
-	#if defined(_WIN64)
+#ifdef __GNUC__
+	#include <sys/types.h>
+#endif
+
+	typedef unsigned char u_char;
+
+	#if defined(_WIN64) || __WORDSIZE == 64
 		#define __INT64_C(c)	c ## L
 		#define __UINT64_C(c)	c ## UL
 	#else
@@ -52,14 +59,5 @@ typedef std::string sstring;
 	# define UINT16_MAX		(65535)
 	# define UINT32_MAX		(4294967295U)
 	# define UINT64_MAX		(__UINT64_C(18446744073709551615))
-#endif
-
-#ifdef __GNUC__
-	#include <sys/types.h>
-	#include <stdint.h>
-#endif
-
-	typedef unsigned char u_char;
-
 
 #endif

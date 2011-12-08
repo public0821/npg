@@ -5,7 +5,8 @@ QT += core \
     xml
 
 # Input
-HEADERS += widget/protocol_tree.h \
+HEADERS += system/os_linux.h \
+    widget/protocol_tree.h \
     protocol/category.h \
     protocol/field.h \
     protocol/protocol.h \
@@ -25,7 +26,6 @@ HEADERS += widget/protocol_tree.h \
     socket/icmp.h \
     socket/ip_raw_socket.h \
     socket/raw_udp.h \
-    socket/socket_error.h \
     socket/socket_public.h \
     socket/socket_toolkit.h \
     socket/tcp.h \

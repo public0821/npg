@@ -10,12 +10,18 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Network Packet Generator</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../npg.qrc">
-    <normaloff>:/npg/resource/blue_business_06.png</normaloff>:/npg/resource/blue_business_06.png</iconset>
+    <normaloff>:/npg/protocol_udp</normaloff>:/npg/protocol_udp</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -24,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>19</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -61,7 +67,7 @@
   <action name="action_test">
    <property name="icon">
     <iconset resource="../npg.qrc">
-     <normaloff>:/npg/resource/blue_business_05.png</normaloff>:/npg/resource/blue_business_05.png</iconset>
+     <normaloff>:/npg/category_add</normaloff>:/npg/category_add</iconset>
    </property>
    <property name="text">
     <string>New(&amp;N)</string>
@@ -79,7 +85,7 @@
   <action name="action_quit">
    <property name="icon">
     <iconset resource="../npg.qrc">
-     <normaloff>:/npg/resource/blue_business_10.png</normaloff>:/npg/resource/blue_business_10.png</iconset>
+     <normaloff>:/npg/category_delete</normaloff>:/npg/category_delete</iconset>
    </property>
    <property name="text">
     <string>Quit(&amp;Q)</string>

@@ -22,10 +22,10 @@ public:
 	~npg();
 private slots:
 	void itemDoubleClicked(QListWidgetItem * item);
-	void onClose();
 private:
 	void saveSettings();
 	void restoreSettings();
+	void closeEvent(QCloseEvent *event);
 private:
 	Ui::npgClass ui;
 	MainListWidget* m_type_list;

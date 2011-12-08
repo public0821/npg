@@ -9,13 +9,14 @@
 #include <qstringlist.h>
 #include <qsettings.h>
 #include "widget/npg_define.h"
+#include <qmessagebox.h>
 
 npg::npg(QWidget *parent) :
 		QMainWindow(parent)
 {
 	ui.setupUi(this);
 
-	connect(ui.action_quit, SIGNAL(triggered(bool)), this, SLOT(onClose ()));
+	connect(ui.action_quit, SIGNAL(triggered(bool)), this, SLOT(close ()));
 	ui.toolBar->addAction(ui.action_quit);
 
 	m_main_splitter = new QSplitter(Qt::Horizontal);
@@ -33,6 +34,9 @@ npg::npg(QWidget *parent) :
 			SLOT(itemDoubleClicked(QListWidgetItem* )));
 
 	restoreSettings();
+	//m_main_splitter->setGeometry (100,100,400,300 );
+	//resize(400, 300);
+//	/setsi
 //	m_tabWidget->addTab(new UdpWidget(m_tabWidget), "udp");
 }
 
@@ -73,8 +77,9 @@ void npg::restoreSettings()
 	settings.endGroup();
 }
 
-void npg::onClose()
-{
+void npg::closeEvent(QCloseEvent *event)
+ {
 	saveSettings();
-	close();
-}
+    QWidget::closeEvent(event);
+ }
+

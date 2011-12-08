@@ -48,11 +48,11 @@ MainListWidget::MainListWidget()
 	}
 	
 
-	udp->setTextAlignment(Qt::AlignLeft);
-	tcp->setTextAlignment(Qt::AlignLeft);
-	icmp->setTextAlignment(Qt::AlignLeft);
-	arp->setTextAlignment(Qt::AlignLeft);
-	dns->setTextAlignment(Qt::AlignLeft);
+	udp->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+	tcp->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+	icmp->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+	arp->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+	dns->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 }
 
 MainListWidget::~MainListWidget()
