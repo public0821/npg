@@ -16,7 +16,7 @@ class DnsWidget : public TabSheet
     Q_OBJECT
 
 public:
-    DnsWidget(QWidget *parent = 0);
+    DnsWidget(const QString& name, QWidget *parent = 0);
     ~DnsWidget();
 private:
 	void saveSettings();

@@ -16,7 +16,7 @@ class TcpWidget : public TabSheet
     Q_OBJECT
 
 public:
-    TcpWidget(QWidget *parent = 0);
+    TcpWidget(const QString& name, QWidget *parent = 0);
     ~TcpWidget();
 public:
     QString sendData();

@@ -21,8 +21,21 @@ npg::npg(QWidget *parent) :
 
 	m_main_splitter = new QSplitter(Qt::Horizontal);
 
-	m_type_list = new MainListWidget();
-	m_tab_widget = new MainTabWidget();
+	const QString K_UDP = "UDP";
+	const QString K_TCP = "TCP";
+	const QString K_ICMP = "ICMP";
+	const QString K_ARP = "ARP";
+	const QString K_DNS = "DNS";
+
+	QMap<QString, QString> name_icons;
+	name_icons.insert("UDP", ":/npg/protocol_udp");
+	name_icons.insert("TCP", ":/npg/protocol_udp");
+	name_icons.insert("ICMP", ":/npg/protocol_udp");
+	name_icons.insert("ARP", ":/npg/protocol_udp");
+	name_icons.insert("DNS", ":/npg/protocol_udp");
+
+	m_type_list = new MainListWidget(name_icons);
+	m_tab_widget = new MainTabWidget(name_icons);
 
 	m_main_splitter->addWidget(m_type_list);
 	m_main_splitter->addWidget(m_tab_widget);

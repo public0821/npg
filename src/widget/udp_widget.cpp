@@ -12,8 +12,8 @@
 #include "socket/udp.h"
 #include "socket/raw_udp.h"
 
-UdpWidget::UdpWidget(QWidget *parent) :
-		TabSheet(parent)
+UdpWidget::UdpWidget(const QString& name, QWidget *parent) :
+		TabSheet(name, parent)
 {
 	ui.setupUi(this);
 //	ui.labelTip->setTextFormat(Qt::RichText);
@@ -80,7 +80,7 @@ QString UdpWidget::sendData()
 void UdpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(K_UDP);
+	settings.beginGroup(name());
 	settings.setValue("srcip", ui.src_ip_edit->text());
 	settings.setValue("dstip", ui.dst_ip_edit->text());
 	settings.setValue("srcport", ui.src_port_edit->text());
@@ -92,7 +92,7 @@ void UdpWidget::saveSettings()
 void UdpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(K_UDP);
+	settings.beginGroup(name());
 	ui.src_ip_edit->setText(settings.value("srcip").toString());
 	ui.dst_ip_edit->setText(settings.value("dstip").toString());
 	ui.src_port_edit->setText(settings.value("srcport").toString());

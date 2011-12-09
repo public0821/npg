@@ -11,8 +11,8 @@
 #include "send_thread.h"
 #include <qmessagebox.h>
 
-TabSheet::TabSheet(QWidget *parent) :
-		QWidget(parent)
+TabSheet::TabSheet(const QString& name, QWidget *parent) :
+		QWidget(parent), m_name(name)
 {
 	m_send_thread = new SendThread(this);
 }

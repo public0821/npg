@@ -23,7 +23,7 @@ class TabSheet: public QWidget
 Q_OBJECT
 
 public:
-	TabSheet(QWidget *parent);
+	TabSheet(const QString& name, QWidget *parent);
 	virtual ~TabSheet();
 protected:
 	void setupUi(QHBoxLayout* layout);
@@ -35,6 +35,7 @@ protected:
 		return m_is_advanced;
 	}
 	;
+	QString name()const{return m_name;};
 private:
 	void run();
 	void stop();
@@ -64,6 +65,8 @@ private:
 	bool m_is_advanced;
 
 	SendThread* m_send_thread;
+
+	QString m_name;
 
 	friend class SendThread;
 };

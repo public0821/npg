@@ -11,48 +11,36 @@
 #include "npg_define.h"
 #include "protocol/protocol_factory.h"
 
-MainListWidget::MainListWidget()
+MainListWidget::MainListWidget(const QMap<QString, QString>& name_icons, QWidget* parent)
+:QListWidget(parent)
 {
+	setIconSize( QSize(64, 64));
 	// TODO Auto-generated constructor stub
 //	setViewMode(QListView::IconMode);
 //	setFlow(QListView::TopToBottom);
-	QListWidgetItem* udp = new QListWidgetItem(
-			QIcon(":/npg/protocol_udp"), K_UDP,
+	QMap<QString, QString>::const_iterator it_name_icon;
+	for (it_name_icon = name_icons.begin(); it_name_icon != name_icons.end(); ++it_name_icon)
+	{
+		QListWidgetItem* item = new QListWidgetItem(
+			QIcon(it_name_icon.value()), it_name_icon.key(),
 			this);
-	QListWidgetItem* tcp = new QListWidgetItem(
-			QIcon(":/npg/protocol_udp"), K_TCP,
-			this);
-	QListWidgetItem* icmp = new QListWidgetItem(
-				QIcon(":/npg/protocol_udp"), K_ICMP,
-				this);
-	QListWidgetItem* arp = new QListWidgetItem(
-					QIcon(":/npg/protocol_udp"), K_ARP,
-					this);
-	QListWidgetItem* dns = new QListWidgetItem(
-						QIcon(":/npg/protocol_udp"), K_DNS,
-						this);
-
+		item->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+	}
 	ProtocolFactory& protocol_factory = ProtocolFactory::instance();
 	if (protocol_factory.isError())
 	{
 		QMessageBox::information(this, "tip", protocol_factory.errorStr());
 	}	
 	const std::vector<Protocol>& protocols = protocol_factory.protocols();
-	std::vector<Protocol>::const_iterator it;
-	for (it = protocols.begin(); it != protocols.end(); ++it)
+	std::vector<Protocol>::const_iterator it_protocol;
+	for (it_protocol = protocols.begin(); it_protocol != protocols.end(); ++it_protocol)
 	{
 		QListWidgetItem* item = new QListWidgetItem(
-			QIcon(QString::fromUtf8(it->icon().c_str())), it->name().c_str(),
+			QIcon(it_protocol->icon().c_str()), it_protocol->name().c_str(),
 			this);
-		item->setTextAlignment(Qt::AlignLeft);
+		item->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 	}
 	
-
-	udp->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-	tcp->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-	icmp->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-	arp->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-	dns->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 }
 
 MainListWidget::~MainListWidget()

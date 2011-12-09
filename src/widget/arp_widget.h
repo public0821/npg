@@ -16,7 +16,7 @@ class ArpWidget: public TabSheet
     Q_OBJECT
 
 public:
-    ArpWidget(QWidget *parent = 0);
+    ArpWidget(const QString& name, QWidget *parent = 0);
     ~ArpWidget();
 private:
 	void saveSettings();

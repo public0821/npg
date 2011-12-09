@@ -16,7 +16,7 @@ class UdpWidget : public TabSheet
     Q_OBJECT
 
 public:
-    UdpWidget(QWidget *parent);
+    UdpWidget(const QString& name, QWidget *parent);
     ~UdpWidget();
 public:
     QString sendData();

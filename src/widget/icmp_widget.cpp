@@ -13,8 +13,8 @@
 #include "system/os.h"
 #include "socket/socket_public.h"
 
-IcmpWidget::IcmpWidget(QWidget *parent) :
-		TabSheet(parent), m_seq(0)
+IcmpWidget::IcmpWidget(const QString& name, QWidget *parent) :
+		TabSheet(name, parent), m_seq(0)
 {
 	ui.setupUi(this);
 	setupUi(ui.send_layout);
@@ -384,7 +384,7 @@ void IcmpWidget::showMoreWidget(int index, const QString& label,
 void IcmpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(K_ICMP);
+	settings.beginGroup(name());
 	settings.setValue("ip", ui.ip_edit->text());
 	settings.endGroup();
 }
@@ -392,7 +392,7 @@ void IcmpWidget::saveSettings()
 void IcmpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(K_ICMP);
+	settings.beginGroup(name());
 	ui.ip_edit->setText(settings.value("ip").toString());
 	settings.endGroup();
 }

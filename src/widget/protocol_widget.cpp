@@ -11,7 +11,7 @@
 #include "npg_define.h"
 
 ProtocolWidget::ProtocolWidget(Protocol protocol, QWidget *parent) :
-		TabSheet(parent), m_protocol(protocol)
+		TabSheet(protocol.name().c_str(), parent), m_protocol(protocol)
 {
 	ui.setupUi(this);
 	setupUi(ui.advanced_layout);

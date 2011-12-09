@@ -10,8 +10,8 @@
 #include "npg_define.h"
 #include "socket/tcp.h"
 
-TcpWidget::TcpWidget(QWidget *parent) :
-		TabSheet(parent)
+TcpWidget::TcpWidget(const QString& name, QWidget *parent) :
+TabSheet(name, parent)
 {
 	ui.setupUi(this);
 	setupUi(ui.send_layout);
@@ -28,7 +28,7 @@ TcpWidget::~TcpWidget()
 void TcpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(K_TCP);
+	settings.beginGroup(name());
 	settings.setValue("ip", ui.ip_edit->text());
 	settings.setValue("port", ui.port_edit->text());
 	settings.setValue("timeout", ui.timeout_edit->text());
@@ -39,7 +39,7 @@ void TcpWidget::saveSettings()
 void TcpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(K_TCP);
+	settings.beginGroup(name());
 	ui.ip_edit->setText(settings.value("ip").toString());
 	ui.port_edit->setText(settings.value("port").toString());
 	ui.timeout_edit->setText(settings.value("timeout").toString());

@@ -19,7 +19,7 @@ class IcmpWidget: public TabSheet
 Q_OBJECT
 
 public:
-	IcmpWidget(QWidget *parent = 0);
+	IcmpWidget(const QString& name, QWidget *parent = 0);
 	~IcmpWidget();
 private:
 	void saveSettings();

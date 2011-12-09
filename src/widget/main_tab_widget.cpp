@@ -15,7 +15,8 @@
 #include "protocol/protocol_factory.h"
 #include "protocol_widget.h"
 
-MainTabWidget::MainTabWidget()
+MainTabWidget::MainTabWidget(const QMap<QString, QString>& name_icons,  QWidget* parent)
+:QTabWidget(parent), m_name_icons(name_icons)
 {
 	setTabsClosable(true);
 	setMovable(true);
@@ -41,35 +42,25 @@ int MainTabWidget::addTab(const QString &type)
 	int index = -1;
 	TabSheet* sheet = NULL;
 
-	if (type == K_UDP)
+	if (type == "UDP")
 	{
-		sheet = new UdpWidget(this);
-		index = QTabWidget::addTab(sheet,
-				QIcon(":/npg/protocol_udp"), K_UDP);
+		sheet = new UdpWidget(type, this);
 	}
-	else if (type == K_TCP)
+	else if (type == "TCP")
 	{
-		sheet = new TcpWidget(this);
-		index = QTabWidget::addTab(sheet,
-				QIcon(":/npg/protocol_udp"), K_TCP);
+		sheet = new TcpWidget(type, this);
 	}
-	else if (type == K_ICMP)
+	else if (type == "ICMP")
 	{
-		sheet = new IcmpWidget(this);
-		index = QTabWidget::addTab(sheet,
-				QIcon(":/npg/protocol_udp"), K_ICMP);
+		sheet = new IcmpWidget(type, this);
 	}
-	else if (type == K_ARP)
+	else if (type == "ARP")
 	{
-		sheet = new ArpWidget(this);
-		index = QTabWidget::addTab(sheet,
-				QIcon(":/npg/protocol_udp"), K_ARP);
+		sheet = new ArpWidget(type, this);
 	}
-	else if (type == K_DNS)
+	else if (type == "DNS")
 	{
-		sheet = new DnsWidget(this);
-		index = QTabWidget::addTab(sheet,
-				QIcon(":/npg/protocol_udp"), K_DNS);
+		sheet = new DnsWidget(type, this);
 	}
 	else
 	{
@@ -82,6 +73,14 @@ int MainTabWidget::addTab(const QString &type)
 		}
 		
 	}
+
+	QMap<QString, QString>::const_iterator it = m_name_icons.find(type);
+	if (it != m_name_icons.end())
+	{
+		index = QTabWidget::addTab(sheet,
+			QIcon(it.value()), it.key());
+	}
+	
 	if (index != -1)
 	{
 		m_tabs.push_back(sheet);
