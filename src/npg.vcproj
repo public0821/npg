@@ -343,6 +343,32 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\widget\protocol_tree_item.ui"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; -o &quot;.\GeneratedFiles\ui_$(InputName).h&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe"
+						Outputs="&quot;.\GeneratedFiles\ui_$(InputName).h&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; -o &quot;.\GeneratedFiles\ui_$(InputName).h&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="$(QTDIR)\bin\uic.exe"
+						Outputs="&quot;.\GeneratedFiles\ui_$(InputName).h&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\ui\protocol_widget.ui"
 				>
 				<FileConfiguration
@@ -437,7 +463,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\resource\udp.png;.\resource\npg_delete_32px.png;.\resource\npg_add_32px.png"
+						AdditionalDependencies="$(InputPath);.\resource\udp.png;.\resource\npg_delete_32px.png;.\resource\npg_add_32px.png;.\resource\npg_string_16px.png;.\resource\npg_ip_16px.png;.\resource\npg_int_16px.png;.\resource\npg_category_16px.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -448,7 +474,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\resource\udp.png;.\resource\npg_delete_32px.png;.\resource\npg_add_32px.png"
+						AdditionalDependencies="$(InputPath);.\resource\udp.png;.\resource\npg_delete_32px.png;.\resource\npg_add_32px.png;.\resource\npg_string_16px.png;.\resource\npg_ip_16px.png;.\resource\npg_int_16px.png;.\resource\npg_category_16px.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -474,7 +500,87 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\resource\npg_category_16px.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\resource\npg_delete_32px.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\resource\npg_int_16px.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\resource\npg_ip_16px.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\resource\npg_string_16px.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -798,6 +904,36 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\widget\protocol_tree_item.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\widget\protocol_tree_item.h"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_XML_LIB &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot; &quot;-I.\widget&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DQT_XML_LIB &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I.&quot; &quot;-I.\widget&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\widget\protocol_widget.cpp"
 				>
 			</File>
@@ -985,6 +1121,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GeneratedFiles\ui_protocol_tree_item.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GeneratedFiles\ui_protocol_widget.h"
 				>
 			</File>
@@ -1075,6 +1215,18 @@
 				</File>
 				<File
 					RelativePath=".\GeneratedFiles\Release\moc_protocol_tree.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GeneratedFiles\Release\moc_protocol_tree_item.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -1225,6 +1377,18 @@
 				</File>
 				<File
 					RelativePath=".\GeneratedFiles\Debug\moc_protocol_tree.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_protocol_tree_item.cpp"
 					>
 					<FileConfiguration
 						Name="Release|Win32"

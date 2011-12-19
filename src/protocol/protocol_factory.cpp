@@ -141,6 +141,7 @@ Field ProtocolFactory::loadFieldElement(QDomElement* element)
 	field.setName(field_element.attribute("Name", "Unknown").toStdString());
 
 	sstring type_str = field_element.attribute("Type").toStdString();
+	field.setTypeString(type_str);
 	if (type_str == "int")
 	{
 		field.setType(E_FIELD_TYPE_INT);

@@ -3,6 +3,7 @@
 #include <qmenu.h>
 #include <qlineedit.h>
 #include <qlabel.h>
+#include "protocol_tree_item.h"
 
 ProtocolTree::ProtocolTree(QWidget *parent) :
 		QTreeWidget(parent)
@@ -18,9 +19,9 @@ ProtocolTree::~ProtocolTree()
 void ProtocolTree::setup(Protocol protocol)
 {
 	m_protocol = protocol;
-	setColumnCount(3);
+	setColumnCount(4);
 	QStringList head_list;
-	head_list << "field" << "value" << "tip";
+	head_list << "field" << "value" <<"type"<< "tip";
 	setHeaderLabels(head_list);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this,
 			SLOT(onShowPopup(const QPoint &)));
@@ -49,6 +50,9 @@ void ProtocolTree::setup(Protocol protocol)
 	resizeColumnToContents(0);
 	resizeColumnToContents(1);
 	resizeColumnToContents(2);
+
+	//viewport()->setBackgroundRole(QPalette::Background);
+	//ssetAutoFillBackground(false);
 }
 
 void ProtocolTree::onShowPopup(const QPoint &pos)
@@ -66,11 +70,16 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 			{
 				QMenu menu(this);
 
-				menu.addAction(m_delete_action);
 				menu.addAction(m_add_action);
-
 				m_add_action->setEnabled(true);
-				m_delete_action->setEnabled(true);
+
+				std::map<sstring, int>::iterator it;
+				it = m_multi_category_count.find(category.name());
+				if (it != m_multi_category_count.end() && it->second > 1)
+				{
+					menu.addAction(m_delete_action);
+					m_delete_action->setEnabled(true);
+				}
 
 				menu.exec(mapToGlobal(pos));
 			}	
@@ -105,6 +114,21 @@ void ProtocolTree::onDelete()
 		return;
 	}
 
+
+	EItemType item_type = (EItemType)item->data(0, Qt::UserRole).toInt();
+	if (item_type !=  E_ITEM_TYPE_CATEGORY)
+	{
+		return;
+	}
+
+	sstring name = item->data(1, Qt::UserRole).toString().toStdString();
+	std::map<sstring, int>::iterator it;
+	it = m_multi_category_count.find(name);
+	if (it != m_multi_category_count.end())
+	{
+		--it->second;
+	}
+
 	delete item;
 }
 
@@ -126,26 +150,17 @@ QTreeWidgetItem* ProtocolTree::getSelectedItem()
 	return items.at(0);
 }
 
-QTreeWidgetItem* ProtocolTree::addChildItem(QTreeWidgetItem* parent,
-		EItemType item_type, const QString& name, const QString& text, const QString& tip)
+QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent, const Field& field)
 {
 	QStringList text_list;
-	text_list << text << "" << tip;
+	text_list << field.text().c_str() << ""<<field.typeString().c_str() << field.tip().c_str();
 	QTreeWidgetItem *item = new QTreeWidgetItem(parent, text_list);
-	item->setData(0, Qt::UserRole, QVariant(item_type));
-	item->setData(1, Qt::UserRole, QVariant(name));
+	item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_FIELD));
+	item->setData(1, Qt::UserRole, QVariant(field.name().c_str()));
 
-	return item;
-}
-
-QTreeWidgetItem* ProtocolTree::addTopLevelItem(EItemType item_type, const QString& name, const QString& text, const QString& tip)
-{
-	QStringList text_list;
-	text_list << text << "" << tip;
-	QTreeWidgetItem *item = new QTreeWidgetItem(this, text_list);
-	item->setData(0, Qt::UserRole, QVariant(item_type));
-	item->setData(1, Qt::UserRole, QVariant(name));
-
+	QWidget* widget = getFieldWidget(field);
+	setItemWidget(item, 1, new ProtocolTreeItem(widget));
+	item->setIcon(0, QIcon(field.icon().c_str()));
 	return item;
 }
 
@@ -185,21 +200,37 @@ QWidget* ProtocolTree::getFieldWidget(const Field& field)
 }
 
 
+
 void ProtocolTree::addCategoryItem(const Category& category)
 {
-	QTreeWidgetItem *category_item = addTopLevelItem(E_ITEM_TYPE_CATEGORY,category.name().c_str(),
-		category.text().c_str(), category.tip().c_str());
-	QBrush brush(QColor(125,0,125));
-	category_item->setBackground(0, brush);
-	category_item->setBackground(1, brush);
-	category_item->setBackground(2, brush);
+	QStringList text_list;
+	text_list << category.text().c_str()<<""<<""<<category.tip().c_str();
+	QTreeWidgetItem *category_item = new QTreeWidgetItem(this, text_list);
+	category_item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_CATEGORY));
+	category_item->setData(1, Qt::UserRole, QVariant(category.name().c_str()));
+	category_item->setIcon(0, QIcon(":/npg/category"));
+	//QBrush brush(QColor(125,0,125));
+	//category_item->setBackground(0, brush);
+	//category_item->setBackground(1, brush);
+	//category_item->setBackground(2, brush);
 	const std::vector<Field>& fields = category.fields();
 	std::vector<Field>::const_iterator it_field;
 	for (it_field = fields.begin(); it_field != fields.end(); ++it_field)
 	{
-		QTreeWidgetItem *field_item = addChildItem(category_item, E_ITEM_TYPE_FIELD,category.name().c_str(),
-			it_field->text().c_str(), it_field->tip().c_str());
-		QWidget* widget = getFieldWidget(*it_field);
-		setItemWidget(field_item, 1, widget);
+		QTreeWidgetItem *field_item = addFieldItem(category_item, *it_field);
+	}
+
+	if (category.isMany())
+	{
+		std::map<sstring, int>::iterator it;
+		it = m_multi_category_count.find(category.name());
+		if (it != m_multi_category_count.end())
+		{
+			++it->second;
+		}
+		else
+		{
+			m_multi_category_count.insert(std::make_pair(category.name(),1));
+		}
 	}
 }

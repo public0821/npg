@@ -14,8 +14,8 @@ ProtocolWidget::ProtocolWidget(Protocol protocol, QWidget *parent) :
 		TabSheet(protocol.name().c_str(), parent), m_protocol(protocol)
 {
 	ui.setupUi(this);
-	setupUi(ui.advanced_layout);
 	ui.treeWidget->setup(protocol);
+	setupUi(ui.advanced_layout);
 }
 
 ProtocolWidget::~ProtocolWidget()

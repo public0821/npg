@@ -26,10 +26,7 @@ private slots:
 	void onAdd();
 private:
 	QTreeWidgetItem* getSelectedItem();
-		QTreeWidgetItem* addChildItem(QTreeWidgetItem* parent,
-			EItemType item_type, const QString& name, const QString& text, const QString& tip);
-
-		QTreeWidgetItem* addTopLevelItem(EItemType item_type, const QString& name, const QString& text, const QString& tip);
+	QTreeWidgetItem* addFieldItem(QTreeWidgetItem* parent, const Field& field);
 
 	QWidget* getFieldWidget(const Field& field);
 	void addCategoryItem(const Category& category);
@@ -37,6 +34,7 @@ private:
 	QAction* m_delete_action;
 	QAction* m_add_action;
 	Protocol m_protocol;
+	std::map<sstring, int>  m_multi_category_count;
 };
 
 #endif // PROTOCOL_TREE_H

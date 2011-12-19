@@ -26,6 +26,11 @@ void Field::setType(EFiledType type)
 	m_type = type;
 }
 
+void Field::setTypeString(sstring type_string)
+{
+	m_type_string = type_string;
+}
+
 void Field::setInputMethod(EFiledInputMethod input_method)
 {
 	m_input_method = input_method;
@@ -149,4 +154,31 @@ u_int64_t Field::maxValue() const
 	}
 
 	return max;
+}
+
+sstring Field::icon() const
+{
+	sstring icon;
+	switch(type())
+	{
+	case E_FIELD_TYPE_INT:
+		icon = ":/npg/field_int";
+		break;
+	case E_FIELD_TYPE_STRING:
+		icon = ":/npg/field_string";
+		break;
+	case E_FIELD_TYPE_IP:
+		icon = ":/npg/field_ip";
+		break;
+	default:
+		break;
+	}
+
+	return icon;
+}
+
+
+sstring Field::typeString() const
+{
+	return m_type_string;
 }

@@ -31,8 +31,8 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 {
 	QHBoxLayout* simple_layout = new QHBoxLayout();
 
-	m_send_button = new QPushButton(tr("send"));
-	m_advanced_button = new QPushButton(tr("advance"));
+	m_send_button = new QPushButton(tr("Send"));
+	m_advanced_button = new QPushButton(tr("Advance"));
 	m_tip_label = new QLabel();
 	m_status_label1 = new QLabel();
 	m_status_label2 = new QLabel();
@@ -50,12 +50,12 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 //	m_advanceGroup->setStyleSheet("margin:5px 0px 0px 5px;padding:10px;border:3px solid red;border-radius:5px");
 //	QString oldStyleSheet = m_advanceGroup->styleSheet();
 	QHBoxLayout* advance_layout = new QHBoxLayout(m_advanced_group);
-	advance_layout->addWidget(new QLabel(tr("sendtype:")));
+	advance_layout->addWidget(new QLabel(tr("Sendtype:")));
 	m_send_typeBox = new QComboBox();
-	m_send_typeBox->addItem(tr("total"), QVariant((int) E_SEND_TYPE_TOTAL));
-	m_send_typeBox->addItem(tr("per second"), QVariant((int) E_SEND_TYPE_SPEED));
+	m_send_typeBox->addItem(tr("Total"), QVariant((int) E_SEND_TYPE_TOTAL));
+	m_send_typeBox->addItem(tr("Per second"), QVariant((int) E_SEND_TYPE_SPEED));
 	advance_layout->addWidget(m_send_typeBox);
-	advance_layout->addWidget(new QLabel(tr("count:")));
+	advance_layout->addWidget(new QLabel(tr("Count:")));
 	m_count_edit = new QLineEdit();
 	advance_layout->addWidget(m_count_edit);
 	advance_layout->addItem(
@@ -106,13 +106,13 @@ void TabSheet::onAdvanced()
 	if (m_is_advanced)
 	{
 		m_advanced_group->setVisible(false);
-		m_advanced_button->setText(tr("advance"));
+		m_advanced_button->setText(tr("Advance"));
 		m_is_advanced = !m_is_advanced;
 	}
 	else
 	{
 		m_advanced_group->setVisible(true);
-		m_advanced_button->setText(tr("simple"));
+		m_advanced_button->setText(tr("Simple"));
 		m_is_advanced = !m_is_advanced;
 	}
 }
@@ -126,7 +126,7 @@ void TabSheet::onSend()
 	saveSettings();
 	if (m_send_thread->isRunning()) //running
 	{
-		m_send_button->setText(tr("send"));
+		m_send_button->setText(tr("Send"));
 		m_send_thread->stop();
 		return;
 	}
@@ -174,7 +174,7 @@ void TabSheet::onSendFinish()
 		showFailedTip(error);
 	}
 
-	m_send_button->setText(tr("send"));
+	m_send_button->setText(tr("Send"));
 
 }
 

@@ -27,6 +27,8 @@ public:
 public:
 	void setName(const sstring& name);
 	void setType(EFiledType type);
+	void setTypeString(sstring type_string);
+	
 	void setInputMethod(EFiledInputMethod input_method);
 	void setLength(size_t length);
 	void setText(const sstring& text);
@@ -35,6 +37,7 @@ public:
 
 	sstring name() const;
 	EFiledType type() const;
+	sstring typeString() const;
 	EFiledInputMethod inputMethod() const;
 	size_t length() const;
 	sstring text() const;
@@ -42,6 +45,7 @@ public:
 	sstring defaultValue() const;
 	int64_t minValue() const;
 	u_int64_t maxValue() const;
+	sstring icon()const;
 private:
 	sstring m_name;
 	EFiledType m_type;
@@ -50,6 +54,7 @@ private:
 	sstring m_text;
 	sstring m_default_value;
 	sstring m_tip;
+	sstring m_type_string;
 	//int64_t m_min;
 	//u_int64_t m_max;
 	

@@ -3,5 +3,9 @@
         <file alias="protocol_udp">resource/udp.png</file>
         <file alias="category_delete">resource/npg_delete_32px.png</file>
         <file alias="category_add">resource/npg_add_32px.png</file>
+        <file alias="string_string">resource/npg_string_16px.png</file>
+        <file alias="field_ip">resource/npg_ip_16px.png</file>
+        <file alias="field_int">resource/npg_int_16px.png</file>
+        <file alias="category">resource/npg_category_16px.png</file>
     </qresource>
 </RCC>
