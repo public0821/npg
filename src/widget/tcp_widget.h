@@ -10,17 +10,18 @@
 
 #include "ui_tcp_widget.h"
 #include "tab_sheet.h"
+#include "base_protocol_widget.h"
+#include "system/types.h"
 
-class TcpWidget : public TabSheet
+class TcpWidget : public BaseProtocolWidget
 {
     Q_OBJECT
 
 public:
-    TcpWidget(const QString& name, QWidget *parent = 0);
+    TcpWidget(const QString& protocol_name, QWidget *parent = 0);
     ~TcpWidget();
 public:
-    QString sendData();
- //   QString beforeSendData();
+    QString sendData(const char* data, u_int16_t length);
 private:
 	void saveSettings();
 	void restoreSettings();

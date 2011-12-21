@@ -18,39 +18,50 @@
                 <Item Name="DELETE"/> 
             </Field>
         </Protocol>-->
+        <Protocol Name="RAW_UDP" Icon=":/npg/protocol_udp" Dependence="IP" DependenceParam="UDP">
+            <Category Name="Header">
+                <Field Name="src_port" Type="int" InputMethod="lineedit" Length="2" Tip="NetFlow export format version number"/>
+                <Field Name="dst_port" Type="int" InputMethod="lineedit" Length="2" Tip="Number of flows exported in this packet (1-30)"/>
+                <Field Name="length" Type="int" InputMethod="lineedit" Length="2"  Tip="Current time in milliseconds since the export device booted"/>
+                <Field Name="checknum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="Current count of seconds since 0000 UTC 1970"/>
+            </Category>
+            <Category Name="Data">
+                <Field Name="data" Type="string" InputMethod="textedit" Tip="NetFlow export format version number"/>
+            </Category>
+        </Protocol>
         <Protocol Name="NETFLOW_V5" Icon=":/npg/protocol_udp" Dependence="UDP">
             <Category Name="Header">
-                <Field Name="version" Type="int" InputMethod="none" Length="1" Text="version" DefaultValue="5" Tip="NetFlow export format version number"/>
-                <Field Name="count" Type="int" InputMethod="edit" Length="2" Tip="Number of flows exported in this packet (1-30)"/>
-                <Field Name="sys_uptime" Type="int" InputMethod="edit" Length="4" DefaultValue="5" DefaultValue="0" Tip="Current time in milliseconds since the export device booted"/>
-                <Field Name="unix_secs" Type="int" InputMethod="edit" Length="4" DefaultValue="now" Tip="Current count of seconds since 0000 UTC 1970"/>
-                <Field Name="unix_nsecs" Type="int" InputMethod="edit" Length="4" DefaultValue="0" Tip="Residual nanoseconds since 0000 UTC 1970"/>
-                <Field Name="flow_sequence" Type="int" InputMethod="edit" Length="4" Tip="Sequence counter of total flows seen"/>
-                <Field Name="engine_type" Type="int" InputMethod="edit" Length="1" Tip="Type of flow-switching engine"/>
-                <Field Name="engine_id" Type="int" InputMethod="edit" Length="1" Tip="Slot number of the flow-switching engine"/>
-                <Field Name="sampling_interval" Type="int" InputMethod="edit" Length="2" Tip="First two bits hold the sampling mode; remaining 14 bits hold value of sampling interval"/>
+                <Field Name="version" Optional="false" Type="int" InputMethod="none" Length="2" Text="version" DefaultValue="5" Tip="NetFlow export format version number"/>
+                <Field Name="count" Type="int" InputMethod="lineedit" Length="2" Tip="Number of flows exported in this packet (1-30)"/>
+                <Field Name="sys_uptime" Type="int" InputMethod="lineedit" Length="4" DefaultValue="0" Tip="Current time in milliseconds since the export device booted"/>
+                <Field Name="unix_secs" Type="int" InputMethod="lineedit" Length="4" DefaultValue="now" Tip="Current count of seconds since 0000 UTC 1970"/>
+                <Field Name="unix_nsecs" Type="int" InputMethod="lineedit" Length="4" DefaultValue="0" Tip="Residual nanoseconds since 0000 UTC 1970"/>
+                <Field Name="flow_sequence" Type="int" InputMethod="lineedit" Length="4" Tip="Sequence counter of total flows seen"/>
+                <Field Name="engine_type" Type="int" InputMethod="lineedit" Length="1" Tip="Type of flow-switching engine"/>
+                <Field Name="engine_id" Type="int" InputMethod="lineedit" Length="1" Tip="Slot number of the flow-switching engine"/>
+                <Field Name="sampling_interval" Type="int" InputMethod="lineedit" Length="2" Tip="First two bits hold the sampling mode; remaining 14 bits hold value of sampling interval"/>
             </Category>
             <Category Name="Record" Many="true">
-                <Field Name="srcaddr" Type="ip" InputMethod="edit" Tip="Source IP address"/>
-                <Field Name="dstaddr" Type="ip" InputMethod="edit" Tip="Destination IP address"/>
-                <Field Name="nexthop" Type="ip" InputMethod="edit" Tip="IP address of next hop router"/>
-                <Field Name="input" Type="int" InputMethod="edit" Length="2" Tip="SNMP index of input interface"/>
-                <Field Name="output" Type="int" InputMethod="edit" Length="2" Tip="SNMP index of output interface"/>
-                <Field Name="dPkts" Type="int" InputMethod="edit" Length="4" Tip="Packets in the flow"/>
-                <Field Name="dOctets" Type="int" InputMethod="edit" Length="4" Tip="Total number of Layer 3 bytes in the packets of the flow"/>
-                <Field Name="first" Type="int" InputMethod="edit" Length="4" Tip="SysUptime at start of flow"/>
-                <Field Name="last" Type="int" InputMethod="edit" Length="4" Tip="SysUptime at the time the last packet of the flow was received"/>
-                <Field Name="srcport" Type="int" InputMethod="edit" Length="2" Tip="TCP/UDP source port number or equivalent"/>
-                <Field Name="dstport" Type="int" InputMethod="edit" Length="2" Tip="TCP/UDP destination port number or equivalent"/>
-                <Field Name="pad1" Type="int" InputMethod="edit" Length="1" DefaultValue="0" Tip="Unused (zero) bytes"/>
-                <Field Name="tcp_flags" Type="int" InputMethod="edit" Length="1" Tip="Cumulative OR of TCP flags"/>
-                <Field Name="prot" Type="int" InputMethod="edit" Length="1" Tip="IP protocol type (for example, TCP = 6; UDP = 17)"/>
-                <Field Name="tos" Type="int" InputMethod="edit" Length="1" Tip="IP type of service (ToS)"/>
-                <Field Name="src_as" Type="int" InputMethod="edit" Length="2" Tip="Autonomous system number of the source, either origin or peer"/>
-                <Field Name="dst_as" Type="int" InputMethod="edit" Length="2" Tip="Autonomous system number of the destination, either origin or peer"/>
-                <Field Name="src_mask" Type="int" InputMethod="edit" Length="1" Tip="Source address prefix mask bits"/>
-                <Field Name="dst_mask" Type="int" InputMethod="edit" Length="1" Tip="Destination address prefix mask bits"/>
-                <Field Name="pad2" Type="int" InputMethod="edit" Length="2" DefaultValue="0" Tip="Unused (zero) bytes"/>                
+                <Field Name="srcaddr" Type="ip" InputMethod="lineedit" Tip="Source IP address"/>
+                <Field Name="dstaddr" Type="ip" InputMethod="lineedit" Tip="Destination IP address"/>
+                <Field Name="nexthop" Type="ip" InputMethod="lineedit" Tip="IP address of next hop router"/>
+                <Field Name="input" Type="int" InputMethod="lineedit" Length="2" Tip="SNMP index of input interface"/>
+                <Field Name="output" Type="int" InputMethod="lineedit" Length="2" Tip="SNMP index of output interface"/>
+                <Field Name="dPkts" Type="int" InputMethod="lineedit" Length="4" Tip="Packets in the flow"/>
+                <Field Name="dOctets" Type="int" InputMethod="lineedit" Length="4" Tip="Total number of Layer 3 bytes in the packets of the flow"/>
+                <Field Name="first" Type="int" InputMethod="lineedit" Length="4" Tip="SysUptime at start of flow"/>
+                <Field Name="last" Type="int" InputMethod="lineedit" Length="4" Tip="SysUptime at the time the last packet of the flow was received"/>
+                <Field Name="srcport" Type="int" InputMethod="lineedit" Length="2" Tip="TCP/UDP source port number or equivalent"/>
+                <Field Name="dstport" Type="int" InputMethod="lineedit" Length="2" Tip="TCP/UDP destination port number or equivalent"/>
+                <Field Name="pad1" Type="int" InputMethod="lineedit" Length="1" DefaultValue="0" Tip="Unused (zero) bytes"/>
+                <Field Name="tcp_flags" Type="int" InputMethod="lineedit" Length="1" Tip="Cumulative OR of TCP flags"/>
+                <Field Name="prot" Type="int" InputMethod="lineedit" Length="1" Tip="IP protocol type (for example, TCP = 6; UDP = 17)"/>
+                <Field Name="tos" Type="int" InputMethod="lineedit" Length="1" Tip="IP type of service (ToS)"/>
+                <Field Name="src_as" Type="int" InputMethod="lineedit" Length="2" Tip="Autonomous system number of the source, either origin or peer"/>
+                <Field Name="dst_as" Type="int" InputMethod="lineedit" Length="2" Tip="Autonomous system number of the destination, either origin or peer"/>
+                <Field Name="src_mask" Type="int" InputMethod="lineedit" Length="1" Tip="Source address prefix mask bits"/>
+                <Field Name="dst_mask" Type="int" InputMethod="lineedit" Length="1" Tip="Destination address prefix mask bits"/>
+                <Field Name="pad2" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="Unused (zero) bytes"/>                
             </Category>
         </Protocol>
     </Protocols>

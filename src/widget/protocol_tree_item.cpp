@@ -1,14 +1,107 @@
 #include "protocol_tree_item.h"
+#include <qlineedit.h>
+#include <qtextedit.h>
+#include <qlabel.h>
 
-ProtocolTreeItem::ProtocolTreeItem(QWidget * widget, QWidget *parent)
-	: QWidget(parent)
+ProtocolTreeItem::ProtocolTreeItem(QTreeWidgetItem *item, const Field& field, QWidget *parent)
+	: m_field(field), QWidget(parent), m_item(item)
 {
 	ui.setupUi(this);
-	ui.layout->addWidget(widget, 0, 0);
+	m_child = getFieldWidget(m_field);
+	ui.layout->addWidget(m_child, 0, 0);
 	
 }
 
 ProtocolTreeItem::~ProtocolTreeItem()
 {
 
+}
+
+QWidget* ProtocolTreeItem::getFieldWidget(const Field& field)
+{
+	QWidget* widget = NULL;
+
+	if (field.inputMethod() == E_FIELD_INPUT_METHOD_LINEEDIT)
+	{
+		QLineEdit* edit = new QLineEdit(field.defaultValue().c_str());
+		switch (field.type())
+		{
+		case E_FIELD_TYPE_INT:	
+			edit->setValidator(new QIntValidator(field.minValue(), field.maxValue(), this));	
+			//			edit->setLineWidth(10);
+			break;
+		case E_FIELD_TYPE_IP:
+			edit->setInputMask("000.000.000.000");
+			break;
+		default:
+			break;
+		}
+		widget = edit;
+		if (field.type() == E_FIELD_TYPE_STRING)
+		{
+			connect(edit, SIGNAL(textChanged ( const QString &  )), this, SLOT(onTextChange()));
+		}	
+	}
+	else if (field.inputMethod() == E_FIELD_INPUT_METHOD_TEXTEDIT)
+	{
+		QTextEdit* edit = new QTextEdit(field.defaultValue().c_str());
+		widget = edit;
+		if (field.type() == E_FIELD_TYPE_STRING)
+		{
+			connect(edit, SIGNAL(textChanged ()), this, SLOT(onTextChange()));
+		}
+	}
+	else if(field.inputMethod() == E_FIELD_INPUT_METHOD_SELECT) 
+	{
+		widget = new QLineEdit(field.defaultValue().c_str());
+	}
+	else
+	{
+		QLabel* label = new QLabel(field.defaultValue().c_str());
+		label->setAlignment(Qt::AlignCenter);
+		widget = label;
+	}
+
+	return widget;
+}
+
+QString ProtocolTreeItem::value()
+{
+	QString value;
+
+	switch (m_field.inputMethod())
+	{
+	case E_FIELD_INPUT_METHOD_LINEEDIT:
+		value = ((QLineEdit*)m_child)->text();
+		break;
+	case E_FIELD_INPUT_METHOD_SELECT:
+		value = ((QLineEdit*)m_child)->text();
+		break;
+	case E_FIELD_INPUT_METHOD_TEXTEDIT:
+		value = ((QTextEdit*)m_child)->toPlainText();
+		break;
+	default:
+		value = ((QLabel*)m_child)->text();
+		break;
+	}
+
+	return value;
+}
+
+void ProtocolTreeItem::onTextChange()
+{
+	QTextEdit* text_edit = dynamic_cast<QTextEdit*>(m_child);
+	if (text_edit != NULL)
+	{
+		emit textChange(m_item, text_edit->toPlainText().length());
+		return;
+	}
+
+	QLineEdit* line_edit = dynamic_cast<QLineEdit*>(m_child);
+	if (line_edit != NULL)
+	{
+		emit textChange(m_item, line_edit->text().length());
+		return;
+	}
+	
 }

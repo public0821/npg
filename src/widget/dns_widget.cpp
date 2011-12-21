@@ -26,7 +26,7 @@ DnsWidget::~DnsWidget()
 void DnsWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(name());
+	settings.beginGroup(protocolName());
 	settings.setValue("server", ui.server_edit->text());
 	settings.setValue("request", ui.request_edit->text());
 	settings.setValue("reverse", (int)ui.reverse_checkbox->checkState());
@@ -36,7 +36,7 @@ void DnsWidget::saveSettings()
 void DnsWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(name());
+	settings.beginGroup(protocolName());
 	ui.server_edit->setText(settings.value("server").toString());
 	ui.request_edit->setText(settings.value("request").toString());
 	ui.reverse_checkbox->setCheckState((Qt::CheckState)settings.value("reverse").toInt());

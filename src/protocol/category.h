@@ -12,6 +12,7 @@ public:
 public:
 	void addField(const Field& field);
 	const std::vector<Field>& fields()const;
+	Field field(sstring name)const;
 	
 	sstring name() const;
 	bool isMany() const;

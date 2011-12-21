@@ -74,7 +74,7 @@ ArpWidget::~ArpWidget()
 void ArpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(name());
+	settings.beginGroup(protocolName());
 	settings.setValue("toMac", ui.to_mac_edit->text());
 	settings.setValue("fromMac", ui.from_mac_edit->text());
 	settings.setValue("sendMac", ui.send_mac_edit->text());
@@ -88,7 +88,7 @@ void ArpWidget::saveSettings()
 void ArpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(name());
+	settings.beginGroup(protocolName());
 	ui.to_mac_edit->setText(settings.value("toMac").toString());
 	ui.from_mac_edit->setText(settings.value("fromMac").toString());
 	ui.send_mac_edit->setText(settings.value("sendMac").toString());

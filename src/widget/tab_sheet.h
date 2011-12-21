@@ -16,6 +16,7 @@
 #include <qlineedit.h>
 #include <QHBoxLayout>
 #include <QGroupBox>
+#include "base_protocol_widget.h"
 
 class SendThread;
 class TabSheet: public QWidget
@@ -23,7 +24,7 @@ class TabSheet: public QWidget
 Q_OBJECT
 
 public:
-	TabSheet(const QString& name, QWidget *parent);
+	TabSheet(const QString& protocol_name, QWidget *parent = NULL, QString depend_protocol_name="", QString depend_protocol_param="");
 	virtual ~TabSheet();
 protected:
 	void setupUi(QHBoxLayout* layout);
@@ -35,13 +36,26 @@ protected:
 		return m_is_advanced;
 	}
 	;
-	QString name()const{return m_name;};
+	QString protocolName()const{return m_protocol_name;};
+	BaseProtocolWidget* dependProtocolWidget()const{return m_base_protocol_widget;};
 private:
 	void run();
 	void stop();
-private:
-	virtual void saveSettings()=0;
-	virtual void restoreSettings()=0;
+protected:
+	virtual void saveSettings()
+	{ 
+		if (m_base_protocol_widget != NULL)
+		{
+			m_base_protocol_widget->saveSettings();
+		}
+	};
+	virtual void restoreSettings()
+	{
+		if (m_base_protocol_widget != NULL)
+		{
+			m_base_protocol_widget->restoreSettings();
+		}	
+	};
 	virtual QString sendData()=0;
 	virtual QString beforeSendData(){return tr("");};
 
@@ -66,7 +80,10 @@ private:
 
 	SendThread* m_send_thread;
 
-	QString m_name;
+	QString m_protocol_name;
+//	QString m_depend_protocol_name;
+
+	BaseProtocolWidget* m_base_protocol_widget;
 
 	friend class SendThread;
 };

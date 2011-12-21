@@ -19,6 +19,20 @@ const std::vector<Field>& Category::fields() const
 	return m_fields;
 }
 
+Field  Category::field(sstring name)const
+{
+	std::vector<Field>::const_iterator it;
+	for (it = m_fields.begin(); it != m_fields.end(); ++it)
+	{
+		if (it->name() == name)
+		{
+			return *it;
+		}
+	}
+
+	return Field(true);
+}
+
 sstring Category::name() const
 {
 	return m_name;

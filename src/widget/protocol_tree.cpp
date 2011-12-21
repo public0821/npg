@@ -1,8 +1,6 @@
 #include "protocol_tree.h"
 #include <qmessagebox.h>
 #include <qmenu.h>
-#include <qlineedit.h>
-#include <qlabel.h>
 #include "protocol_tree_item.h"
 
 ProtocolTree::ProtocolTree(QWidget *parent) :
@@ -19,9 +17,9 @@ ProtocolTree::~ProtocolTree()
 void ProtocolTree::setup(Protocol protocol)
 {
 	m_protocol = protocol;
-	setColumnCount(4);
+	setColumnCount(5);
 	QStringList head_list;
-	head_list << "field" << "value" <<"type"<< "tip";
+	head_list << "field" << "value" <<"type"<<"length"<< "tip";
 	setHeaderLabels(head_list);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this,
 			SLOT(onShowPopup(const QPoint &)));
@@ -50,6 +48,8 @@ void ProtocolTree::setup(Protocol protocol)
 	resizeColumnToContents(0);
 	resizeColumnToContents(1);
 	resizeColumnToContents(2);
+	resizeColumnToContents(3);
+	resizeColumnToContents(4);
 
 	//viewport()->setBackgroundRole(QPalette::Background);
 	//ssetAutoFillBackground(false);
@@ -153,50 +153,21 @@ QTreeWidgetItem* ProtocolTree::getSelectedItem()
 QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent, const Field& field)
 {
 	QStringList text_list;
-	text_list << field.text().c_str() << ""<<field.typeString().c_str() << field.tip().c_str();
+	text_list << field.text().c_str() << ""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
 	QTreeWidgetItem *item = new QTreeWidgetItem(parent, text_list);
 	item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_FIELD));
 	item->setData(1, Qt::UserRole, QVariant(field.name().c_str()));
+	item->setTextAlignment(3, Qt::AlignHCenter|Qt::AlignVCenter);
 
-	QWidget* widget = getFieldWidget(field);
-	setItemWidget(item, 1, new ProtocolTreeItem(widget));
+	//QWidget* widget = getFieldWidget(field);
+	ProtocolTreeItem* tree_item = new ProtocolTreeItem(item, field);
+	if (field.type() == E_FIELD_TYPE_STRING)
+	{
+		connect(tree_item, SIGNAL(textChange(QTreeWidgetItem *, int)), this, SLOT(itemWidgetTextChange(QTreeWidgetItem *, int)));
+	}
+	setItemWidget(item, 1, tree_item);
 	item->setIcon(0, QIcon(field.icon().c_str()));
 	return item;
-}
-
-QWidget* ProtocolTree::getFieldWidget(const Field& field)
-{
-	QWidget* widget = NULL;
-
-	if (field.inputMethod() == E_FIELD_INPUT_METHOD_EDIT)
-	{
-		QLineEdit* edit = new QLineEdit(field.defaultValue().c_str());
-		switch (field.type())
-		{
-		case E_FIELD_TYPE_INT:	
-			edit->setValidator(new QIntValidator(field.minValue(), field.maxValue(), this));	
-//			edit->setLineWidth(10);
-			break;
-		case E_FIELD_TYPE_IP:
-			edit->setInputMask("000.000.000.000");
-			break;
-		default:
-			break;
-		}
-		widget = edit;
-	}
-	else if(field.inputMethod() == E_FIELD_INPUT_METHOD_SELECT) 
-	{
-		widget = new QLineEdit(field.defaultValue().c_str());
-	}
-	else
-	{
-		QLabel* label = new QLabel(field.defaultValue().c_str());
-		label->setAlignment(Qt::AlignCenter);
-		widget = label;
-	}
-
-	return widget;
 }
 
 
@@ -233,4 +204,9 @@ void ProtocolTree::addCategoryItem(const Category& category)
 			m_multi_category_count.insert(std::make_pair(category.name(),1));
 		}
 	}
+}
+
+void ProtocolTree::itemWidgetTextChange(QTreeWidgetItem *item , int count)
+{
+	item->setText(3, QString("%1").arg(count));
 }

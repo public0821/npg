@@ -10,12 +10,35 @@
 #include <QVBoxLayout>
 #include "send_thread.h"
 #include <qmessagebox.h>
+#include "udp_widget.h"
+#include "tcp_widget.h"
+#include "npg_define.h"
+#include "ip_widget.h"
 
-TabSheet::TabSheet(const QString& name, QWidget *parent) :
-		QWidget(parent), m_name(name)
+TabSheet::TabSheet(const QString& protocol_name
+				   , QWidget *parent
+				   , QString depend_protocol_name
+				   , QString depend_protocol_param) 
+:QWidget(parent)
+, m_protocol_name(protocol_name)
+,m_base_protocol_widget(NULL)
 {
 	m_send_thread = new SendThread(this);
+
+	if (depend_protocol_name == K_PROTOCOL_UDP)
+	{
+		m_base_protocol_widget = new UdpWidget(m_protocol_name, this);
+	}
+	else if (depend_protocol_name == K_PROTOCOL_TCP)
+	{
+		m_base_protocol_widget = new TcpWidget(m_protocol_name, this);
+	}
+	else if (depend_protocol_name == K_PROTOCOL_IP)
+	{
+		m_base_protocol_widget = new IpWidget(m_protocol_name, depend_protocol_param, this);
+	}
 }
+
 
 TabSheet::~TabSheet()
 {

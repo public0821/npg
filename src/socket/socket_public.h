@@ -15,6 +15,14 @@
 const int K_SOCKET_ERROR = -1;
 const size_t K_SOCKET_ERROR_BUF_LEN = 512;
 
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+#define ntohll(n)  ((u_int64_t)ntohl((u_int64_t)(n) >> 32) |\
+					((u_int64_t)ntohl(((u_int64_t)(n) << 32)>>32))<<32)
+#else
+	#define ntohll(n) n
+	#define htonll(n) n
+#endif
+
 #ifdef _MSC_VER
 #define npg_errno   WSAGetLastError()
 //	#define sock_last_error()   ""//WSAGetLastError()

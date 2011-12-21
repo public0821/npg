@@ -4,10 +4,12 @@
 #include <string.h>
 #include "system/os.h"
 
-Field::Field(void)
+Field::Field(bool empty)
 :m_type(E_FIELD_TYPE_INT)
 ,m_input_method(E_FIELD_INPUT_METHOD_NONE)
 ,m_length(0)
+,m_empty(empty)
+,m_optional(false)
 {
 }
 
@@ -15,6 +17,11 @@ Field::~Field(void)
 {
 }
 
+
+bool Field::empty()const
+{
+	return m_empty;
+}
 
 void Field::setName(const sstring& name)
 {
@@ -24,6 +31,11 @@ void Field::setName(const sstring& name)
 void Field::setType(EFiledType type)
 {
 	m_type = type;
+}
+
+void Field::setOptional(bool optional)
+{
+	m_optional = optional;
 }
 
 void Field::setTypeString(sstring type_string)
@@ -72,6 +84,10 @@ EFiledInputMethod Field::inputMethod() const
 
 size_t Field::length() const
 {
+	if (m_length == 0 && type() == E_FIELD_TYPE_IP)
+	{
+		return 4u;
+	}
 	return m_length;
 }
 
@@ -181,4 +197,9 @@ sstring Field::icon() const
 sstring Field::typeString() const
 {
 	return m_type_string;
+}
+
+bool Field::isOptional()const
+{
+	return m_optional;
 }

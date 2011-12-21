@@ -10,11 +10,10 @@
 #include "npg_define.h"
 #include "socket/tcp.h"
 
-TcpWidget::TcpWidget(const QString& name, QWidget *parent) :
-TabSheet(name, parent)
+TcpWidget::TcpWidget(const QString& protocol_name, QWidget *parent) :
+BaseProtocolWidget(protocol_name, parent)
 {
 	ui.setupUi(this);
-	setupUi(ui.send_layout);
 
 	ui.port_edit->setValidator(new QIntValidator(1, 65535, this));
 	ui.timeout_edit->setValidator(new QIntValidator(1, 15, this));
@@ -28,33 +27,30 @@ TcpWidget::~TcpWidget()
 void TcpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(name());
+	settings.beginGroup(protocolName());
 	settings.setValue("ip", ui.ip_edit->text());
 	settings.setValue("port", ui.port_edit->text());
 	settings.setValue("timeout", ui.timeout_edit->text());
-	settings.setValue("data", ui.data_edit->toPlainText());
 	settings.endGroup();
 }
 
 void TcpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(name());
+	settings.beginGroup(protocolName());
 	ui.ip_edit->setText(settings.value("ip").toString());
 	ui.port_edit->setText(settings.value("port").toString());
 	ui.timeout_edit->setText(settings.value("timeout").toString());
-	ui.data_edit->setText(settings.value("data").toString());
 	settings.endGroup();
 }
 
-QString TcpWidget::sendData()
+QString TcpWidget::sendData(const char* data, u_int16_t length)
 {
 //	showTip("");
 	sstring ip = ui.ip_edit->text().toStdString();
 	u_int16_t port = ui.port_edit->text().toUShort();
 	time_t timeout = ui.timeout_edit->text().toInt();
-	sstring data = ui.data_edit->toPlainText().toStdString();
-	if (ip.empty() || port <= 0 || data.empty())
+	if (ip.empty() || port <= 0)
 	{
 		return tr("ip and port and data must set");
 	}
@@ -71,7 +67,7 @@ QString TcpWidget::sendData()
 		return QString(tr(tcp.errorStr()));
 	}
 
-	ret = tcp.send(data.c_str(), data.length());
+	ret = tcp.send(data, length);
 	if (!ret)
 	{
 		return QString(tr(tcp.errorStr()));

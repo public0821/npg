@@ -24,11 +24,11 @@ private slots:
 	void onShowPopup(const QPoint &pos);
 	void onDelete();
 	void onAdd();
+	void itemWidgetTextChange(QTreeWidgetItem *, int);
 private:
 	QTreeWidgetItem* getSelectedItem();
 	QTreeWidgetItem* addFieldItem(QTreeWidgetItem* parent, const Field& field);
 
-	QWidget* getFieldWidget(const Field& field);
 	void addCategoryItem(const Category& category);
 private:
 	QAction* m_delete_action;

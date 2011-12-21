@@ -1,6 +1,7 @@
 #include "protocol_factory.h"
 #include <QDomDocument>
 #include <QFile>
+#include "npg_define.h"
 
 ProtocolFactory::ProtocolFactory(void)
 {
@@ -97,7 +98,26 @@ void ProtocolFactory::loadProtocolElement(QDomElement* element)
 	Protocol protocol;
 	protocol.setName(protocol_element.attribute("Name", "Unknown").toStdString());
 	protocol.setIcon(protocol_element.attribute("Icon").toStdString());
-	protocol.setDependence(protocol_element.attribute("Dependence").toStdString());
+	protocol.setDependenceParam(protocol_element.attribute("DependenceParam").toStdString());
+	QString dependence_str = protocol_element.attribute("Dependence");
+	protocol.setDependenceString(dependence_str.toStdString());
+	if (dependence_str == K_PROTOCOL_UDP)
+	{
+		protocol.setDependence(E_BASE_PROTOCOL_UDP);
+	}
+	else if (dependence_str == K_PROTOCOL_TCP)
+	{
+		protocol.setDependence(E_BASE_PROTOCOL_TCP);
+	}
+	else  if (dependence_str == K_PROTOCOL_IP)
+	{
+		protocol.setDependence(E_BASE_PROTOCOL_IP);
+	}
+	else
+	{
+		SET_ERROR_STR((sstring("Unknown Dependence Protocol:")+dependence_str.toStdString()).c_str());
+	}
+	
 
 	QDomElement category_element = protocol_element.firstChildElement("Category");
 	while(!category_element.isNull())
@@ -160,9 +180,13 @@ Field ProtocolFactory::loadFieldElement(QDomElement* element)
 	}
 
 	sstring input_method_str = field_element.attribute("InputMethod").toStdString();
-	if (input_method_str == "edit")
+	if (input_method_str == "lineedit")
 	{
-		field.setInputMethod(E_FIELD_INPUT_METHOD_EDIT);
+		field.setInputMethod(E_FIELD_INPUT_METHOD_LINEEDIT);
+	}
+	else if (input_method_str == "textedit")
+	{
+		field.setInputMethod(E_FIELD_INPUT_METHOD_TEXTEDIT);
 	}
 	else if (input_method_str == "none")
 	{
@@ -174,13 +198,23 @@ Field ProtocolFactory::loadFieldElement(QDomElement* element)
 	}
 	else
 	{
-		SET_ERROR_STR((sstring("Unknown field input method:")+type_str).c_str());
+		SET_ERROR_STR((sstring("Unknown field input method:")+input_method_str).c_str());
 	}
 
 	field.setLength(field_element.attribute("Length").toInt());
 	field.setText(field_element.attribute("Text").toStdString());
 	field.setDefaultValue(field_element.attribute("DefaultValue").toStdString());
 	field.setTip(field_element.attribute("Tip").toStdString());
+
+	sstring optional_str = field_element.attribute("Optional").toStdString();
+	if (optional_str == "false")
+	{
+		field.setOptional(false);
+	}
+	else
+	{
+		field.setOptional(true);
+	}
 
 	return field;
 }

@@ -8,7 +8,7 @@
 
 #include <qstringlist.h>
 #include <qsettings.h>
-#include "widget/npg_define.h"
+#include "npg_define.h"
 #include <qmessagebox.h>
 
 npg::npg(QWidget *parent) :
@@ -21,18 +21,12 @@ npg::npg(QWidget *parent) :
 
 	m_main_splitter = new QSplitter(Qt::Horizontal);
 
-	const QString K_UDP = "UDP";
-	const QString K_TCP = "TCP";
-	const QString K_ICMP = "ICMP";
-	const QString K_ARP = "ARP";
-	const QString K_DNS = "DNS";
-
 	QMap<QString, QString> name_icons;
-	name_icons.insert("UDP", ":/npg/protocol_udp");
-	name_icons.insert("TCP", ":/npg/protocol_udp");
-	name_icons.insert("ICMP", ":/npg/protocol_udp");
-	name_icons.insert("ARP", ":/npg/protocol_udp");
-	name_icons.insert("DNS", ":/npg/protocol_udp");
+	name_icons.insert(K_PROTOCOL_UDP, ":/npg/protocol_udp");
+	name_icons.insert(K_PROTOCOL_TCP, ":/npg/protocol_udp");
+	name_icons.insert(K_PROTOCOL_ICMP, ":/npg/protocol_udp");
+	name_icons.insert(K_PROTOCOL_ARP, ":/npg/protocol_udp");
+	name_icons.insert(K_PROTOCOL_DNS, ":/npg/protocol_udp");
 
 	m_type_list = new MainListWidget(name_icons);
 	m_tab_widget = new MainTabWidget(name_icons);

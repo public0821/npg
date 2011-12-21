@@ -7,13 +7,13 @@
 
 #include "main_tab_widget.h"
 #include "npg_define.h"
-#include "udp_widget.h"
+#include "data_tab_sheet.h"
 #include "tcp_widget.h"
 #include "icmp_widget.h"
 #include "arp_widget.h"
 #include "dns_widget.h"
 #include "protocol/protocol_factory.h"
-#include "protocol_widget.h"
+#include "protocol_tab_sheet.h"
 
 MainTabWidget::MainTabWidget(const QMap<QString, QString>& name_icons,  QWidget* parent)
 :QTabWidget(parent), m_name_icons(name_icons)
@@ -42,23 +42,23 @@ int MainTabWidget::addTab(const QString &type)
 	int index = -1;
 	TabSheet* sheet = NULL;
 
-	if (type == "UDP")
+	if (type == K_PROTOCOL_UDP)
 	{
-		sheet = new UdpWidget(type, this);
+		sheet = new DataTabSheet(type, this);
 	}
-	else if (type == "TCP")
+	else if (type == K_PROTOCOL_TCP)
 	{
-		sheet = new TcpWidget(type, this);
+		sheet = new DataTabSheet(type, this);
 	}
-	else if (type == "ICMP")
+	else if (type == K_PROTOCOL_ICMP)
 	{
 		sheet = new IcmpWidget(type, this);
 	}
-	else if (type == "ARP")
+	else if (type == K_PROTOCOL_ARP)
 	{
 		sheet = new ArpWidget(type, this);
 	}
-	else if (type == "DNS")
+	else if (type == K_PROTOCOL_DNS)
 	{
 		sheet = new DnsWidget(type, this);
 	}
@@ -67,7 +67,7 @@ int MainTabWidget::addTab(const QString &type)
 		Protocol protocol = ProtocolFactory::instance().protocol(type.toStdString());
 		if (!protocol.empty())
 		{
-			sheet = new ProtocolWidget(protocol, this);
+			sheet = new ProtocolTabSheet(protocol, this);
 			index = QTabWidget::addTab(sheet,
 				QIcon(QString::fromUtf8(protocol.icon().c_str())), type);
 		}

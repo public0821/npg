@@ -9,12 +9,14 @@ enum EFiledType
 	E_FIELD_TYPE_INT = 1
 	, E_FIELD_TYPE_STRING
 	, E_FIELD_TYPE_IP
+	, E_FIELD_TYPE_BIT
 };
 
 enum EFiledInputMethod
 {
 	E_FIELD_INPUT_METHOD_NONE = 0
-	, E_FIELD_INPUT_METHOD_EDIT
+	, E_FIELD_INPUT_METHOD_LINEEDIT
+	, E_FIELD_INPUT_METHOD_TEXTEDIT
 	, E_FIELD_INPUT_METHOD_SELECT
 };
 
@@ -22,7 +24,7 @@ enum EFiledInputMethod
 class Field
 {
 public:
-	Field(void);
+	Field(bool empty=false);
 	~Field(void);
 public:
 	void setName(const sstring& name);
@@ -34,6 +36,7 @@ public:
 	void setText(const sstring& text);
 	void setTip(const sstring& tip);
 	void setDefaultValue(const sstring& default_value);
+	void setOptional(bool optional);
 
 	sstring name() const;
 	EFiledType type() const;
@@ -46,6 +49,9 @@ public:
 	int64_t minValue() const;
 	u_int64_t maxValue() const;
 	sstring icon()const;
+	bool isOptional()const;
+
+	bool empty()const;
 private:
 	sstring m_name;
 	EFiledType m_type;
@@ -55,6 +61,8 @@ private:
 	sstring m_default_value;
 	sstring m_tip;
 	sstring m_type_string;
+	bool m_empty;
+	bool m_optional;
 	//int64_t m_min;
 	//u_int64_t m_max;
 	

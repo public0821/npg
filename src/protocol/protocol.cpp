@@ -25,9 +25,18 @@ sstring Protocol::name() const
 	return m_name;
 }
 
-sstring Protocol::dependence() const
+EBaseProtocol Protocol::dependence() const
 {
 	return m_dependence;
+}
+
+sstring Protocol::DependenceParam()const
+{
+	return m_dependence_param;
+}
+sstring Protocol::dependenceString() const
+{
+	return m_dependence_string;
 }
 
 sstring Protocol::icon() const
@@ -44,9 +53,14 @@ void Protocol::setName(const sstring& name)
 	m_name = name;
 }
 
-void Protocol::setDependence(const sstring& dependence)
+void Protocol::setDependence(EBaseProtocol dependence)
 {
 	m_dependence = dependence;
+}
+
+void Protocol::setDependenceString(const sstring& dependence)
+{
+	m_dependence_string = dependence;
 }
 
 void Protocol::setIcon(const sstring& icon)
@@ -71,4 +85,9 @@ Category  Protocol::category(const sstring& name)const
 	}
 
 	return Category(true);
+}
+
+void Protocol::setDependenceParam(const sstring& dependence_param)
+{
+	m_dependence_param = dependence_param;
 }
