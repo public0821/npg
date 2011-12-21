@@ -5,14 +5,14 @@ QT += core \
     xml
 
 # Input
-HEADERS += system/os_linux.h \
+HEADERS += widget/protocol_tree_item.h \
+    system/os_linux.h \
     widget/protocol_tree.h \
     protocol/category.h \
     protocol/field.h \
     protocol/protocol.h \
     protocol/protocol_factory.h \
     system/error.h \
-    widget/protocol_widget.h \
     protocol/dns.h \
     socket/net/ethernet.h \
     socket/net/if_arp.h \
@@ -39,7 +39,6 @@ HEADERS += system/os_linux.h \
     widget/icmp_widget.h \
     widget/main_list_widget.h \
     widget/main_tab_widget.h \
-    widget/npg_define.h \
     widget/tab_sheet.h \
     widget/tcp_widget.h \
     widget/udp_widget.h
@@ -49,14 +48,23 @@ FORMS += ui/protocol_widget.ui \
     ui/icmp_widget.ui \
     ui/npg.ui \
     ui/tcp_widget.ui \
+    ui/ip_widget.ui \
+    ui/protocol_tree_item.ui \
     ui/udp_widget.ui
-SOURCES += widget/protocol_tree.cpp \
+SOURCES += logger.cpp \
+    protocol/protocol_builder.cpp \
+    socket/ip.cpp \
+    widget/base_protocol_widget.cpp \
+    widget/data_tab_sheet.cpp \
+    widget/ip_widget.cpp \
+    widget/protocol_tab_sheet.cpp \
+    widget/protocol_tree_item.cpp \
+    widget/protocol_tree.cpp \
     protocol/category.cpp \
     protocol/field.cpp \
     protocol/protocol.cpp \
     protocol/protocol_factory.cpp \
     system/error.cpp \
-    widget/protocol_widget.cpp \
     protocol/dns.cpp \
     main.cpp \
     npg.cpp \

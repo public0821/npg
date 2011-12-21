@@ -3,15 +3,16 @@
 #include "socket/ip.h"
 #include <qsettings.h>
 #include "system/types.h"
+#include "socket/socket_public.h"
 
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
 	: BaseProtocolWidget(protocol_name, parent)
 {
 	ui.setupUi(this);
 
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_ICMP, IPPROTO_ICMP));
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_UDP, IPPROTO_UDP));
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_TCP, IPPROTO_TCP));
+	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_ICMP, (int)IPPROTO_ICMP));
+	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_UDP, (int)IPPROTO_UDP));
+	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_TCP, (int)IPPROTO_TCP));
 
 	std::map<sstring, int>::const_iterator it_find;
 	it_find = m_built_in_protocol.find(ip_protocol_name.toStdString());

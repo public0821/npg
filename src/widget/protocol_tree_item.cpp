@@ -4,7 +4,7 @@
 #include <qlabel.h>
 
 ProtocolTreeItem::ProtocolTreeItem(QTreeWidgetItem *item, const Field& field, QWidget *parent)
-	: m_field(field), QWidget(parent), m_item(item)
+	:QWidget(parent), m_field(field), m_item(item)
 {
 	ui.setupUi(this);
 	m_child = getFieldWidget(m_field);

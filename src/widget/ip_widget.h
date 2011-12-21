@@ -14,7 +14,7 @@ public:
 	IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent);
 	~IpWidget();
 public:
-	QString sendData(const char* data, u_int16_t length);
+	virtual QString sendData(const char* data, u_int16_t length);
 public:
 	void saveSettings();
 	void restoreSettings();

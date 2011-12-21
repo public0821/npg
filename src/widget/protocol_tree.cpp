@@ -180,15 +180,12 @@ void ProtocolTree::addCategoryItem(const Category& category)
 	category_item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_CATEGORY));
 	category_item->setData(1, Qt::UserRole, QVariant(category.name().c_str()));
 	category_item->setIcon(0, QIcon(":/npg/category"));
-	//QBrush brush(QColor(125,0,125));
-	//category_item->setBackground(0, brush);
-	//category_item->setBackground(1, brush);
-	//category_item->setBackground(2, brush);
+
 	const std::vector<Field>& fields = category.fields();
 	std::vector<Field>::const_iterator it_field;
 	for (it_field = fields.begin(); it_field != fields.end(); ++it_field)
 	{
-		QTreeWidgetItem *field_item = addFieldItem(category_item, *it_field);
+		addFieldItem(category_item, *it_field);
 	}
 
 	if (category.isMany())
