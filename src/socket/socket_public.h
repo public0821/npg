@@ -12,7 +12,7 @@
 #include "system/types.h"
 #include "system/os.h"
 
-const int K_SOCKET_ERROR = -1;
+const int K_SOCKET_ERROR = SOCKET_ERROR;
 const size_t K_SOCKET_ERROR_BUF_LEN = 512;
 
 #if __BYTE_ORDER == __LITTLE_ENDIAN
@@ -40,8 +40,14 @@ const size_t K_SOCKET_ERROR_BUF_LEN = 512;
 #include "net/ip_icmp.h"
 #include "net/udp.h"
 
-#define EINPROGRESS WSAEINPROGRESS
-#define npg_ioctl(sock, code, data, size) WSAIoctl(sock, code, data, size, NULL, 0, NULL, NULL, NULL)
+#define EWOULDBLOCK             WSAEWOULDBLOCK
+#define EINPROGRESS             WSAEINPROGRESS
+//#define npg_ioctl(sock, code, data, size) WSAIoctl(sock, code, data, size, NULL, 0, NULL, NULL, NULL)
+inline int npg_ioctl(int sock, int code, void* data, u_int32_t size)
+{
+	DWORD bytes_returned = 0; 
+	return WSAIoctl(sock, code, data, size, NULL, 0, &bytes_returned, NULL, NULL);
+}
 
 #pragma comment(lib, "Iphlpapi.lib")
 #pragma comment(lib, "wpcap.lib")

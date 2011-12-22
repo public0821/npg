@@ -216,5 +216,25 @@ Field ProtocolFactory::loadFieldElement(QDomElement* element)
 		field.setOptional(true);
 	}
 
+	sstring editable_str = field_element.attribute("Editable").toStdString();
+	if (editable_str == "false")
+	{
+		field.setEditable(false);
+	}
+	else
+	{
+		field.setEditable(true);
+	}
+
+	QDomElement item_element = field_element.firstChildElement("Item");
+	while(!item_element.isNull())
+	{
+		FieldItem field_item;
+		field_item.setText(item_element.attribute("Text").toStdString());
+		field_item.setValue(item_element.attribute("Value").toStdString());
+		item_element = item_element.nextSiblingElement("Item");	
+		field.addItem(field_item);
+	}
+
 	return field;
 }

@@ -18,26 +18,17 @@ IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name
 	it_find = m_built_in_protocol.find(ip_protocol_name.toStdString());
 	if (it_find != m_built_in_protocol.end())
 	{
-		ui.protocol_edit->setVisible(false);
-		ui.checkbox->setVisible(false);
 		ui.protocol_box->addItem(it_find->first.c_str(), QVariant(it_find->second));
 	}
 	else
 	{
-		ui.protocol_edit->setValidator(new QIntValidator(1, 254, this));
 		std::map<sstring, int>::const_iterator it;
 		it = m_built_in_protocol.begin();
 		for (; it != m_built_in_protocol.end(); ++it)
 		{
 			ui.protocol_box->addItem(it->first.c_str(), QVariant(it->second));
 		}
-		ui.protocol_box->setEditable(false);
-
-		connect(ui.checkbox, SIGNAL(clicked ( bool)), ui.protocol_box,
-			SLOT( setHidden(bool)));
-		connect(ui.checkbox, SIGNAL(clicked ( bool)), ui.protocol_edit,
-			SLOT( setVisible(bool)));
-		ui.protocol_edit->setVisible(false);
+		ui.protocol_box->setEditable(true);
 	}
 
 }
@@ -49,14 +40,15 @@ IpWidget::~IpWidget()
 
 QString IpWidget::sendData(const char* data, u_int16_t length)
 {
+	int index = ui.protocol_box->findText(ui.protocol_box->currentText());
 	int protocol = 0;
-	if (ui.protocol_box->isVisible())
+	if (index == -1)
 	{
-		protocol = ui.protocol_box->itemData(ui.protocol_box->currentIndex()).toInt();
+		protocol = ui.protocol_box->currentText().toInt();
 	}
 	else
 	{
-		protocol = ui.protocol_edit->text().toInt();
+		protocol = ui.protocol_box->itemData(index).toInt();
 	}
 	
 	sstring ip_str = ui.ip_edit->text().toStdString();
@@ -82,6 +74,7 @@ void IpWidget::saveSettings()
 	settings.beginGroup(protocolName());
 	settings.setValue("ip", ui.ip_edit->text());
 	settings.setValue("protocol", ui.protocol_box->currentText());
+//	settings.setValue("protocol_index", ui.protocol_box->currentIndex());
 	settings.endGroup();
 }
 
@@ -91,5 +84,6 @@ void IpWidget::restoreSettings()
 	settings.beginGroup(protocolName());
 	ui.ip_edit->setText(settings.value("ip").toString());
 	ui.protocol_box->setEditText(settings.value("protocol").toString());
+//	ui.protocol_box->setCurrentIndex(settings.value("protocol_index").toInt());
 	settings.endGroup();
 }

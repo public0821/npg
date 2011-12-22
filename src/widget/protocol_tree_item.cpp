@@ -2,6 +2,7 @@
 #include <qlineedit.h>
 #include <qtextedit.h>
 #include <qlabel.h>
+#include <QComboBox>
 
 ProtocolTreeItem::ProtocolTreeItem(QTreeWidgetItem *item, const Field& field, QWidget *parent)
 	:QWidget(parent), m_field(field), m_item(item)
@@ -9,7 +10,10 @@ ProtocolTreeItem::ProtocolTreeItem(QTreeWidgetItem *item, const Field& field, QW
 	ui.setupUi(this);
 	m_child = getFieldWidget(m_field);
 	ui.layout->addWidget(m_child, 0, 0);
-	
+	if (!field.editable())
+	{
+		this->setEnabled(false);
+	}
 }
 
 ProtocolTreeItem::~ProtocolTreeItem()
@@ -53,7 +57,14 @@ QWidget* ProtocolTreeItem::getFieldWidget(const Field& field)
 	}
 	else if(field.inputMethod() == E_FIELD_INPUT_METHOD_SELECT) 
 	{
-		widget = new QLineEdit(field.defaultValue().c_str());
+		QComboBox* combo_box = new QComboBox(this);
+		const std::vector<FieldItem>& field_items = field.items();
+		std::vector<FieldItem>::const_iterator it;
+		for (it = field_items.begin(); it != field_items.end(); ++it)
+		{
+			combo_box->addItem(it->text().c_str(), QVariant(it->value().c_str()));
+		}
+		widget = combo_box;
 	}
 	else
 	{
@@ -74,11 +85,22 @@ QString ProtocolTreeItem::value()
 	case E_FIELD_INPUT_METHOD_LINEEDIT:
 		value = ((QLineEdit*)m_child)->text();
 		break;
-	case E_FIELD_INPUT_METHOD_SELECT:
-		value = ((QLineEdit*)m_child)->text();
-		break;
 	case E_FIELD_INPUT_METHOD_TEXTEDIT:
 		value = ((QTextEdit*)m_child)->toPlainText();
+		break;
+	case E_FIELD_INPUT_METHOD_SELECT:
+		{
+			QComboBox* child = (QComboBox*)m_child;
+			int index = child->findText(child->currentText());
+			if (index == -1)
+			{
+				value = child->currentText();
+			}
+			else
+			{
+				value = child->itemData(index).toString();
+			}
+		}
 		break;
 	default:
 		value = ((QLabel*)m_child)->text();
@@ -86,6 +108,25 @@ QString ProtocolTreeItem::value()
 	}
 
 	return value;
+}
+
+void ProtocolTreeItem::setValue(const QString& value)
+{
+	switch (m_field.inputMethod())
+	{
+	case E_FIELD_INPUT_METHOD_LINEEDIT:
+		((QLineEdit*)m_child)->setText(value);
+		break;
+	case E_FIELD_INPUT_METHOD_SELECT:
+		((QComboBox*)m_child)->setEditText(value);
+		break;
+	case E_FIELD_INPUT_METHOD_TEXTEDIT:
+		((QTextEdit*)m_child)->setText(value);
+		break;
+	default:
+		((QLabel*)m_child)->setText(value);
+		break;
+	}
 }
 
 void ProtocolTreeItem::onTextChange()
@@ -104,4 +145,19 @@ void ProtocolTreeItem::onTextChange()
 		return;
 	}
 	
+}
+
+
+void ProtocolTreeItem::checkBoxStateChange(int state)
+{
+	if (state == Qt::Checked)
+	{
+		this->setEnabled(true);
+		setValue("");
+	}
+	else
+	{
+		this->setEnabled(false);
+		setValue(K_DEFAULT_VALUE_DEFAULT);
+	}
 }

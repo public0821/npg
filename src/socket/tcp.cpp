@@ -69,12 +69,30 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 	serv_addr.sin_port = htons(port);
 
 	unsigned long ul = 1;
-	npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set Non-blocking
-
+	int ret_ioctl = npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set Non-blocking
+	if (ret_ioctl == K_SOCKET_ERROR)
+	{
+		SET_ERROR_NO(npg_errno);
+		return false;
+	}
+	
+	/*
+	windows
+	#define WSABASEERR              10000
+	#define WSAEWOULDBLOCK          (WSABASEERR+35)
+	#define EWOULDBLOCK             WSAEWOULDBLOCK
+	Resource temporarily unavailable.
+	This error is returned from operations on nonblocking sockets that cannot be completed immediately, for example recv when no data is queued to be read from the socket. It is a nonfatal error, and the operation should be retried later. It is normal for WSAEWOULDBLOCK to be reported as the result from calling connect on a nonblocking SOCK_STREAM socket, since some time must elapse for the connection to be established.
+	
+	linux
+	#define    EINPROGRESS    115 
+	The socket is marked as nonblocking. The connection cannot be immediately completed. The application program can
+	select the socket for writing during the connection process.
+	*/
 	bool ret_value = false;
-	int retConn = ::connect(m_sockfd, (struct sockaddr*) &serv_addr,
+	int ret_conn = ::connect(m_sockfd, (struct sockaddr*) &serv_addr,
 			sizeof(serv_addr));
-	if (retConn == K_SOCKET_ERROR && npg_errno == EINPROGRESS)
+	if (ret_conn == K_SOCKET_ERROR && (npg_errno == EINPROGRESS || npg_errno == EWOULDBLOCK))
 	{
 		timeval tm;
 		fd_set set;
@@ -111,7 +129,7 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 		}
 		else //error
 		{
-			if (npg_errno == EINPROGRESS)
+			if (npg_errno == EINPROGRESS || npg_errno == EWOULDBLOCK)
 			{
 				SET_ERROR_STR("timeout");
 			}
@@ -121,13 +139,18 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 			}
 		}
 	}
-	else if (retConn == K_SOCKET_ERROR)
+	else if (ret_conn == K_SOCKET_ERROR)
 	{
 		SET_ERROR_NO(npg_errno);
 	}
 
 	ul = 0;
-	npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set blocking
+	ret_ioctl = npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set blocking
+	if (ret_ioctl == K_SOCKET_ERROR)
+	{
+		SET_ERROR_NO(npg_errno);
+		return false;
+	}
 
 	return ret_value;
 }

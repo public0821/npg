@@ -31,9 +31,7 @@ QString DataTabSheet::sendData()
 		return tr("ip and port and data must set");
 	}
 
-	dependProtocolWidget()->sendData(data.c_str(), data.length());
-	
-	return QString();
+	return dependProtocolWidget()->sendData(data.c_str(), data.length());
 }
 
 void DataTabSheet::saveSettings()

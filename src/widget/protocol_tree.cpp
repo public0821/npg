@@ -2,6 +2,7 @@
 #include <qmessagebox.h>
 #include <qmenu.h>
 #include "protocol_tree_item.h"
+#include <QCheckBox>
 
 ProtocolTree::ProtocolTree(QWidget *parent) :
 		QTreeWidget(parent)
@@ -17,9 +18,9 @@ ProtocolTree::~ProtocolTree()
 void ProtocolTree::setup(Protocol protocol)
 {
 	m_protocol = protocol;
-	setColumnCount(5);
+	setColumnCount(6);
 	QStringList head_list;
-	head_list << "field" << "value" <<"type"<<"length"<< "tip";
+	head_list << "field" << "value"<<"" <<"type"<<"length"<< "tip";
 	setHeaderLabels(head_list);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this,
 			SLOT(onShowPopup(const QPoint &)));
@@ -50,6 +51,7 @@ void ProtocolTree::setup(Protocol protocol)
 	resizeColumnToContents(2);
 	resizeColumnToContents(3);
 	resizeColumnToContents(4);
+	resizeColumnToContents(5);
 
 	//viewport()->setBackgroundRole(QPalette::Background);
 	//ssetAutoFillBackground(false);
@@ -153,20 +155,29 @@ QTreeWidgetItem* ProtocolTree::getSelectedItem()
 QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent, const Field& field)
 {
 	QStringList text_list;
-	text_list << field.text().c_str() << ""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
+	text_list << field.text().c_str() << ""<<""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
 	QTreeWidgetItem *item = new QTreeWidgetItem(parent, text_list);
 	item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_FIELD));
 	item->setData(1, Qt::UserRole, QVariant(field.name().c_str()));
 	item->setTextAlignment(3, Qt::AlignHCenter|Qt::AlignVCenter);
 
-	//QWidget* widget = getFieldWidget(field);
 	ProtocolTreeItem* tree_item = new ProtocolTreeItem(item, field);
 	if (field.type() == E_FIELD_TYPE_STRING)
 	{
 		connect(tree_item, SIGNAL(textChange(QTreeWidgetItem *, int)), this, SLOT(itemWidgetTextChange(QTreeWidgetItem *, int)));
 	}
 	setItemWidget(item, 1, tree_item);
+
+	if (field.defaultValue() == K_DEFAULT_VALUE_DEFAULT)
+	{
+		QCheckBox* checkbox = new QCheckBox(this);
+		setItemWidget(item, 2, checkbox);
+		connect(checkbox, SIGNAL(stateChanged (int)), tree_item, SLOT(checkBoxStateChange(int)));
+		tree_item->setEnabled(false);
+	}
+
 	item->setIcon(0, QIcon(field.icon().c_str()));
+
 	return item;
 }
 
@@ -175,7 +186,7 @@ QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent, const Field
 void ProtocolTree::addCategoryItem(const Category& category)
 {
 	QStringList text_list;
-	text_list << category.text().c_str()<<""<<""<<category.tip().c_str();
+	text_list << category.text().c_str()<<""<<""<<""<<category.tip().c_str();
 	QTreeWidgetItem *category_item = new QTreeWidgetItem(this, text_list);
 	category_item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_CATEGORY));
 	category_item->setData(1, Qt::UserRole, QVariant(category.name().c_str()));
@@ -205,5 +216,5 @@ void ProtocolTree::addCategoryItem(const Category& category)
 
 void ProtocolTree::itemWidgetTextChange(QTreeWidgetItem *item , int count)
 {
-	item->setText(3, QString("%1").arg(count));
+	item->setText(4, QString("%1").arg(count));
 }

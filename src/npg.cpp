@@ -24,7 +24,7 @@ npg::npg(QWidget *parent) :
 	QMap<QString, QString> name_icons;
 	name_icons.insert(K_PROTOCOL_UDP, ":/npg/protocol_udp");
 	name_icons.insert(K_PROTOCOL_TCP, ":/npg/protocol_udp");
-	name_icons.insert(K_PROTOCOL_ICMP, ":/npg/protocol_udp");
+	//name_icons.insert(K_PROTOCOL_ICMP, ":/npg/protocol_udp");
 	name_icons.insert(K_PROTOCOL_ARP, ":/npg/protocol_udp");
 	name_icons.insert(K_PROTOCOL_DNS, ":/npg/protocol_udp");
 

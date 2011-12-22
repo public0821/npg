@@ -67,6 +67,16 @@ void Field::setDefaultValue(const sstring& default_value)
 	m_default_value = default_value;
 }
 
+void Field::addItem(const FieldItem& item)
+{
+	m_items.push_back(item);
+}
+
+void Field::setEditable(bool editable)
+{
+	m_editable = editable;
+}
+
 sstring Field::name() const
 {
 	return m_name;
@@ -102,13 +112,19 @@ sstring Field::text() const
 
 sstring Field::defaultValue() const
 {
-	if (m_default_value== "now")
+	if (m_default_value == K_DEFAULT_VALUE_SECOND
+		||m_default_value == K_DEFAULT_VALUE_PID
+		||m_default_value == K_DEFAULT_VALUE_MILLISECOND
+		||m_default_value == K_DEFAULT_VALUE_CHECKNUM
+		||m_default_value == K_DEFAULT_VALUE_SEQ
+		)
 	{
-		time_t now = time(NULL);
-		char buf[64];
-		bzero(buf, sizeof(buf));
-		snprintf(buf, sizeof(buf), "%ld", now);
-		return buf;
+		//time_t now = time(NULL);
+		//char buf[64];
+		//bzero(buf, sizeof(buf));
+		//snprintf(buf, sizeof(buf), "%ld", now);
+		//return buf;
+		return K_DEFAULT_VALUE_DEFAULT;
 	}
 	return m_default_value;
 
@@ -202,4 +218,15 @@ sstring Field::typeString() const
 bool Field::isOptional()const
 {
 	return m_optional;
+}
+
+
+const std::vector<FieldItem>& Field::items()const
+{
+	return m_items;
+}
+
+bool Field::editable()const
+{
+	return m_editable;
 }
