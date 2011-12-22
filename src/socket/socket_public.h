@@ -12,7 +12,7 @@
 #include "system/types.h"
 #include "system/os.h"
 
-const int K_SOCKET_ERROR = SOCKET_ERROR;
+const int K_SOCKET_ERROR = -1;
 const size_t K_SOCKET_ERROR_BUF_LEN = 512;
 
 #if __BYTE_ORDER == __LITTLE_ENDIAN

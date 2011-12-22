@@ -41,6 +41,10 @@ HEADERS += widget/protocol_tree_item.h \
     widget/main_tab_widget.h \
     widget/tab_sheet.h \
     widget/tcp_widget.h \
+    widget/base_protocol_widget.h \
+    widget/data_tab_sheet.h \
+    widget/ip_widget.h \
+    widget/protocol_tab_sheet.h \
     widget/udp_widget.h
 FORMS += ui/protocol_widget.ui \
     ui/arp_widget.ui \
