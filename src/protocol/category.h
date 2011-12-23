@@ -24,6 +24,7 @@ public:
 	void setTip(const sstring& tip);
 
 	bool empty()const;
+	u_int16_t optionalFieldCount()const;
 
 private:
 	std::vector<Field> m_fields;

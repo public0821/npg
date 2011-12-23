@@ -72,7 +72,7 @@ bool Icmp::sendto(const char* ip, void* data, u_int16_t len, bool need_calc_chec
 	{
 		icmp->icmp_cksum = 0;
 		SocketToolkit toolkit;
-		icmp->icmp_cksum = toolkit.inCheckSum((u_short *) icmp, len);
+		icmp->icmp_cksum = toolkit.inCheckSum((u_int16_t *) icmp, len);
 	}
 
 	int ret = ::sendto(m_sockfd, (const char*)icmp, len, 0, (const sockaddr*) &serv_addr,

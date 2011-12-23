@@ -68,6 +68,32 @@ bool ProtocolBuilder::append(EFiledType field_type, u_int16_t length, const QStr
 {
 	u_int32_t old_protocol_len = reallocBuffer(field_type, length, value);
 
+	return set(old_protocol_len, field_type, length, value);
+
+}
+
+char* ProtocolBuilder::data()const
+{
+	return m_buffer;
+}
+u_int32_t ProtocolBuilder::length()const
+{
+	return m_protocol_len;
+}
+
+bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length, const QString& value)
+{
+	if (pos + length > m_protocol_len)
+	{
+		SET_ERROR_STR("Out of range");
+		return false;
+	}
+	/*if (field_type == E_FIELD_TYPE_STRING)
+	{
+		SET_ERROR_STR("Field length must fixed");
+		return false;
+	}*/
+
 	bool ret = true;
 	switch (field_type)
 	{
@@ -77,21 +103,21 @@ bool ProtocolBuilder::append(EFiledType field_type, u_int16_t length, const QStr
 		case 1:
 			{
 				int8_t number = (int8_t)value.toInt();
-				memcpy(m_buffer + old_protocol_len, &number, sizeof(number));
+				memcpy(m_buffer + pos, &number, sizeof(number));
 			}	
 			break;
 		case 2:
 			{
 				int16_t number = (int16_t)value.toInt();
 				number = htons(number);
-				memcpy(m_buffer + old_protocol_len, &number, sizeof(number));
+				memcpy(m_buffer + pos, &number, sizeof(number));
 			}
 			break;
 		case 4:
 			{
 				int32_t number = (int32_t)value.toInt();
 				number = htonl(number);
-				memcpy(m_buffer + old_protocol_len, &number, sizeof(number));
+				memcpy(m_buffer + pos, &number, sizeof(number));
 			}
 			break;
 		case 8:
@@ -99,7 +125,7 @@ bool ProtocolBuilder::append(EFiledType field_type, u_int16_t length, const QStr
 			{
 				int64_t number = (int64_t)value.toLongLong();
 				number = ntohll(number);
-				memcpy(m_buffer + old_protocol_len, &number, sizeof(number));
+				memcpy(m_buffer + pos, &number, sizeof(number));
 			}
 			break;
 		}
@@ -118,7 +144,7 @@ bool ProtocolBuilder::append(EFiledType field_type, u_int16_t length, const QStr
 					ret = false;
 				}
 			}
-			memcpy(m_buffer + old_protocol_len, &addr.s_addr, sizeof(addr.s_addr));
+			memcpy(m_buffer + pos, &addr.s_addr, sizeof(addr.s_addr));
 		}
 		break;
 	case E_FIELD_TYPE_STRING:
@@ -129,44 +155,15 @@ bool ProtocolBuilder::append(EFiledType field_type, u_int16_t length, const QStr
 			{
 				data_len = length;
 			}
-			memcpy(m_buffer + old_protocol_len, data.c_str(), data_len);
+			memcpy(m_buffer + pos, data.c_str(), data_len);
 		}
 		break;
 	default:
 		SET_ERROR_STR("Unsupported type");
 		ret = false;
-		bzero(m_buffer + old_protocol_len, length);
+		bzero(m_buffer + pos, length);
 		break;
 	}
 
 	return ret;
 }
-
-char* ProtocolBuilder::data()const
-{
-	return m_buffer;
-}
-u_int32_t ProtocolBuilder::length()const
-{
-	return m_protocol_len;
-}
-
-//int8_t ProtocolBuilder::toInt8(const QString& value)
-//{
-//	
-//}
-//
-//int16_t ProtocolBuilder::toInt16(const QString& value)
-//{
-//
-//}
-//
-//int32_t ProtocolBuilder::toInt32(const QString& value)
-//{
-//
-//}
-//
-//int64_t ProtocolBuilder::toInt64(const QString& value)
-//{
-//	
-//}

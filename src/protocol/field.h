@@ -67,6 +67,7 @@ public:
 	sstring text() const;
 	sstring tip() const;
 	sstring defaultValue() const;
+	sstring defaultValueOriginal() const;
 	int64_t minValue() const;
 	u_int64_t maxValue() const;
 	sstring icon()const;

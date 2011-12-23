@@ -19,6 +19,7 @@ IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name
 	if (it_find != m_built_in_protocol.end())
 	{
 		ui.protocol_box->addItem(it_find->first.c_str(), QVariant(it_find->second));
+		ui.protocol_box->setEditable(false);
 	}
 	else
 	{

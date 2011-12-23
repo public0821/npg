@@ -77,3 +77,19 @@ void Category::setTip(const sstring& tip)
 {
 	m_tip = tip;
 }
+
+
+u_int16_t Category::optionalFieldCount()const
+{
+	u_int16_t count = 0;
+	std::vector<Field>::const_iterator it;
+	for (it = m_fields.begin(); it != m_fields.end(); ++it)
+	{
+		if (it->isOptional())
+		{
+			count++;
+		}
+	}
+
+	return count;
+}

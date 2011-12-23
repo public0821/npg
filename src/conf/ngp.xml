@@ -18,9 +18,23 @@
                 <Item Name="DELETE"/> 
             </Field>
         </Protocol>-->
+        <Protocol Name="ICMP" Dependence="IP" DependenceParam="ICMP">
+            <Category Name="Header">
+                <Field Name="type" Type="int" InputMethod="lineedit" Length="1" Tip="type"/>
+                <Field Name="code" Type="int" InputMethod="lineedit" Length="1" Tip="code"/>
+                <Field Name="checknum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="checknum" Tip="The sum of a pseudo header of information from the icmp header and the data,\n padded with zero octets at the end(If zero, the program will automatically generate)"/>
+            </Category>
+            <Category Name="Data">
+                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" Optional="true" DefaultValue="pid" Tip="Unique id for this process"/>
+                <Field Name="seq" Type="int" InputMethod="lineedit" Length="2" Optional="true" DefaultValue="seq" Tip="Sequence"/>
+                <Field Name="otime" Type="int" InputMethod="lineedit" Length="4" Optional="true" DefaultValue="second" Tip="seconds from 1970-1-1"/>
+                <Field Name="rtime" Type="int" InputMethod="lineedit" Length="4" Optional="true" Tip="millisecond from the start of this second"/>
+                <Field Name="other" Type="int" InputMethod="lineedit" Length="2" Optional="true" Tip="User defined field"/>
+            </Category>
+        </Protocol>
         <Protocol Name="ICMP_PING" Dependence="IP" DependenceParam="ICMP">
             <Category Name="Header">
-                <Field Name="type" Type="int" InputMethod="select" Length="1" Tip="type">
+                <Field Name="type" Type="int" InputMethod="select" Editable = "false" Length="1" Tip="type">
                     <Item Value="0" Text="ping response"/>
                     <Item Value="8" Text="ping request"/>
                 </Field>
@@ -33,6 +47,7 @@
                 <Field Name="otime" Type="int" InputMethod="lineedit" Length="4" DefaultValue="second" Tip="seconds from 1970-1-1"/>
                 <Field Name="rtime" Type="int" InputMethod="lineedit" Length="4" DefaultValue="millisecond" Tip="millisecond from the start of this second"/>
             </Category>
+            
         </Protocol>
         <Protocol Name="RAW_UDP" Icon=":/npg/protocol_udp" Dependence="IP" DependenceParam="UDP">
             <Category Name="Header">

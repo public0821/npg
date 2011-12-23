@@ -10,6 +10,7 @@ public:
 	~ProtocolBuilder(void);
 public:
 	bool append(EFiledType field_type, u_int16_t length, const QString& value);
+	bool set(u_int32_t pos, EFiledType field_type, u_int16_t length, const QString& value);
 	char* data()const;
 	u_int32_t length()const;
 //private:
@@ -23,6 +24,7 @@ private:
 	char* m_buffer;
 	u_int32_t m_protocol_len;
 	u_int32_t m_buf_len;
+	//std::vector<u_int32_t> m_field_pos;
 };
 
 #endif

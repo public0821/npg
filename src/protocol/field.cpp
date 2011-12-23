@@ -130,6 +130,11 @@ sstring Field::defaultValue() const
 
 }
 
+sstring Field::defaultValueOriginal() const
+{
+	return m_default_value;
+}
+
 sstring Field::tip() const
 {
 	return m_tip;

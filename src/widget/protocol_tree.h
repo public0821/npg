@@ -25,14 +25,16 @@ private slots:
 	void onDelete();
 	void onAdd();
 	void itemWidgetTextChange(QTreeWidgetItem *, int);
+	void onAddField();
 private:
 	QTreeWidgetItem* getSelectedItem();
-	QTreeWidgetItem* addFieldItem(QTreeWidgetItem* parent, const Field& field);
+	QTreeWidgetItem* addFieldItem(QTreeWidgetItem* parent, QTreeWidgetItem * preceding, const Field& field);
 
-	void addCategoryItem(const Category& category);
+	QTreeWidgetItem * addCategoryItem(QTreeWidget * parent, QTreeWidgetItem * preceding, const Category& category);
 private:
 	QAction* m_delete_action;
 	QAction* m_add_action;
+	QAction* m_add_field_action;
 	Protocol m_protocol;
 	std::map<sstring, int>  m_multi_category_count;
 };

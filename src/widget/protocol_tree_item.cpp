@@ -12,7 +12,14 @@ ProtocolTreeItem::ProtocolTreeItem(QTreeWidgetItem *item, const Field& field, QW
 	ui.layout->addWidget(m_child, 0, 0);
 	if (!field.editable())
 	{
-		this->setEnabled(false);
+		if (field.inputMethod() == E_FIELD_INPUT_METHOD_SELECT)
+		{
+			((QComboBox*)m_child)->setEditable(false);
+		}
+		else
+		{
+			this->setEnabled(false);
+		}
 	}
 }
 
@@ -64,6 +71,7 @@ QWidget* ProtocolTreeItem::getFieldWidget(const Field& field)
 		{
 			combo_box->addItem(it->text().c_str(), QVariant(it->value().c_str()));
 		}
+		combo_box->setEditable(true);
 		widget = combo_box;
 	}
 	else
