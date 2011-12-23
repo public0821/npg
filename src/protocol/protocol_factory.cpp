@@ -207,13 +207,13 @@ Field ProtocolFactory::loadFieldElement(QDomElement* element)
 	field.setTip(field_element.attribute("Tip").toStdString());
 
 	sstring optional_str = field_element.attribute("Optional").toStdString();
-	if (optional_str == "false")
+	if (optional_str == "true")
 	{
-		field.setOptional(false);
+		field.setOptional(true);
 	}
 	else
 	{
-		field.setOptional(true);
+		field.setOptional(false);
 	}
 
 	sstring editable_str = field_element.attribute("Editable").toStdString();

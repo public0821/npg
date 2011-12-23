@@ -50,10 +50,10 @@ int MainTabWidget::addTab(const QString &type)
 	{
 		sheet = new DataTabSheet(type, this);
 	}
-	else if (type == K_PROTOCOL_ICMP)
-	{
-		sheet = new IcmpWidget(type, this);
-	}
+//	else if (type == K_PROTOCOL_ICMP)
+//	{
+//		sheet = new IcmpWidget(type, this);
+//	}
 	else if (type == K_PROTOCOL_ARP)
 	{
 		sheet = new ArpWidget(type, this);

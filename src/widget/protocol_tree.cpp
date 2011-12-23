@@ -20,18 +20,21 @@ void ProtocolTree::setup(Protocol protocol)
 	m_protocol = protocol;
 	setColumnCount(6);
 	QStringList head_list;
-	head_list << "field" << "value"<<"" <<"type"<<"length"<< "tip";
+	head_list << "field" << "value" << "" << "type" << "length" << "tip";
 	setHeaderLabels(head_list);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this,
 			SLOT(onShowPopup(const QPoint &)));
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	setDragDropMode(NoDragDrop);
 
-	m_delete_action = new QAction(QIcon(":/npg/category_delete"), tr("Delete(&A)"), this);
+	m_delete_action = new QAction(QIcon(":/npg/category_delete"),
+			tr("Delete(&A)"), this);
 	m_delete_action->setShortcut(QKeySequence::fromString("Ctrl+D"));
-	m_add_action = new QAction(QIcon(":/npg/category_add"), tr("Add(&A)"), this);
+	m_add_action = new QAction(QIcon(":/npg/category_add"), tr("Add(&A)"),
+			this);
 	m_add_action->setShortcut(QKeySequence::fromString("Ctrl+A"));
-	m_add_field_action = new QAction(QIcon(":/npg/category_add"), tr("Add Field(&A)"), this);
+	m_add_field_action = new QAction(QIcon(":/npg/category_add"),
+			tr("Add Field(&A)"), this);
 	m_delete_action->setIconVisibleInMenu(true);
 	m_add_action->setIconVisibleInMenu(true);
 	m_add_field_action->setIconVisibleInMenu(true);
@@ -67,15 +70,16 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 
 	if (item != NULL)
 	{
-		EItemType item_type = (EItemType)item->data(0, Qt::UserRole).toInt();
-		if (item_type ==  E_ITEM_TYPE_CATEGORY)
+		EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+		if (item_type == E_ITEM_TYPE_CATEGORY)
 		{
 			sstring name = item->data(1, Qt::UserRole).toString().toStdString();
 			Category category = m_protocol.category(name);
+
+			QMenu menu(this);
+//			bool show_menu = false;
 			if (category.isMany())
 			{
-				QMenu menu(this);
-
 				menu.addAction(m_add_action);
 				m_add_action->setEnabled(true);
 
@@ -86,20 +90,26 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 					menu.addAction(m_delete_action);
 					m_delete_action->setEnabled(true);
 				}
-
-				if (category.optionalFieldCount()>0)
-				{
-					menu.addAction(m_add_field_action);
-					m_add_field_action->setEnabled(true);
-				}
-
+//				show_menu = true;
+			}
+			if (category.optionalFieldCount() > 0)
+			{
+				menu.addAction(m_add_field_action);
+				m_add_field_action->setEnabled(true);
+//				show_menu = true;
+			}
+			if (!menu.isEmpty())
+			{
 				menu.exec(mapToGlobal(pos));
-			}	
+			}
+
 		}
-		else if (item_type ==  E_ITEM_TYPE_FIELD)
+		else if (item_type == E_ITEM_TYPE_FIELD)
 		{
-			sstring category_name = item->parent()->data(1, Qt::UserRole).toString().toStdString();
-			sstring field_name = item->data(1, Qt::UserRole).toString().toStdString();
+			sstring category_name =
+					item->parent()->data(1, Qt::UserRole).toString().toStdString();
+			sstring field_name =
+					item->data(1, Qt::UserRole).toString().toStdString();
 			Category category = m_protocol.category(category_name);
 			Field field = category.field(field_name);
 			if (field.isOptional())
@@ -113,7 +123,7 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 				m_delete_action->setEnabled(true);
 
 				menu.exec(mapToGlobal(pos));
-			}	
+			}
 		}
 	}
 }
@@ -126,17 +136,19 @@ void ProtocolTree::onAdd()
 		return;
 	}
 
-	EItemType item_type = (EItemType)item->data(0, Qt::UserRole).toInt();
-	if (item_type ==  E_ITEM_TYPE_CATEGORY)
+	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
 		sstring name = item->data(1, Qt::UserRole).toString().toStdString();
 		Category category = m_protocol.category(name);
 		addCategoryItem(this, item, category);
 	}
-	else if (item_type ==  E_ITEM_TYPE_FIELD)
+	else if (item_type == E_ITEM_TYPE_FIELD)
 	{
-		sstring category_name = item->parent()->data(1, Qt::UserRole).toString().toStdString();
-		sstring field_name = item->data(1, Qt::UserRole).toString().toStdString();
+		sstring category_name =
+				item->parent()->data(1, Qt::UserRole).toString().toStdString();
+		sstring field_name =
+				item->data(1, Qt::UserRole).toString().toStdString();
 		Category category = m_protocol.category(category_name);
 		Field field = category.field(field_name);
 		addFieldItem(item->parent(), item, field);
@@ -151,8 +163,8 @@ void ProtocolTree::onAddField()
 		return;
 	}
 
-	EItemType item_type = (EItemType)item->data(0, Qt::UserRole).toInt();
-	if (item_type ==  E_ITEM_TYPE_CATEGORY)
+	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
 //		sstring name = item->data(1, Qt::UserRole).toString().toStdString();
 //		Category category = m_protocol.category(name);
@@ -168,9 +180,8 @@ void ProtocolTree::onDelete()
 		return;
 	}
 
-
-	EItemType item_type = (EItemType)item->data(0, Qt::UserRole).toInt();
-	if (item_type ==  E_ITEM_TYPE_CATEGORY)
+	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
 		sstring name = item->data(1, Qt::UserRole).toString().toStdString();
 		std::map<sstring, int>::iterator it;
@@ -180,7 +191,7 @@ void ProtocolTree::onDelete()
 			--it->second;
 		}
 	}
-	else if (item_type ==  E_ITEM_TYPE_FIELD)
+	else if (item_type == E_ITEM_TYPE_FIELD)
 	{
 		//
 	}
@@ -210,20 +221,25 @@ QTreeWidgetItem* ProtocolTree::getSelectedItem()
 	return items.at(0);
 }
 
-QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent, QTreeWidgetItem * preceding, const Field& field)
+QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent,
+		QTreeWidgetItem * preceding, const Field& field)
 {
-	QStringList text_list;
-	text_list << field.text().c_str() << ""<<""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
-	QTreeWidgetItem *item = new QTreeWidgetItem(parent, preceding, text_list);
-	item->setText()
+//	QStringList text_list;
+//	text_list << field.text().c_str() << ""<<""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
+	QTreeWidgetItem *item = new QTreeWidgetItem(parent, preceding);
+	item->setText(0, field.text().c_str());
+	item->setText(3, field.typeString().c_str());
+	item->setText(4, QString("%1").arg(field.length()));
+	item->setText(5, field.tip().c_str());
 	item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_FIELD));
 	item->setData(1, Qt::UserRole, QVariant(field.name().c_str()));
-	item->setTextAlignment(3, Qt::AlignHCenter|Qt::AlignVCenter);
+	item->setTextAlignment(3, Qt::AlignHCenter | Qt::AlignVCenter);
 
 	ProtocolTreeItem* tree_item = new ProtocolTreeItem(item, field);
 	if (field.type() == E_FIELD_TYPE_STRING)
 	{
-		connect(tree_item, SIGNAL(textChange(QTreeWidgetItem *, int)), this, SLOT(itemWidgetTextChange(QTreeWidgetItem *, int)));
+		connect(tree_item, SIGNAL(textChange(QTreeWidgetItem *, int)), this,
+				SLOT(itemWidgetTextChange(QTreeWidgetItem *, int)));
 	}
 	setItemWidget(item, 1, tree_item);
 
@@ -231,7 +247,8 @@ QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent, QTreeWidget
 	{
 		QCheckBox* checkbox = new QCheckBox(this);
 		setItemWidget(item, 2, checkbox);
-		connect(checkbox, SIGNAL(stateChanged (int)), tree_item, SLOT(checkBoxStateChange(int)));
+		connect(checkbox, SIGNAL(stateChanged (int)), tree_item,
+				SLOT(checkBoxStateChange(int)));
 		tree_item->setEnabled(false);
 	}
 
@@ -240,25 +257,28 @@ QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent, QTreeWidget
 	return item;
 }
 
-
-
-QTreeWidgetItem * ProtocolTree::addCategoryItem(QTreeWidget * parent, QTreeWidgetItem * preceding, const Category& category)
+QTreeWidgetItem * ProtocolTree::addCategoryItem(QTreeWidget * parent,
+		QTreeWidgetItem * category_preceding, const Category& category)
 {
-	QStringList text_list;
-	text_list << category.text().c_str()<<""<<""<<""<<category.tip().c_str();
-	QTreeWidgetItem *category_item = new QTreeWidgetItem(parent, preceding, text_list);
+//	QStringList text_list;
+//	text_list << category.text().c_str()<<""<<""<<""<<category.tip().c_str();
+	QTreeWidgetItem *category_item = new QTreeWidgetItem(parent,
+			category_preceding);
+	category_item->setText(0, category.text().c_str());
+	category_item->setText(5, category.tip().c_str());
 	category_item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_CATEGORY));
 	category_item->setData(1, Qt::UserRole, QVariant(category.name().c_str()));
 	category_item->setIcon(0, QIcon(":/npg/category"));
 
 	const std::vector<Field>& fields = category.fields();
 	std::vector<Field>::const_iterator it_field;
-	QTreeWidgetItem * preceding = NULL;
+	QTreeWidgetItem * field_preceding = NULL;
 	for (it_field = fields.begin(); it_field != fields.end(); ++it_field)
 	{
 		if (!it_field->isOptional())
 		{
-			preceding = addFieldItem(category_item, preceding, *it_field);
+			field_preceding = addFieldItem(category_item, field_preceding,
+					*it_field);
 		}
 	}
 
@@ -272,14 +292,14 @@ QTreeWidgetItem * ProtocolTree::addCategoryItem(QTreeWidget * parent, QTreeWidge
 		}
 		else
 		{
-			m_multi_category_count.insert(std::make_pair(category.name(),1));
+			m_multi_category_count.insert(std::make_pair(category.name(), 1));
 		}
 	}
 
 	return category_item;
 }
 
-void ProtocolTree::itemWidgetTextChange(QTreeWidgetItem *item , int count)
+void ProtocolTree::itemWidgetTextChange(QTreeWidgetItem *item, int count)
 {
 	item->setText(4, QString("%1").arg(count));
 }
