@@ -3,6 +3,8 @@
 #include <qmenu.h>
 #include "protocol_tree_item.h"
 #include <QCheckBox>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 
 ProtocolTree::ProtocolTree(QWidget *parent) :
 		QTreeWidget(parent)
@@ -77,7 +79,6 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 			Category category = m_protocol.category(name);
 
 			QMenu menu(this);
-//			bool show_menu = false;
 			if (category.isMany())
 			{
 				menu.addAction(m_add_action);
@@ -90,13 +91,11 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 					menu.addAction(m_delete_action);
 					m_delete_action->setEnabled(true);
 				}
-//				show_menu = true;
 			}
 			if (category.optionalFieldCount() > 0)
 			{
 				menu.addAction(m_add_field_action);
 				m_add_field_action->setEnabled(true);
-//				show_menu = true;
 			}
 			if (!menu.isEmpty())
 			{
@@ -166,9 +165,31 @@ void ProtocolTree::onAddField()
 	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
 	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
-//		sstring name = item->data(1, Qt::UserRole).toString().toStdString();
-//		Category category = m_protocol.category(name);
-//		addCategoryItem(this, item, category);
+		sstring name = item->data(1, Qt::UserRole).toString().toStdString();
+		Category category = m_protocol.category(name);
+		std::vector<Field> optional_fields = category.optionalFields();
+		if (optional_fields.size() == 0)
+		{
+			return;
+		}
+		std::vector<Field>::const_iterator it;
+		QDialog* dialog = new QDialog(this);
+		QTableWidget* table_widget = new QTableWidget(dialog);
+		int row = 0;
+		for (it = optional_fields.begin(); it != optional_fields.end(); ++it)
+		{
+			table_widget->setItem(row, 0,
+					new QTableWidgetItem(QIcon(it->icon().c_str()), it->text().c_str()));
+			table_widget->setItem(row, 1,
+					new QTableWidgetItem(it->typeString().c_str()));
+			table_widget->setItem(row, 2,
+					new QTableWidgetItem(QString("%1").arg(it->length())));
+			table_widget->setItem(row, 3,
+								new QTableWidgetItem(it->tip().c_str()));
+			row++;
+		}
+		//dialog->setModal (true);
+		dialog->exec();
 	}
 }
 

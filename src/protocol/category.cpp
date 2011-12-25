@@ -1,7 +1,7 @@
 #include "category.h"
 
-Category::Category(bool empty)
-:m_is_many(false),m_empty(empty)
+Category::Category(bool empty) :
+		m_is_many(false), m_empty(empty)
 {
 }
 
@@ -19,7 +19,7 @@ const std::vector<Field>& Category::fields() const
 	return m_fields;
 }
 
-Field  Category::field(sstring name)const
+Field Category::field(sstring name) const
 {
 	std::vector<Field>::const_iterator it;
 	for (it = m_fields.begin(); it != m_fields.end(); ++it)
@@ -31,6 +31,21 @@ Field  Category::field(sstring name)const
 	}
 
 	return Field(true);
+}
+
+std::vector<Field> Category::optionalFields() const
+{
+	std::vector<Field> optional_fields;
+	std::vector<Field>::const_iterator it;
+	for (it = m_fields.begin(); it != m_fields.end(); ++it)
+	{
+		if (it->isOptional())
+		{
+			optional_fields.push_back(*it);
+		}
+	}
+
+	return optional_fields;
 }
 
 sstring Category::name() const
@@ -45,7 +60,7 @@ bool Category::isMany() const
 
 sstring Category::text() const
 {
-	if(m_text.empty())
+	if (m_text.empty())
 	{
 		return m_name;
 	}
@@ -78,8 +93,7 @@ void Category::setTip(const sstring& tip)
 	m_tip = tip;
 }
 
-
-u_int16_t Category::optionalFieldCount()const
+u_int16_t Category::optionalFieldCount() const
 {
 	u_int16_t count = 0;
 	std::vector<Field>::const_iterator it;
