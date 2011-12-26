@@ -4,6 +4,7 @@
 #include <QTreeWidget>
 #include <qaction.h>
 #include "protocol/protocol.h"
+#include <QDropEvent>
 
 enum EItemType
 {
@@ -20,6 +21,13 @@ public:
 	~ProtocolTree();
 public:
 	void setup(Protocol protocol);
+//protected:
+//	void mousePressEvent(QMouseEvent *event);
+//	void mouseMoveEvent(QMouseEvent *event);
+//	void performDrag();
+//	void dragMoveEvent(QDragMoveEvent *event);
+//	void dragEnterEvent(QDragEnterEvent *event);
+	//void dropEvent(QDropEvent *event);
 private slots:
 	void onShowPopup(const QPoint &pos);
 	void onDelete();
@@ -29,7 +37,6 @@ private slots:
 private:
 	QTreeWidgetItem* getSelectedItem();
 	QTreeWidgetItem* addFieldItem(QTreeWidgetItem* parent, QTreeWidgetItem * preceding, const Field& field);
-
 	QTreeWidgetItem * addCategoryItem(QTreeWidget * parent, QTreeWidgetItem * preceding, const Category& category);
 private:
 	QAction* m_delete_action;
@@ -37,6 +44,7 @@ private:
 	QAction* m_add_field_action;
 	Protocol m_protocol;
 	std::map<sstring, int>  m_multi_category_count;
+	//QPoint m_start_pos;
 };
 
 #endif // PROTOCOL_TREE_H

@@ -4,12 +4,13 @@
 #include <string.h>
 #include "system/os.h"
 
-Field::Field(bool empty)
+Field::Field(const sstring& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)
 ,m_input_method(E_FIELD_INPUT_METHOD_NONE)
 ,m_length(0)
 ,m_empty(empty)
 ,m_optional(false)
+,m_category_name(category_name)
 {
 }
 
@@ -234,4 +235,9 @@ const std::vector<FieldItem>& Field::items()const
 bool Field::editable()const
 {
 	return m_editable;
+}
+
+sstring Field::categoryName()const
+{
+	return m_category_name;
 }

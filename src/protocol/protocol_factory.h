@@ -21,7 +21,7 @@ private:
 	void loadXml();
 	void loadProtocolElement(QDomElement* element);
 	Category loadCategoryElement(QDomElement* element);
-	Field loadFieldElement(QDomElement* element);
+	Field loadFieldElement(const sstring& category_name, QDomElement* element);
 
 private:
 	std::vector<Protocol> m_protocols;

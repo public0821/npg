@@ -30,7 +30,7 @@ Field Category::field(sstring name) const
 		}
 	}
 
-	return Field(true);
+	return Field(m_name, true);
 }
 
 std::vector<Field> Category::optionalFields() const

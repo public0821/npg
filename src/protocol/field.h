@@ -44,7 +44,7 @@ private:
 class Field
 {
 public:
-	Field(bool empty=false);
+	Field(const sstring& category_name, bool empty=false);
 	~Field(void);
 public:
 	void setName(const sstring& name);
@@ -75,6 +75,7 @@ public:
 	bool empty()const;
 	const std::vector<FieldItem>& items()const;
 	bool editable()const;
+	sstring categoryName()const;
 private:
 	sstring m_name;
 	EFiledType m_type;
@@ -88,6 +89,7 @@ private:
 	bool m_optional;
 	std::vector<FieldItem> m_items;
 	bool m_editable;
+	sstring m_category_name;
 };
 
 #endif

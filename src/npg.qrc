@@ -9,5 +9,6 @@
         <file alias="category">resource/npg_category_16px.png</file>
         <file alias="up">resource/npg_up_16px.png</file>
         <file alias="down">resource/npg_down_16px.png</file>
+        <file alias="npg">resource/npg.png</file>
     </qresource>
 </RCC>

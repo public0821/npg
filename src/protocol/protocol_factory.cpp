@@ -47,7 +47,7 @@ void ProtocolFactory::loadXml()
 		return;
 	}
 
-	QFile file("./conf/ngp.xml");
+	QFile file("./conf/npg.xml");
 	if (!file.open(QFile::ReadOnly | QFile::Text)) 
 	{
 		SET_ERROR_STR(file.errorString().toStdString().c_str());
@@ -146,18 +146,18 @@ Category ProtocolFactory::loadCategoryElement(QDomElement* element)
 	QDomElement field_element = category_element.firstChildElement("Field");
 	while(!field_element.isNull())
 	{
-		category.addField(loadFieldElement(&field_element));
+		category.addField(loadFieldElement(category.name(), &field_element));
 		field_element = field_element.nextSiblingElement("Field");	
 	}
 
 	return category;
 }
 
-Field ProtocolFactory::loadFieldElement(QDomElement* element)
+Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElement* element)
 {
 	QDomElement& field_element = *element;
 
-	Field field;
+	Field field(category_name);
 	field.setName(field_element.attribute("Name", "Unknown").toStdString());
 
 	sstring type_str = field_element.attribute("Type").toStdString();

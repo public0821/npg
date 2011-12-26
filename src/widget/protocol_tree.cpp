@@ -5,6 +5,8 @@
 #include <QCheckBox>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <QHBoxLayout>
+#include "field_select_dialog.h"
 
 ProtocolTree::ProtocolTree(QWidget *parent) :
 		QTreeWidget(parent)
@@ -27,7 +29,8 @@ void ProtocolTree::setup(Protocol protocol)
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this,
 			SLOT(onShowPopup(const QPoint &)));
 	setContextMenuPolicy(Qt::CustomContextMenu);
-	setDragDropMode(NoDragDrop);
+	//setDragDropMode(NoDragDrop);
+	setDragDropMode(InternalMove);
 
 	m_delete_action = new QAction(QIcon(":/npg/category_delete"),
 			tr("Delete(&A)"), this);
@@ -172,24 +175,15 @@ void ProtocolTree::onAddField()
 		{
 			return;
 		}
+		FieldSelectDialog field_select_dialog(optional_fields);
+		field_select_dialog.exec();
+
+		std::vector<Field> selected_fields = field_select_dialog.selectedFields();
 		std::vector<Field>::const_iterator it;
-		QDialog* dialog = new QDialog(this);
-		QTableWidget* table_widget = new QTableWidget(dialog);
-		int row = 0;
-		for (it = optional_fields.begin(); it != optional_fields.end(); ++it)
+		for (it = selected_fields.begin(); it != selected_fields.end(); ++it)
 		{
-			table_widget->setItem(row, 0,
-					new QTableWidgetItem(QIcon(it->icon().c_str()), it->text().c_str()));
-			table_widget->setItem(row, 1,
-					new QTableWidgetItem(it->typeString().c_str()));
-			table_widget->setItem(row, 2,
-					new QTableWidgetItem(QString("%1").arg(it->length())));
-			table_widget->setItem(row, 3,
-								new QTableWidgetItem(it->tip().c_str()));
-			row++;
+			addFieldItem(item, item->child(item->childCount()-1), *it);
 		}
-		//dialog->setModal (true);
-		dialog->exec();
 	}
 }
 
@@ -324,3 +318,123 @@ void ProtocolTree::itemWidgetTextChange(QTreeWidgetItem *item, int count)
 {
 	item->setText(4, QString("%1").arg(count));
 }
+
+//void ProtocolTree::mousePressEvent(QMouseEvent *event)
+//{
+//	if (event->button() == Qt::LeftButton)
+//	{
+//		m_start_pos = event->pos();
+//	}
+//	QTreeWidget::mousePressEvent(event);
+//
+//}
+//void ProtocolTree::mouseMoveEvent(QMouseEvent *event)
+//{
+//	if (event->button() == Qt::LeftButton)
+//	{
+//		int distance = (event->pos() - m_start_pos).manhattanLength();
+//		if (distance >= QApplication::startDragDistance())
+//		{
+//			performDrag();
+//		}
+//	}
+//	QTreeWidget::mouseMoveEvent(event);
+//}
+//
+//void ProtocolTree::performDrag()
+//{
+//	QTreeWidgetItem* item = currentItem();
+//	if (item == NULL)
+//	{
+//		return;
+//	}
+//	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+//	if (item_type == E_ITEM_TYPE_CATEGORY)
+//	{
+//		return;
+//	}
+//
+//	QTreeWidgetItem* item_parent = item->parent();
+//	QString category_name = item_parent->data(1, Qt::UserRole).toString();
+//	QString field_name = item->data(1, Qt::UserRole).toString();
+//
+//	Field field = m_protocol.category(category_name.toStdString()).field(field_name.toStdString());
+//
+//	QMimeData* mine_data = new QMimeData();
+//	mine_data->setText(field.name().c_str());
+//	mine_data->setHtml(category_name);
+//	QDrag* drag = new QDrag(this);
+//	drag->setMimeData(mine_data);
+//	drag->setPixmap(QPixmap(field.icon().c_str()));
+//	if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
+//	{
+//		delete item;
+//	}
+//}
+//
+//void ProtocolTree::dragMoveEvent(QDragMoveEvent *event)
+//{
+//	ProtocolTree* source = qobject_cast<ProtocolTree*>(event->source());
+//	if (source != NULL && source == this)
+//	{
+//		QTreeWidgetItem* item = itemAt(event->pos());
+//		if (item == NULL)
+//		{
+//			return;
+//		}
+//		EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+//		if (item_type == E_ITEM_TYPE_CATEGORY)
+//		{
+//			return;
+//		}
+//
+//		QTreeWidgetItem* item_parent = item->parent();
+//		QString category_name = item_parent->data(1, Qt::UserRole).toString();
+//		//QString field_name = item->data(1, Qt::UserRole).toString();
+//		if (event->mimeData()->html() != category_name)
+//		{
+//			return;
+//		}
+//
+//		event->setDropAction(Qt::MoveAction);
+//		event->accept();
+//	}
+//}
+//void ProtocolTree::dragEnterEvent(QDragEnterEvent *event)
+//{
+//	ProtocolTree* source = qobject_cast<ProtocolTree*>(event->source());
+//	if (source != NULL && source == this)
+//	{
+//		event->setDropAction(Qt::MoveAction);
+//		event->accept();
+//	}
+//}
+//void ProtocolTree::dropEvent(QDropEvent *event)
+//{
+	//const QMimeData* data = event->mimeData();
+//	ProtocolTree* source = qobject_cast<ProtocolTree*>(event->source());
+//	if (source != NULL && source == this)
+//	{
+//		QTreeWidgetItem* item = itemAt(event->pos());
+//		if (item == NULL)
+//		{
+//			return;
+//		}
+//
+//		EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+//		if (item_type == E_ITEM_TYPE_CATEGORY)
+//		{
+//			return;
+//		}
+//
+//		QTreeWidgetItem* item_parent = item->parent();
+//		QString category_name = item_parent->data(1, Qt::UserRole).toString();
+//		QString field_name = item->data(1, Qt::UserRole).toString();
+//
+//		Field field = m_protocol.category(category_name.toStdString()).field(field_name.toStdString());
+//
+//		addFieldItem(item_parent, item, field);
+//		event->setDropAction(Qt::MoveAction);
+//		event->accept();
+//	}
+//}

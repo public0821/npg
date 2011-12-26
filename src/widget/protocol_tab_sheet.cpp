@@ -60,7 +60,7 @@ QString ProtocolTabSheet::sendData()
 
 	bool need_checknum = false;
 	u_int16_t checknum_pos = 0;
-	Field checknum_field(true);
+	Field checknum_field("", true);
 
 	ProtocolTree* tree_widget = ui.treeWidget;
 	int	category_count = tree_widget->topLevelItemCount();
