@@ -2,6 +2,7 @@
 #include <qstring.h>
 #include "logger.h"
 #include "socket/socket_public.h"
+#include "socket/socket_toolkit.h"
 
 const u_int16_t BUFFER_INCREMENT =  128;
 
@@ -21,12 +22,6 @@ ProtocolBuilder::~ProtocolBuilder(void)
 
 u_int32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, u_int16_t length, const QString& value)
 {
-	if (m_buffer == NULL)
-	{
-		m_buffer = new char[BUFFER_INCREMENT];
-		m_buf_len = BUFFER_INCREMENT;
-	}
-
 	u_int32_t new_protocol_len;
 	switch (field_type)
 	{
@@ -49,9 +44,20 @@ u_int32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, u_int16_t length
 		break;
 	}
 
-	if( new_protocol_len > m_buf_len)
+	return reallocBuffer(new_protocol_len);
+}
+
+u_int32_t ProtocolBuilder::reallocBuffer(u_int32_t new_length)
+{
+	if (m_buffer == NULL)
 	{
-		char* new_buf = new char[m_buf_len + BUFFER_INCREMENT];
+		m_buffer = new char[BUFFER_INCREMENT];
+		m_buf_len = BUFFER_INCREMENT;
+	}
+
+	if( new_length > m_buf_len)
+	{
+		char* new_buf = new char[m_buf_len + (new_length-m_buf_len)/BUFFER_INCREMENT + BUFFER_INCREMENT];
 		memcpy(new_buf, m_buffer, m_protocol_len);
 		delete[] m_buffer;
 		m_buffer = new_buf;
@@ -59,7 +65,7 @@ u_int32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, u_int16_t length
 	}
 
 	u_int32_t old_protocol_len = m_protocol_len;
-	m_protocol_len = new_protocol_len;
+	m_protocol_len = new_length;
 
 	return old_protocol_len;
 }
@@ -147,6 +153,19 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 			memcpy(m_buffer + pos, &addr.s_addr, sizeof(addr.s_addr));
 		}
 		break;
+	case E_FIELD_TYPE_MAC:
+		{
+			sstring mac_str = value.toStdString();
+			u_int8_t mac[IF_HWADDRLEN];
+			SocketToolkit toolkit;
+			if (!toolkit.toMac(mac_str.c_str(), mac))
+			{
+				SET_ERROR_STR("Unsupported type");
+				ret = false;
+			}
+			memcpy(m_buffer + pos, mac, sizeof(mac));
+		}
+		break;
 	case E_FIELD_TYPE_STRING:
 		{
 			sstring data = value.toStdString();
@@ -166,4 +185,10 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 	}
 
 	return ret;
+}
+
+void ProtocolBuilder::append(const char* buf, u_int16_t length)
+{
+	u_int32_t pos = reallocBuffer(m_protocol_len + length);
+	memcpy(m_buffer + pos, buf, length);
 }

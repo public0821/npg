@@ -26,11 +26,12 @@ Q_OBJECT
 public:
 	TabSheet(const QString& protocol_name, QWidget *parent = NULL, QString depend_protocol_name="", QString depend_protocol_param="");
 	virtual ~TabSheet();
-protected:
-	void setupUi(QHBoxLayout* layout);
+public:
 	void showTip(const QString& tip);
 	void showSuccessfulTip(const QString& tip);
 	void showFailedTip(const QString& tip);
+protected:
+	void setupUi(QHBoxLayout* layout);
 	bool isAdvance() const
 	{
 		return m_is_advanced;

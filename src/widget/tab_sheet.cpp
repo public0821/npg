@@ -14,6 +14,7 @@
 #include "tcp_widget.h"
 #include "npg_define.h"
 #include "ip_widget.h"
+#include "ethernet_widget.h"
 
 TabSheet::TabSheet(const QString& protocol_name
 				   , QWidget *parent
@@ -36,6 +37,10 @@ TabSheet::TabSheet(const QString& protocol_name
 	else if (depend_protocol_name == K_PROTOCOL_IP)
 	{
 		m_base_protocol_widget = new IpWidget(m_protocol_name, depend_protocol_param, this);
+	}
+	else if (depend_protocol_name == K_PROTOCOL_ETHERNET)
+	{
+		m_base_protocol_widget = new EthernetWidget(m_protocol_name, depend_protocol_param, this);
 	}
 }
 

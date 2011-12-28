@@ -1,23 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Npg>
     <Protocols>
- <!--       <Protocol Name="HTTP" Icon=":/npg/resource/udp.png" Dependence="TCP">
-            <Field Name="type" Type="string" Method="select" Tail=" ">
-            <Items>
-                <Item Name="GET"/> 
-                <Item Name="POST"/> 
-                <Item Name="DELETE"/> 
-                <Item Name="DELETE"/> 
-            </Items>
-            </Field>
-            <Field Name="uri" Type="string" Method="input" Tail="\\n" Optional="true"/>
-            <Field Name="type" Type="string" Method="select" Tail=" ">
-                <Item Name="GET"/> 
-                <Item Name="POST"/> 
-                <Item Name="DELETE"/> 
-                <Item Name="DELETE"/> 
-            </Field>
-        </Protocol>-->
+        <Protocol Name="HTTP" Dependence="TCP">
+            <Category Name="Header">
+                <Field Name="type" Type="string" InputMethod="select" Tail=" ">
+                    <Item Value="GET" Text="GET"/> 
+                    <Item Value="POST" Text="POST"/> 
+                    <Item Value="DELETE" Text="DELETE"/> 
+                    <Item Value="UPDATE" Text="UPDATE"/> 
+                </Field>
+                <Field Name="uri" Type="string" InputMethod="lineedit" Tail="\\n"/>
+            </Category>
+            <Category Name="Data">
+            </Category>
+        </Protocol>
+        <Protocol Name="Ether_arp" Dependence="ETHERNET" DependenceParam="ARP">
+            <Category Name="Header">
+                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="Format of hardware address"/>
+                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="Format of protocol address"/>
+                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="Length of hardware address"/>
+                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="Length of protocol address"/>
+                <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP opcode (command)">
+                    <Item Value="1" Text="arp request"/>
+                    <Item Value="2" Text="arp response"/>
+                </Field>
+            </Category>
+            <Category Name="Data">
+                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="sender hardware address"/>
+                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="sender protocol address"/>
+                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="target hardware address"/>
+                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="target protocol address"/>
+            </Category>
+        </Protocol>
+        <Protocol Name="Ether_rarp" Dependence="ETHERNET" DependenceParam="RARP">
+            <Category Name="Header">
+                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="Format of hardware address"/>
+                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="Format of protocol address"/>
+                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="Length of hardware address"/>
+                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="Length of protocol address"/>
+                <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP opcode (command)">
+                    <Item Value="3" Text="rarp request"/>
+                    <Item Value="4" Text="rarp response"/>
+                </Field>
+            </Category>
+            <Category Name="Data">
+                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="sender hardware address"/>
+                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="sender protocol address"/>
+                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="target hardware address"/>
+                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="target protocol address"/>
+            </Category>
+        </Protocol>
         <Protocol Name="ICMP" Dependence="IP" DependenceParam="ICMP">
             <Category Name="Header">
                 <Field Name="type" Type="int" InputMethod="lineedit" Length="1" Tip="type"/>
@@ -25,10 +57,10 @@
                 <Field Name="checknum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="checknum" Tip="The sum of a pseudo header of information from the icmp header and the data,\n padded with zero octets at the end(If zero, the program will automatically generate)"/>
             </Category>
             <Category Name="Data">
-                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" Optional="true" DefaultValue="pid" Tip="Unique id for this process"/>
-                <Field Name="seq" Type="int" InputMethod="lineedit" Length="2" Optional="true" DefaultValue="seq" Tip="Sequence"/>
-                <Field Name="otime" Type="int" InputMethod="lineedit" Length="4" Optional="true" DefaultValue="second" Tip="seconds from 1970-1-1"/>
-                <Field Name="rtime" Type="int" InputMethod="lineedit" Length="4" Optional="true" Tip="millisecond from the start of this second"/>
+                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" Optional="true" ShowOnStart="true" DefaultValue="pid" Tip="Unique id for this process"/>
+                <Field Name="seq" Type="int" InputMethod="lineedit" Length="2" Optional="true" ShowOnStart="true" DefaultValue="seq" Tip="Sequence"/>
+                <Field Name="otime" Type="int" InputMethod="lineedit" Length="4" Optional="true" ShowOnStart="true" DefaultValue="second" Tip="seconds from 1970-1-1"/>
+                <Field Name="rtime" Type="int" InputMethod="lineedit" Length="4" Optional="true" ShowOnStart="true" DefaultValue="millisecond" Tip="millisecond from the start of this second"/>
                 <Field Name="other" Type="int" InputMethod="lineedit" Length="2" Optional="true" Tip="User defined field"/>
             </Category>
         </Protocol>
@@ -92,7 +124,65 @@
                 <Field Name="dst_as" Type="int" InputMethod="lineedit" Length="2" Tip="Autonomous system number of the destination, either origin or peer"/>
                 <Field Name="src_mask" Type="int" InputMethod="lineedit" Length="1" Tip="Source address prefix mask bits"/>
                 <Field Name="dst_mask" Type="int" InputMethod="lineedit" Length="1" Tip="Destination address prefix mask bits"/>
-                <Field Name="pad2" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="Unused (zero) bytes"/>                
+                <Field Name="pad2" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="Unused (zero) bytes"/>          
+            </Category>
+        </Protocol>
+        <Protocol Name="DNS" Dependence="UDP" RFC="1035">
+            <Category Name="Header">
+                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" DefaultValue="seq" Tip="A 16 bit identifier assigned by the program that generates any kind of query. \n This identifier is copied the corresponding reply and can be used by the requester to match up replies to outstanding queries."/>
+                <Field Name="op_flag" Type="int" InputMethod="none" Length="2"  Tip="operating flag">
+                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1"  Tip="A one bit field that specifies whether this message is a query (0), or a response (1).">
+                        <Item Value="0" Text="query"/>
+                        <Item Value="1" Text="response"/>
+                    </SubField>
+                    <SubField Name="opcode" Type="bit" InputMethod="select" Length="4"  Tip="A four bit field that specifies kind of query in this message.  This value is set by the originator of a query and copied into the response.">
+                        <Item Value="0" Text="Standard query"/>
+                        <Item Value="1" Text="inverse query"/>
+                        <Item Value="2" Text="Server status query"/>
+                    </SubField>
+                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Tip="Authoritative Answer - this bit is valid in responses, and specifies that the responding name server is an authority for the domain name in question section.
+                    Note that the contents of the answer section may have multiple owner names because of aliases.  The AA bit corresponds to the name which matches the query name, or the first owner name in the answer section">
+                        <Item Value="0" Text="no"/>
+                        <Item Value="1" Text="yes"/>
+                    </SubField>
+                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Tip="TrunCation - specifies that this message was truncated due to length greater than that permitted on the transmission channel">
+                        <Item Value="0" Text="no"/>
+                        <Item Value="1" Text="yes"/>
+                    </SubField>
+                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1"  Tip="Recursion Desired - this bit may be set in a query and is copied into the response.  If RD is set, it directs the name server to pursue the query recursively. Recursive query support is optional.">
+                        <Item Value="0" Text="no"/>
+                        <Item Value="1" Text="yes"/>
+                    </SubField>
+                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1"  Tip="Recursion Available - this be is set or cleared in a response, and denotes whether recursive query support is available in the name server.">
+                        <Item Value="0" Text="no"/>
+                        <Item Value="1" Text="yes"/>
+                    </SubField>
+                    <SubField Name="zero" Type="bit" InputMethod="lineedit" DefaultValue="0" Editable="false" Length="3"  Tip="Reserved for future use.  Must be zero in all queries and responses."/>
+                    <SubField Name="rcode" Type="bit" InputMethod="select" Length="4"  Tip="Response code - this 4 bit field is set as part of responses">
+                        <Item Value="0" Text="No error condition"/>
+                        <Item Value="1" Text="Format error"/>
+                        <Item Value="2" Text="Server failure"/>
+                        <Item Value="3" Text="Name Error"/>
+                        <Item Value="4" Text="Not Implemented"/>
+                        <Item Value="5" Text="Refused"/>
+                    </SubField>
+                </Field>
+                <Field Name="QDCOUNT" Type="int" InputMethod="lineedit" Length="2" DefaultValue="1" Tip="an unsigned 16 bit integer specifying the number of entries in the question section"/>
+                <Field Name="ANCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of resource records in the answer section."/>
+                <Field Name="NSCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of name server resource records in the authority records section."/>
+                <Field Name="ARCOUNT " Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of resource records in the additional records section."/>
+            </Category>
+            <Category Name="Request" Many="true">
+                <Field Name="count" Type="int" InputMethod="lineedit" Length="1" Optional="true" ShowOnStart="true" Tip="length of the following name field"/>
+                <Field Name="name" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="true" Tip="querry name"/>
+                <Field Name="count_end" Type="int" InputMethod="lineedit" Length="1" Editable="false"  DefaultValue="0" Tip="end flag of a complete querry name"/>
+                <Field Name="QTYPE" Type="int" InputMethod="select" Length="2" Tip="a two octet code which specifies the type of the query.">
+                        <Item Value="1" Text="A(IP ADDR)"/>
+                        <Item Value="12" Text="PTR"/>
+                </Field>
+                <Field Name="QCLASS" Type="int" Length="2" InputMethod="lineedit" DefaultValue="1" Tip="usually 1, refers to the Internet address"/>
+            </Category>
+            <Category Name="Response" Many="true">
             </Category>
         </Protocol>
     </Protocols>

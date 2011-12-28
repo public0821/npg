@@ -25,8 +25,8 @@ npg::npg(QWidget *parent) :
 	name_icons.insert(K_PROTOCOL_UDP, ":/npg/protocol_udp");
 	name_icons.insert(K_PROTOCOL_TCP, ":/npg/protocol_udp");
 	//name_icons.insert(K_PROTOCOL_ICMP, ":/npg/protocol_udp");
-	name_icons.insert(K_PROTOCOL_ARP, ":/npg/protocol_udp");
-	name_icons.insert(K_PROTOCOL_DNS, ":/npg/protocol_udp");
+	//name_icons.insert(K_PROTOCOL_ARP, ":/npg/protocol_udp");
+	//name_icons.insert(K_PROTOCOL_DNS, ":/npg/protocol_udp");
 
 	m_type_list = new MainListWidget(name_icons);
 	m_tab_widget = new MainTabWidget(name_icons);

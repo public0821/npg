@@ -11,6 +11,8 @@ Field::Field(const sstring& category_name, bool empty)
 ,m_empty(empty)
 ,m_optional(false)
 ,m_category_name(category_name)
+,m_editable(true)
+,m_show_on_start(false)
 {
 }
 
@@ -77,7 +79,15 @@ void Field::setEditable(bool editable)
 {
 	m_editable = editable;
 }
+void Field::setShowOnStart(bool show_on_start)
+{
+	m_show_on_start = show_on_start;
+}
 
+void Field::addSubField(const Field& sub_field)
+{
+	m_sub_fields.push_back(sub_field);
+}
 sstring Field::name() const
 {
 	return m_name;
@@ -98,6 +108,10 @@ size_t Field::length() const
 	if (m_length == 0 && type() == E_FIELD_TYPE_IP)
 	{
 		return 4u;
+	}
+	else if (m_length == 0 && type() == E_FIELD_TYPE_MAC)
+	{
+		return 6u;
 	}
 	return m_length;
 }
@@ -208,6 +222,12 @@ sstring Field::icon() const
 	case E_FIELD_TYPE_IP:
 		icon = ":/npg/field_ip";
 		break;
+	case E_FIELD_TYPE_MAC:
+		icon = ":/npg/field_mac";
+		break;
+	case E_FIELD_TYPE_BIT:
+		icon = ":/npg/field_bit";
+		break;
 	default:
 		break;
 	}
@@ -240,4 +260,28 @@ bool Field::editable()const
 sstring Field::categoryName()const
 {
 	return m_category_name;
+}
+
+bool Field::isShowOnStart()const
+{
+	return m_show_on_start;
+}
+
+const std::vector<Field>& Field::subFields()const
+{
+	return m_sub_fields;
+}
+
+Field Field::subField(const sstring& sub_field_name)const
+{
+	std::vector<Field>::const_iterator it;
+	for (it = m_sub_fields.begin(); it != m_sub_fields.end(); ++it)
+	{
+		if (it->name() == sub_field_name)
+		{
+			return *it;
+		}
+	}
+
+	return Field(m_name, true);
 }

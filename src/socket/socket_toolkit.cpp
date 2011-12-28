@@ -278,10 +278,10 @@ u_int16_t SocketToolkit::inCheckSum(u_int16_t * addr, size_t len)
 	return (answer);
 }
 
-
 bool SocketToolkit::toMac(const char* mac_str, u_int8_t* mac)
 {
 	u_int32_t temp_mac[6];
+	bzero(temp_mac, sizeof(temp_mac));
 	int n = sscanf(mac_str, "%x:%x:%x:%x:%x:%x", &temp_mac[0], &temp_mac[1], &temp_mac[2],
 		&temp_mac[3], &temp_mac[4], &temp_mac[5]);
 
@@ -302,4 +302,13 @@ bool SocketToolkit::toMac(const char* mac_str, u_int8_t* mac)
 	}
 
 	return true;
+}
+
+void SocketToolkit::macToString(const u_int8_t* mac, char* mac_str, size_t len)
+{
+	bzero(mac_str, sizeof(len));
+	snprintf(mac_str, len, "%2.2x:%2.2x:%2.2x:%2.2x:%2.2x:%2.2x",
+			(u_int8_t) mac[0], (u_int8_t) mac[1],
+			(u_int8_t) mac[2], (u_int8_t) mac[3],
+			(u_int8_t) mac[4], (u_int8_t) mac[5]);
 }

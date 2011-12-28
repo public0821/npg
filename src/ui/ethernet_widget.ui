@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EthernetWidget</class>
+ <widget class="QWidget" name="EthernetWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>357</width>
+    <height>64</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>EthernetWidget</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>Interface</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" colspan="4">
+    <widget class="QComboBox" name="interface_box"/>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>MAC(To)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QLineEdit" name="to_mac_edit"/>
+   </item>
+   <item row="1" column="3">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>MAC(From)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QLineEdit" name="from_mac_edit"/>
+   </item>
+   <item row="1" column="5">
+    <widget class="QLabel" name="label_9">
+     <property name="text">
+      <string>Protocol</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="6">
+    <widget class="QComboBox" name="protocol_box"/>
+   </item>
+   <item row="0" column="6" colspan="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="7">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

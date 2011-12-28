@@ -10,5 +10,7 @@
         <file alias="up">resource/npg_up_16px.png</file>
         <file alias="down">resource/npg_down_16px.png</file>
         <file alias="npg">resource/npg.png</file>
+        <file alias="field_mac">resource/npg_mac_16px.jpg</file>
+        <file alias="field_bit">resource/npg_bit_32px.jpg</file>
     </qresource>
 </RCC>

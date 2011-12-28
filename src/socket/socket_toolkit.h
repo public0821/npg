@@ -10,6 +10,7 @@
 
 #include <vector>
 #include "system/error.h"
+#include "system/types.h"
 #include "socket_public.h"
 
 
@@ -41,6 +42,7 @@ public:
 	u_int16_t inCheckSum(u_int16_t * addr, size_t len);//return network byte order
 	int macAddress(const char* ip, char* mac);
 	bool toMac(const char* mac_str, u_int8_t* mac);
+	void macToString(const u_int8_t* mac, char* mac_str, size_t len);
 };
 
 #endif /* SOCKET_TOOLKIT_H_ */

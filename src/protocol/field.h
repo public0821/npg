@@ -11,6 +11,7 @@ enum EFiledType
 	, E_FIELD_TYPE_STRING
 	, E_FIELD_TYPE_IP
 	, E_FIELD_TYPE_BIT
+	, E_FIELD_TYPE_MAC
 };
 
 enum EFiledInputMethod
@@ -58,6 +59,8 @@ public:
 	void setOptional(bool optional);
 	void addItem(const FieldItem& item);
 	void setEditable(bool editable);
+	void setShowOnStart(bool show_on_start);
+	void addSubField(const Field& sub_field);
 
 	sstring name() const;
 	EFiledType type() const;
@@ -76,6 +79,9 @@ public:
 	const std::vector<FieldItem>& items()const;
 	bool editable()const;
 	sstring categoryName()const;
+	bool isShowOnStart()const;
+	const std::vector<Field>& subFields()const;
+	Field subField(const sstring& sub_field_name)const;
 private:
 	sstring m_name;
 	EFiledType m_type;
@@ -90,6 +96,8 @@ private:
 	std::vector<FieldItem> m_items;
 	bool m_editable;
 	sstring m_category_name;
+	bool m_show_on_start;
+	std::vector<Field> m_sub_fields;
 };
 
 #endif

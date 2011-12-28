@@ -18,7 +18,8 @@ IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name
 	it_find = m_built_in_protocol.find(ip_protocol_name.toStdString());
 	if (it_find != m_built_in_protocol.end())
 	{
-		ui.protocol_box->addItem(it_find->first.c_str(), QVariant(it_find->second));
+		QString text = QString("%1 (%2)").arg(it_find->first.c_str()).arg(it_find->second);
+		ui.protocol_box->addItem(text, QVariant(it_find->second));
 		ui.protocol_box->setEditable(false);
 	}
 	else
@@ -27,7 +28,8 @@ IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name
 		it = m_built_in_protocol.begin();
 		for (; it != m_built_in_protocol.end(); ++it)
 		{
-			ui.protocol_box->addItem(it->first.c_str(), QVariant(it->second));
+			QString text = QString("%1 (%2)").arg(it->first.c_str()).arg(it->second);
+			ui.protocol_box->addItem(text, QVariant(it->second));
 		}
 		ui.protocol_box->setEditable(true);
 	}

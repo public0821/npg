@@ -13,6 +13,7 @@
 #include "protocol/protocol_builder.h"
 #include "udp_widget.h"
 #include "socket/socket_toolkit.h"
+#include "protocol/bit_builder.h"
 
 ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent) 
 :TabSheet(protocol.name().c_str(), parent, protocol.dependenceString().c_str(), protocol.DependenceParam().c_str())
@@ -64,42 +65,67 @@ QString ProtocolTabSheet::sendData()
 
 	ProtocolTree* tree_widget = ui.treeWidget;
 	int	category_count = tree_widget->topLevelItemCount();
-	for (int i = 0; i < category_count; i++)
+	for (int category_index = 0; category_index < category_count; category_index++)
 	{
-		QTreeWidgetItem* category_item = tree_widget->topLevelItem(i);
+		QTreeWidgetItem* category_item = tree_widget->topLevelItem(category_index);
 		QString category_name = category_item->data(1, Qt::UserRole).toString();
 		Category category = m_protocol.category(category_name.toStdString());
 
 		int field_count = category_item->childCount();
-		for (int j = 0; j < field_count; j++)
+		for (int field_index = 0; field_index < field_count; field_index++)
 		{
-			QTreeWidgetItem* field_item	= category_item->child (j);
-			ProtocolTreeItem* item_widget = (ProtocolTreeItem*)tree_widget->itemWidget(field_item, 1);
-			QCheckBox* item_checkbox = (QCheckBox*)tree_widget->itemWidget(field_item, 2);
+			QTreeWidgetItem* field_item	= category_item->child (field_index);
 			QString field_name = field_item->data(1, Qt::UserRole).toString();
 			Field field = category.field(field_name.toStdString());
 
-			QString data;
-			if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Unchecked)
+			int sub_field_count = field_item->childCount();
+			if (sub_field_count > 0)
 			{
-				if (field.defaultValueOriginal() == K_DEFAULT_VALUE_CHECKNUM)
+				if (field.length() <= 0)
 				{
-					need_checknum = true;
-					checknum_pos = protocol_builder.length();
-					checknum_field = field;
-				}	
-				data = convertDefaultValue(field.defaultValueOriginal().c_str());
+					return tr("field length must greater than 1:") + field.name().c_str();
+				}
+				
+				BitBuilder bit_builder(field.length());
+				for (int sub_field_index = 0; sub_field_index < sub_field_count; sub_field_index++)
+				{
+					QTreeWidgetItem* sub_field_item	= field_item->child (sub_field_index);
+					ProtocolTreeItem* item_widget = (ProtocolTreeItem*)tree_widget->itemWidget(sub_field_item, 1);
+					u_int32_t data = item_widget->value().toUInt();
+
+					QString sub_field_name = sub_field_item->data(1, Qt::UserRole).toString();
+					Field sub_field = field.subField(sub_field_name.toStdString());
+					bit_builder.append(data, sub_field.length());
+				}
+				protocol_builder.append((const char *)bit_builder.data(), bit_builder.length());
 			}
 			else
 			{
-				data = item_widget->value();
+				QCheckBox* item_checkbox = (QCheckBox*)tree_widget->itemWidget(field_item, 2);
+				QString data;
+				if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Unchecked)
+				{
+					if (field.defaultValueOriginal() == K_DEFAULT_VALUE_CHECKNUM)
+					{
+						need_checknum = true;
+						checknum_pos = protocol_builder.length();
+						checknum_field = field;
+					}	
+					data = convertDefaultValue(field.defaultValueOriginal().c_str());
+				}
+				else
+				{
+					ProtocolTreeItem* item_widget = (ProtocolTreeItem*)tree_widget->itemWidget(field_item, 1);
+					data = item_widget->value();
+				}
+
+				bool ret = protocol_builder.append(field.type(), field.length(), data);
+				if (ret == false)
+				{
+					return protocol_builder.errorStr();
+				}
 			}
 			
-			bool ret = protocol_builder.append(field.type(), field.length(), data);
-			if (ret == false)
-			{
-				return protocol_builder.errorStr();
-			}
 			
 		}
 	}

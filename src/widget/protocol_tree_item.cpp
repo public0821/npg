@@ -44,6 +44,9 @@ QWidget* ProtocolTreeItem::getFieldWidget(const Field& field)
 		case E_FIELD_TYPE_IP:
 			edit->setInputMask("000.000.000.000");
 			break;
+		case E_FIELD_TYPE_MAC:
+			//edit->setInputMask("NN:NN:NN:NN:NN:NN");
+			break;
 		default:
 			break;
 		}
@@ -69,7 +72,8 @@ QWidget* ProtocolTreeItem::getFieldWidget(const Field& field)
 		std::vector<FieldItem>::const_iterator it;
 		for (it = field_items.begin(); it != field_items.end(); ++it)
 		{
-			combo_box->addItem(it->text().c_str(), QVariant(it->value().c_str()));
+			QString text = QString("%1 (%2)").arg(it->text().c_str()).arg(it->value().c_str());
+			combo_box->addItem(text, QVariant(it->value().c_str()));
 		}
 		combo_box->setEditable(true);
 		widget = combo_box;

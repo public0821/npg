@@ -53,6 +53,11 @@ void FieldSelectDialog::onOk()
 
 std::vector<Field> FieldSelectDialog::selectedFields()
 {
+	if (!m_ok)
+	{
+		return std::vector<Field>();
+	}
+
 	std::vector<Field> selected_fields;
 	int field_count = ui.tree_widget->topLevelItemCount();
 	for (int i = 0; i < field_count; i++)

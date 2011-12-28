@@ -10,6 +10,7 @@ public:
 	~ProtocolBuilder(void);
 public:
 	bool append(EFiledType field_type, u_int16_t length, const QString& value);
+	void append(const char* buf, u_int16_t length);
 	bool set(u_int32_t pos, EFiledType field_type, u_int16_t length, const QString& value);
 	char* data()const;
 	u_int32_t length()const;
@@ -20,6 +21,7 @@ public:
 //	int64_t toInt64(const QString& value);
 private:
 	u_int32_t reallocBuffer(EFiledType field_type, u_int16_t length, const QString& value);
+	u_int32_t reallocBuffer(u_int32_t new_length);
 private:
 	char* m_buffer;
 	u_int32_t m_protocol_len;

@@ -113,6 +113,10 @@ void ProtocolFactory::loadProtocolElement(QDomElement* element)
 	{
 		protocol.setDependence(E_BASE_PROTOCOL_IP);
 	}
+	else  if (dependence_str == K_PROTOCOL_ETHERNET)
+	{
+		protocol.setDependence(E_BASE_PROTOCOL_ETHERNET);
+	}
 	else
 	{
 		SET_ERROR_STR((sstring("Unknown Dependence Protocol:")+dependence_str.toStdString()).c_str());
@@ -174,6 +178,14 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 	{
 		field.setType(E_FIELD_TYPE_STRING);
 	}
+	else if (type_str == "mac")
+	{
+		field.setType(E_FIELD_TYPE_MAC);
+	}
+	else if (type_str == "bit")
+	{
+		field.setType(E_FIELD_TYPE_BIT);
+	}
 	else
 	{
 		SET_ERROR_STR((sstring("Unknown field type:")+type_str).c_str());
@@ -226,6 +238,16 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 		field.setEditable(true);
 	}
 
+	sstring show_on_start_str = field_element.attribute("ShowOnStart").toStdString();
+	if (show_on_start_str == "true")
+	{
+		field.setShowOnStart(true);
+	}
+	else
+	{
+		field.setShowOnStart(false);
+	}
+
 	QDomElement item_element = field_element.firstChildElement("Item");
 	while(!item_element.isNull())
 	{
@@ -234,6 +256,13 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 		field_item.setValue(item_element.attribute("Value").toStdString());
 		item_element = item_element.nextSiblingElement("Item");	
 		field.addItem(field_item);
+	}
+
+	QDomElement subfield_element = field_element.firstChildElement("SubField");
+	while(!subfield_element.isNull())
+	{
+		field.addSubField(loadFieldElement(category_name, &subfield_element));
+		subfield_element = subfield_element.nextSiblingElement("SubField");	
 	}
 
 	return field;

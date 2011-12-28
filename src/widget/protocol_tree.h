@@ -8,7 +8,9 @@
 
 enum EItemType
 {
-	E_ITEM_TYPE_CATEGORY = 1, E_ITEM_TYPE_FIELD = 2,
+	E_ITEM_TYPE_CATEGORY = 1
+	, E_ITEM_TYPE_FIELD = 2
+	,	E_ITEM_TYPE_SUBFIELD = 2
 };
 
 
@@ -37,13 +39,14 @@ private slots:
 private:
 	QTreeWidgetItem* getSelectedItem();
 	QTreeWidgetItem* addFieldItem(QTreeWidgetItem* parent, QTreeWidgetItem * preceding, const Field& field);
+	QTreeWidgetItem* addSubFieldItem(QTreeWidgetItem* parent, const Field& field);
 	QTreeWidgetItem * addCategoryItem(QTreeWidget * parent, QTreeWidgetItem * preceding, const Category& category);
 private:
 	QAction* m_delete_action;
 	QAction* m_add_action;
 	QAction* m_add_field_action;
 	Protocol m_protocol;
-	std::map<sstring, int>  m_multi_category_count;
+	//std::map<sstring, int>  m_multi_category_count;
 	//QPoint m_start_pos;
 };
 

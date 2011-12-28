@@ -9,9 +9,6 @@
 #include "npg_define.h"
 #include "data_tab_sheet.h"
 #include "tcp_widget.h"
-#include "icmp_widget.h"
-#include "arp_widget.h"
-#include "dns_widget.h"
 #include "protocol/protocol_factory.h"
 #include "protocol_tab_sheet.h"
 
@@ -54,14 +51,14 @@ int MainTabWidget::addTab(const QString &type)
 //	{
 //		sheet = new IcmpWidget(type, this);
 //	}
-	else if (type == K_PROTOCOL_ARP)
-	{
-		sheet = new ArpWidget(type, this);
-	}
-	else if (type == K_PROTOCOL_DNS)
-	{
-		sheet = new DnsWidget(type, this);
-	}
+	//else if (type == K_PROTOCOL_ARP)
+	//{
+	//	sheet = new ArpWidget(type, this);
+	//}
+	//else if (type == K_PROTOCOL_DNS)
+	//{
+	//	sheet = new DnsWidget(type, this);
+	//}
 	else
 	{
 		Protocol protocol = ProtocolFactory::instance().protocol(type.toStdString());
