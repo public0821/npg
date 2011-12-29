@@ -8,6 +8,7 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 	ui.setupUi(this);
 	setWindowTitle(tr("Select Field"));
 	setWindowIcon(QIcon(":/npg/npg"));
+
 	ui.ok_button->setText(tr("OK"));
 	ui.cancel_button->setText(tr("Cancel"));
 	connect(ui.ok_button, SIGNAL(released()), this, SLOT(onOk()));

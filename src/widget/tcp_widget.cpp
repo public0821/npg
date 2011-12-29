@@ -9,6 +9,7 @@
 #include <string>
 #include "npg_define.h"
 #include "socket/tcp.h"
+#include "tcp_response_dialog.h"
 
 TcpWidget::TcpWidget(const QString& protocol_name, QWidget *parent) :
 BaseProtocolWidget(protocol_name, parent)
@@ -73,6 +74,12 @@ QString TcpWidget::sendData(const char* data, u_int16_t length)
 		return QString(tr(tcp.errorStr()));
 	}
 
+	if (ui.wait_for_result_box->checkState() == Qt::Checked)
+	{
+		TcpResponseDialog dialog(tcp, this);
+		dialog.exec();
+	}
+	
 	return QString();
 }
 

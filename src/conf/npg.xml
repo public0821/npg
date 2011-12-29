@@ -3,13 +3,15 @@
     <Protocols>
         <Protocol Name="HTTP" Dependence="TCP">
             <Category Name="Header">
-                <Field Name="type" Type="string" InputMethod="select" Tail=" ">
+                <Field Name="type" Type="string" InputMethod="select" Tail="&#32;">
                     <Item Value="GET" Text="GET"/> 
                     <Item Value="POST" Text="POST"/> 
                     <Item Value="DELETE" Text="DELETE"/> 
                     <Item Value="UPDATE" Text="UPDATE"/> 
                 </Field>
-                <Field Name="uri" Type="string" InputMethod="lineedit" Tail="\\n"/>
+                <Field Name="uri" Type="string" InputMethod="lineedit" Tail="&#32;"/>
+                <Field Name="version" Type="string" InputMethod="lineedit" Tail="&#13;&#10;"/>
+                <Field Name="host" Type="string" InputMethod="lineedit" Tail="&#13;&#10;"/>
             </Category>
             <Category Name="Data">
             </Category>

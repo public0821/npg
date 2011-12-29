@@ -61,6 +61,7 @@ public:
 	void setEditable(bool editable);
 	void setShowOnStart(bool show_on_start);
 	void addSubField(const Field& sub_field);
+	void setTail(const sstring& tail);
 
 	sstring name() const;
 	EFiledType type() const;
@@ -82,6 +83,7 @@ public:
 	bool isShowOnStart()const;
 	const std::vector<Field>& subFields()const;
 	Field subField(const sstring& sub_field_name)const;
+	sstring tail()const;
 private:
 	sstring m_name;
 	EFiledType m_type;
@@ -98,6 +100,7 @@ private:
 	sstring m_category_name;
 	bool m_show_on_start;
 	std::vector<Field> m_sub_fields;
+	sstring m_tail;
 };
 
 #endif

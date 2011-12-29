@@ -27,7 +27,7 @@ MainListWidget::MainListWidget(const QMap<QString, QString>& name_icons, QWidget
 		item->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 	}
 	ProtocolFactory& protocol_factory = ProtocolFactory::instance();
-	if (protocol_factory.isError())
+	if (protocol_factory.hasError())
 	{
 		QMessageBox::information(this, "tip", protocol_factory.errorStr());
 	}	

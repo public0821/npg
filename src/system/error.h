@@ -27,25 +27,25 @@ public:
 	{
 		return m_error;
 	}
-	bool isError() const
+	bool hasError() const
 	{
-		return m_is_error;
+		return m_has_error;
 	}
 protected:
 
 #define SET_ERROR_STR(error_str) {snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
 		__FILE__, __LINE__,error_str);\
-		 m_is_error = true;}
+		 m_has_error = true;}
 
 	#define SET_ERROR_NO(errorno) {char buf[K_SOCKET_ERROR_BUF_LEN]; npg_strerror(errorno, buf, sizeof(buf));\
 		snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
 		__FILE__, __LINE__,buf);\
-		 m_is_error = true;}
+		 m_has_error = true;}
 
 
 protected:
 	char m_error[K_ERROR_BUF_LEN];
-	bool m_is_error;
+	bool m_has_error;
 };
 
 #endif /* _ERROR_H_ */

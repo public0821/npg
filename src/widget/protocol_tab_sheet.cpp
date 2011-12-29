@@ -126,6 +126,11 @@ QString ProtocolTabSheet::sendData()
 				}
 			}
 			
+			sstring field_tail = field.tail();
+			if (!field_tail.empty())
+			{
+				protocol_builder.append(field_tail.c_str(), field_tail.length());
+			}
 			
 		}
 	}

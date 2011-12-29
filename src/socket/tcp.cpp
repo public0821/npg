@@ -46,6 +46,32 @@ bool Tcp::send(const char* buffer, size_t buffer_len)
 	return true;
 }
 
+size_t Tcp::recv(char* buffer, size_t buffer_len)
+{
+	if (K_SOCKET_ERROR == m_sockfd)
+	{
+		return false;
+	}
+
+	size_t len_remaining = buffer_len;
+	while (len_remaining > 0)
+	{
+		int len = ::recv(m_sockfd, buffer, len_remaining, 0);
+		if (len == K_SOCKET_ERROR)
+		{
+			SET_ERROR_NO(npg_errno);
+			return buffer_len - len_remaining;
+		}
+		if (len == 0)//the peer has performed an orderly shutdown
+		{
+			return buffer_len - len_remaining;;
+		}
+		len_remaining -= len;
+	}
+
+	return buffer_len;
+}
+
 //#include <iostream>
 bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 {

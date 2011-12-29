@@ -9,7 +9,7 @@
 #include "system/os.h"
 
 Error::Error()
-:m_is_error(false)
+:m_has_error(false)
 {
 	bzero(m_error, sizeof(m_error));
 }

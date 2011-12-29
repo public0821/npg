@@ -217,6 +217,7 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 	field.setText(field_element.attribute("Text").toStdString());
 	field.setDefaultValue(field_element.attribute("DefaultValue").toStdString());
 	field.setTip(field_element.attribute("Tip").toStdString());
+	field.setTail(field_element.attribute("Tail").toStdString());
 
 	sstring optional_str = field_element.attribute("Optional").toStdString();
 	if (optional_str == "true")

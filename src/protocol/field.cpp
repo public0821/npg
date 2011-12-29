@@ -88,6 +88,13 @@ void Field::addSubField(const Field& sub_field)
 {
 	m_sub_fields.push_back(sub_field);
 }
+
+void Field::setTail(const sstring& tail)
+{
+	m_tail = tail;
+}
+
+
 sstring Field::name() const
 {
 	return m_name;
@@ -284,4 +291,9 @@ Field Field::subField(const sstring& sub_field_name)const
 	}
 
 	return Field(m_name, true);
+}
+
+sstring Field::tail()const
+{
+	return m_tail;
 }

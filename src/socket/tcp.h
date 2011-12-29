@@ -18,6 +18,7 @@ public:
 public:
 	bool connect(const char* ip, u_int16_t port, time_t timeout);
 	bool send(const char* buffer, size_t buffer_len);
+	size_t recv(char* buffer, size_t buffer_len);
 private:
 	int m_sockfd;
 };
