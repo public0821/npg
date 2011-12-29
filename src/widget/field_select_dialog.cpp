@@ -20,7 +20,7 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 	ui.tree_widget->setHeaderLabels(head_list);
 	ui.tree_widget->setDragDropMode(QTreeWidget::NoDragDrop);
 
-	for (int index = 0; index < optional_fields.size(); index++)
+	for (size_t index = 0; index < optional_fields.size(); index++)
 	{
 		QStringList text_list;
 		const Field& field = optional_fields[index];

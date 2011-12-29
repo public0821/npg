@@ -6,13 +6,13 @@
 
 Field::Field(const sstring& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)
-,m_input_method(E_FIELD_INPUT_METHOD_NONE)
-,m_length(0)
-,m_empty(empty)
-,m_optional(false)
-,m_category_name(category_name)
-,m_editable(true)
-,m_show_on_start(false)
+, m_input_method(E_FIELD_INPUT_METHOD_NONE)
+, m_length(0)
+, m_empty(empty)
+, m_optional(false)
+, m_editable(true)
+, m_category_name(category_name)
+, m_show_on_start(false)
 {
 }
 
@@ -20,8 +20,7 @@ Field::~Field(void)
 {
 }
 
-
-bool Field::empty()const
+bool Field::empty() const
 {
 	return m_empty;
 }
@@ -94,7 +93,6 @@ void Field::setTail(const sstring& tail)
 	m_tail = tail;
 }
 
-
 sstring Field::name() const
 {
 	return m_name;
@@ -135,11 +133,10 @@ sstring Field::text() const
 sstring Field::defaultValue() const
 {
 	if (m_default_value == K_DEFAULT_VALUE_SECOND
-		||m_default_value == K_DEFAULT_VALUE_PID
-		||m_default_value == K_DEFAULT_VALUE_MILLISECOND
-		||m_default_value == K_DEFAULT_VALUE_CHECKNUM
-		||m_default_value == K_DEFAULT_VALUE_SEQ
-		)
+			|| m_default_value == K_DEFAULT_VALUE_PID
+			|| m_default_value == K_DEFAULT_VALUE_MILLISECOND
+			|| m_default_value == K_DEFAULT_VALUE_CHECKNUM
+			|| m_default_value == K_DEFAULT_VALUE_SEQ)
 	{
 		//time_t now = time(NULL);
 		//char buf[64];
@@ -166,7 +163,7 @@ int64_t Field::minValue() const
 {
 	int64_t min;
 
-	switch(length())
+	switch (length())
 	{
 	case 0:
 		min = 0;
@@ -192,7 +189,7 @@ u_int64_t Field::maxValue() const
 {
 	u_int64_t max;
 
-	switch(length())
+	switch (length())
 	{
 	case 0:
 		max = 0;
@@ -218,7 +215,7 @@ u_int64_t Field::maxValue() const
 sstring Field::icon() const
 {
 	sstring icon;
-	switch(type())
+	switch (type())
 	{
 	case E_FIELD_TYPE_INT:
 		icon = ":/npg/field_int";
@@ -242,44 +239,42 @@ sstring Field::icon() const
 	return icon;
 }
 
-
 sstring Field::typeString() const
 {
 	return m_type_string;
 }
 
-bool Field::isOptional()const
+bool Field::isOptional() const
 {
 	return m_optional;
 }
 
-
-const std::vector<FieldItem>& Field::items()const
+const std::vector<FieldItem>& Field::items() const
 {
 	return m_items;
 }
 
-bool Field::editable()const
+bool Field::editable() const
 {
 	return m_editable;
 }
 
-sstring Field::categoryName()const
+sstring Field::categoryName() const
 {
 	return m_category_name;
 }
 
-bool Field::isShowOnStart()const
+bool Field::isShowOnStart() const
 {
 	return m_show_on_start;
 }
 
-const std::vector<Field>& Field::subFields()const
+const std::vector<Field>& Field::subFields() const
 {
 	return m_sub_fields;
 }
 
-Field Field::subField(const sstring& sub_field_name)const
+Field Field::subField(const sstring& sub_field_name) const
 {
 	std::vector<Field>::const_iterator it;
 	for (it = m_sub_fields.begin(); it != m_sub_fields.end(); ++it)
@@ -293,7 +288,7 @@ Field Field::subField(const sstring& sub_field_name)const
 	return Field(m_name, true);
 }
 
-sstring Field::tail()const
+sstring Field::tail() const
 {
 	return m_tail;
 }

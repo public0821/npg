@@ -5,7 +5,12 @@ QT += core \
     xml
 
 # Input
-HEADERS += widget/protocol_tree_item.h \
+HEADERS += protocol/bit_builder.h \
+    socket/ethernet.h \
+    widget/ethernet_widget.h \
+    widget/field_select_dialog.h \
+    widget/tcp_response_dialog.h \
+    widget/protocol_tree_item.h \
     system/os_linux.h \
     widget/protocol_tree.h \
     protocol/category.h \
@@ -13,7 +18,6 @@ HEADERS += widget/protocol_tree_item.h \
     protocol/protocol.h \
     protocol/protocol_factory.h \
     system/error.h \
-    protocol/dns.h \
     socket/net/ethernet.h \
     socket/net/if_arp.h \
     socket/net/if_ether.h \
@@ -22,8 +26,6 @@ HEADERS += widget/protocol_tree_item.h \
     socket/net/udp.h \
     npg.h \
     send_thread.h \
-    socket/arp.h \
-    socket/icmp.h \
     socket/ip_raw_socket.h \
     socket/raw_udp.h \
     socket/socket_public.h \
@@ -34,9 +36,6 @@ HEADERS += widget/protocol_tree_item.h \
     system/os.h \
     system/os_windows.h \
     system/types.h \
-    widget/arp_widget.h \
-    widget/dns_widget.h \
-    widget/icmp_widget.h \
     widget/main_list_widget.h \
     widget/main_tab_widget.h \
     widget/tab_sheet.h \
@@ -46,16 +45,22 @@ HEADERS += widget/protocol_tree_item.h \
     widget/ip_widget.h \
     widget/protocol_tab_sheet.h \
     widget/udp_widget.h
-FORMS += ui/protocol_widget.ui \
-    ui/arp_widget.ui \
-    ui/dns_widget.ui \
-    ui/icmp_widget.ui \
+FORMS += ui/ethernet_widget.ui \
+    ui/field_select_dialog.ui \
+    ui/tcp_response_dialog.ui \
+    ui/protocol_widget.ui \
     ui/npg.ui \
     ui/tcp_widget.ui \
     ui/ip_widget.ui \
     ui/protocol_tree_item.ui \
     ui/udp_widget.ui
-SOURCES += logger.cpp \
+SOURCES += protocol/bit_builder.cpp \
+    socket/ethernet.cpp \
+    socket/ethernet_pcap.cpp \
+    widget/ethernet_widget.cpp \
+    widget/field_select_dialog.cpp \
+    widget/tcp_response_dialog.cpp \
+    logger.cpp \
     protocol/protocol_builder.cpp \
     socket/ip.cpp \
     widget/base_protocol_widget.cpp \
@@ -69,21 +74,14 @@ SOURCES += logger.cpp \
     protocol/protocol.cpp \
     protocol/protocol_factory.cpp \
     system/error.cpp \
-    protocol/dns.cpp \
     main.cpp \
     npg.cpp \
     send_thread.cpp \
-    socket/arp.cpp \
-    socket/arp_pacp.cpp \
-    socket/icmp.cpp \
     socket/ip_raw_socket.cpp \
     socket/raw_udp.cpp \
     socket/socket_toolkit.cpp \
     socket/tcp.cpp \
     socket/udp.cpp \
-    widget/arp_widget.cpp \
-    widget/dns_widget.cpp \
-    widget/icmp_widget.cpp \
     widget/main_list_widget.cpp \
     widget/main_tab_widget.cpp \
     widget/tab_sheet.cpp \
