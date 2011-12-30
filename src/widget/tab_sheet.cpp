@@ -156,6 +156,7 @@ void TabSheet::onSend()
 	{
 		m_send_button->setText(tr("Send"));
 		m_send_thread->stop();
+		m_send_thread->wait();
 		return;
 	}
 
@@ -192,7 +193,7 @@ void TabSheet::onSend()
 
 void TabSheet::onSendFinish()
 {
-	const QString& error = m_send_thread->getError();
+	const QString& error = m_send_thread->error();
 	if (error.isEmpty()) //thread exit successful
 	{
 		showSuccessfulTip(tr("finished"));

@@ -30,7 +30,7 @@ public:
 	}
 	void start(ESendType type, int count);
 
-	const QString& getError() const
+	const QString& error() const
 	{
 		return m_error;
 	}

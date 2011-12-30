@@ -86,9 +86,9 @@
        <widget class="QLineEdit" name="port_edit"/>
       </item>
       <item row="1" column="3">
-       <widget class="QCheckBox" name="wait_for_result_box">
+       <widget class="QCheckBox" name="wait_for_response_box">
         <property name="text">
-         <string>WaitForResult</string>
+         <string>WaitForResponse</string>
         </property>
        </widget>
       </item>

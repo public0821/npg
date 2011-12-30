@@ -8,7 +8,7 @@
 #include "tcp.h"
 #include "socket_public.h"
 
-Tcp::Tcp()
+Tcp::Tcp():m_blocking(true)
 {
 	m_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (K_SOCKET_ERROR == m_sockfd)
@@ -41,30 +41,47 @@ bool Tcp::send(const char* buffer, size_t buffer_len)
 			SET_ERROR_NO(npg_errno);
 			return false;
 		}
+		if (!m_blocking)
+		{
+			break;
+		}
 		len_remaining -= len;
 	}
 	return true;
 }
 
-size_t Tcp::recv(char* buffer, size_t buffer_len)
+int Tcp::recv(char* buffer, size_t buffer_len)
 {
 	if (K_SOCKET_ERROR == m_sockfd)
 	{
-		return false;
+		return K_SOCKET_ERROR;
 	}
 
 	size_t len_remaining = buffer_len;
 	while (len_remaining > 0)
 	{
 		int len = ::recv(m_sockfd, buffer, len_remaining, 0);
-		if (len == K_SOCKET_ERROR)
+		int error_no = npg_errno;
+		if (len == K_SOCKET_ERROR && (error_no == EWOULDBLOCK || error_no == EAGAIN))
 		{
-			SET_ERROR_NO(npg_errno);
+			//size_t recv_len = buffer_len - len_remaining;
+			//if (recv_len > 0)
+			//{
+			//	return recv_len;
+			//}
+			//
+			//continue;
+
 			return buffer_len - len_remaining;
 		}
-		if (len == 0)//the peer has performed an orderly shutdown
+		else if (len == K_SOCKET_ERROR)
 		{
-			return buffer_len - len_remaining;;
+			SET_ERROR_NO(error_no);
+			return K_SOCKET_ERROR;
+		}
+		else if (len == 0)//the peer has performed an orderly shutdown
+		{
+			return buffer_len - len_remaining;
 		}
 		len_remaining -= len;
 	}
@@ -94,14 +111,6 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 	serv_addr.sin_addr.s_addr = addr.s_addr;
 	serv_addr.sin_port = htons(port);
 
-	unsigned long ul = 1;
-	int ret_ioctl = npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set Non-blocking
-	if (ret_ioctl == K_SOCKET_ERROR)
-	{
-		SET_ERROR_NO(npg_errno);
-		return false;
-	}
-	
 	/*
 	windows
 	#define WSABASEERR              10000
@@ -170,13 +179,19 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 		SET_ERROR_NO(npg_errno);
 	}
 
-	ul = 0;
-	ret_ioctl = npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set blocking
+	return ret_value;
+}
+
+
+bool Tcp::setBlocking(bool blocking)
+{
+	unsigned long ul = blocking ? 0:1;
+	int ret_ioctl = npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set Non-blocking
 	if (ret_ioctl == K_SOCKET_ERROR)
 	{
 		SET_ERROR_NO(npg_errno);
 		return false;
-	}
+	};
 
-	return ret_value;
+	return true;
 }

@@ -29,9 +29,10 @@ void TcpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 	settings.beginGroup(protocolName());
-	settings.setValue("ip", ui.ip_edit->text());
-	settings.setValue("port", ui.port_edit->text());
-	settings.setValue("timeout", ui.timeout_edit->text());
+	settings.setValue("tcp_ip", ui.ip_edit->text());
+	settings.setValue("tcp_port", ui.port_edit->text());
+	settings.setValue("tcp_timeout", ui.timeout_edit->text());
+	settings.setValue("tcp_wait_for_response", ui.wait_for_response_box->checkState());
 	settings.endGroup();
 }
 
@@ -39,9 +40,10 @@ void TcpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 	settings.beginGroup(protocolName());
-	ui.ip_edit->setText(settings.value("ip").toString());
-	ui.port_edit->setText(settings.value("port").toString());
-	ui.timeout_edit->setText(settings.value("timeout").toString());
+	ui.ip_edit->setText(settings.value("tcp_ip").toString());
+	ui.port_edit->setText(settings.value("tcp_port").toString());
+	ui.timeout_edit->setText(settings.value("tcp_timeout").toString());
+	ui.wait_for_response_box->setCheckState((Qt::CheckState)settings.value("tcp_wait_for_response").toInt());
 	settings.endGroup();
 }
 
@@ -62,19 +64,28 @@ QString TcpWidget::sendData(const char* data, u_int16_t length)
 	}
 
 	Tcp tcp;
-	bool ret = tcp.connect(ip.c_str(), port, timeout);
+	bool ret = tcp.setBlocking(false);
 	if (!ret)
 	{
-		return QString(tr(tcp.errorStr()));
+		return QString(tr(tcp.error()));
 	}
-
+	ret = tcp.connect(ip.c_str(), port, timeout);
+	if (!ret)
+	{
+		return QString(tr(tcp.error()));
+	}
+	ret = tcp.setBlocking(true);
+	if (!ret)
+	{
+		return QString(tr(tcp.error()));
+	}
 	ret = tcp.send(data, length);
 	if (!ret)
 	{
-		return QString(tr(tcp.errorStr()));
+		return QString(tr(tcp.error()));
 	}
 
-	if (ui.wait_for_result_box->checkState() == Qt::Checked)
+	if (ui.wait_for_response_box->checkState() == Qt::Checked)
 	{
 		TcpResponseDialog dialog(tcp, this);
 		dialog.exec();

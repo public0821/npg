@@ -37,7 +37,7 @@ QString EthernetWidget::sendData(const char* data, u_int16_t length)
 	Ethernet ethernet;
 	ethernet.sendto(dev, to_mac.c_str(), from_mac.c_str(), protocol, data, length);
 
-	return ethernet.errorStr();
+	return ethernet.error();
 
 }
 
@@ -96,12 +96,12 @@ void EthernetWidget::setupInterface(QWidget *parent)
 {
 	SocketToolkit toolkit;
 	std::vector<ifi_info> ifiInfos = toolkit.ifiInfo();
-	if(strlen(toolkit.errorStr()) > 0)
+	if(toolkit.hasError())
 	{
 		TabSheet *tab_sheet = static_cast<TabSheet *>(parent);
 		if (tab_sheet != NULL)
 		{
-			tab_sheet->showFailedTip(toolkit.errorStr());
+			tab_sheet->showFailedTip(toolkit.error());
 		}
 	}
 

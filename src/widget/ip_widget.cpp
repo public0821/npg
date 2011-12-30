@@ -65,7 +65,7 @@ QString IpWidget::sendData(const char* data, u_int16_t length)
 	bool ret = ip.sendto(ip_str.c_str(), data, length);
 	if (!ret)
 	{
-		return QString(tr(ip.errorStr()));
+		return QString(tr(ip.error()));
 	}
 
 	return QString();

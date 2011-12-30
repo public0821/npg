@@ -18,9 +18,11 @@ public:
 public:
 	bool connect(const char* ip, u_int16_t port, time_t timeout);
 	bool send(const char* buffer, size_t buffer_len);
-	size_t recv(char* buffer, size_t buffer_len);
+	int recv(char* buffer, size_t buffer_len);
+	bool setBlocking(bool blocking);
 private:
 	int m_sockfd;
+	bool m_blocking;
 };
 
 #endif /* TCP_H_ */

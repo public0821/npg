@@ -23,9 +23,13 @@ public:
 	Error();
 	~Error();
 public:
-	const char* errorStr() const
+	const char* errorString() const
 	{
 		return m_error;
+	}
+	int error() const
+	{
+		return m_error_no;
 	}
 	bool hasError() const
 	{
@@ -40,12 +44,14 @@ protected:
 	#define SET_ERROR_NO(errorno) {char buf[K_SOCKET_ERROR_BUF_LEN]; npg_strerror(errorno, buf, sizeof(buf));\
 		snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
 		__FILE__, __LINE__,buf);\
+		m_error_no = errorno;\
 		 m_has_error = true;}
 
 
 protected:
 	char m_error[K_ERROR_BUF_LEN];
 	bool m_has_error;
+	int m_error_no;
 };
 
 #endif /* _ERROR_H_ */
