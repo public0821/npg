@@ -2,7 +2,8 @@ TEMPLATE = app
 TARGET = npg
 QT += core \
     gui \
-    xml
+    xml \
+    webkit
 
 # Input
 HEADERS += protocol/bit_builder.h \

@@ -67,22 +67,22 @@ QString TcpWidget::sendData(const char* data, u_int16_t length)
 	bool ret = tcp.setBlocking(false);
 	if (!ret)
 	{
-		return QString(tr(tcp.error()));
+		return QString(tr(tcp.errorString()));
 	}
 	ret = tcp.connect(ip.c_str(), port, timeout);
 	if (!ret)
 	{
-		return QString(tr(tcp.error()));
+		return QString(tr(tcp.errorString()));
 	}
 	ret = tcp.setBlocking(true);
 	if (!ret)
 	{
-		return QString(tr(tcp.error()));
+		return QString(tr(tcp.errorString()));
 	}
 	ret = tcp.send(data, length);
 	if (!ret)
 	{
-		return QString(tr(tcp.error()));
+		return QString(tr(tcp.errorString()));
 	}
 
 	if (ui.wait_for_response_box->checkState() == Qt::Checked)

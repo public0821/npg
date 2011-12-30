@@ -56,7 +56,7 @@ QString UdpWidget::sendData(const char* data, u_int16_t length)
 				data, length);
 		if (!ret)
 		{
-			return QString(tr(raw_udp.error()));
+			return QString(tr(raw_udp.errorString()));
 		}
 	}
 	else
@@ -66,7 +66,7 @@ QString UdpWidget::sendData(const char* data, u_int16_t length)
 		bool ret = udp.sendto(dstip.c_str(), dstport, data, length);
 		if (!ret)
 		{
-			return QString(tr(udp.error()));
+			return QString(tr(udp.errorString()));
 		}
 	}
 	return QString();

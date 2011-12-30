@@ -122,7 +122,7 @@ QString ProtocolTabSheet::sendData()
 				bool ret = protocol_builder.append(field.type(), field.length(), data);
 				if (ret == false)
 				{
-					return protocol_builder.error();
+					return protocol_builder.errorString();
 				}
 			}
 			

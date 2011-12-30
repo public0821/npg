@@ -37,7 +37,7 @@ QString EthernetWidget::sendData(const char* data, u_int16_t length)
 	Ethernet ethernet;
 	ethernet.sendto(dev, to_mac.c_str(), from_mac.c_str(), protocol, data, length);
 
-	return ethernet.error();
+	return ethernet.errorString();
 
 }
 
@@ -101,7 +101,7 @@ void EthernetWidget::setupInterface(QWidget *parent)
 		TabSheet *tab_sheet = static_cast<TabSheet *>(parent);
 		if (tab_sheet != NULL)
 		{
-			tab_sheet->showFailedTip(toolkit.error());
+			tab_sheet->showFailedTip(toolkit.errorString());
 		}
 	}
 

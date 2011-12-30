@@ -40,7 +40,7 @@ bool RawUdp::sendto(const char* srcip, const char* dstip, u_int16_t srcport, u_i
 	bool ret = m_ipRawSocket.sendto(srcip, dstip, IPPROTO_UDP, buf, len);
 	if(!ret)
 	{
-		SET_ERROR_STR(m_ipRawSocket.error());
+		SET_ERROR_STR(m_ipRawSocket.errorString());
 	}
 
 	delete[] buf;

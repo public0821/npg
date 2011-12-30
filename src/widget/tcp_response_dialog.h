@@ -64,16 +64,16 @@ private:
 		bool ret = m_tcp.setBlocking(false);
 		if (!ret)
 		{
-			m_error = m_tcp.error();
+			m_error = m_tcp.errorString();
 			return;
 		}
 
 		while(m_running)
 		{
-			size_t len = m_tcp.recv(buff, buff_len);
+			int len = m_tcp.recv(buff, buff_len);
 			if (len == -1)
 			{
-				m_error = m_tcp.error();
+				m_error = m_tcp.errorString();
 				break;
 			}
 			
@@ -90,7 +90,7 @@ private:
 		ret = m_tcp.setBlocking(true);
 		if (!ret)
 		{
-			m_error = m_tcp.error();
+			m_error = m_tcp.errorString();
 			return;
 		}
 	};
