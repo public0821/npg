@@ -2,6 +2,11 @@
 #include "system/os.h"
 #include "socket/socket_public.h"
 
+const u_int8_t BYTE_SIZE = 8;
+const u_int8_t SHIFT = 3;
+const u_int8_t MASK = 0X07;
+
+
 BitBuilder::BitBuilder(u_int16_t length) :
 		m_length(length), m_pos(0)
 {
@@ -18,7 +23,6 @@ BitBuilder::~BitBuilder(void)
 	m_buffer = NULL;
 }
 
-const u_int8_t BYTE_SIZE = 8;
 void BitBuilder::append(u_int32_t value, u_int16_t length)
 {
 
@@ -44,4 +48,20 @@ const u_int8_t* BitBuilder::data() const
 u_int16_t BitBuilder::length() const
 {
 	return m_length;
+}
+
+
+void BitBuilder::set(u_int16_t index)
+{
+	m_buffer[index >> SHIFT] |= (1 << (index & MASK));
+}
+
+void BitBuilder::clr(u_int16_t index)
+{
+	m_buffer[index >> SHIFT] &= ~(1 << (index & MASK));
+}
+
+bool BitBuilder::test(u_int16_t index)
+{
+	return m_buffer[index >> SHIFT] & (1 << (index & MASK));
 }

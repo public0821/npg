@@ -9,6 +9,9 @@ public:
 	~BitBuilder(void);
 public:
 	void append(u_int32_t value, u_int16_t length);
+	void set(u_int16_t index);
+	void clr(u_int16_t index);
+	bool test(u_int16_t index);
 	const u_int8_t* data()const;
 	u_int16_t length()const;
 private:
