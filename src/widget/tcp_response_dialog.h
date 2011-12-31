@@ -7,6 +7,7 @@
 #include <qtextedit.h>
 #include <QWebView>
 #include "socket/socket_public.h"
+#include <QByteArray>
 
 class RecvThread;
 class TcpResponseDialog : public QDialog
@@ -17,7 +18,7 @@ public:
 	TcpResponseDialog(Tcp& tcp, QWidget *parent = 0);
 	~TcpResponseDialog();
 private slots:
-	void  addData(const QString& data);
+	void  addData(const QByteArray& data);
 	bool close();
 	void recvFinished();
 	void showText(int state);
@@ -27,6 +28,7 @@ private:
 	RecvThread* m_rcv_thread;
 	QTextEdit* m_text_edit;
 	QWebView* m_html;
+	QByteArray m_data;
 };
 
 
@@ -54,7 +56,7 @@ public:
 	//	}
 signals:
 	//	void error(const QString&);
-	void recvData(const QString& data);
+	void recvData(const QByteArray&);
 private:
 	void run()
 	{
@@ -78,12 +80,16 @@ private:
 			}
 			
 			buff[len] = '\0';
-			emit recvData(buff);
+			emit recvData(QByteArray(buff));
 
-			int error_no = npg_errno;
-			if (len < buff_len && error_no != EWOULDBLOCK && error_no != EAGAIN )//the peer has performed an orderly shutdown
+			if (len < buff_len && m_tcp.status() == E_ERROR_STATUS_SOCKET_CLOSED )//the peer has performed an orderly shutdown
 			{
 				break;
+			}
+			
+			if (len == 0)
+			{
+				sleep(1);
 			}
 		}	
 

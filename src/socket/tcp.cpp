@@ -71,6 +71,7 @@ int Tcp::recv(char* buffer, size_t buffer_len)
 			//}
 			//
 			//continue;
+			setStatus(E_ERROR_STATUS_SOCKET_WOULDBLOCK);
 
 			return buffer_len - len_remaining;
 		}
@@ -81,6 +82,7 @@ int Tcp::recv(char* buffer, size_t buffer_len)
 		}
 		else if (len == 0)//the peer has performed an orderly shutdown
 		{
+			setStatus(E_ERROR_STATUS_SOCKET_CLOSED);
 			return buffer_len - len_remaining;
 		}
 		len_remaining -= len;

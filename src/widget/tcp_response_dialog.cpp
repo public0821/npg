@@ -17,7 +17,7 @@ TcpResponseDialog::TcpResponseDialog(Tcp& tcp, QWidget *parent)
 	m_html->setVisible(false);
 	ui.html_checkbox->setEnabled(false);
 
-	connect(m_rcv_thread, SIGNAL(recvData(const QString&)), this, SLOT(addData(const QString&)));
+	connect(m_rcv_thread, SIGNAL(recvData(const QByteArray&)), this, SLOT(addData(const QByteArray&)));
 	connect(m_rcv_thread, SIGNAL(finished(void)), this, SLOT(recvFinished(void)));
 	connect(ui.close_button, SIGNAL(released(void)), this, SLOT(close(void)));
 	connect(ui.html_checkbox, SIGNAL(stateChanged(int)), this, SLOT(showText(int)));
@@ -41,9 +41,15 @@ bool TcpResponseDialog::close()
 }
 
 
-void  TcpResponseDialog::addData(const QString& data)
+void  TcpResponseDialog::addData(const QByteArray& data)
 {
-	m_text_edit->append(data);
+	if (data.length() <= 0)
+	{
+		return;
+	}
+
+	m_data.append(data);
+	m_text_edit->append(data.data());
 }
 
 void TcpResponseDialog::recvFinished()
@@ -66,7 +72,8 @@ void TcpResponseDialog::showText(int state)
 	{
 		m_text_edit->setVisible(false);
 		m_html->setVisible(true);
-		m_html->setHtml(m_text_edit->toPlainText());
+		//m_html->setHtml(m_text_edit->toPlainText());
+		m_html->setContent(m_data);
 	}
 	else
 	{

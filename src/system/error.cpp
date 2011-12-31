@@ -11,6 +11,7 @@
 Error::Error()
 :m_has_error(false)
 ,m_error_no(0)
+,m_status(E_ERROR_STATUS_NONE)
 {
 	bzero(m_error, sizeof(m_error));
 }

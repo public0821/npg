@@ -17,6 +17,13 @@
 
 const size_t K_ERROR_BUF_LEN = 512;
 
+enum EErrorStatus
+{
+	E_ERROR_STATUS_NONE = 0
+	, E_ERROR_STATUS_SOCKET_CLOSED
+	, E_ERROR_STATUS_SOCKET_WOULDBLOCK
+};
+
 class Error
 {
 public:
@@ -31,9 +38,17 @@ public:
 	{
 		return m_error_no;
 	}
+	EErrorStatus status() const
+	{
+		return m_status;
+	}
 	bool hasError() const
 	{
 		return m_has_error;
+	}
+	void setStatus(EErrorStatus status)
+	{
+		m_status = status;
 	}
 protected:
 
@@ -52,6 +67,7 @@ protected:
 	char m_error[K_ERROR_BUF_LEN];
 	bool m_has_error;
 	int m_error_no;
+	EErrorStatus m_status;
 };
 
 #endif /* _ERROR_H_ */
