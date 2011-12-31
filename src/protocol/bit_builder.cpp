@@ -23,11 +23,17 @@ BitBuilder::~BitBuilder(void)
 	m_buffer = NULL;
 }
 
-void BitBuilder::append(u_int32_t value, u_int16_t length)
+bool BitBuilder::append(u_int32_t value, u_int16_t length)
 {
 
-	u_int32_t* start_byte = (u_int32_t*) &(m_buffer[m_pos / BYTE_SIZE]);
-	u_int8_t start_bit = m_pos % BYTE_SIZE;
+	if (length >= sizeof(u_int32_t) * BYTE_SIZE  //too long
+	|| length+m_pos < m_pos) //overflow
+	{
+		SET_ERROR_STR("Out of range");
+		return false;
+	}
+	u_int32_t* start_byte = (u_int32_t*) &(m_buffer[m_pos >> SHIFT]);
+	u_int8_t start_bit = m_pos & MASK;
 
 	u_int16_t move_len = sizeof(u_int32_t) * BYTE_SIZE - length - start_bit;
 	u_int32_t new_value = ((htonl(*start_byte) >> move_len) + value)

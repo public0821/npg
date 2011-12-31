@@ -95,9 +95,18 @@ QString ProtocolTabSheet::sendData()
 
 					QString sub_field_name = sub_field_item->data(1, Qt::UserRole).toString();
 					Field sub_field = field.subField(sub_field_name.toStdString());
-					bit_builder.append(data, sub_field.length());
+					int ret = bit_builder.append(data, sub_field.length());
+					if (ret == false)
+					{
+						return bit_builder.errorString();
+					}
 				}
-				protocol_builder.append((const char *)bit_builder.data(), bit_builder.length());
+				int ret = protocol_builder.append((const char *)bit_builder.data(), bit_builder.length());
+				if (ret == false)
+				{
+					return protocol_builder.errorString();
+				}
+
 			}
 			else
 			{
@@ -129,7 +138,11 @@ QString ProtocolTabSheet::sendData()
 			sstring field_tail = field.tail();
 			if (!field_tail.empty())
 			{
-				protocol_builder.append(field_tail.c_str(), field_tail.length());
+				int ret = protocol_builder.append(field_tail.c_str(), field_tail.length());
+				if (ret == false)
+				{
+					return protocol_builder.errorString();
+				}
 			}
 			
 		}

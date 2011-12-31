@@ -187,8 +187,10 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 	return ret;
 }
 
-void ProtocolBuilder::append(const char* buf, u_int16_t length)
+bool ProtocolBuilder::append(const char* buf, u_int16_t length)
 {
 	u_int32_t pos = reallocBuffer(m_protocol_len + length);
 	memcpy(m_buffer + pos, buf, length);
+
+	return true;
 }

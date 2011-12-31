@@ -10,7 +10,7 @@ public:
 	~ProtocolBuilder(void);
 public:
 	bool append(EFiledType field_type, u_int16_t length, const QString& value);
-	void append(const char* buf, u_int16_t length);
+	bool append(const char* buf, u_int16_t length);
 	bool set(u_int32_t pos, EFiledType field_type, u_int16_t length, const QString& value);
 	char* data()const;
 	u_int32_t length()const;

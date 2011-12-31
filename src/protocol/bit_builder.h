@@ -2,13 +2,15 @@
 #define __BIT_BUILDER_H__
 #include "system/features.h"
 #include "system/types.h"
-class BitBuilder
+#include "system/error.h"
+
+class BitBuilder:public Error
 {
 public:
 	BitBuilder(u_int16_t length);	//Identifies the number of bytes
 	~BitBuilder(void);
 public:
-	void append(u_int32_t value, u_int16_t length);
+	bool append(u_int32_t value, u_int16_t length);
 	void set(u_int16_t index);
 	void clr(u_int16_t index);
 	bool test(u_int16_t index);
