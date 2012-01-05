@@ -27,7 +27,7 @@ bool BitBuilder::append(u_int32_t value, u_int16_t length)
 {
 
 	if (length >= sizeof(u_int32_t) * BYTE_SIZE  //too long
-	|| length+m_pos < m_pos) //overflow
+		|| length+m_pos < m_pos) //overflow
 	{
 		SET_ERROR_STR("Out of range");
 		return false;
@@ -44,6 +44,8 @@ bool BitBuilder::append(u_int32_t value, u_int16_t length)
 	memcpy((u_int8_t*) start_byte, &new_value, sizeof(u_int32_t));
 
 	m_pos += length;
+
+	return true;
 }
 
 const u_int8_t* BitBuilder::data() const

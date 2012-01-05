@@ -1,3 +1,9 @@
+/*
+ * logger.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef LOGGER_H
 #define LOGGER_H
 #ifdef _DEBUG

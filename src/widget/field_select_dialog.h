@@ -1,3 +1,9 @@
+/*
+ * field_select_dialog.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef FIELD_SELECT_DIALOG_H
 #define FIELD_SELECT_DIALOG_H
 

@@ -1,3 +1,9 @@
+/*
+ * tcp_response_dialog.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef TCP_REPONSE_DIALOG_H
 #define TCP_REPONSE_DIALOG_H
 

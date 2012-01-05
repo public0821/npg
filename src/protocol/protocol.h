@@ -1,3 +1,9 @@
+/*
+ * protocol.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef __PROTOCOL_H__
 #define __PROTOCOL_H__
 

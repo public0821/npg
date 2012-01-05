@@ -1,3 +1,9 @@
+/*
+ * base_protocol_widget.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef BASE_PROTOCOL_WIDGET_H
 #define BASE_PROTOCOL_WIDGET_H
 

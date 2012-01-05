@@ -1,3 +1,9 @@
+/*
+ * bit_builder.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef __BIT_BUILDER_H__
 #define __BIT_BUILDER_H__
 #include "system/features.h"

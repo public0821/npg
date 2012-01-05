@@ -1,3 +1,9 @@
+/*
+ * ip_widget.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef IP_WIDGET_H
 #define IP_WIDGET_H
 

@@ -1,3 +1,9 @@
+/*
+ * ethernet_widget.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef ETHERNET_WIDGET_H
 #define ETHERNET_WIDGET_H
 

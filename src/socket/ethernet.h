@@ -1,3 +1,9 @@
+/*
+ * ethernet.h
+ *
+ *  Created on: 2011-12-10
+ *      Author: Young <public0821@gmail.com>
+ */
 #ifndef ETHERNET_H_
 #define ETHERNET_H_
 
