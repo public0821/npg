@@ -30,14 +30,13 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File(&amp;F)</string>
     </property>
-    <addaction name="action_test"/>
     <addaction name="action_quit"/>
    </widget>
    <addaction name="menuFile"/>
