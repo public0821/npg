@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../npg.qrc">
-    <normaloff>:/npg/protocol_udp</normaloff>:/npg/protocol_udp</iconset>
+    <normaloff>:/npg/npg</normaloff>:/npg/npg</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
