@@ -68,6 +68,11 @@ sstring Category::text() const
 	return m_text;
 }
 
+sstring Category::tail() const
+{
+	return m_tail;
+}
+
 void Category::setName(const sstring& name)
 {
 	m_name = name;
@@ -91,6 +96,11 @@ sstring Category::tip() const
 void Category::setTip(const sstring& tip)
 {
 	m_tip = tip;
+}
+
+void Category::setTail(const sstring& tail)
+{
+	m_tail = tail;
 }
 
 u_int16_t Category::optionalFieldCount() const

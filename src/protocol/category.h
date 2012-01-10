@@ -25,10 +25,13 @@ public:
 	bool isMany() const;
 	sstring text() const;
 	sstring tip() const;
+	sstring tail()const;
+
 	void setName(const sstring& name);
 	void setMany(bool is_many);
 	void setText(const sstring& text);
 	void setTip(const sstring& tip);
+	void setTail(const sstring& tail);
 
 	bool empty()const;
 	u_int16_t optionalFieldCount()const;
@@ -40,6 +43,7 @@ private:
 	bool m_is_many;
 	sstring m_tip;
 	bool m_empty;
+	sstring m_tail;
 
 };
 #endif

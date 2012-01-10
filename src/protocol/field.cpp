@@ -93,6 +93,13 @@ void Field::setTail(const sstring& tail)
 	m_tail = tail;
 }
 
+void Field::setPrefix(const sstring& prefix)
+{
+	m_prefix = prefix;
+}
+
+
+
 sstring Field::name() const
 {
 	return m_name;
@@ -291,4 +298,10 @@ Field Field::subField(const sstring& sub_field_name) const
 sstring Field::tail() const
 {
 	return m_tail;
+}
+
+
+sstring Field::prefix() const
+{
+	return m_prefix;
 }

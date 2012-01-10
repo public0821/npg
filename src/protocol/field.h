@@ -68,6 +68,7 @@ public:
 	void setShowOnStart(bool show_on_start);
 	void addSubField(const Field& sub_field);
 	void setTail(const sstring& tail);
+	void setPrefix(const sstring& prefix);
 
 	sstring name() const;
 	EFiledType type() const;
@@ -90,6 +91,7 @@ public:
 	const std::vector<Field>& subFields()const;
 	Field subField(const sstring& sub_field_name)const;
 	sstring tail()const;
+	sstring prefix()const;
 private:
 	sstring m_name;
 	EFiledType m_type;
@@ -107,6 +109,7 @@ private:
 	bool m_show_on_start;
 	std::vector<Field> m_sub_fields;
 	sstring m_tail;
+	sstring m_prefix;
 };
 
 #endif

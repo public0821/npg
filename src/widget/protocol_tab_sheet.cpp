@@ -78,12 +78,22 @@ QString ProtocolTabSheet::sendData()
 			QString field_name = field_item->data(1, Qt::UserRole).toString();
 			Field field = category.field(field_name.toStdString());
 
+			sstring field_prefix = field.prefix();
+			if (!field_prefix.empty())
+			{
+				int ret = protocol_builder.append(field_prefix.c_str(), field_prefix.length());
+				if (ret == false)
+				{
+					return protocol_builder.errorString();
+				}
+			}
+
 			int sub_field_count = field_item->childCount();
 			if (sub_field_count > 0)
 			{
 				if (field.length() <= 0)
 				{
-					return tr("field length must greater than 1:") + field.name().c_str();
+					return tr("field length must greater than 0:") + field.name().c_str();
 				}
 				
 				BitBuilder bit_builder(field.length());
@@ -146,6 +156,17 @@ QString ProtocolTabSheet::sendData()
 			}
 			
 		}
+
+		sstring category_tail = category.tail();
+		if (!category_tail.empty())
+		{
+			int ret = protocol_builder.append(category_tail.c_str(), category_tail.length());
+			if (ret == false)
+			{
+				return protocol_builder.errorString();
+			}
+		}
+
 	}
 
 	if (need_checknum)

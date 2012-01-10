@@ -146,6 +146,7 @@ Category ProtocolFactory::loadCategoryElement(QDomElement* element)
 	}
 	category.setText(category_element.attribute("Text").toStdString());
 	category.setTip(category_element.attribute("Tip").toStdString());
+	category.setTail(category_element.attribute("Tail").toStdString());
 
 	QDomElement field_element = category_element.firstChildElement("Field");
 	while(!field_element.isNull())
@@ -218,6 +219,7 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 	field.setDefaultValue(field_element.attribute("DefaultValue").toStdString());
 	field.setTip(field_element.attribute("Tip").toStdString());
 	field.setTail(field_element.attribute("Tail").toStdString());
+	field.setPrefix(field_element.attribute("Prefix").toStdString());
 
 	sstring optional_str = field_element.attribute("Optional").toStdString();
 	if (optional_str == "true")
