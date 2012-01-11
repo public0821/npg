@@ -83,7 +83,7 @@
             </Category>
             
         </Protocol>
-        <Protocol Name="RAW_UDP" Icon=":/npg/protocol_udp" Dependence="IP" DependenceParam="UDP">
+        <Protocol Name="RAW_UDP" Dependence="IP" DependenceParam="UDP">
             <Category Name="Header">
                 <Field Name="src_port" Type="int" InputMethod="lineedit" Length="2" Tip="Source port"/>
                 <Field Name="dst_port" Type="int" InputMethod="lineedit" Length="2" Tip="Destination port"/>
@@ -94,7 +94,7 @@
                 <Field Name="data" Type="string" InputMethod="textedit" Tip="Contains upper-level data information"/>
             </Category>
         </Protocol>
-        <Protocol Name="NETFLOW_V5" Icon=":/npg/protocol_udp" Dependence="UDP">
+        <Protocol Name="NETFLOW_V5" Dependence="UDP">
             <Category Name="Header">
                 <Field Name="version" Optional="false" Type="int" InputMethod="lineedit" Editable = "false" Length="2" Text="version" DefaultValue="5" Tip="NetFlow export format version number"/>
                 <Field Name="count" Type="int" InputMethod="lineedit" Length="2" Tip="Number of flows exported in this packet (1-30)"/>

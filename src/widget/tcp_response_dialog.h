@@ -11,9 +11,7 @@
 #include "ui_tcp_response_dialog.h"
 #include "socket/tcp.h"
 #include <qtextedit.h>
-#include <QWebView>
 #include "socket/socket_public.h"
-#include <QByteArray>
 
 class RecvThread;
 class TcpResponseDialog : public QDialog
@@ -27,14 +25,10 @@ private slots:
 	void  addData(const QByteArray& data);
 	bool close();
 	void recvFinished();
-	void showText(int state);
 private:
 	Ui::TcpReponseDialog ui;
-//	Tcp& m_tcp;
 	RecvThread* m_rcv_thread;
 	QTextEdit* m_text_edit;
-	QWebView* m_html;
-	QByteArray m_data;
 };
 
 
@@ -56,12 +50,7 @@ public:
 		return m_error;
 	}
 	;
-	//	bool isRunning() const
-	//	{
-	//		return m_running;
-	//	}
 signals:
-	//	void error(const QString&);
 	void recvData(const QByteArray&);
 private:
 	void run()

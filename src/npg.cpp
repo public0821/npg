@@ -22,11 +22,11 @@ npg::npg(QWidget *parent) :
 	m_main_splitter = new QSplitter(Qt::Horizontal);
 
 	QMap<QString, QString> name_icons;
-	name_icons.insert(K_PROTOCOL_UDP, ":/npg/protocol_udp");
-	name_icons.insert(K_PROTOCOL_TCP, ":/npg/protocol_udp");
-	//name_icons.insert(K_PROTOCOL_ICMP, ":/npg/protocol_udp");
-	//name_icons.insert(K_PROTOCOL_ARP, ":/npg/protocol_udp");
-	//name_icons.insert(K_PROTOCOL_DNS, ":/npg/protocol_udp");
+	name_icons.insert(K_PROTOCOL_UDP, ":/npg/protocol_default");
+	name_icons.insert(K_PROTOCOL_TCP, ":/npg/protocol_default");
+	//name_icons.insert(K_PROTOCOL_ICMP, ":/npg/protocol_default");
+	//name_icons.insert(K_PROTOCOL_ARP, ":/npg/protocol_default");
+	//name_icons.insert(K_PROTOCOL_DNS, ":/npg/protocol_default");
 
 	m_type_list = new MainListWidget(name_icons);
 	m_tab_widget = new MainTabWidget(name_icons);

@@ -2,7 +2,6 @@
 
 TcpResponseDialog::TcpResponseDialog(Tcp& tcp, QWidget *parent)
 	: QDialog(parent, Qt::Dialog | Qt::WindowMaximizeButtonHint)
-//	,m_tcp(tcp)
 {
 	m_rcv_thread = new RecvThread(tcp);
 
@@ -11,17 +10,12 @@ TcpResponseDialog::TcpResponseDialog(Tcp& tcp, QWidget *parent)
 	setWindowIcon(QIcon(":/npg/npg"));
 
 	m_text_edit = new QTextEdit(this);
-	m_html = new QWebView(this);
 	ui.layout->addWidget(m_text_edit);
-	ui.layout->addWidget(m_html);
-	m_html->setVisible(false);
-	ui.html_checkbox->setEnabled(false);
 
 	connect(m_rcv_thread, SIGNAL(recvData(const QByteArray&)), this, SLOT(addData(const QByteArray&)));
 	connect(m_rcv_thread, SIGNAL(finished(void)), this, SLOT(recvFinished(void)));
 	connect(ui.close_button, SIGNAL(released(void)), this, SLOT(close(void)));
-	connect(ui.html_checkbox, SIGNAL(stateChanged(int)), this, SLOT(showText(int)));
-
+	
 	m_rcv_thread->start();
 
 	ui.tip_label->setText(tr("wait for response from server, please wait ..."));
@@ -48,7 +42,6 @@ void  TcpResponseDialog::addData(const QByteArray& data)
 		return;
 	}
 
-	m_data.append(data);
 	m_text_edit->append(data.data());
 }
 
@@ -62,22 +55,5 @@ void TcpResponseDialog::recvFinished()
 	{
 		ui.tip_label->setText(QString("<font color=green>%1</font>").arg(tr("finished")));
 	}
-
-	ui.html_checkbox->setEnabled(true);
 }
 
-void TcpResponseDialog::showText(int state)
-{
-	if (state == Qt::Checked)
-	{
-		m_text_edit->setVisible(false);
-		m_html->setVisible(true);
-		//m_html->setHtml(m_text_edit->toPlainText());
-		m_html->setContent(m_data);
-	}
-	else
-	{
-		m_html->setVisible(false);
-		m_text_edit->setVisible(true);
-	}
-}

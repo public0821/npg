@@ -43,7 +43,7 @@ sstring Protocol::icon() const
 {
 	if (m_icon.empty())
 	{
-		return ":/npg/protocol_udp";
+		return ":/npg/protocol_default";
 	}
 	return m_icon;
 }
