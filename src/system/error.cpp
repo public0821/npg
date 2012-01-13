@@ -18,6 +18,5 @@ Error::Error()
 
 Error::~Error()
 {
-	// TODO Auto-generated destructor stub
 }
 

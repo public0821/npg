@@ -57,11 +57,12 @@ u_int32_t ProtocolBuilder::reallocBuffer(u_int32_t new_length)
 
 	if( new_length > m_buf_len)
 	{
-		char* new_buf = new char[m_buf_len + (new_length-m_buf_len)/BUFFER_INCREMENT + BUFFER_INCREMENT];
+		u_int32_t new_buffer_len = m_buf_len + ((new_length-m_buf_len)/BUFFER_INCREMENT + 1) * BUFFER_INCREMENT;
+		char* new_buf = new char[new_buffer_len];
 		memcpy(new_buf, m_buffer, m_protocol_len);
 		delete[] m_buffer;
 		m_buffer = new_buf;
-		m_buf_len += BUFFER_INCREMENT;
+		m_buf_len = new_buffer_len;
 	}
 
 	u_int32_t old_protocol_len = m_protocol_len;

@@ -9,6 +9,7 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 	setWindowTitle(tr("Select Field"));
 	setWindowIcon(QIcon(":/npg/npg"));
 
+	ui.checkbox->setText(tr("Select All"));
 	ui.ok_button->setText(tr("OK"));
 	ui.cancel_button->setText(tr("Cancel"));
 	connect(ui.ok_button, SIGNAL(released()), this, SLOT(onOk()));
@@ -38,6 +39,9 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 	ui.tree_widget->resizeColumnToContents(1);
 	ui.tree_widget->resizeColumnToContents(2);
 	ui.tree_widget->resizeColumnToContents(3);
+
+	//TODO
+	//connect(ui.checkbox)
 }
 
 FieldSelectDialog::~FieldSelectDialog()

@@ -18,7 +18,6 @@ SendThread::SendThread(TabSheet*parent) :
 
 SendThread::~SendThread()
 {
-	// TODO Auto-generated destructor stub
 }
 
 void SendThread::start(ESendType type, int count)

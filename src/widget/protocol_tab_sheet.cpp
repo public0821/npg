@@ -9,7 +9,7 @@
 #include "protocol_tab_sheet.h"
 #include <qsettings.h>
 #include "npg_define.h"
-#include "protocol_tree_item.h"
+#include "protocol_tree_item_widget.h"
 #include "protocol/protocol_builder.h"
 #include "udp_widget.h"
 #include "socket/socket_toolkit.h"
@@ -100,7 +100,7 @@ QString ProtocolTabSheet::sendData()
 				for (int sub_field_index = 0; sub_field_index < sub_field_count; sub_field_index++)
 				{
 					QTreeWidgetItem* sub_field_item	= field_item->child (sub_field_index);
-					ProtocolTreeItem* item_widget = (ProtocolTreeItem*)tree_widget->itemWidget(sub_field_item, 1);
+					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*)tree_widget->itemWidget(sub_field_item, 1);
 					u_int32_t data = item_widget->value().toUInt();
 
 					QString sub_field_name = sub_field_item->data(1, Qt::UserRole).toString();
@@ -134,7 +134,7 @@ QString ProtocolTabSheet::sendData()
 				}
 				else
 				{
-					ProtocolTreeItem* item_widget = (ProtocolTreeItem*)tree_widget->itemWidget(field_item, 1);
+					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*)tree_widget->itemWidget(field_item, 1);
 					data = item_widget->value();
 				}
 

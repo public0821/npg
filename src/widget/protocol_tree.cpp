@@ -1,7 +1,7 @@
 #include "protocol_tree.h"
 #include <qmessagebox.h>
 #include <qmenu.h>
-#include "protocol_tree_item.h"
+#include "protocol_tree_item_widget.h"
 #include <QCheckBox>
 #include <QTableWidget>
 #include <QTableWidgetItem>
@@ -277,11 +277,12 @@ QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent,
 	item->setData(1, Qt::UserRole, QVariant(field.name().c_str()));
 	item->setTextAlignment(3, Qt::AlignHCenter | Qt::AlignVCenter);
 
-	ProtocolTreeItem* tree_item = new ProtocolTreeItem(item, field);
+	ProtocolTreeItemWidget* tree_item = new ProtocolTreeItemWidget(item, field);
 	if (field.type() == E_FIELD_TYPE_STRING)
 	{
 		connect(tree_item, SIGNAL(textChange(QTreeWidgetItem *, int)), this,
 				SLOT(itemWidgetTextChange(QTreeWidgetItem *, int)));
+		itemWidgetTextChange(item, field.defaultValueOriginal().length());
 	}
 	setItemWidget(item, 1, tree_item);
 
@@ -328,7 +329,7 @@ QTreeWidgetItem* ProtocolTree::addSubFieldItem(QTreeWidgetItem* parent, const Fi
 	item->setData(1, Qt::UserRole, QVariant(field.name().c_str()));
 	item->setTextAlignment(3, Qt::AlignHCenter | Qt::AlignVCenter);
 
-	ProtocolTreeItem* tree_item = new ProtocolTreeItem(item, field);
+	ProtocolTreeItemWidget* tree_item = new ProtocolTreeItemWidget(item, field);
 	setItemWidget(item, 1, tree_item);
 
 

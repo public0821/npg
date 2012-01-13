@@ -11,13 +11,11 @@
 
 SocketToolkit::SocketToolkit()
 {
-	// TODO Auto-generated constructor stub
 
 }
 
 SocketToolkit::~SocketToolkit()
 {
-	// TODO Auto-generated destructor stub
 }
 
 #ifdef __GNUC__

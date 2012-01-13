@@ -15,7 +15,6 @@ MainListWidget::MainListWidget(const QMap<QString, QString>& name_icons, QWidget
 :QListWidget(parent)
 {
 	setIconSize( QSize(64, 64));
-	// TODO Auto-generated constructor stub
 //	setViewMode(QListView::IconMode);
 //	setFlow(QListView::TopToBottom);
 	QMap<QString, QString>::const_iterator it_name_icon;
@@ -45,6 +44,5 @@ MainListWidget::MainListWidget(const QMap<QString, QString>& name_icons, QWidget
 
 MainListWidget::~MainListWidget()
 {
-	// TODO Auto-generated destructor stub
 }
 

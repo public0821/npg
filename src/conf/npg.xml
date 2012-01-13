@@ -2,7 +2,7 @@
 <Npg>
     <Protocols>
         <Protocol Name="HTTP" Dependence="TCP">
-            <Category Name="Header" Tail="&#13;&#10;">
+            <Category Name="Request line" Tail="&#13;&#10;">
                 <Field Name="type" Type="string" InputMethod="select" Tail="&#32;">
                     <Item Value="GET" Text="GET"/> 
                     <Item Value="POST" Text="POST"/> 
@@ -12,8 +12,14 @@
                 <Field Name="uri" Type="string" InputMethod="lineedit" DefaultValue="/" Tail="&#32;"/>
                 <Field Name="version" Type="string" InputMethod="lineedit" DefaultValue="HTTP/1.1"/>
             </Category>
-            <Category Name="Data" Tail="&#13;&#10;">
+            <Category Name="Header" Tail="&#13;&#10;">
                 <Field Name="host" Type="string" InputMethod="lineedit" Prefix="HOST:" Tail="&#13;&#10;"/>
+            </Category>
+            <Category Name="Data">
+                <Field Name="Content-Type" Type="string" InputMethod="lineedit" Prefix="Content-Type:" Optional="true" DefaultValue="application/x-www-form-urlencoded" Tail="&#13;&#10;"/>
+                <Field Name="Content-Length" Type="string" InputMethod="lineedit" Prefix="Content-Length:"   Optional="true" Tail="&#13;&#10;"/>
+                <Field Name="Connection" Type="string" InputMethod="lineedit" Prefix="Connection:" Optional="true" DefaultValue="close" Tail="&#13;&#10;"/>
+                <Field Name="Data" Type="string" InputMethod="textedit" Optional="true" Tail="&#13;&#10;"/>
             </Category>
         </Protocol>
         <Protocol Name="Ether_arp" Dependence="ETHERNET" DependenceParam="ARP">

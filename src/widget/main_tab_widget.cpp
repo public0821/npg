@@ -24,7 +24,6 @@ MainTabWidget::MainTabWidget(const QMap<QString, QString>& name_icons,  QWidget*
 
 MainTabWidget::~MainTabWidget()
 {
-	// TODO Auto-generated destructor stub
 }
 
 void MainTabWidget::onCloseTab(int index)
