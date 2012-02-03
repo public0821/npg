@@ -3,6 +3,7 @@
 #include "logger.h"
 #include "socket/socket_public.h"
 #include "socket/socket_toolkit.h"
+#include <QObject>
 
 const u_int16_t BUFFER_INCREMENT =  128;
 
@@ -35,7 +36,7 @@ u_int32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, u_int16_t length
 		}
 		else
 		{
-			sstring value_str = value.toStdString();
+			sstring value_str = value.toLocal8Bit().constData();
 			new_protocol_len = m_protocol_len + value_str.length();
 		}
 		break;
@@ -92,14 +93,9 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 {
 	if (pos + length > m_protocol_len)
 	{
-		SET_ERROR_STR("Out of range");
+		SET_QERROR_STR(QObject::tr("Parameter length out of range"));
 		return false;
 	}
-	/*if (field_type == E_FIELD_TYPE_STRING)
-	{
-		SET_ERROR_STR("Field length must fixed");
-		return false;
-	}*/
 
 	bool ret = true;
 	switch (field_type)
@@ -139,7 +135,7 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 		break;
 	case E_FIELD_TYPE_IP:
 		{
-			sstring ip = value.toStdString();
+			sstring ip = value.toLocal8Bit().constData();
 			struct in_addr addr;
 			addr.s_addr = 0;
 			if (!ip.empty() && ip != "...")
@@ -147,7 +143,7 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 				addr.s_addr = inet_addr(ip.c_str());
 				if (addr.s_addr == INADDR_NONE)
 				{
-					SET_ERROR_STR("Not in presentation format");
+					SET_QERROR_STR(QObject::tr("IP address format error"));
 					ret = false;
 				}
 			}
@@ -156,12 +152,12 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 		break;
 	case E_FIELD_TYPE_MAC:
 		{
-			sstring mac_str = value.toStdString();
+			sstring mac_str = value.toLocal8Bit().constData();
 			u_int8_t mac[IF_HWADDRLEN];
 			SocketToolkit toolkit;
 			if (!toolkit.toMac(mac_str.c_str(), mac))
 			{
-				SET_ERROR_STR("Unsupported type");
+				SET_QERROR_STR(QObject::tr("MAC address format error"));
 				ret = false;
 			}
 			memcpy(m_buffer + pos, mac, sizeof(mac));
@@ -169,7 +165,7 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 		break;
 	case E_FIELD_TYPE_STRING:
 		{
-			sstring data = value.toStdString();
+			sstring data = value.toLocal8Bit().constData();
 			int data_len = data.length(); 
 			if (length != 0)
 			{
@@ -179,7 +175,7 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 		}
 		break;
 	default:
-		SET_ERROR_STR("Unsupported type");
+		SET_QERROR_STR(QString(QObject::tr("Unsupported type:%1")).arg((int)field_type));
 		ret = false;
 		bzero(m_buffer + pos, length);
 		break;

@@ -50,7 +50,7 @@ void TcpWidget::restoreSettings()
 QString TcpWidget::sendData(const char* data, u_int16_t length)
 {
 //	showTip("");
-	sstring ip = ui.ip_edit->text().toStdString();
+	sstring ip = ui.ip_edit->text().toLocal8Bit().constData();
 	u_int16_t port = ui.port_edit->text().toUShort();
 	time_t timeout = ui.timeout_edit->text().toInt();
 	if (ip.empty() || port <= 0)

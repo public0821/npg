@@ -25,13 +25,14 @@ DataTabSheet::~DataTabSheet()
 
 QString DataTabSheet::sendData()
 {
-	sstring data = m_data_edit->toPlainText().toStdString();
-	if (data.empty())
+	QString data = m_data_edit->toPlainText();
+	if (data.isEmpty())
 	{
 		return tr("ip and port and data must set");
 	}
 
-	return dependProtocolWidget()->sendData(data.c_str(), data.length());
+	QByteArray data_array = data.toLocal8Bit();
+	return dependProtocolWidget()->sendData(data_array.constData(), data.length());
 }
 
 void DataTabSheet::saveSettings()
@@ -60,19 +61,19 @@ void DataTabSheet::setupUi()
 	QGridLayout* gridLayout = new QGridLayout(this);
 	gridLayout->setSpacing(6);
 	gridLayout->setContentsMargins(11, 11, 11, 11);
-	gridLayout->setObjectName(QString::fromUtf8("gridLayout_2"));
+	gridLayout->setObjectName("gridLayout_2");
 	
 	gridLayout->addWidget(dependProtocolWidget(), 0, 0, 1, 1);
 
 	m_data_edit = new QTextEdit(this);
-	m_data_edit->setObjectName(QString::fromUtf8("data_edit"));
+	m_data_edit->setObjectName("data_edit");
 
 	gridLayout->addWidget(m_data_edit, 1, 0, 1, 1);
 
 
 	QHBoxLayout* send_layout = new QHBoxLayout();
 	send_layout->setSpacing(6);
-	send_layout->setObjectName(QString::fromUtf8("send_layout"));
+	send_layout->setObjectName("send_layout");
 	gridLayout->addLayout(send_layout, 2, 0, 1, 1);
 
 	TabSheet::setupUi(send_layout);

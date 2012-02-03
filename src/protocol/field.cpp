@@ -4,7 +4,7 @@
 #include <string.h>
 #include "system/os.h"
 
-Field::Field(const sstring& category_name, bool empty)
+Field::Field(const QString& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)
 , m_input_method(E_FIELD_INPUT_METHOD_NONE)
 , m_length(0)
@@ -25,7 +25,7 @@ bool Field::empty() const
 	return m_empty;
 }
 
-void Field::setName(const sstring& name)
+void Field::setName(const QString& name)
 {
 	m_name = name;
 }
@@ -40,7 +40,7 @@ void Field::setOptional(bool optional)
 	m_optional = optional;
 }
 
-void Field::setTypeString(sstring type_string)
+void Field::setTypeString(QString type_string)
 {
 	m_type_string = type_string;
 }
@@ -55,16 +55,16 @@ void Field::setLength(size_t length)
 	m_length = length;
 }
 
-void Field::setText(const sstring& text)
+void Field::setText(const QString& text)
 {
 	m_text = text;
 }
 
-void Field::setTip(const sstring& tip)
+void Field::setTip(const QString& tip)
 {
 	m_tip = tip;
 }
-void Field::setDefaultValue(const sstring& default_value)
+void Field::setDefaultValue(const QString& default_value)
 {
 	m_default_value = default_value;
 }
@@ -88,19 +88,19 @@ void Field::addSubField(const Field& sub_field)
 	m_sub_fields.push_back(sub_field);
 }
 
-void Field::setTail(const sstring& tail)
+void Field::setTail(const QString& tail)
 {
 	m_tail = tail;
 }
 
-void Field::setPrefix(const sstring& prefix)
+void Field::setPrefix(const QString& prefix)
 {
 	m_prefix = prefix;
 }
 
 
 
-sstring Field::name() const
+QString Field::name() const
 {
 	return m_name;
 }
@@ -128,16 +128,16 @@ size_t Field::length() const
 	return m_length;
 }
 
-sstring Field::text() const
+QString Field::text() const
 {
-	if (m_text.empty())
+	if (m_text.isEmpty())
 	{
 		return m_name;
 	}
 	return m_text;
 }
 
-sstring Field::defaultValue() const
+QString Field::defaultValue() const
 {
 	if (m_default_value == K_DEFAULT_VALUE_SECOND
 			|| m_default_value == K_DEFAULT_VALUE_PID
@@ -156,12 +156,12 @@ sstring Field::defaultValue() const
 
 }
 
-sstring Field::defaultValueOriginal() const
+QString Field::defaultValueOriginal() const
 {
 	return m_default_value;
 }
 
-sstring Field::tip() const
+QString Field::tip() const
 {
 	return m_tip;
 }
@@ -219,9 +219,9 @@ u_int64_t Field::maxValue() const
 	return max;
 }
 
-sstring Field::icon() const
+QString Field::icon() const
 {
-	sstring icon;
+	QString icon;
 	switch (type())
 	{
 	case E_FIELD_TYPE_INT:
@@ -246,7 +246,7 @@ sstring Field::icon() const
 	return icon;
 }
 
-sstring Field::typeString() const
+QString Field::typeString() const
 {
 	return m_type_string;
 }
@@ -266,7 +266,7 @@ bool Field::editable() const
 	return m_editable;
 }
 
-sstring Field::categoryName() const
+QString Field::categoryName() const
 {
 	return m_category_name;
 }
@@ -281,7 +281,7 @@ const std::vector<Field>& Field::subFields() const
 	return m_sub_fields;
 }
 
-Field Field::subField(const sstring& sub_field_name) const
+Field Field::subField(const QString& sub_field_name) const
 {
 	std::vector<Field>::const_iterator it;
 	for (it = m_sub_fields.begin(); it != m_sub_fields.end(); ++it)
@@ -295,13 +295,13 @@ Field Field::subField(const sstring& sub_field_name) const
 	return Field(m_name, true);
 }
 
-sstring Field::tail() const
+QString Field::tail() const
 {
 	return m_tail;
 }
 
 
-sstring Field::prefix() const
+QString Field::prefix() const
 {
 	return m_prefix;
 }

@@ -1412,6 +1412,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\system\qerror.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\system\qerror.h"
+				>
+			</File>
+			<File
 				RelativePath=".\system\types.h"
 				>
 			</File>

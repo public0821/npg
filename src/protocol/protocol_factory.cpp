@@ -24,7 +24,7 @@ const std::vector<Protocol>& ProtocolFactory::protocols() const
 	return m_protocols;
 }
 
-Protocol ProtocolFactory::protocol(sstring name)
+Protocol ProtocolFactory::protocol(QString name)
 {
 	std::vector<Protocol>::iterator it;
 	for (it = m_protocols.begin(); it != m_protocols.end(); ++it)
@@ -35,7 +35,7 @@ Protocol ProtocolFactory::protocol(sstring name)
 		}
 	}
 
-	SET_ERROR_STR("can't find protocol");
+	SET_QERROR_STR(QString(QObject::tr("can't find protocol:%1")).arg(name));
 
 	return Protocol(true);
 }
@@ -52,10 +52,11 @@ void ProtocolFactory::loadXml()
 	QFile file(file_name);
 	if (!file.open(QFile::ReadOnly | QFile::Text)) 
 	{
-		QFile file("./conf/npg.xml");
+		file_name = "./conf/npg.xml";
+		QFile file(file_name);
 		if (!file.open(QFile::ReadOnly | QFile::Text)) 
 		{
-			SET_ERROR_STR(file.errorString().toLocal8Bit().constData());
+			SET_QERROR_STR(file.errorString());
 			return;
 		}
 	}
@@ -66,17 +67,18 @@ void ProtocolFactory::loadXml()
 	int error_column;
 	if (!document.setContent(&file, true, &error_str, &error_line, &error_column)) 
 	{
-				SET_ERROR_STR(QString("Parse npg.xml error at line %1, column %2:\n%3")
+				SET_QERROR_STR(QString(QObject::tr("Parse %1 error at line %2, column %3:\n%4"))
+				.arg(file_name)
 				.arg(error_line)
 				.arg(error_column)
-				.arg(error_str).toStdString().c_str());
+				.arg(error_str));
 			return;
 	}
 
 	QDomElement root_element = document.documentElement();
 	if (root_element.tagName() != "Npg") 
 	{
-		SET_ERROR_STR("The file npg.xml is not an npg file.");
+		SET_QERROR_STR(QString(QObject::tr("The file %1 is not an npg file.")).arg(file_name));
 		return;
 	}
 
@@ -101,11 +103,11 @@ void ProtocolFactory::loadProtocolElement(QDomElement* element)
 	QDomElement& protocol_element = *element;
 
 	Protocol protocol;
-	protocol.setName(protocol_element.attribute("Name", "Unknown").toStdString());
-	protocol.setIcon(protocol_element.attribute("Icon").toStdString());
-	protocol.setDependenceParam(protocol_element.attribute("DependenceParam").toStdString());
+	protocol.setName(protocol_element.attribute("Name", "Unknown"));
+	protocol.setIcon(protocol_element.attribute("Icon"));
+	protocol.setDependenceParam(protocol_element.attribute("DependenceParam"));
 	QString dependence_str = protocol_element.attribute("Dependence");
-	protocol.setDependenceString(dependence_str.toStdString());
+	protocol.setDependenceString(dependence_str);
 	if (dependence_str == K_PROTOCOL_UDP)
 	{
 		protocol.setDependence(E_BASE_PROTOCOL_UDP);
@@ -124,7 +126,7 @@ void ProtocolFactory::loadProtocolElement(QDomElement* element)
 	}
 	else
 	{
-		SET_ERROR_STR((sstring("Unknown Dependence Protocol:")+dependence_str.toStdString()).c_str());
+		SET_QERROR_STR(QString(QObject::tr("Unknown Dependence Protocol:%1")).arg(dependence_str));
 	}
 	
 
@@ -143,15 +145,15 @@ Category ProtocolFactory::loadCategoryElement(QDomElement* element)
 	QDomElement& category_element = *element;
 
 	Category category;
-	category.setName(category_element.attribute("Name", "Unknown").toStdString());
-	sstring many_str = category_element.attribute("Many").toStdString();
+	category.setName(category_element.attribute("Name", "Unknown"));
+	QString many_str = category_element.attribute("Many");
 	if (many_str == "true")
 	{
 		category.setMany(true);
 	}
-	category.setText(category_element.attribute("Text").toStdString());
-	category.setTip(category_element.attribute("Tip").toStdString());
-	category.setTail(category_element.attribute("Tail").toStdString());
+	category.setText(category_element.attribute("Text"));
+	category.setTip(category_element.attribute("Tip"));
+	category.setTail(category_element.attribute("Tail"));
 
 	QDomElement field_element = category_element.firstChildElement("Field");
 	while(!field_element.isNull())
@@ -163,14 +165,14 @@ Category ProtocolFactory::loadCategoryElement(QDomElement* element)
 	return category;
 }
 
-Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElement* element)
+Field ProtocolFactory::loadFieldElement(const QString& category_name, QDomElement* element)
 {
 	QDomElement& field_element = *element;
 
 	Field field(category_name);
-	field.setName(field_element.attribute("Name", "Unknown").toStdString());
+	field.setName(field_element.attribute("Name", "Unknown"));
 
-	sstring type_str = field_element.attribute("Type").toStdString();
+	QString type_str = field_element.attribute("Type");
 	field.setTypeString(type_str);
 	if (type_str == "int")
 	{
@@ -194,10 +196,10 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 	}
 	else
 	{
-		SET_ERROR_STR((sstring("Unknown field type:")+type_str).c_str());
+		SET_QERROR_STR(QString(QObject::tr("Unknown field type:%1")).arg(type_str));
 	}
 
-	sstring input_method_str = field_element.attribute("InputMethod").toStdString();
+	QString input_method_str = field_element.attribute("InputMethod");
 	if (input_method_str == "lineedit")
 	{
 		field.setInputMethod(E_FIELD_INPUT_METHOD_LINEEDIT);
@@ -216,17 +218,17 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 	}
 	else
 	{
-		SET_ERROR_STR((sstring("Unknown field input method:")+input_method_str).c_str());
+		SET_QERROR_STR(QString(QObject::tr("Unknown field input method:%1")).arg(input_method_str));
 	}
 
 	field.setLength(field_element.attribute("Length").toInt());
-	field.setText(field_element.attribute("Text").toStdString());
-	field.setDefaultValue(field_element.attribute("DefaultValue").toStdString());
-	field.setTip(field_element.attribute("Tip").toStdString());
-	field.setTail(field_element.attribute("Tail").toStdString());
-	field.setPrefix(field_element.attribute("Prefix").toStdString());
+	field.setText(field_element.attribute("Text"));
+	field.setDefaultValue(field_element.attribute("DefaultValue"));
+	field.setTip(field_element.attribute("Tip"));
+	field.setTail(field_element.attribute("Tail"));
+	field.setPrefix(field_element.attribute("Prefix"));
 
-	sstring optional_str = field_element.attribute("Optional").toStdString();
+	QString optional_str = field_element.attribute("Optional");
 	if (optional_str == "true")
 	{
 		field.setOptional(true);
@@ -236,7 +238,7 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 		field.setOptional(false);
 	}
 
-	sstring editable_str = field_element.attribute("Editable").toStdString();
+	QString editable_str = field_element.attribute("Editable");
 	if (editable_str == "false")
 	{
 		field.setEditable(false);
@@ -246,7 +248,7 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 		field.setEditable(true);
 	}
 
-	sstring show_on_start_str = field_element.attribute("ShowOnStart").toStdString();
+	QString show_on_start_str = field_element.attribute("ShowOnStart");
 	if (show_on_start_str == "true")
 	{
 		field.setShowOnStart(true);
@@ -260,8 +262,8 @@ Field ProtocolFactory::loadFieldElement(const sstring& category_name, QDomElemen
 	while(!item_element.isNull())
 	{
 		FieldItem field_item;
-		field_item.setText(item_element.attribute("Text").toStdString());
-		field_item.setValue(item_element.attribute("Value").toStdString());
+		field_item.setText(item_element.attribute("Text"));
+		field_item.setValue(item_element.attribute("Value"));
 		item_element = item_element.nextSiblingElement("Item");	
 		field.addItem(field_item);
 	}

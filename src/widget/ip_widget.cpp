@@ -14,21 +14,21 @@ IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name
 	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_UDP, (int)IPPROTO_UDP));
 	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_TCP, (int)IPPROTO_TCP));
 
-	std::map<sstring, int>::const_iterator it_find;
-	it_find = m_built_in_protocol.find(ip_protocol_name.toStdString());
+	std::map<QString, int>::const_iterator it_find;
+	it_find = m_built_in_protocol.find(ip_protocol_name);
 	if (it_find != m_built_in_protocol.end())
 	{
-		QString text = QString("%1 (%2)").arg(it_find->first.c_str()).arg(it_find->second);
+		QString text = QString("%1 (%2)").arg(it_find->first).arg(it_find->second);
 		ui.protocol_box->addItem(text, QVariant(it_find->second));
 		ui.protocol_box->setEditable(false);
 	}
 	else
 	{
-		std::map<sstring, int>::const_iterator it;
+		std::map<QString, int>::const_iterator it;
 		it = m_built_in_protocol.begin();
 		for (; it != m_built_in_protocol.end(); ++it)
 		{
-			QString text = QString("%1 (%2)").arg(it->first.c_str()).arg(it->second);
+			QString text = QString("%1 (%2)").arg(it->first).arg(it->second);
 			ui.protocol_box->addItem(text, QVariant(it->second));
 		}
 		ui.protocol_box->setEditable(true);
@@ -54,7 +54,7 @@ QString IpWidget::sendData(const char* data, u_int16_t length)
 		protocol = ui.protocol_box->itemData(index).toInt();
 	}
 	
-	sstring ip_str = ui.ip_edit->text().toStdString();
+	sstring ip_str = ui.ip_edit->text().toLocal8Bit().constData();
 
 	if (ip_str.empty() || protocol == 0 )
 	{

@@ -34,7 +34,7 @@ QWidget* ProtocolTreeItemWidget::getFieldWidget(const Field& field)
 
 	if (field.inputMethod() == E_FIELD_INPUT_METHOD_LINEEDIT)
 	{
-		QLineEdit* edit = new QLineEdit(field.defaultValue().c_str());
+		QLineEdit* edit = new QLineEdit(field.defaultValue());
 		switch (field.type())
 		{
 			
@@ -61,7 +61,7 @@ QWidget* ProtocolTreeItemWidget::getFieldWidget(const Field& field)
 	}
 	else if (field.inputMethod() == E_FIELD_INPUT_METHOD_TEXTEDIT)
 	{
-		QTextEdit* edit = new QTextEdit(field.defaultValue().c_str());
+		QTextEdit* edit = new QTextEdit(field.defaultValue());
 		widget = edit;
 		if (field.type() == E_FIELD_TYPE_STRING)
 		{
@@ -75,19 +75,19 @@ QWidget* ProtocolTreeItemWidget::getFieldWidget(const Field& field)
 		std::vector<FieldItem>::const_iterator it;
 		for (it = field_items.begin(); it != field_items.end(); ++it)
 		{
-			QString text = it->text().c_str();
+			QString text = it->text();
 			if (field.type() != E_FIELD_TYPE_STRING)
 			{
-				text = QString("%1 (%2)").arg(it->text().c_str()).arg(it->value().c_str());
+				text = QString("%1 (%2)").arg(it->text()).arg(it->value());
 			}
-			combo_box->addItem(text, QVariant(it->value().c_str()));
+			combo_box->addItem(text, QVariant(it->value()));
 		}
 		combo_box->setEditable(true);
 		widget = combo_box;
 	}
 	else
 	{
-		QLabel* label = new QLabel(field.defaultValue().c_str());
+		QLabel* label = new QLabel(field.defaultValue());
 		label->setAlignment(Qt::AlignCenter);
 		widget = label;
 	}

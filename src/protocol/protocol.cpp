@@ -20,7 +20,7 @@ const std::vector<Category>& Protocol::categorys()const
 	return m_categorys;
 }
 
-sstring Protocol::name() const
+QString Protocol::name() const
 {
 	return m_name;
 }
@@ -30,25 +30,25 @@ EBaseProtocol Protocol::dependence() const
 	return m_dependence;
 }
 
-sstring Protocol::DependenceParam()const
+QString Protocol::DependenceParam()const
 {
 	return m_dependence_param;
 }
-sstring Protocol::dependenceString() const
+QString Protocol::dependenceString() const
 {
 	return m_dependence_string;
 }
 
-sstring Protocol::icon() const
+QString Protocol::icon() const
 {
-	if (m_icon.empty())
+	if (m_icon.isEmpty())
 	{
 		return ":/npg/protocol_default";
 	}
 	return m_icon;
 }
 
-void Protocol::setName(const sstring& name)
+void Protocol::setName(const QString& name)
 {
 	m_name = name;
 }
@@ -58,12 +58,12 @@ void Protocol::setDependence(EBaseProtocol dependence)
 	m_dependence = dependence;
 }
 
-void Protocol::setDependenceString(const sstring& dependence)
+void Protocol::setDependenceString(const QString& dependence)
 {
 	m_dependence_string = dependence;
 }
 
-void Protocol::setIcon(const sstring& icon)
+void Protocol::setIcon(const QString& icon)
 {
 	m_icon = icon;
 }
@@ -73,7 +73,7 @@ bool Protocol::empty()const
 	return m_empty;
 }
 
-Category  Protocol::category(const sstring& name)const 
+Category  Protocol::category(const QString& name)const 
 {
 	std::vector<Category>::const_iterator it;
 	for (it = m_categorys.begin(); it != m_categorys.end(); ++it)
@@ -87,7 +87,7 @@ Category  Protocol::category(const sstring& name)const
 	return Category(true);
 }
 
-void Protocol::setDependenceParam(const sstring& dependence_param)
+void Protocol::setDependenceParam(const QString& dependence_param)
 {
 	m_dependence_param = dependence_param;
 }

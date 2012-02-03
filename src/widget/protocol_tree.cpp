@@ -24,7 +24,7 @@ void ProtocolTree::setup(Protocol protocol)
 	m_protocol = protocol;
 	setColumnCount(6);
 	QStringList head_list;
-	head_list << "field" << "value" << "" << "type" << "length" << "tip";
+	head_list << tr("field") << tr("value") << "" << tr("type") << tr("length") << tr("tip");
 	setHeaderLabels(head_list);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this,
 			SLOT(onShowPopup(const QPoint &)));
@@ -33,7 +33,7 @@ void ProtocolTree::setup(Protocol protocol)
 	//setDragDropMode(InternalMove);
 
 	m_delete_action = new QAction(QIcon(":/npg/category_delete"),
-			tr("Delete(&A)"), this);
+			tr("Delete(&D)"), this);
 	m_delete_action->setShortcut(QKeySequence::fromString("Ctrl+D"));
 	m_add_action = new QAction(QIcon(":/npg/category_add"), tr("Add(&A)"),
 			this);
@@ -78,7 +78,7 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 		EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
 		if (item_type == E_ITEM_TYPE_CATEGORY)
 		{
-			sstring name = item->data(1, Qt::UserRole).toString().toStdString();
+			QString name = item->data(1, Qt::UserRole).toString();
 			Category category = m_protocol.category(name);
 
 			QMenu menu(this);
@@ -87,13 +87,8 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 				menu.addAction(m_add_action);
 				m_add_action->setEnabled(true);
 
-				//std::map<sstring, int>::iterator it;
-				//it = m_multi_category_count.find(category.name());
-				//if (it != m_multi_category_count.end() && it->second > 1)
-				//{
-					menu.addAction(m_delete_action);
-					m_delete_action->setEnabled(true);
-				//}
+				menu.addAction(m_delete_action);
+				m_delete_action->setEnabled(true);
 			}
 			if (category.optionalFieldCount() > 0)
 			{
@@ -108,10 +103,10 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 		}
 		else if (item_type == E_ITEM_TYPE_FIELD)
 		{
-			sstring category_name =
-					item->parent()->data(1, Qt::UserRole).toString().toStdString();
-			sstring field_name =
-					item->data(1, Qt::UserRole).toString().toStdString();
+			QString category_name =
+					item->parent()->data(1, Qt::UserRole).toString();
+			QString field_name =
+					item->data(1, Qt::UserRole).toString();
 			Category category = m_protocol.category(category_name);
 			Field field = category.field(field_name);
 			QMenu menu(this);
@@ -147,16 +142,16 @@ void ProtocolTree::onAdd()
 	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
 	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
-		sstring name = item->data(1, Qt::UserRole).toString().toStdString();
+		QString name = item->data(1, Qt::UserRole).toString();
 		Category category = m_protocol.category(name);
 		addCategoryItem(this, item, category);
 	}
 	else if (item_type == E_ITEM_TYPE_FIELD)
 	{
-		sstring category_name =
-				item->parent()->data(1, Qt::UserRole).toString().toStdString();
-		sstring field_name =
-				item->data(1, Qt::UserRole).toString().toStdString();
+		QString category_name =
+				item->parent()->data(1, Qt::UserRole).toString();
+		QString field_name =
+				item->data(1, Qt::UserRole).toString();
 		Category category = m_protocol.category(category_name);
 		Field field = category.field(field_name);
 		addFieldItem(item->parent(), item, field);
@@ -177,15 +172,15 @@ void ProtocolTree::onAddField()
 	QTreeWidgetItem* preceding;
 	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
-		sstring name = item->data(1, Qt::UserRole).toString().toStdString();
+		QString name = item->data(1, Qt::UserRole).toString();
 		category = m_protocol.category(name);
 		category_item = item;
 		preceding = item->child(item->childCount()-1);
 	}
 	else if (item_type == E_ITEM_TYPE_FIELD)
 	{
-		sstring category_name =
-			item->parent()->data(1, Qt::UserRole).toString().toStdString();
+		QString category_name =
+			item->parent()->data(1, Qt::UserRole).toString();
 		category = m_protocol.category(category_name);
 		category_item = item->parent();
 		preceding = item;
@@ -225,13 +220,6 @@ void ProtocolTree::onDelete()
 	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
 	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
-		//sstring name = item->data(1, Qt::UserRole).toString().toStdString();
-		//std::map<sstring, int>::iterator it;
-		//it = m_multi_category_count.find(name);
-		//if (it != m_multi_category_count.end())
-		//{
-		//	--it->second;
-		//}
 	}
 	else if (item_type == E_ITEM_TYPE_FIELD)
 	{
@@ -269,12 +257,12 @@ QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent,
 //	QStringList text_list;
 //	text_list << field.text().c_str() << ""<<""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
 	QTreeWidgetItem *item = new QTreeWidgetItem(parent, preceding);
-	item->setText(0, field.text().c_str());
-	item->setText(3, field.typeString().c_str());
+	item->setText(0, field.text());
+	item->setText(3, field.typeString());
 	item->setText(4, QString("%1").arg(field.length()));
-	item->setText(5, field.tip().c_str());
+	item->setText(5, field.tip());
 	item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_FIELD));
-	item->setData(1, Qt::UserRole, QVariant(field.name().c_str()));
+	item->setData(1, Qt::UserRole, QVariant(field.name()));
 	item->setTextAlignment(3, Qt::AlignHCenter | Qt::AlignVCenter);
 
 	ProtocolTreeItemWidget* tree_item = new ProtocolTreeItemWidget(item, field);
@@ -296,7 +284,7 @@ QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent,
 		tree_item->setEnabled(false);
 	}
 
-	item->setIcon(0, QIcon(field.icon().c_str()));
+	item->setIcon(0, QIcon(field.icon()));
 
 
 	const std::vector<Field>& sub_fields = field.subFields();
@@ -314,19 +302,19 @@ QTreeWidgetItem* ProtocolTree::addSubFieldItem(QTreeWidgetItem* parent, const Fi
 {
 	if (field.type() != E_FIELD_TYPE_BIT)
 	{
-		QMessageBox::information(this, tr("tip"), QString(tr("unsupported sub field type")) + field.typeString().c_str());
+		QMessageBox::information(this, tr("tip"), QString(tr("unsupported sub field type")) + field.typeString());
 		return NULL;
 	}
 
 	//	QStringList text_list;
 	//	text_list << field.text().c_str() << ""<<""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
 	QTreeWidgetItem *item = new QTreeWidgetItem(parent);
-	item->setText(0, field.text().c_str());
-	item->setText(3, field.typeString().c_str());
+	item->setText(0, field.text());
+	item->setText(3, field.typeString());
 	item->setText(4, QString("%1").arg(field.length()));
-	item->setText(5, field.tip().c_str());
+	item->setText(5, field.tip());
 	item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_SUBFIELD));
-	item->setData(1, Qt::UserRole, QVariant(field.name().c_str()));
+	item->setData(1, Qt::UserRole, QVariant(field.name()));
 	item->setTextAlignment(3, Qt::AlignHCenter | Qt::AlignVCenter);
 
 	ProtocolTreeItemWidget* tree_item = new ProtocolTreeItemWidget(item, field);
@@ -342,7 +330,7 @@ QTreeWidgetItem* ProtocolTree::addSubFieldItem(QTreeWidgetItem* parent, const Fi
 		tree_item->setEnabled(false);
 	}
 
-	item->setIcon(0, QIcon(field.icon().c_str()));
+	item->setIcon(0, QIcon(field.icon()));
 
 	return item;
 }
@@ -354,10 +342,10 @@ QTreeWidgetItem * ProtocolTree::addCategoryItem(QTreeWidget * parent,
 //	text_list << category.text().c_str()<<""<<""<<""<<category.tip().c_str();
 	QTreeWidgetItem *category_item = new QTreeWidgetItem(parent,
 			category_preceding);
-	category_item->setText(0, category.text().c_str());
-	category_item->setText(5, category.tip().c_str());
+	category_item->setText(0, category.text());
+	category_item->setText(5, category.tip());
 	category_item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_CATEGORY));
-	category_item->setData(1, Qt::UserRole, QVariant(category.name().c_str()));
+	category_item->setData(1, Qt::UserRole, QVariant(category.name()));
 	category_item->setIcon(0, QIcon(":/npg/category"));
 
 	const std::vector<Field>& fields = category.fields();
@@ -371,20 +359,6 @@ QTreeWidgetItem * ProtocolTree::addCategoryItem(QTreeWidget * parent,
 					*it_field);
 		}
 	}
-
-	//if (category.isMany())
-	//{
-	//	std::map<sstring, int>::iterator it;
-	//	it = m_multi_category_count.find(category.name());
-	//	if (it != m_multi_category_count.end())
-	//	{
-	//		++it->second;
-	//	}
-	//	else
-	//	{
-	//		m_multi_category_count.insert(std::make_pair(category.name(), 1));
-	//	}
-	//}
 
 	return category_item;
 }

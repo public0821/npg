@@ -26,7 +26,7 @@ public:
 	void restoreSettings();
 private:
 	Ui::IpWidget ui;
-	std::map<sstring, int>  m_built_in_protocol;
+	std::map<QString, int>  m_built_in_protocol;
 };
 
 #endif // IP_WIDGET_H

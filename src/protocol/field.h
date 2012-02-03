@@ -9,6 +9,7 @@
 
 #include "system/types.h"
 #include <vector>
+#include <QString>
 
 
 enum EFiledType
@@ -39,77 +40,77 @@ const char K_DEFAULT_VALUE_DEFAULT[] = "default";
 class FieldItem
 {
 public:
-	sstring text()const{return m_name;};
-	sstring value()const{return m_value;};
-	void setText(const sstring& name){m_name = name;};
-	void setValue(const sstring& value){m_value = value;};
+	QString text()const{return m_name;};
+	QString value()const{return m_value;};
+	void setText(const QString& name){m_name = name;};
+	void setValue(const QString& value){m_value = value;};
 private:
-	sstring m_name;
-	sstring m_value;
+	QString m_name;
+	QString m_value;
 };
 
 class Field
 {
 public:
-	Field(const sstring& category_name, bool empty=false);
+	Field(const QString& category_name, bool empty=false);
 	~Field(void);
 public:
-	void setName(const sstring& name);
+	void setName(const QString& name);
 	void setType(EFiledType type);
-	void setTypeString(sstring type_string);
+	void setTypeString(QString type_string);
 	void setInputMethod(EFiledInputMethod input_method);
 	void setLength(size_t length);
-	void setText(const sstring& text);
-	void setTip(const sstring& tip);
-	void setDefaultValue(const sstring& default_value);
+	void setText(const QString& text);
+	void setTip(const QString& tip);
+	void setDefaultValue(const QString& default_value);
 	void setOptional(bool optional);
 	void addItem(const FieldItem& item);
 	void setEditable(bool editable);
 	void setShowOnStart(bool show_on_start);
 	void addSubField(const Field& sub_field);
-	void setTail(const sstring& tail);
-	void setPrefix(const sstring& prefix);
+	void setTail(const QString& tail);
+	void setPrefix(const QString& prefix);
 
-	sstring name() const;
+	QString name() const;
 	EFiledType type() const;
-	sstring typeString() const;
+	QString typeString() const;
 	EFiledInputMethod inputMethod() const;
 	size_t length() const;
-	sstring text() const;
-	sstring tip() const;
-	sstring defaultValue() const;
-	sstring defaultValueOriginal() const;
+	QString text() const;
+	QString tip() const;
+	QString defaultValue() const;
+	QString defaultValueOriginal() const;
 	int64_t minValue() const;
 	u_int64_t maxValue() const;
-	sstring icon()const;
+	QString icon()const;
 	bool isOptional()const;
 	bool empty()const;
 	const std::vector<FieldItem>& items()const;
 	bool editable()const;
-	sstring categoryName()const;
+	QString categoryName()const;
 	bool isShowOnStart()const;
 	const std::vector<Field>& subFields()const;
-	Field subField(const sstring& sub_field_name)const;
-	sstring tail()const;
-	sstring prefix()const;
+	Field subField(const QString& sub_field_name)const;
+	QString tail()const;
+	QString prefix()const;
 private:
-	sstring m_name;
+	QString m_name;
 	EFiledType m_type;
 	EFiledInputMethod m_input_method;
 	size_t m_length;
-	sstring m_text;
-	sstring m_default_value;
-	sstring m_tip;
-	sstring m_type_string;
+	QString m_text;
+	QString m_default_value;
+	QString m_tip;
+	QString m_type_string;
 	bool m_empty;
 	bool m_optional;
 	std::vector<FieldItem> m_items;
 	bool m_editable;
-	sstring m_category_name;
+	QString m_category_name;
 	bool m_show_on_start;
 	std::vector<Field> m_sub_fields;
-	sstring m_tail;
-	sstring m_prefix;
+	QString m_tail;
+	QString m_prefix;
 };
 
 #endif

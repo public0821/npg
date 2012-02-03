@@ -7,9 +7,9 @@
 #ifndef __PROTOCOL_BUILDER_H__
 #define __PROTOCOL_BUILDER_H__
 #include <qstring.h>
-#include "system/error.h"
+#include "system/qerror.h"
 #include "protocol/field.h"
-class ProtocolBuilder:public Error
+class ProtocolBuilder:public QError
 {
 public:
 	ProtocolBuilder(void);

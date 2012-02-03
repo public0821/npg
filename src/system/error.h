@@ -1,5 +1,5 @@
 /*
- * socket_error.h
+ * error.h
  *
  *  Created on: 2011-8-23
  *      Author: Young <public0821@gmail.com>

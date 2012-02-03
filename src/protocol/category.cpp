@@ -19,7 +19,7 @@ const std::vector<Field>& Category::fields() const
 	return m_fields;
 }
 
-Field Category::field(sstring name) const
+Field Category::field(QString name) const
 {
 	std::vector<Field>::const_iterator it;
 	for (it = m_fields.begin(); it != m_fields.end(); ++it)
@@ -48,7 +48,7 @@ std::vector<Field> Category::optionalFields() const
 	return optional_fields;
 }
 
-sstring Category::name() const
+QString Category::name() const
 {
 	return m_name;
 }
@@ -58,9 +58,9 @@ bool Category::isMany() const
 	return m_is_many;
 }
 
-sstring Category::text() const
+QString Category::text() const
 {
-	if (m_text.empty())
+	if (m_text.isEmpty())
 	{
 		return m_name;
 	}
@@ -68,12 +68,12 @@ sstring Category::text() const
 	return m_text;
 }
 
-sstring Category::tail() const
+QString Category::tail() const
 {
 	return m_tail;
 }
 
-void Category::setName(const sstring& name)
+void Category::setName(const QString& name)
 {
 	m_name = name;
 }
@@ -83,22 +83,22 @@ void Category::setMany(bool is_many)
 	m_is_many = is_many;
 }
 
-void Category::setText(const sstring& text)
+void Category::setText(const QString& text)
 {
 	m_text = text;
 }
 
-sstring Category::tip() const
+QString Category::tip() const
 {
 	return m_tip;
 }
 
-void Category::setTip(const sstring& tip)
+void Category::setTip(const QString& tip)
 {
 	m_tip = tip;
 }
 
-void Category::setTail(const sstring& tail)
+void Category::setTail(const QString& tail)
 {
 	m_tail = tail;
 }

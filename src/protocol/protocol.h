@@ -26,30 +26,30 @@ public:
 public:
 	void addCategory(const Category& category);
 	const  std::vector<Category>& categorys()const ;
-	Category  category(const sstring& name)const ;
+	Category  category(const QString& name)const ;
 public:
-	sstring name() const;
+	QString name() const;
 	EBaseProtocol dependence() const;
-	sstring dependenceString() const;
-	sstring DependenceParam()const;
-	sstring icon() const;
+	QString dependenceString() const;
+	QString DependenceParam()const;
+	QString icon() const;
 
-	void setName(const sstring& name);
-	void setDependenceString(const sstring& dependence);
+	void setName(const QString& name);
+	void setDependenceString(const QString& dependence);
 	void setDependence(EBaseProtocol dependence);
-	void setDependenceParam(const sstring& dependence_param);
-	void setIcon(const sstring& icon);
+	void setDependenceParam(const QString& dependence_param);
+	void setIcon(const QString& icon);
 
 	bool empty()const;
 
 private:
 	std::vector<Category> m_categorys;
 private:
-	sstring m_name;
+	QString m_name;
 	EBaseProtocol m_dependence;
-	sstring m_dependence_string;
-	sstring m_icon;
+	QString m_dependence_string;
+	QString m_icon;
 	bool m_empty;
-	sstring m_dependence_param;
+	QString m_dependence_param;
 };
 #endif

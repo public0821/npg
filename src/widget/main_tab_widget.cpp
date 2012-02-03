@@ -40,11 +40,11 @@ int MainTabWidget::addTab(const QString &type)
 
 	if (type == K_PROTOCOL_UDP)
 	{
-		sheet = new DataTabSheet(type, this);
+		sheet = new DataTabSheet(K_PROTOCOL_UDP, this);
 	}
 	else if (type == K_PROTOCOL_TCP)
 	{
-		sheet = new DataTabSheet(type, this);
+		sheet = new DataTabSheet(K_PROTOCOL_TCP, this);
 	}
 //	else if (type == K_PROTOCOL_ICMP)
 //	{
@@ -60,12 +60,12 @@ int MainTabWidget::addTab(const QString &type)
 	//}
 	else
 	{
-		Protocol protocol = ProtocolFactory::instance().protocol(type.toStdString());
+		Protocol protocol = ProtocolFactory::instance().protocol(type);
 		if (!protocol.empty())
 		{
 			sheet = new ProtocolTabSheet(protocol, this);
 			index = QTabWidget::addTab(sheet,
-				QIcon(QString::fromUtf8(protocol.icon().c_str())), type);
+				QIcon(protocol.icon()), type);
 		}
 		
 	}

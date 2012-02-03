@@ -35,7 +35,7 @@ MainListWidget::MainListWidget(const QMap<QString, QString>& name_icons, QWidget
 	for (it_protocol = protocols.begin(); it_protocol != protocols.end(); ++it_protocol)
 	{
 		QListWidgetItem* item = new QListWidgetItem(
-			QIcon(it_protocol->icon().c_str()), it_protocol->name().c_str(),
+			QIcon(it_protocol->icon()), it_protocol->name(),
 			this);
 		item->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 	}

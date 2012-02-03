@@ -27,8 +27,8 @@ QString EthernetWidget::sendData(const char* data, u_int16_t length)
 {
 	int index = ui.protocol_box->currentIndex();
 	int protocol = ui.protocol_box->itemData(index).toInt();
-	sstring to_mac = ui.to_mac_edit->text().toStdString();
-	sstring from_mac = ui.from_mac_edit->text().toStdString();
+	sstring to_mac = ui.to_mac_edit->text().toLocal8Bit().constData();
+	sstring from_mac = ui.from_mac_edit->text().toLocal8Bit().constData();
 
 	index = ui.interface_box->currentIndex();
 	ifi_info dev = ui.interface_box->itemData(index).value<ifi_info>();
@@ -66,26 +66,26 @@ void EthernetWidget::restoreSettings()
 
 void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name)
 {
-	std::map<sstring, int>  built_in_protocol;
+	std::map<QString, int>  built_in_protocol;
 	built_in_protocol.insert(std::make_pair(K_PROTOCOL_IP, (int)ETH_P_IP));
 	built_in_protocol.insert(std::make_pair(K_PROTOCOL_ARP, (int)ETH_P_ARP));
 	built_in_protocol.insert(std::make_pair(K_PROTOCOL_RARP, (int)ETH_P_RARP));
 
-	std::map<sstring, int>::const_iterator it_find;
-	it_find = built_in_protocol.find(ether_protocol_name.toStdString());
+	std::map<QString, int>::const_iterator it_find;
+	it_find = built_in_protocol.find(ether_protocol_name);
 	if (it_find != built_in_protocol.end())
 	{
-		QString text = QString("%1 (%2)").arg(it_find->first.c_str()).arg(it_find->second);
+		QString text = QString("%1 (%2)").arg(it_find->first).arg(it_find->second);
 		ui.protocol_box->addItem(text, QVariant(it_find->second));
 		ui.protocol_box->setEditable(false);
 	}
 	else
 	{
-		std::map<sstring, int>::const_iterator it;
+		std::map<QString, int>::const_iterator it;
 		it = built_in_protocol.begin();
 		for (; it != built_in_protocol.end(); ++it)
 		{
-			QString text = QString("%1 (%2)").arg(it->first.c_str()).arg(it->second);
+			QString text = QString("%1 (%2)").arg(it->first).arg(it->second);
 			ui.protocol_box->addItem(text, QVariant(it->second));
 		}
 		ui.protocol_box->setEditable(true);

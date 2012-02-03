@@ -19,31 +19,31 @@ public:
 	void addField(const Field& field);
 	const std::vector<Field>& fields()const;
 	std::vector<Field> optionalFields()const;
-	Field field(sstring name)const;
+	Field field(QString name)const;
 	
-	sstring name() const;
+	QString name() const;
 	bool isMany() const;
-	sstring text() const;
-	sstring tip() const;
-	sstring tail()const;
+	QString text() const;
+	QString tip() const;
+	QString tail()const;
 
-	void setName(const sstring& name);
+	void setName(const QString& name);
 	void setMany(bool is_many);
-	void setText(const sstring& text);
-	void setTip(const sstring& tip);
-	void setTail(const sstring& tail);
+	void setText(const QString& text);
+	void setTip(const QString& tip);
+	void setTail(const QString& tail);
 
 	bool empty()const;
 	u_int16_t optionalFieldCount()const;
 
 private:
 	std::vector<Field> m_fields;
-	sstring m_name;
-	sstring m_text;
+	QString m_name;
+	QString m_text;
 	bool m_is_many;
-	sstring m_tip;
+	QString m_tip;
 	bool m_empty;
-	sstring m_tail;
+	QString m_tail;
 
 };
 #endif

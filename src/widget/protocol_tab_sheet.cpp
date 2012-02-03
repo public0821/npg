@@ -16,7 +16,7 @@
 #include "protocol/bit_builder.h"
 
 ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent) 
-:TabSheet(protocol.name().c_str(), parent, protocol.dependenceString().c_str(), protocol.DependenceParam().c_str())
+:TabSheet(protocol.name(), parent, protocol.dependenceString(), protocol.DependenceParam())
 , m_protocol(protocol)
 ,m_seq(0)
 {
@@ -35,7 +35,7 @@ ProtocolTabSheet::~ProtocolTabSheet()
 void ProtocolTabSheet::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(m_protocol.name().c_str());
+	settings.beginGroup(m_protocol.name());
 	//settings.setValue("server", ui.server_edit->text());
 	//settings.setValue("request", ui.request_edit->text());
 	//settings.setValue("reverse", (int)ui.reverse_checkbox->checkState());
@@ -46,7 +46,7 @@ void ProtocolTabSheet::saveSettings()
 void ProtocolTabSheet::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(m_protocol.name().c_str());
+	settings.beginGroup(m_protocol.name());
 	//ui.server_edit->setText(settings.value("server").toString());
 	//ui.request_edit->setText(settings.value("request").toString());
 	//ui.reverse_checkbox->setCheckState((Qt::CheckState)settings.value("reverse").toInt());
@@ -69,19 +69,20 @@ QString ProtocolTabSheet::sendData()
 	{
 		QTreeWidgetItem* category_item = tree_widget->topLevelItem(category_index);
 		QString category_name = category_item->data(1, Qt::UserRole).toString();
-		Category category = m_protocol.category(category_name.toStdString());
+		Category category = m_protocol.category(category_name);
 
 		int field_count = category_item->childCount();
 		for (int field_index = 0; field_index < field_count; field_index++)
 		{
 			QTreeWidgetItem* field_item	= category_item->child (field_index);
 			QString field_name = field_item->data(1, Qt::UserRole).toString();
-			Field field = category.field(field_name.toStdString());
+			Field field = category.field(field_name);
 
-			sstring field_prefix = field.prefix();
-			if (!field_prefix.empty())
+			QString field_prefix = field.prefix();
+			if (!field_prefix.isEmpty())
 			{
-				int ret = protocol_builder.append(field_prefix.c_str(), field_prefix.length());
+				QByteArray field_prefix_array = field_prefix.toLocal8Bit();
+				int ret = protocol_builder.append(field_prefix_array.constData(), field_prefix_array.length());
 				if (ret == false)
 				{
 					return protocol_builder.errorString();
@@ -93,7 +94,7 @@ QString ProtocolTabSheet::sendData()
 			{
 				if (field.length() <= 0)
 				{
-					return tr("field length must greater than 0:") + field.name().c_str();
+					return tr("field length must greater than 0:") + field.name();
 				}
 				
 				BitBuilder bit_builder(field.length());
@@ -104,7 +105,7 @@ QString ProtocolTabSheet::sendData()
 					u_int32_t data = item_widget->value().toUInt();
 
 					QString sub_field_name = sub_field_item->data(1, Qt::UserRole).toString();
-					Field sub_field = field.subField(sub_field_name.toStdString());
+					Field sub_field = field.subField(sub_field_name);
 					int ret = bit_builder.append(data, sub_field.length());
 					if (ret == false)
 					{
@@ -130,7 +131,7 @@ QString ProtocolTabSheet::sendData()
 						checknum_pos = protocol_builder.length();
 						checknum_field = field;
 					}	
-					data = convertDefaultValue(field.defaultValueOriginal().c_str());
+					data = convertDefaultValue(field.defaultValueOriginal());
 				}
 				else
 				{
@@ -145,10 +146,11 @@ QString ProtocolTabSheet::sendData()
 				}
 			}
 			
-			sstring field_tail = field.tail();
-			if (!field_tail.empty())
+			QString field_tail = field.tail();
+			if (!field_tail.isEmpty())
 			{
-				int ret = protocol_builder.append(field_tail.c_str(), field_tail.length());
+				QByteArray field_tail_array = field_tail.toLocal8Bit();
+				int ret = protocol_builder.append(field_tail_array.constData(), field_tail_array.length());
 				if (ret == false)
 				{
 					return protocol_builder.errorString();
@@ -157,10 +159,11 @@ QString ProtocolTabSheet::sendData()
 			
 		}
 
-		sstring category_tail = category.tail();
-		if (!category_tail.empty())
+		QString category_tail = category.tail();
+		if (!category_tail.isEmpty())
 		{
-			int ret = protocol_builder.append(category_tail.c_str(), category_tail.length());
+			QByteArray category_tail_array = category_tail.toLocal8Bit();
+			int ret = protocol_builder.append(category_tail_array.constData(), category_tail_array.length());
 			if (ret == false)
 			{
 				return protocol_builder.errorString();
