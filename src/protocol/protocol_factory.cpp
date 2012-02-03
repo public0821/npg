@@ -1,6 +1,7 @@
 #include "protocol_factory.h"
 #include <QDomDocument>
 #include <QFile>
+#include <QLocale>
 #include "npg_define.h"
 
 ProtocolFactory::ProtocolFactory(void)
@@ -47,13 +48,17 @@ void ProtocolFactory::loadXml()
 		return;
 	}
 
-	QFile file("./conf/npg.xml");
+	QString file_name = "./conf/npg_" + QLocale::system().name() + ".xml";
+	QFile file(file_name);
 	if (!file.open(QFile::ReadOnly | QFile::Text)) 
 	{
-		SET_ERROR_STR(file.errorString().toStdString().c_str());
-		return;
+		QFile file("./conf/npg.xml");
+		if (!file.open(QFile::ReadOnly | QFile::Text)) 
+		{
+			SET_ERROR_STR(file.errorString().toLocal8Bit().constData());
+			return;
+		}
 	}
-
 
 	QDomDocument document;
 	QString error_str;

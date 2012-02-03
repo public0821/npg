@@ -1,0 +1,9 @@
+Debug/
+debug/
+Release/
+release/
+GeneratedFiles/
+*.ncb
+*.suo
+*.aps
+*.user

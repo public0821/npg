@@ -28,7 +28,7 @@ MainListWidget::MainListWidget(const QMap<QString, QString>& name_icons, QWidget
 	ProtocolFactory& protocol_factory = ProtocolFactory::instance();
 	if (protocol_factory.hasError())
 	{
-		QMessageBox::information(this, "tip", protocol_factory.errorString());
+		QMessageBox::information(this, tr("tip"), protocol_factory.errorString());
 	}	
 	const std::vector<Protocol>& protocols = protocol_factory.protocols();
 	std::vector<Protocol>::const_iterator it_protocol;

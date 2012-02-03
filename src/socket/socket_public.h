@@ -63,7 +63,8 @@ inline int npg_strerror(int errorno, char* buf, int buflen)
 			FORMAT_MESSAGE_IGNORE_INSERTS,
 			NULL,
 			errorno,
-			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+			MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), // Default language
+			//MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
 			tempBuf,
 			TEMP_BUF_SIZE,
 			NULL

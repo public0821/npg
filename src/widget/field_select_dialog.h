@@ -22,6 +22,7 @@ public:
 	std::vector<Field> selectedFields();
 protected slots:
 	void onOk();
+	void onSelectAllChange(int);
 private:
 	Ui::FieldSelectDialog ui;
 	std::vector<Field> m_optional_fields;

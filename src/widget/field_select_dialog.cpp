@@ -9,15 +9,17 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 	setWindowTitle(tr("Select Field"));
 	setWindowIcon(QIcon(":/npg/npg"));
 
-	ui.checkbox->setText(tr("Select All"));
+	ui.select_all_checkbox->setText(tr("Select All"));
 	ui.ok_button->setText(tr("OK"));
 	ui.cancel_button->setText(tr("Cancel"));
+
 	connect(ui.ok_button, SIGNAL(released()), this, SLOT(onOk()));
 	connect(ui.cancel_button, SIGNAL(released()), this, SLOT(close()));
+	connect(ui.select_all_checkbox, SIGNAL(stateChanged(int)), this, SLOT(onSelectAllChange(int)));
 
 	ui.tree_widget->setColumnCount(4);
 	QStringList head_list;
-	head_list << "field" << "type" << "length" << "tip";
+	head_list << tr("field") << tr("type") << tr("length") << tr("tip");
 	ui.tree_widget->setHeaderLabels(head_list);
 	ui.tree_widget->setDragDropMode(QTreeWidget::NoDragDrop);
 
@@ -75,4 +77,22 @@ std::vector<Field> FieldSelectDialog::selectedFields()
 		}	
 	}
 	return selected_fields;
+}
+
+
+void FieldSelectDialog::onSelectAllChange(int check_state)
+{	
+	int field_count = ui.tree_widget->topLevelItemCount();
+	for (int i = 0; i < field_count; i++)
+	{
+		QTreeWidgetItem* item = ui.tree_widget->topLevelItem(i);
+		if (check_state == Qt::Checked)
+		{
+			item->setCheckState(0, Qt::Checked);
+		}	
+		else
+		{
+			item->setCheckState(0, Qt::Unchecked);
+		}
+	}
 }

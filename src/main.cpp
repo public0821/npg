@@ -13,8 +13,13 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));//("UTF-8"));
+    QApplication app(argc, argv);
+    //QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));//("UTF-8"));
+	//QMessageBox::about(NULL, QObject::tr("tip"), QLocale::system().name());
+	QTranslator app_translator;
+	app_translator.load("npg_"+QLocale::system().name());
+	app.installTranslator(&app_translator);
+
 #ifdef _MSC_VER
 	WSADATA wsaData;
 	int err = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -30,7 +35,7 @@ int main(int argc, char *argv[])
 #endif
     npg w;
     w.show();
-    int ret = a.exec();
+    int ret = app.exec();
 #ifdef _MSC_VER
 	WSACleanup();
 #endif

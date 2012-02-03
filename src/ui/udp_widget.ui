@@ -40,8 +40,14 @@
       </property>
       <item row="0" column="0">
        <widget class="QLabel" name="src_ip_label">
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
         <property name="text">
          <string>SRC_IP</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -51,10 +57,13 @@
       <item row="0" column="2">
        <widget class="QLabel" name="label_3">
         <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
+         <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
          <string>SRC_PORT </string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -83,8 +92,14 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
         <property name="text">
          <string>DST_IP</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -94,10 +109,13 @@
       <item row="1" column="2">
        <widget class="QLabel" name="label_2">
         <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
+         <enum>Qt::LeftToRight</enum>
         </property>
         <property name="text">
          <string>DST_PORT </string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>

@@ -2,9 +2,8 @@ TEMPLATE = app
 TARGET = npg
 QT += core \
     gui \
-    xml \
-    webkit
-
+    xml
+    
 # Input
 HEADERS += protocol/bit_builder.h \
     socket/ethernet.h \
@@ -89,3 +88,5 @@ SOURCES += protocol/bit_builder.cpp \
     widget/tcp_widget.cpp \
     widget/udp_widget.cpp
 RESOURCES += npg.qrc
+
+TRANSLATIONS = npg_zh_CN.ts
