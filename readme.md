@@ -2,7 +2,7 @@
 <h1>Welcome to  NPG !</h1>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;Netword packet generator(NPG) is a tool used to construct and send packets, the purpose is to help the developers of network easily constructed test data, NPG currently supports several common protocols, including arp, rarp, icmp, raw udp, udp, tcp, netflow v5, dns, http</P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;NPG's feature is by modifying the configuration file can support a variety of packet formats</P>
-<h2>Screenshot��</h2>
+<h2>Screenshot</h2>
 <p>	<img src="https://github.com/public0821/npg/raw/master/wiki/screenshot1.jpg"/></p>
 <p>	<img src="https://github.com/public0821/npg/raw/master/wiki/screenshot2.jpg"/></p>
 <p>&nbsp;</p>
