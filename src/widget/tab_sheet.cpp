@@ -60,7 +60,7 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 	QHBoxLayout* simple_layout = new QHBoxLayout();
 
 	m_send_button = new QPushButton(tr("Send"));
-	m_advanced_button = new QPushButton(tr("Advance"));
+	m_advanced_button = new QPushButton(tr("Advanced"));
 	m_tip_label = new QLabel();
 	m_status_label1 = new QLabel();
 	m_status_label2 = new QLabel();
@@ -105,7 +105,7 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 	connect(m_send_thread, SIGNAL(finished(void)), this,
 			SLOT(onSendFinish(void)));
 	connect(m_send_thread, SIGNAL(counter(int, time_t)), this,
-			SLOT(counter(int, time_t)));
+			SLOT(onCounter(int, time_t)));
 
 	restoreSettings();
 }
@@ -134,7 +134,7 @@ void TabSheet::onAdvanced()
 	if (m_is_advanced)
 	{
 		m_advanced_group->setVisible(false);
-		m_advanced_button->setText(tr("Advance"));
+		m_advanced_button->setText(tr("Advanced"));
 		m_is_advanced = !m_is_advanced;
 	}
 	else
@@ -207,7 +207,7 @@ void TabSheet::onSendFinish()
 
 }
 
-void TabSheet::counter(int count, time_t seconds)
+void TabSheet::onCounter(int count, time_t seconds)
 {
 	m_status_label1->setText(
 			QString(tr("total(time):%1(%2)")).arg(count).arg(seconds));

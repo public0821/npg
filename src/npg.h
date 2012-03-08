@@ -21,7 +21,7 @@ public:
 	npg(QWidget *parent = 0);
 	~npg();
 private slots:
-	void itemDoubleClicked(QListWidgetItem * item);
+	void onItemDoubleClicked(QListWidgetItem * item);
 private:
 	void saveSettings();
 	void restoreSettings();

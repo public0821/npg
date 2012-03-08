@@ -27,7 +27,7 @@ private:
 	void setupEtherProtocol(const QString& ether_protocol_name);
 	void setupInterface(QWidget *parent);
 private slots:
-	void interfaceChanged(int index);
+	void onInterfaceChanged(int index);
 private:
 	Ui::EthernetWidget ui;
 };

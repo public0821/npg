@@ -16,7 +16,7 @@ npg::npg(QWidget *parent) :
 {
 	ui.setupUi(this);
 
-	connect(ui.action_quit, SIGNAL(triggered(bool)), this, SLOT(close ()));
+	connect(ui.action_quit, SIGNAL(triggered(bool)), this, SLOT(close()));
 	ui.toolBar->addAction(ui.action_quit);
 
 	m_main_splitter = new QSplitter(Qt::Horizontal);
@@ -38,7 +38,7 @@ npg::npg(QWidget *parent) :
 	setCentralWidget(m_main_splitter);
 
 	connect(m_type_list, SIGNAL(itemDoubleClicked(QListWidgetItem* )), this,
-			SLOT(itemDoubleClicked(QListWidgetItem* )));
+			SLOT(onItemDoubleClicked(QListWidgetItem* )));
 
 	restoreSettings();
 	//m_main_splitter->setGeometry (100,100,400,300 );
@@ -52,7 +52,7 @@ npg::~npg()
 
 }
 
-void npg::itemDoubleClicked(QListWidgetItem * item)
+void npg::onItemDoubleClicked(QListWidgetItem * item)
 {
 	if (item == NULL)
 	{

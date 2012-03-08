@@ -15,6 +15,7 @@
 #include "socket/socket_toolkit.h"
 #include "protocol/bit_builder.h"
 
+
 ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent) 
 :TabSheet(protocol.name(), parent, protocol.dependenceString(), protocol.DependenceParam())
 , m_protocol(protocol)
@@ -25,6 +26,8 @@ ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent)
 	setupUi(ui.advanced_layout);
 	ui.protocol_layout->addWidget(dependProtocolWidget());
 	//ui.group_box->setTitle(protocol.dependenceString().c_str());
+	connect(ui.load_config_button, SIGNAL(released()), ui.treeWidget, SLOT(onRestoreSettings()));
+	connect(ui.save_config_button, SIGNAL(released()), ui.treeWidget, SLOT(onSaveSettings()));
 }
 
 ProtocolTabSheet::~ProtocolTabSheet()
@@ -53,6 +56,7 @@ void ProtocolTabSheet::restoreSettings()
 	settings.endGroup();
 	TabSheet::restoreSettings();
 }
+
 
 //#include <qmessagebox.h>
 QString ProtocolTabSheet::sendData()

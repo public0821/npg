@@ -21,8 +21,9 @@ public:
 	ProtocolTreeItemWidget(QTreeWidgetItem *item, const Field& field, QWidget *parent = 0);
 	~ProtocolTreeItemWidget();
 public:
-	void setValue(const QString& value);
+	void setText(const QString& value);
 	QString value();
+	QString text();
 private:
 	QWidget* getFieldWidget(const Field& field);
 public:
@@ -30,7 +31,7 @@ signals:
 	void textChange(QTreeWidgetItem *, int);
 protected slots:
 	void onTextChange();
-	void checkBoxStateChange(int state);
+	void onCheckBoxStateChange(int state);
 private:
 	Ui::ProtocolTreeItem ui;
 	Field m_field;

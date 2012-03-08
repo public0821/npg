@@ -89,38 +89,39 @@ inline int npg_strerror(int errorno, char* buf, int buflen)
 #endif
 
 #ifdef __GNUC__
-#include    <sys/socket.h>
-#include    <sys/time.h>
+
 #include    <time.h>
-#include    <netinet/in.h>
-#include    <arpa/inet.h>
+
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <string.h>
+
 #include    <errno.h>
 #include    <fcntl.h>
 #include    <netdb.h>
 #include    <signal.h>
-#include    <stdio.h>
-#include    <stdlib.h>
-#include    <string.h>
+#include    <unistd.h>
+
+#include    <sys/socket.h>
+#include    <sys/time.h>
 #include    <sys/stat.h>
 #include    <sys/uio.h>
-#include    <unistd.h>
 #include    <sys/wait.h>
-#include <sys/ioctl.h>
-#include <arpa/inet.h>
-#include <netpacket/packet.h>
-#include <net/ethernet.h>
-#include <netinet/if_ether.h>
+#include    <sys/ioctl.h>
+#include    <arpa/inet.h>
+#include    <netpacket/packet.h>
+#include    <net/ethernet.h>
+#include    <net/if.h>
 
-#include <netpacket/packet.h>
-
+#include    <netinet/in.h>
+#include    <netinet/if_ether.h>
 #include    <netinet/in_systm.h>
 #include    <netinet/ip.h>
 #include    <netinet/ip_icmp.h>
+#include    <netinet/udp.h>
 
-#include <netinet/udp.h>
-#include <net/if.h>
 
-#define closesocket(sock) close(sock)
+#define closesocket(sock) onClose(sock)
 
 #define npg_ioctl(sock, code, data, size) ioctl(sock, code, data)
 #define npg_errno   errno

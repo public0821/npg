@@ -36,17 +36,23 @@ public:
 //	void dragMoveEvent(QDragMoveEvent *event);
 //	void dragEnterEvent(QDragEnterEvent *event);
 	//void dropEvent(QDropEvent *event);
+public slots:
+	void onSaveSettings();
+	void onRestoreSettings();
 private slots:
 	void onShowPopup(const QPoint &pos);
 	void onDelete();
 	void onAdd();
-	void itemWidgetTextChange(QTreeWidgetItem *, int);
+	void onItemWidgetTextChange(QTreeWidgetItem *, int);
 	void onAddField();
 private:
 	QTreeWidgetItem* getSelectedItem();
 	QTreeWidgetItem* addFieldItem(QTreeWidgetItem* parent, QTreeWidgetItem * preceding, const Field& field);
+	QTreeWidgetItem* addSingleFieldItem(QTreeWidgetItem* parent, QTreeWidgetItem * preceding, const Field& field);
 	QTreeWidgetItem* addSubFieldItem(QTreeWidgetItem* parent, const Field& field);
 	QTreeWidgetItem * addCategoryItem(QTreeWidget * parent, QTreeWidgetItem * preceding, const Category& category);
+	QTreeWidgetItem * addSingleCategoryItem(QTreeWidget * parent, QTreeWidgetItem * preceding, const Category& category);
+	void adjust();
 private:
 	QAction* m_delete_action;
 	QAction* m_add_action;

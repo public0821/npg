@@ -22,9 +22,9 @@ public:
 	TcpResponseDialog(Tcp& tcp, QWidget *parent = 0);
 	~TcpResponseDialog();
 private slots:
-	void  addData(const QByteArray& data);
-	bool close();
-	void recvFinished();
+	void  onAddData(const QByteArray& data);
+	bool onClose();
+	void onRecvFinished();
 private:
 	Ui::TcpReponseDialog ui;
 	RecvThread* m_rcv_thread;

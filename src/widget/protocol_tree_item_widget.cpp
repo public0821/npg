@@ -129,7 +129,24 @@ QString ProtocolTreeItemWidget::value()
 	return value;
 }
 
-void ProtocolTreeItemWidget::setValue(const QString& value)
+QString ProtocolTreeItemWidget::text()
+{
+	QString value;
+
+	switch (m_field.inputMethod())
+	{
+	case E_FIELD_INPUT_METHOD_SELECT:
+		value = ((QComboBox*)m_child)->currentText();
+		break;
+	default:
+		value = this->value();
+		break;
+	}
+
+	return value;
+}
+
+void ProtocolTreeItemWidget::setText(const QString& value)
 {
 	switch (m_field.inputMethod())
 	{
@@ -137,7 +154,21 @@ void ProtocolTreeItemWidget::setValue(const QString& value)
 		((QLineEdit*)m_child)->setText(value);
 		break;
 	case E_FIELD_INPUT_METHOD_SELECT:
-		((QComboBox*)m_child)->setEditText(value);
+		{
+			QComboBox* child = (QComboBox*)m_child;
+			if (m_field.editable())
+			{
+				child->setEditText(value);
+			}
+			else
+			{
+				int index = child->findText(value);
+				if (index != -1)
+				{
+					child->setCurrentIndex(index);
+				}	
+			}
+		}
 		break;
 	case E_FIELD_INPUT_METHOD_TEXTEDIT:
 		((QTextEdit*)m_child)->setText(value);
@@ -167,16 +198,16 @@ void ProtocolTreeItemWidget::onTextChange()
 }
 
 
-void ProtocolTreeItemWidget::checkBoxStateChange(int state)
+void ProtocolTreeItemWidget::onCheckBoxStateChange(int state)
 {
 	if (state == Qt::Checked)
 	{
 		this->setEnabled(true);
-		setValue("");
+		setText("");
 	}
 	else
 	{
 		this->setEnabled(false);
-		setValue(K_DEFAULT_VALUE_DEFAULT);
+		setText(K_DEFAULT_VALUE_DEFAULT);
 	}
 }

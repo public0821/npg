@@ -267,6 +267,11 @@
         <translation>找不到相应的协议:%1</translation>
     </message>
     <message>
+        <location filename="protocol/protocol_factory.cpp" line="59"/>
+        <source>Open config file fail:</source>
+        <translation>打开配置文件失败:</translation>
+    </message>
+    <message>
         <location filename="protocol/protocol_factory.cpp" line="70"/>
         <source>Parse %1 error at line %2, column %3:
 %4</source>
@@ -295,6 +300,26 @@
         <source>Unknown field input method:%1</source>
         <oldsource>Unknown field input method:</oldsource>
         <translation>未知的输入方式:%1</translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="obsolete">发送</translation>
+    </message>
+    <message>
+        <source>Advanced</source>
+        <translation type="obsolete">高级</translation>
+    </message>
+    <message>
+        <source>Simple</source>
+        <translation type="obsolete">简单</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="obsolete">保存</translation>
+    </message>
+    <message>
+        <source>Load</source>
+        <translation type="obsolete">加载</translation>
     </message>
 </context>
 <context>
@@ -478,7 +503,7 @@
     <message>
         <location filename="ui/udp_widget.ui" line="76"/>
         <source>default</source>
-        <translation type="unfinished">默认</translation>
+        <translation>默认</translation>
     </message>
     <message>
         <location filename="ui/udp_widget.ui" line="99"/>

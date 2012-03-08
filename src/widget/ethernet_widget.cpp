@@ -13,7 +13,7 @@ EthernetWidget::EthernetWidget(const QString& protocol_name, const QString& ethe
 	ui.setupUi(this);
 	setupInterface(parent);
 	setupEtherProtocol(ether_protocol_name);
-	connect(ui.interface_box, SIGNAL(currentIndexChanged (int)), this, SLOT(interfaceChanged(int)));
+	connect(ui.interface_box, SIGNAL(currentIndexChanged (int)), this, SLOT(onInterfaceChanged(int)));
 }
 
 EthernetWidget::~EthernetWidget()
@@ -131,7 +131,7 @@ void EthernetWidget::setupInterface(QWidget *parent)
 }
 
 
-void EthernetWidget::interfaceChanged(int index)
+void EthernetWidget::onInterfaceChanged(int index)
 {
 	ifi_info dev = ui.interface_box->itemData(index).value<ifi_info>();
 	char mac[256];

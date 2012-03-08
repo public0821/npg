@@ -64,7 +64,7 @@ protected slots:
 		void onAdvanced();
 		void onSend();
 		void onSendFinish();
-		void counter(int count, time_t seconds);
+		void onCounter(int count, time_t seconds);
 private:
 	QPushButton *m_send_button;
 	QPushButton *m_advanced_button;

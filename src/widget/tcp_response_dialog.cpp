@@ -12,9 +12,9 @@ TcpResponseDialog::TcpResponseDialog(Tcp& tcp, QWidget *parent)
 	m_text_edit = new QTextEdit(this);
 	ui.layout->addWidget(m_text_edit);
 
-	connect(m_rcv_thread, SIGNAL(recvData(const QByteArray&)), this, SLOT(addData(const QByteArray&)));
-	connect(m_rcv_thread, SIGNAL(finished(void)), this, SLOT(recvFinished(void)));
-	connect(ui.close_button, SIGNAL(released(void)), this, SLOT(close(void)));
+	connect(m_rcv_thread, SIGNAL(recvData(const QByteArray&)), this, SLOT(onAddData(const QByteArray&)));
+	connect(m_rcv_thread, SIGNAL(finished(void)), this, SLOT(onRecvFinished(void)));
+	connect(ui.close_button, SIGNAL(released(void)), this, SLOT(onClose(void)));
 	
 	m_rcv_thread->start();
 
@@ -27,7 +27,7 @@ TcpResponseDialog::~TcpResponseDialog()
 }
 
 
-bool TcpResponseDialog::close()
+bool TcpResponseDialog::onClose()
 {
 	m_rcv_thread->stop();
 	m_rcv_thread->wait();
@@ -35,7 +35,7 @@ bool TcpResponseDialog::close()
 }
 
 
-void  TcpResponseDialog::addData(const QByteArray& data)
+void  TcpResponseDialog::onAddData(const QByteArray& data)
 {
 	if (data.length() <= 0)
 	{
@@ -45,7 +45,7 @@ void  TcpResponseDialog::addData(const QByteArray& data)
 	m_text_edit->append(data.data());
 }
 
-void TcpResponseDialog::recvFinished()
+void TcpResponseDialog::onRecvFinished()
 {
 	if (!m_rcv_thread->error().isEmpty())
 	{

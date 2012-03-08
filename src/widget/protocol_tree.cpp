@@ -7,6 +7,22 @@
 #include <QTableWidgetItem>
 #include <QHBoxLayout>
 #include "field_select_dialog.h"
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QDomDocument>
+#include <QFile>
+#include <QTextStream>
+
+const int FIELD_COUNT = 6;
+const int INDEX_FIELD_NAME = 0;
+const int INDEX_FIELD_VALUE = 1;
+const int INDEX_FIELD_IS_DEFAULT = 2;
+const int INDEX_FIELD_TYPE = 3;
+const int INDEX_FIELD_LEN = 4;
+const int INDEX_FIELD_TIP = 5;
+
+const int ROLEDATA_FIELDTYPE = 0;
+const int ROLEDATA_FIELDNAME = 1;
 
 ProtocolTree::ProtocolTree(QWidget *parent) :
 		QTreeWidget(parent)
@@ -57,16 +73,20 @@ void ProtocolTree::setup(Protocol protocol)
 		preceding = addCategoryItem(this, preceding, *it_category);
 	}
 
-	expandAll();
-	resizeColumnToContents(0);
-	resizeColumnToContents(1);
-	resizeColumnToContents(2);
-	resizeColumnToContents(3);
-	resizeColumnToContents(4);
-	resizeColumnToContents(5);
+	adjust();
 
 	//viewport()->setBackgroundRole(QPalette::Background);
 	//ssetAutoFillBackground(false);
+}
+
+void ProtocolTree::adjust()
+{
+	expandAll();
+
+	for (int i = 0; i < FIELD_COUNT; i++)
+	{
+		resizeColumnToContents(i);
+	}
 }
 
 void ProtocolTree::onShowPopup(const QPoint &pos)
@@ -75,10 +95,10 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 
 	if (item != NULL)
 	{
-		EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+		EItemType item_type = (EItemType) item->data(ROLEDATA_FIELDTYPE, Qt::UserRole).toInt();
 		if (item_type == E_ITEM_TYPE_CATEGORY)
 		{
-			QString name = item->data(1, Qt::UserRole).toString();
+			QString name = item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 			Category category = m_protocol.category(name);
 
 			QMenu menu(this);
@@ -104,9 +124,9 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 		else if (item_type == E_ITEM_TYPE_FIELD)
 		{
 			QString category_name =
-					item->parent()->data(1, Qt::UserRole).toString();
+					item->parent()->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 			QString field_name =
-					item->data(1, Qt::UserRole).toString();
+					item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 			Category category = m_protocol.category(category_name);
 			Field field = category.field(field_name);
 			QMenu menu(this);
@@ -139,19 +159,19 @@ void ProtocolTree::onAdd()
 		return;
 	}
 
-	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+	EItemType item_type = (EItemType) item->data(ROLEDATA_FIELDTYPE, Qt::UserRole).toInt();
 	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
-		QString name = item->data(1, Qt::UserRole).toString();
+		QString name = item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		Category category = m_protocol.category(name);
 		addCategoryItem(this, item, category);
 	}
 	else if (item_type == E_ITEM_TYPE_FIELD)
 	{
 		QString category_name =
-				item->parent()->data(1, Qt::UserRole).toString();
+				item->parent()->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		QString field_name =
-				item->data(1, Qt::UserRole).toString();
+				item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		Category category = m_protocol.category(category_name);
 		Field field = category.field(field_name);
 		addFieldItem(item->parent(), item, field);
@@ -166,13 +186,13 @@ void ProtocolTree::onAddField()
 		return;
 	}
 
-	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+	EItemType item_type = (EItemType) item->data(ROLEDATA_FIELDTYPE, Qt::UserRole).toInt();
 	Category category;
 	QTreeWidgetItem* category_item;
 	QTreeWidgetItem* preceding;
 	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
-		QString name = item->data(1, Qt::UserRole).toString();
+		QString name = item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		category = m_protocol.category(name);
 		category_item = item;
 		preceding = item->child(item->childCount()-1);
@@ -180,7 +200,7 @@ void ProtocolTree::onAddField()
 	else if (item_type == E_ITEM_TYPE_FIELD)
 	{
 		QString category_name =
-			item->parent()->data(1, Qt::UserRole).toString();
+			item->parent()->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		category = m_protocol.category(category_name);
 		category_item = item->parent();
 		preceding = item;
@@ -217,7 +237,7 @@ void ProtocolTree::onDelete()
 		return;
 	}
 
-	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
+	EItemType item_type = (EItemType) item->data(ROLEDATA_FIELDTYPE, Qt::UserRole).toInt();
 	if (item_type == E_ITEM_TYPE_CATEGORY)
 	{
 	}
@@ -250,27 +270,23 @@ QTreeWidgetItem* ProtocolTree::getSelectedItem()
 
 	return items.at(0);
 }
-
-QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent,
-		QTreeWidgetItem * preceding, const Field& field)
+QTreeWidgetItem* ProtocolTree::addSingleFieldItem(QTreeWidgetItem* parent, QTreeWidgetItem * preceding, const Field& field)
 {
-//	QStringList text_list;
-//	text_list << field.text().c_str() << ""<<""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
 	QTreeWidgetItem *item = new QTreeWidgetItem(parent, preceding);
-	item->setText(0, field.text());
-	item->setText(3, field.typeString());
-	item->setText(4, QString("%1").arg(field.length()));
-	item->setText(5, field.tip());
-	item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_FIELD));
-	item->setData(1, Qt::UserRole, QVariant(field.name()));
-	item->setTextAlignment(3, Qt::AlignHCenter | Qt::AlignVCenter);
+	item->setText(INDEX_FIELD_NAME, field.text());
+	item->setText(INDEX_FIELD_TYPE, field.typeString());
+	item->setText(INDEX_FIELD_LEN, QString("%1").arg(field.length()));
+	item->setText(INDEX_FIELD_TIP, field.tip());
+	item->setData(ROLEDATA_FIELDTYPE, Qt::UserRole, QVariant(E_ITEM_TYPE_FIELD));
+	item->setData(ROLEDATA_FIELDNAME, Qt::UserRole, QVariant(field.name()));
+	item->setTextAlignment(INDEX_FIELD_TYPE, Qt::AlignHCenter | Qt::AlignVCenter);
 
 	ProtocolTreeItemWidget* tree_item = new ProtocolTreeItemWidget(item, field);
 	if (field.type() == E_FIELD_TYPE_STRING)
 	{
 		connect(tree_item, SIGNAL(textChange(QTreeWidgetItem *, int)), this,
-				SLOT(itemWidgetTextChange(QTreeWidgetItem *, int)));
-		itemWidgetTextChange(item, field.defaultValueOriginal().length());
+			SLOT(onItemWidgetTextChange(QTreeWidgetItem *, int)));
+		onItemWidgetTextChange(item, field.defaultValueOriginal().length());
 	}
 	setItemWidget(item, 1, tree_item);
 
@@ -278,13 +294,22 @@ QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent,
 	if (field.defaultValue() == K_DEFAULT_VALUE_DEFAULT)
 	{
 		QCheckBox* checkbox = new QCheckBox(this);
-		setItemWidget(item, 2, checkbox);
+		setItemWidget(item, INDEX_FIELD_IS_DEFAULT, checkbox);
 		connect(checkbox, SIGNAL(stateChanged (int)), tree_item,
-				SLOT(checkBoxStateChange(int)));
+			SLOT(onCheckBoxStateChange(int)));
 		tree_item->setEnabled(false);
 	}
 
 	item->setIcon(0, QIcon(field.icon()));
+
+	return item;
+}
+QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent,
+		QTreeWidgetItem * preceding, const Field& field)
+{
+//	QStringList text_list;
+//	text_list << field.text().c_str() << ""<<""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
+	QTreeWidgetItem *item = addSingleFieldItem(parent, preceding, field);
 
 
 	const std::vector<Field>& sub_fields = field.subFields();
@@ -309,13 +334,13 @@ QTreeWidgetItem* ProtocolTree::addSubFieldItem(QTreeWidgetItem* parent, const Fi
 	//	QStringList text_list;
 	//	text_list << field.text().c_str() << ""<<""<<field.typeString().c_str()<< QString("%1").arg(field.length())<< field.tip().c_str();
 	QTreeWidgetItem *item = new QTreeWidgetItem(parent);
-	item->setText(0, field.text());
-	item->setText(3, field.typeString());
-	item->setText(4, QString("%1").arg(field.length()));
-	item->setText(5, field.tip());
-	item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_SUBFIELD));
-	item->setData(1, Qt::UserRole, QVariant(field.name()));
-	item->setTextAlignment(3, Qt::AlignHCenter | Qt::AlignVCenter);
+	item->setText(INDEX_FIELD_NAME, field.text());
+	item->setText(INDEX_FIELD_TYPE, field.typeString());
+	item->setText(INDEX_FIELD_LEN, QString("%1").arg(field.length()));
+	item->setText(INDEX_FIELD_TIP, field.tip());
+	item->setData(ROLEDATA_FIELDTYPE, Qt::UserRole, QVariant(E_ITEM_TYPE_SUBFIELD));
+	item->setData(ROLEDATA_FIELDNAME, Qt::UserRole, QVariant(field.name()));
+	item->setTextAlignment(INDEX_FIELD_TYPE, Qt::AlignHCenter | Qt::AlignVCenter);
 
 	ProtocolTreeItemWidget* tree_item = new ProtocolTreeItemWidget(item, field);
 	setItemWidget(item, 1, tree_item);
@@ -324,9 +349,9 @@ QTreeWidgetItem* ProtocolTree::addSubFieldItem(QTreeWidgetItem* parent, const Fi
 	if (field.defaultValue() == K_DEFAULT_VALUE_DEFAULT)
 	{
 		QCheckBox* checkbox = new QCheckBox(this);
-		setItemWidget(item, 2, checkbox);
+		setItemWidget(item, INDEX_FIELD_IS_DEFAULT, checkbox);
 		connect(checkbox, SIGNAL(stateChanged (int)), tree_item,
-			SLOT(checkBoxStateChange(int)));
+			SLOT(onCheckBoxStateChange(int)));
 		tree_item->setEnabled(false);
 	}
 
@@ -335,18 +360,27 @@ QTreeWidgetItem* ProtocolTree::addSubFieldItem(QTreeWidgetItem* parent, const Fi
 	return item;
 }
 
+
+QTreeWidgetItem * ProtocolTree::addSingleCategoryItem(QTreeWidget * parent, QTreeWidgetItem * category_preceding, const Category& category)
+{
+	QTreeWidgetItem *category_item = new QTreeWidgetItem(parent,
+		category_preceding);
+
+	category_item->setText(INDEX_FIELD_NAME, category.text());
+	category_item->setText(INDEX_FIELD_TIP, category.tip());
+	category_item->setData(ROLEDATA_FIELDTYPE, Qt::UserRole, QVariant(E_ITEM_TYPE_CATEGORY));
+	category_item->setData(ROLEDATA_FIELDNAME, Qt::UserRole, QVariant(category.name()));
+	category_item->setIcon(0, QIcon(":/npg/category"));
+
+	return category_item;
+}
+
 QTreeWidgetItem * ProtocolTree::addCategoryItem(QTreeWidget * parent,
 		QTreeWidgetItem * category_preceding, const Category& category)
 {
 //	QStringList text_list;
 //	text_list << category.text().c_str()<<""<<""<<""<<category.tip().c_str();
-	QTreeWidgetItem *category_item = new QTreeWidgetItem(parent,
-			category_preceding);
-	category_item->setText(0, category.text());
-	category_item->setText(5, category.tip());
-	category_item->setData(0, Qt::UserRole, QVariant(E_ITEM_TYPE_CATEGORY));
-	category_item->setData(1, Qt::UserRole, QVariant(category.name()));
-	category_item->setIcon(0, QIcon(":/npg/category"));
+	QTreeWidgetItem *category_item = addSingleCategoryItem(parent, category_preceding, category);
 
 	const std::vector<Field>& fields = category.fields();
 	std::vector<Field>::const_iterator it_field;
@@ -363,127 +397,160 @@ QTreeWidgetItem * ProtocolTree::addCategoryItem(QTreeWidget * parent,
 	return category_item;
 }
 
-void ProtocolTree::itemWidgetTextChange(QTreeWidgetItem *item, int count)
+void ProtocolTree::onItemWidgetTextChange(QTreeWidgetItem *item, int count)
 {
-	item->setText(4, QString("%1").arg(count));
+	item->setText(INDEX_FIELD_LEN, QString("%1").arg(count));
 }
 
-//void ProtocolTree::mousePressEvent(QMouseEvent *event)
-//{
-//	if (event->button() == Qt::LeftButton)
-//	{
-//		m_start_pos = event->pos();
-//	}
-//	QTreeWidget::mousePressEvent(event);
-//
-//}
-//void ProtocolTree::mouseMoveEvent(QMouseEvent *event)
-//{
-//	if (event->button() == Qt::LeftButton)
-//	{
-//		int distance = (event->pos() - m_start_pos).manhattanLength();
-//		if (distance >= QApplication::startDragDistance())
-//		{
-//			performDrag();
-//		}
-//	}
-//	QTreeWidget::mouseMoveEvent(event);
-//}
-//
-//void ProtocolTree::performDrag()
-//{
-//	QTreeWidgetItem* item = currentItem();
-//	if (item == NULL)
-//	{
-//		return;
-//	}
-//	EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
-//	if (item_type == E_ITEM_TYPE_CATEGORY)
-//	{
-//		return;
-//	}
-//
-//	QTreeWidgetItem* item_parent = item->parent();
-//	QString category_name = item_parent->data(1, Qt::UserRole).toString();
-//	QString field_name = item->data(1, Qt::UserRole).toString();
-//
-//	Field field = m_protocol.category(category_name.toStdString()).field(field_name.toStdString());
-//
-//	QMimeData* mine_data = new QMimeData();
-//	mine_data->setText(field.name().c_str());
-//	mine_data->setHtml(category_name);
-//	QDrag* drag = new QDrag(this);
-//	drag->setMimeData(mine_data);
-//	drag->setPixmap(QPixmap(field.icon().c_str()));
-//	if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
-//	{
-//		delete item;
-//	}
-//}
-//
-//void ProtocolTree::dragMoveEvent(QDragMoveEvent *event)
-//{
-//	ProtocolTree* source = qobject_cast<ProtocolTree*>(event->source());
-//	if (source != NULL && source == this)
-//	{
-//		QTreeWidgetItem* item = itemAt(event->pos());
-//		if (item == NULL)
-//		{
-//			return;
-//		}
-//		EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
-//		if (item_type == E_ITEM_TYPE_CATEGORY)
-//		{
-//			return;
-//		}
-//
-//		QTreeWidgetItem* item_parent = item->parent();
-//		QString category_name = item_parent->data(1, Qt::UserRole).toString();
-//		//QString field_name = item->data(1, Qt::UserRole).toString();
-//		if (event->mimeData()->html() != category_name)
-//		{
-//			return;
-//		}
-//
-//		event->setDropAction(Qt::MoveAction);
-//		event->accept();
-//	}
-//}
-//void ProtocolTree::dragEnterEvent(QDragEnterEvent *event)
-//{
-//	ProtocolTree* source = qobject_cast<ProtocolTree*>(event->source());
-//	if (source != NULL && source == this)
-//	{
-//		event->setDropAction(Qt::MoveAction);
-//		event->accept();
-//	}
-//}
-//void ProtocolTree::dropEvent(QDropEvent *event)
-//{
-	//const QMimeData* data = event->mimeData();
-//	ProtocolTree* source = qobject_cast<ProtocolTree*>(event->source());
-//	if (source != NULL && source == this)
-//	{
-//		QTreeWidgetItem* item = itemAt(event->pos());
-//		if (item == NULL)
-//		{
-//			return;
-//		}
-//
-//		EItemType item_type = (EItemType) item->data(0, Qt::UserRole).toInt();
-//		if (item_type == E_ITEM_TYPE_CATEGORY)
-//		{
-//			return;
-//		}
-//
-//		QTreeWidgetItem* item_parent = item->parent();
-//		QString category_name = item_parent->data(1, Qt::UserRole).toString();
-//		QString field_name = item->data(1, Qt::UserRole).toString();
-//
-//		Field field = m_protocol.category(category_name.toStdString()).field(field_name.toStdString());
-//
-//		addFieldItem(item_parent, item, field);
-//		event->setDropAction(Qt::MoveAction);
-//		event->accept();
-//	}
-//}
+void ProtocolTree::onSaveSettings()
+{
+	QString file_name = QFileDialog::getSaveFileName(this, tr("Select config file"), QDir::currentPath(), tr("XML files (*.xml)"));
+	if (file_name.isEmpty ())
+	{
+		return;
+	}
+
+	QDomDocument document;
+	document.setContent(QString("<?xml version=\"1.0\" encoding=\"gbk\"?>"));
+	QDomElement root = document.createElement("Protocol");
+	document.appendChild(root);
+
+	int category_count = this->topLevelItemCount();
+	for (int index_category = 0; index_category < category_count; index_category++)
+	{
+		QTreeWidgetItem* category_item = this->topLevelItem(index_category);
+		QDomElement category_element = document.createElement("Category");
+		QString category_name = category_item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
+		category_element.setAttribute("Name", category_name);
+
+		for (int index_field = 0; index_field < category_item->childCount(); index_field++)
+		{
+			QTreeWidgetItem* field_item = category_item->child(index_field);
+			QDomElement field_element = document.createElement("Field");
+			QString field_name = field_item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
+			field_element.setAttribute("Name", field_name);
+			ProtocolTreeItemWidget* value_item = (ProtocolTreeItemWidget*)this->itemWidget(field_item, INDEX_FIELD_VALUE);
+			field_element.setAttribute("Data", value_item->text());
+			QCheckBox* item_checkbox = (QCheckBox*)this->itemWidget(field_item, INDEX_FIELD_IS_DEFAULT);
+			if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Checked)
+			{
+				field_element.setAttribute("Checked", "true");
+			}
+			
+			category_element.appendChild(field_element);
+
+			int sub_field_count = field_item->childCount();
+			for (int index_sub_field = 0; index_sub_field < sub_field_count; index_sub_field++)
+			{
+				QTreeWidgetItem* sub_field_item = field_item->child(index_sub_field);
+				QDomElement sub_field_element = document.createElement("SubField");
+				QString sub_field_name = sub_field_item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
+				sub_field_element.setAttribute("Name", sub_field_name);
+				ProtocolTreeItemWidget* value_item = (ProtocolTreeItemWidget*)this->itemWidget(sub_field_item, INDEX_FIELD_VALUE);
+				sub_field_element.setAttribute("Data", value_item->text());
+				QCheckBox* item_checkbox = (QCheckBox*)this->itemWidget(sub_field_item, INDEX_FIELD_IS_DEFAULT);
+				if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Checked)
+				{
+					sub_field_element.setAttribute("Checked", "true");
+				}
+				field_element.appendChild(sub_field_element);
+			}
+		}
+
+		root.appendChild(category_element);
+	}
+
+	QFile file( file_name );
+	file.open(QIODevice::WriteOnly);
+	QTextStream t(&file);
+	t << document.toString();
+	file.close();
+}
+
+void ProtocolTree::onRestoreSettings()
+{
+	QString file_name = QFileDialog::getOpenFileName(this, tr("Select config file"), QDir::currentPath(), tr("XML files (*.xml)"));
+	if (file_name.isEmpty ())
+	{
+		return;
+	}
+	
+	QFile file(file_name);
+	if (!file.open(QFile::ReadOnly | QFile::Text))
+	{
+		QString errorString = tr("Error: Cannot read file %1: %2");
+		errorString = errorString.arg(file_name, file.errorString());
+		QMessageBox::critical(NULL, tr("tip"), errorString);
+		return;
+	}
+
+	QString errorStr;
+	int errorLine;
+	int errorColumn;
+	QDomDocument doc;
+	if (!doc.setContent(&file, false, &errorStr, &errorLine, &errorColumn))
+	{
+		QString errorString = tr("Error: Parse error at line %1, column %2: %3");
+		errorString = errorString.arg(errorLine).arg(errorColumn).arg(errorStr);
+		QMessageBox::critical(NULL, tr("tip"), errorString);
+		return;
+	}
+
+	QDomElement root_element = doc.documentElement();
+	if (root_element.tagName() != "Protocol") 
+	{
+		QMessageBox::critical(NULL, tr("tip"), QString(tr("The file %1 is not an config file.")).arg(file_name));
+		return;
+	}
+
+	this->clear();
+	QDomElement category_element = root_element.firstChildElement("Category");
+	QTreeWidgetItem *category_preceding = NULL;
+	while(!category_element.isNull())
+	{
+		QString category_name = category_element.attribute("Name");
+		Category category = m_protocol.category(category_name);
+		QTreeWidgetItem *category_item = addSingleCategoryItem(this, category_preceding, category);
+		category_preceding = category_item;
+
+		QDomElement field_element = category_element.firstChildElement("Field");
+		QTreeWidgetItem * field_preceding = NULL;
+		while(!field_element.isNull())
+		{
+			QString field_name = field_element.attribute("Name");
+			Field field = category.field(field_name);
+			QTreeWidgetItem *field_item = addSingleFieldItem(category_item, field_preceding, field);
+			field_preceding = field_item;
+
+			QCheckBox* item_checkbox = (QCheckBox*)this->itemWidget(field_item, INDEX_FIELD_IS_DEFAULT);
+			if (item_checkbox != NULL && field_element.attribute("Checked") == "true")
+			{
+				item_checkbox->setCheckState(Qt::Checked);
+			}
+			ProtocolTreeItemWidget* value_item = (ProtocolTreeItemWidget*)this->itemWidget(field_item, INDEX_FIELD_VALUE);
+			value_item->setText(field_element.attribute("Data"));
+
+			QDomElement sub_field_element = field_element.firstChildElement("SubField");
+			while(!sub_field_element.isNull())
+			{
+				QString sub_field_name = sub_field_element.attribute("Name");
+				Field sub_field = field.subField(sub_field_name);
+				QTreeWidgetItem *sub_field_item = addSubFieldItem(field_item, sub_field);
+				QCheckBox* item_checkbox = (QCheckBox*)this->itemWidget(sub_field_item, INDEX_FIELD_IS_DEFAULT);
+				if (item_checkbox != NULL && sub_field_element.attribute("Checked") == "true")
+				{
+					item_checkbox->setCheckState(Qt::Checked);
+				}
+				ProtocolTreeItemWidget* value_item = (ProtocolTreeItemWidget*)this->itemWidget(sub_field_item, INDEX_FIELD_VALUE);
+				value_item->setText(sub_field_element.attribute("Data"));
+
+				sub_field_element = sub_field_element.nextSiblingElement("SubField");
+			}
+
+			field_element = field_element.nextSiblingElement("Field");
+		}
+		category_element = category_element.nextSiblingElement("Category");
+	}
+
+	adjust();
+}
