@@ -23,16 +23,27 @@ DataTabSheet::~DataTabSheet()
 {
 }
 
-QString DataTabSheet::sendData()
+QString DataTabSheet::preSendData()
 {
 	QString data = m_data_edit->toPlainText();
 	if (data.isEmpty())
 	{
 		return tr("ip and port and data must set");
 	}
+	m_data = data.toLocal8Bit();
 
-	QByteArray data_array = data.toLocal8Bit();
-	return dependProtocolWidget()->sendData(data_array.constData(), data.length());
+	return dependProtocolWidget()->preSendData();
+}
+
+QString DataTabSheet::postSendData()
+{
+	m_data.clear();
+	return dependProtocolWidget()->postSendData();
+}
+
+QString DataTabSheet::sendData()
+{
+	return dependProtocolWidget()->sendData(m_data.constData(), m_data.size());
 }
 
 void DataTabSheet::saveSettings()

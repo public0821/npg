@@ -8,7 +8,7 @@
 Q_DECLARE_METATYPE(ifi_info)
 
 EthernetWidget::EthernetWidget(const QString& protocol_name, const QString& ether_protocol_name, QWidget *parent)
-	: BaseProtocolWidget(protocol_name, parent)
+	: BaseProtocolWidget(protocol_name, parent), m_ethernet(NULL)
 {
 	ui.setupUi(this);
 	setupInterface(parent);
@@ -21,23 +21,44 @@ EthernetWidget::~EthernetWidget()
 
 }
 
+QString EthernetWidget::preSendData()
+{
+	if (m_ethernet != NULL)
+	{
+		return tr("'preSendData' function has been called");//this message just for developer, End-user will not see it
+	}
 
+	int index = ui.protocol_box->currentIndex();
+	m_protocol = ui.protocol_box->itemData(index).toInt();
+	m_dstmac = ui.to_mac_edit->text().toLocal8Bit().constData();
+	m_srcmac = ui.from_mac_edit->text().toLocal8Bit().constData();
+
+	index = ui.interface_box->currentIndex();
+	m_dev = ui.interface_box->itemData(index).value<ifi_info>();
+	return QString();
+}
+
+QString EthernetWidget::postSendData()
+{
+	if (m_ethernet != NULL)
+	{
+		delete m_ethernet;
+		m_ethernet = NULL;
+	}
+	return QString();
+}
 
 QString EthernetWidget::sendData(const char* data, u_int16_t length)
 {
-	int index = ui.protocol_box->currentIndex();
-	int protocol = ui.protocol_box->itemData(index).toInt();
-	sstring to_mac = ui.to_mac_edit->text().toLocal8Bit().constData();
-	sstring from_mac = ui.from_mac_edit->text().toLocal8Bit().constData();
 
-	index = ui.interface_box->currentIndex();
-	ifi_info dev = ui.interface_box->itemData(index).value<ifi_info>();
-	//	int adapter = ui.interface_box->itemData(index).toInt();
+	if (m_ethernet == NULL)
+	{
+		return tr("should call 'preSendData' function first");
+	}
 
-	Ethernet ethernet;
-	ethernet.sendto(dev, to_mac.c_str(), from_mac.c_str(), protocol, data, length);
+	m_ethernet->sendto(m_dev, m_dstmac.c_str(), m_srcmac.c_str(), m_protocol, data, length);
 
-	return ethernet.errorString();
+	return m_ethernet->errorString();
 
 }
 

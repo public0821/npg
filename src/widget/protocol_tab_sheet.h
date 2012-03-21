@@ -24,12 +24,16 @@ private:
 	void saveSettings();
 	void restoreSettings();
 	QString sendData();
+	QString preSendData();
+	QString postSendData();
 	QString convertDefaultValue(const QString& default_value);
 private:
 //	Ui::
     Ui::ProtocolWidgetClass ui;
 	Protocol m_protocol;
 	u_int32_t m_seq;
+
+	sstring m_data;
 };
 
 #endif // DNS_WIDGET_H

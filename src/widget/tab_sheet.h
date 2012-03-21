@@ -57,8 +57,11 @@ protected:
 			m_base_protocol_widget->restoreSettings();
 		}	
 	};
+
+	virtual QString preSendData()=0;
 	virtual QString sendData()=0;
-	virtual QString beforeSendData(){return tr("");};
+	virtual QString postSendData()=0;
+	
 
 protected slots:
 		void onAdvanced();

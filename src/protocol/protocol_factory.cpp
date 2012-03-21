@@ -154,6 +154,7 @@ Category ProtocolFactory::loadCategoryElement(QDomElement* element)
 	category.setText(category_element.attribute("Text"));
 	category.setTip(category_element.attribute("Tip"));
 	category.setTail(category_element.attribute("Tail"));
+	category.setPrefix(category_element.attribute("Prefix"));
 
 	QDomElement field_element = category_element.firstChildElement("Field");
 	while(!field_element.isNull())

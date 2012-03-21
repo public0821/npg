@@ -57,9 +57,7 @@ void ProtocolTabSheet::restoreSettings()
 	TabSheet::restoreSettings();
 }
 
-
-//#include <qmessagebox.h>
-QString ProtocolTabSheet::sendData()
+QString ProtocolTabSheet::preSendData()
 {
 	ProtocolBuilder protocol_builder;
 
@@ -74,6 +72,16 @@ QString ProtocolTabSheet::sendData()
 		QTreeWidgetItem* category_item = tree_widget->topLevelItem(category_index);
 		QString category_name = category_item->data(1, Qt::UserRole).toString();
 		Category category = m_protocol.category(category_name);
+		QString category_prefix = category.prefix();
+		if (!category_prefix.isEmpty())
+		{
+			QByteArray category_prefix_array = category_prefix.toLocal8Bit();
+			int ret = protocol_builder.append(category_prefix_array.constData(), category_prefix_array.size());
+			if (ret == false)
+			{
+				return protocol_builder.errorString();
+			}
+		}
 
 		int field_count = category_item->childCount();
 		for (int field_index = 0; field_index < field_count; field_index++)
@@ -86,7 +94,7 @@ QString ProtocolTabSheet::sendData()
 			if (!field_prefix.isEmpty())
 			{
 				QByteArray field_prefix_array = field_prefix.toLocal8Bit();
-				int ret = protocol_builder.append(field_prefix_array.constData(), field_prefix_array.length());
+				int ret = protocol_builder.append(field_prefix_array.constData(), field_prefix_array.size());
 				if (ret == false)
 				{
 					return protocol_builder.errorString();
@@ -100,7 +108,7 @@ QString ProtocolTabSheet::sendData()
 				{
 					return tr("field length must greater than 0:") + field.name();
 				}
-				
+
 				BitBuilder bit_builder(field.length());
 				for (int sub_field_index = 0; sub_field_index < sub_field_count; sub_field_index++)
 				{
@@ -149,25 +157,25 @@ QString ProtocolTabSheet::sendData()
 					return protocol_builder.errorString();
 				}
 			}
-			
+
 			QString field_tail = field.tail();
 			if (!field_tail.isEmpty())
 			{
 				QByteArray field_tail_array = field_tail.toLocal8Bit();
-				int ret = protocol_builder.append(field_tail_array.constData(), field_tail_array.length());
+				int ret = protocol_builder.append(field_tail_array.constData(), field_tail_array.size());
 				if (ret == false)
 				{
 					return protocol_builder.errorString();
 				}
 			}
-			
+
 		}
 
 		QString category_tail = category.tail();
 		if (!category_tail.isEmpty())
 		{
 			QByteArray category_tail_array = category_tail.toLocal8Bit();
-			int ret = protocol_builder.append(category_tail_array.constData(), category_tail_array.length());
+			int ret = protocol_builder.append(category_tail_array.constData(), category_tail_array.size());
 			if (ret == false)
 			{
 				return protocol_builder.errorString();
@@ -184,18 +192,23 @@ QString ProtocolTabSheet::sendData()
 		QString data = QString("%1").arg(checknum);
 		protocol_builder.set(checknum_pos, checknum_field.type(), checknum_field.length(), data);
 	}
-	
 
-	BaseProtocolWidget* depend_protocol_widget = dependProtocolWidget();
-	if (depend_protocol_widget != NULL)
-	{
-		return depend_protocol_widget->sendData(protocol_builder.data(), protocol_builder.length());
-	}
-	else
-	{
-		return tr("incorrect dependence protocol");
-	}
-	
+	m_data.assign(protocol_builder.data(), protocol_builder.length());
+
+	return dependProtocolWidget()->preSendData();
+}
+
+
+QString ProtocolTabSheet::postSendData()
+{
+	m_data.clear();
+	return dependProtocolWidget()->postSendData();
+}
+
+//#include <qmessagebox.h>
+QString ProtocolTabSheet::sendData()
+{
+	return dependProtocolWidget()->sendData(m_data.data(), m_data.length());
 	//QMessageBox::information(this, "tip", QString("%1").arg(protocol_builder.length()));
 }
 

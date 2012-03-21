@@ -35,26 +35,31 @@ void SendThread::run()
 	m_total_send = 0;
 	m_time_consuming = 0;
 
-	m_error = m_parent->beforeSendData();
-	if (m_error.isEmpty())
+	m_error = m_parent->preSendData();
+	if (!m_error.isEmpty())
 	{
-		switch (m_type)
-		{
-		case E_SEND_TYPE_TOTAL:
-			sendTotal(m_count);
-			break;
-		case E_SEND_TYPE_SPEED:
-			sendPerSeconds(m_count);
-			break;
-		default:
-			break;
-		}
+		m_running = false;
+		return;
+	}
+
+	switch (m_type)
+	{
+	case E_SEND_TYPE_TOTAL:
+		sendTotal(m_count);
+		break;
+	case E_SEND_TYPE_SPEED:
+		sendPerSeconds(m_count);
+		break;
+	default:
+		break;
 	}
 
 	emit
 	counter(m_total_send, m_time_consuming);
 
 	m_running = false;
+
+	m_error = m_parent->postSendData();
 }
 
 void SendThread::sendTotal(int count)

@@ -22,6 +22,8 @@ public:
 	~npg();
 private slots:
 	void onItemDoubleClicked(QListWidgetItem * item);
+	void onConverterClicked();
+	void onAbout();
 private:
 	void saveSettings();
 	void restoreSettings();

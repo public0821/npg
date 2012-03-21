@@ -20,12 +20,21 @@ public:
     UdpWidget(const QString& protocol_name, QWidget *parent);
     ~UdpWidget();
 public:
+	QString preSendData();
+	QString postSendData();
     QString sendData(const char* data, u_int16_t length);
 public:
 	void saveSettings();
 	void restoreSettings();
 private:
     Ui::UdpWidgetClass ui;
+
+	sstring m_srcip; 
+	u_int16_t m_srcport;
+	sstring m_dstip; 
+	u_int16_t m_dstport;
+	bool m_is_raw_socket;
+	void* m_udp;
 };
 
 #endif // UDPWIDGET_H

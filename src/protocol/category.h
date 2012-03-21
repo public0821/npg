@@ -26,12 +26,15 @@ public:
 	QString text() const;
 	QString tip() const;
 	QString tail()const;
+	QString prefix()const;
+
 
 	void setName(const QString& name);
 	void setMany(bool is_many);
 	void setText(const QString& text);
 	void setTip(const QString& tip);
 	void setTail(const QString& tail);
+	void setPrefix(const QString& prefix);
 
 	bool empty()const;
 	u_int16_t optionalFieldCount()const;
@@ -44,6 +47,7 @@ private:
 	QString m_tip;
 	bool m_empty;
 	QString m_tail;
+	QString m_prefix;
 
 };
 #endif

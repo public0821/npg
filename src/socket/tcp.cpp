@@ -126,6 +126,16 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 	The socket is marked as nonblocking. The connection cannot be immediately completed. The application program can
 	select the socket for writing during the connection process.
 	*/
+	if (timeout > 0)
+	{
+		bool ret = setBlocking(false);
+		if (!ret)
+		{
+			return false;
+		}
+	}
+	
+	
 	bool ret_value = false;
 	int ret_conn = ::connect(m_sockfd, (struct sockaddr*) &serv_addr,
 			sizeof(serv_addr));
@@ -179,6 +189,16 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 	else if (ret_conn == K_SOCKET_ERROR)
 	{
 		SET_ERROR_NO(npg_errno);
+	}
+
+
+	if (timeout > 0)
+	{
+		bool ret = setBlocking(true);
+		if (!ret)
+		{
+			return false;
+		}
 	}
 
 	return ret_value;

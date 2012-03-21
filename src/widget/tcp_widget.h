@@ -13,6 +13,7 @@
 #include "base_protocol_widget.h"
 #include "system/types.h"
 
+class Tcp;
 class TcpWidget : public BaseProtocolWidget
 {
     Q_OBJECT
@@ -21,12 +22,20 @@ public:
     TcpWidget(const QString& protocol_name, QWidget *parent = 0);
     ~TcpWidget();
 public:
+	QString preSendData();
+	QString postSendData();
     QString sendData(const char* data, u_int16_t length);
 private:
 	void saveSettings();
 	void restoreSettings();
 private:
     Ui::TcpWidgetClass ui;
+
+	sstring m_ip;
+	u_int16_t m_port;
+	time_t m_timeout;
+	Tcp* m_tcp;
+	bool m_wait_for_response;
 };
 
 #endif // TCP_WIDGET_H

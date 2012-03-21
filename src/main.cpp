@@ -6,6 +6,7 @@
 #include <qmessagebox.h>
 #ifdef _MSC_VER
 	#include <winsock2.h>
+	#include "dump.h"
 #endif
 #ifdef __GNUC__
 	#include <signal.h>
@@ -21,6 +22,8 @@ int main(int argc, char *argv[])
 	app.installTranslator(&app_translator);
 
 #ifdef _MSC_VER
+	SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)ApplicationCrashHandler); 
+
 	WSADATA wsaData;
 	int err = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (err != 0) {

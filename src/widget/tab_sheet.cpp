@@ -178,15 +178,31 @@ void TabSheet::onSend()
 	else //singel
 	{
 		m_send_button->setEnabled(false);
-		QString ret = sendData();
+		QString ret = preSendData();
 		if (!ret.isNull() && !ret.isEmpty())
 		{
 			showFailedTip(ret);
+			goto END;
+		}
+		
+		ret = sendData();
+		if (!ret.isNull() && !ret.isEmpty())
+		{
+			showFailedTip(ret);
+			goto END;
+		}
+
+		ret = postSendData();
+		if (!ret.isNull() && !ret.isEmpty())
+		{
+			showFailedTip(ret);
+			goto END;
 		}
 		else
 		{
 			showSuccessfulTip(tr("Successful !"));
 		}
+END:
 		m_send_button->setEnabled(true);
 	}
 }

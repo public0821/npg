@@ -13,7 +13,7 @@
 #include "socket/raw_udp.h"
 
 UdpWidget::UdpWidget(const QString& protocol_name, QWidget *parent) :
-		BaseProtocolWidget(protocol_name, parent)
+		BaseProtocolWidget(protocol_name, parent), m_udp(NULL)
 {
 	ui.setupUi(this);
 
@@ -36,37 +36,82 @@ UdpWidget::~UdpWidget()
 {
 }
 
-QString UdpWidget::sendData(const char* data, u_int16_t length)
+QString UdpWidget::preSendData()
 {
-
-	sstring dstip = ui.dst_ip_edit->text().toLocal8Bit().constData();
-	u_int16_t dstport = ui.dst_port_edit->text().toUShort();
-	if (dstip.empty() || dstport <= 0 )
+	if (m_udp != NULL)
+	{
+		return tr("'preSendData' function has been called");//this message just for developer, End-user will not see it
+	}
+	
+	m_dstip = ui.dst_ip_edit->text().toLocal8Bit().constData();
+	m_dstport = ui.dst_port_edit->text().toUShort();
+	if (m_dstip.empty() || m_dstport <= 0 )
 	{
 		return tr("ip and port and data must set");
 	}
 
-	bool is_raw_socket = !(ui.src_ip_box->checkState() == Qt::Checked);
-	if (is_raw_socket)
+	m_is_raw_socket = !(ui.src_ip_box->checkState() == Qt::Checked);
+	if (m_is_raw_socket)
+	{
+		m_srcip = ui.src_ip_edit->text().toLocal8Bit().constData();
+		m_srcport = ui.src_port_edit->text().toUShort();
+		m_udp = new RawUdp();
+	}
+	else
+	{
+		m_udp = new Udp();
+	}
+	return QString();
+}
+
+QString UdpWidget::postSendData()
+{
+	if (m_udp != NULL)
+	{
+		if (m_is_raw_socket)
+		{
+			RawUdp* raw_udp = (RawUdp*)m_udp;
+			delete raw_udp;
+		}
+		else
+		{
+
+			Udp *udp = (Udp*)m_udp;
+			delete udp;
+		}
+		m_udp = NULL;
+	}
+
+	return QString();
+}
+
+QString UdpWidget::sendData(const char* data, u_int16_t length)
+{
+	if (m_udp == NULL)
+	{
+		return tr("should call 'preSendData' function first");
+	}
+
+	if (m_is_raw_socket)
 	{
 		sstring srcip = ui.src_ip_edit->text().toLocal8Bit().constData();
 		u_int16_t srcport = ui.src_port_edit->text().toUShort();
-		RawUdp raw_udp;
-		bool ret = raw_udp.sendto(srcip.c_str(), dstip.c_str(), srcport, dstport,
+		RawUdp* raw_udp = (RawUdp*)m_udp;
+		bool ret = raw_udp->sendto(m_srcip.c_str(), m_dstip.c_str(), m_srcport, m_dstport,
 				data, length);
 		if (!ret)
 		{
-			return QString(tr(raw_udp.errorString()));
+			return QString(tr(raw_udp->errorString()));
 		}
 	}
 	else
 	{
 
-		Udp udp;
-		bool ret = udp.sendto(dstip.c_str(), dstport, data, length);
+		Udp *udp = (Udp*)m_udp;
+		bool ret = udp->sendto(m_dstip.c_str(), m_dstport, data, length);
 		if (!ret)
 		{
-			return QString(tr(udp.errorString()));
+			return QString(tr(udp->errorString()));
 		}
 	}
 	return QString();

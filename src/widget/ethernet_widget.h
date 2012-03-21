@@ -10,6 +10,7 @@
 #include <QWidget>
 #include "ui_ethernet_widget.h"
 #include "base_protocol_widget.h"
+#include "socket/ethernet.h"
 
 class EthernetWidget  : public BaseProtocolWidget
 {
@@ -19,6 +20,8 @@ public:
 	EthernetWidget(const QString& protocol_name, const QString& ether_protocol_name, QWidget *parent);
 	~EthernetWidget();
 public:
+	QString preSendData();
+	QString postSendData();
 	virtual QString sendData(const char* data, u_int16_t length);
 public:
 	void saveSettings();
@@ -30,6 +33,12 @@ private slots:
 	void onInterfaceChanged(int index);
 private:
 	Ui::EthernetWidget ui;
+	int m_protocol;
+	sstring m_dstmac;
+	sstring m_srcmac;
+	ifi_info m_dev;
+
+	Ethernet* m_ethernet;
 };
 
 #endif // ETHERNET_WIDGET_H

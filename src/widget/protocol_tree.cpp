@@ -510,6 +510,11 @@ void ProtocolTree::onRestoreSettings()
 	{
 		QString category_name = category_element.attribute("Name");
 		Category category = m_protocol.category(category_name);
+		if (category.empty())
+		{
+			category_element = category_element.nextSiblingElement("Category");
+			continue;
+		}
 		QTreeWidgetItem *category_item = addSingleCategoryItem(this, category_preceding, category);
 		category_preceding = category_item;
 
@@ -519,6 +524,11 @@ void ProtocolTree::onRestoreSettings()
 		{
 			QString field_name = field_element.attribute("Name");
 			Field field = category.field(field_name);
+			if (field.empty())
+			{
+				field_element = field_element.nextSiblingElement("Field");
+				continue;
+			}
 			QTreeWidgetItem *field_item = addSingleFieldItem(category_item, field_preceding, field);
 			field_preceding = field_item;
 
@@ -535,6 +545,11 @@ void ProtocolTree::onRestoreSettings()
 			{
 				QString sub_field_name = sub_field_element.attribute("Name");
 				Field sub_field = field.subField(sub_field_name);
+				if (sub_field.empty())
+				{
+					sub_field_element = sub_field_element.nextSiblingElement("SubField");
+					continue;
+				}
 				QTreeWidgetItem *sub_field_item = addSubFieldItem(field_item, sub_field);
 				QCheckBox* item_checkbox = (QCheckBox*)this->itemWidget(sub_field_item, INDEX_FIELD_IS_DEFAULT);
 				if (item_checkbox != NULL && sub_field_element.attribute("Checked") == "true")

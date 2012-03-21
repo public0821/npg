@@ -20,12 +20,15 @@ public:
     ~DataTabSheet();
 public:
     QString sendData();
+	QString preSendData();
+	QString postSendData();
 private:
 	void saveSettings();
 	void restoreSettings();
 	void setupUi();
 private:
 	QTextEdit* m_data_edit;
+	QByteArray m_data;
 };
 
 #endif // UDPWIDGET_H

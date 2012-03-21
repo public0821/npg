@@ -20,14 +20,16 @@ public:
 	BaseProtocolWidget(const QString& name,QWidget *parent);
 	virtual ~BaseProtocolWidget();
 public:
+	virtual QString preSendData() = 0;
 	virtual QString sendData(const char* data, u_int16_t length) = 0;
+	virtual QString postSendData() = 0;
 	virtual void saveSettings() = 0;
 	virtual void restoreSettings() = 0;
 protected:
 	QString protocolName()const{return m_name;};
-	void setupUi(QHBoxLayout* layout, QWidget* show_widget);
-protected slots:
-	void onShowButton();
+	//void setupUi(QHBoxLayout* layout, QWidget* show_widget);
+//protected slots:
+//	void onShowButton();
 private:
 	QString m_name;
 	QPushButton* m_show_button;

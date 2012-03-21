@@ -12,7 +12,7 @@
 #include "tcp_response_dialog.h"
 
 TcpWidget::TcpWidget(const QString& protocol_name, QWidget *parent) :
-BaseProtocolWidget(protocol_name, parent)
+BaseProtocolWidget(protocol_name, parent), m_tcp(NULL)
 {
 	ui.setupUi(this);
 
@@ -47,47 +47,76 @@ void TcpWidget::restoreSettings()
 	settings.endGroup();
 }
 
-QString TcpWidget::sendData(const char* data, u_int16_t length)
+QString TcpWidget::preSendData()
 {
-//	showTip("");
-	sstring ip = ui.ip_edit->text().toLocal8Bit().constData();
-	u_int16_t port = ui.port_edit->text().toUShort();
-	time_t timeout = ui.timeout_edit->text().toInt();
-	if (ip.empty() || port <= 0)
+	if (m_tcp != NULL)
+	{
+		return tr("'preSendData' function has been called");//this message just for developer, End-user will not see it
+	}
+
+	m_ip = ui.ip_edit->text().toLocal8Bit().constData();
+	m_port = ui.port_edit->text().toUShort();
+	m_timeout = ui.timeout_edit->text().toInt();
+	if (m_ip.empty() || m_port <= 0)
 	{
 		return tr("ip and port and data must set");
 	}
 
-	if(timeout == 0)//set default timeout
+	if(m_timeout == 0)//set default timeout
 	{
-		timeout = 10;
-	}
-
-	Tcp tcp;
-	bool ret = tcp.setBlocking(false);
-	if (!ret)
-	{
-		return QString(tr(tcp.errorString()));
-	}
-	ret = tcp.connect(ip.c_str(), port, timeout);
-	if (!ret)
-	{
-		return QString(tr(tcp.errorString()));
-	}
-	ret = tcp.setBlocking(true);
-	if (!ret)
-	{
-		return QString(tr(tcp.errorString()));
-	}
-	ret = tcp.send(data, length);
-	if (!ret)
-	{
-		return QString(tr(tcp.errorString()));
+		m_timeout = 10;
 	}
 
 	if (ui.wait_for_response_box->checkState() == Qt::Checked)
 	{
-		TcpResponseDialog dialog(tcp, this);
+		m_wait_for_response = true;
+	}
+	else
+	{
+		m_wait_for_response = false;
+	}
+
+
+	m_tcp = new Tcp();
+	bool ret = m_tcp->connect(m_ip.c_str(), m_port, m_timeout);
+	if (!ret)
+	{
+		delete m_tcp;
+		m_tcp = NULL;
+		return QString(tr(m_tcp->errorString()));
+	}
+
+	return QString();
+}
+
+QString TcpWidget::postSendData()
+{
+	if (m_tcp != NULL)
+	{
+		delete m_tcp;
+		m_tcp = NULL;
+	}
+
+	return QString();
+}
+QString TcpWidget::sendData(const char* data, u_int16_t length)
+{
+//	showTip("");
+
+	if (m_tcp == NULL)
+	{
+		return tr("should call 'preSendData' function first");
+	}
+
+	bool ret = m_tcp->send(data, length);
+	if (!ret)
+	{
+		return QString(tr(m_tcp->errorString()));
+	}
+
+	if (m_wait_for_response)
+	{
+		TcpResponseDialog dialog(*m_tcp, this);
 		dialog.exec();
 	}
 	

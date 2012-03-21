@@ -9,6 +9,8 @@
 #include <qstring.h>
 #include "system/qerror.h"
 #include "protocol/field.h"
+
+
 class ProtocolBuilder:public QError
 {
 public:

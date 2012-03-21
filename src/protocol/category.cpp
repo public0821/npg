@@ -72,6 +72,10 @@ QString Category::tail() const
 {
 	return m_tail;
 }
+QString Category::prefix() const
+{
+	return m_prefix;
+}
 
 void Category::setName(const QString& name)
 {
@@ -103,6 +107,11 @@ void Category::setTail(const QString& tail)
 	m_tail = tail;
 }
 
+void Category::setPrefix(const QString& prefix)
+{
+	m_prefix = prefix;
+}
+
 u_int16_t Category::optionalFieldCount() const
 {
 	u_int16_t count = 0;
@@ -116,4 +125,9 @@ u_int16_t Category::optionalFieldCount() const
 	}
 
 	return count;
+}
+
+bool Category::empty()const
+{
+	return m_empty;
 }

@@ -6,7 +6,7 @@
 #include "socket/socket_public.h"
 
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
-	: BaseProtocolWidget(protocol_name, parent)
+	: BaseProtocolWidget(protocol_name, parent), m_ip(NULL)
 {
 	ui.setupUi(this);
 
@@ -41,8 +41,13 @@ IpWidget::~IpWidget()
 
 }
 
-QString IpWidget::sendData(const char* data, u_int16_t length)
+QString IpWidget::preSendData()
 {
+	if (m_ip != NULL)
+	{
+		return tr("'preSendData' function has been called");//this message just for developer, End-user will not see it
+	}
+
 	int index = ui.protocol_box->findText(ui.protocol_box->currentText());
 	int protocol = 0;
 	if (index == -1)
@@ -53,19 +58,41 @@ QString IpWidget::sendData(const char* data, u_int16_t length)
 	{
 		protocol = ui.protocol_box->itemData(index).toInt();
 	}
-	
-	sstring ip_str = ui.ip_edit->text().toLocal8Bit().constData();
 
-	if (ip_str.empty() || protocol == 0 )
+	m_dstip = ui.ip_edit->text().toLocal8Bit().constData();
+
+	if (m_dstip.empty() || protocol == 0 )
 	{
 		return tr("ip and protocol must set");
 	}
 
-	Ip ip(protocol);
-	bool ret = ip.sendto(ip_str.c_str(), data, length);
+	m_ip = new Ip(protocol);
+
+	return QString();
+}
+
+QString IpWidget::postSendData()
+{
+	if (m_ip != NULL)
+	{
+		delete m_ip;
+		m_ip = NULL;
+	}
+
+	return QString();
+}
+
+QString IpWidget::sendData(const char* data, u_int16_t length)
+{
+	if (m_ip == NULL)
+	{
+		return tr("should call 'preSendData' function first");
+	}
+
+	bool ret = m_ip->sendto(m_dstip.c_str(), data, length);
 	if (!ret)
 	{
-		return QString(ip.errorString());
+		return QString(m_ip->errorString());
 	}
 
 	return QString();
