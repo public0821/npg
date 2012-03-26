@@ -94,8 +94,6 @@ QString UdpWidget::sendData(const char* data, u_int16_t length)
 
 	if (m_is_raw_socket)
 	{
-		sstring srcip = ui.src_ip_edit->text().toLocal8Bit().constData();
-		u_int16_t srcport = ui.src_port_edit->text().toUShort();
 		RawUdp* raw_udp = (RawUdp*)m_udp;
 		bool ret = raw_udp->sendto(m_srcip.c_str(), m_dstip.c_str(), m_srcport, m_dstport,
 				data, length);

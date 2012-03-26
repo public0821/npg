@@ -1,16 +1,39 @@
 #include "converter_dialog.h"
 #include <QMessageBox>
+#include "tools/ip_converter.h"
+#include "tools/hex_converter.h"
+#include "tools/time_converter.h"
+#include "tools/base64_converter.h"
 
-ConverterDialog::ConverterDialog(Converter* converter, QIcon& icon, QWidget *parent)
-	:m_converter(converter), QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint)
+ConverterDialog::ConverterDialog(EConverterType type, const QIcon& icon, QWidget *parent)
+	:QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint)
 {
 	ui.setupUi(this);
 
-	setWindowTitle(converter->title());
+	m_converter = NULL;
+	switch (type)
+	{
+	case E_CONVERTER_IP:
+		m_converter = new IpConverter();
+		break;
+	case E_CONVERTER_HEX:
+		m_converter = new HexConverter();
+		break;
+	case E_CONVERTER_TIME:
+		m_converter = new TimeConverter();
+		break;
+	case E_CONVERTER_BASE64:
+		m_converter = new Base64Converter();
+		break;
+	default:
+		return;
+	}
+
+	setWindowTitle(m_converter->title());
 	setWindowIcon(icon);
 
-	ui.from_label->setText(converter->fromTextTip());
-	ui.to_label->setText(converter->toTextTip());
+	ui.from_label->setText(m_converter->fromTextTip());
+	ui.to_label->setText(m_converter->toTextTip());
 
 	connect(ui.convert_button, SIGNAL(released(void)), this, SLOT(onConvert(void)));
 	connect(ui.revert_button, SIGNAL(released(void)), this, SLOT(onRevert(void)));

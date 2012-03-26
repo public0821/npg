@@ -44,7 +44,7 @@ QString Base64Converter::convert(const QString& text)
 	int to_str_len = (byte_array.size() + 2) / 3 * 4;
 	unsigned char* to_str = new unsigned char[to_str_len + 1];
 	to_str[to_str_len] = '\0';
-	for(size_t i = 0u; i<byte_array.size()/3; i++)
+	for(int i = 0; i<byte_array.size()/3; i++)
 	{
 		encodeblock( &from_str[i*3], &to_str[i*4], 3);
 	}
@@ -71,7 +71,7 @@ QString Base64Converter::revert(const QString& text)
 	unsigned char* to_str = new unsigned char[to_str_len + 1];
 	to_str[to_str_len] = '\0';
 	int totallen = 0;
-	for(size_t i = 0u; i<byte_array.size()/4; i++)
+	for(int i = 0; i<byte_array.size()/4; i++)
 	{
 		int len = decodeblock( &from_str[i*4], &to_str[i*3]);
 		totallen += len;

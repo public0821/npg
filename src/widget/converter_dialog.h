@@ -10,7 +10,7 @@ class ConverterDialog : public QDialog
 	Q_OBJECT
 
 public:
-	ConverterDialog(Converter* converter, QIcon& icon, QWidget *parent = 0);
+	ConverterDialog(EConverterType type, const QIcon& icon, QWidget *parent = 0);
 	~ConverterDialog();
 private slots:
 	void onConvert();

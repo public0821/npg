@@ -121,7 +121,7 @@ inline int npg_strerror(int errorno, char* buf, int buflen)
 #include    <netinet/udp.h>
 
 
-#define closesocket(sock) onClose(sock)
+#define closesocket(sock) close(sock)
 
 #define npg_ioctl(sock, code, data, size) ioctl(sock, code, data)
 #define npg_errno   errno

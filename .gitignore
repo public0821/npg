@@ -7,3 +7,6 @@ GeneratedFiles/
 *.suo
 *.aps
 *.user
+src/ui_*
+src/npg
+src/.settings/

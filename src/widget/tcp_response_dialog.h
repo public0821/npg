@@ -77,7 +77,7 @@ private:
 			buff[len] = '\0';
 			emit recvData(QByteArray(buff));
 
-			if (len < buff_len && m_tcp.status() == E_ERROR_STATUS_SOCKET_CLOSED )//the peer has performed an orderly shutdown
+			if ((size_t)len < buff_len && m_tcp.status() == E_ERROR_STATUS_SOCKET_CLOSED )//the peer has performed an orderly shutdown
 			{
 				break;
 			}

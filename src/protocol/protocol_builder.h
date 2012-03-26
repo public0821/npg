@@ -7,7 +7,7 @@
 #ifndef __PROTOCOL_BUILDER_H__
 #define __PROTOCOL_BUILDER_H__
 #include <qstring.h>
-#include "system/qerror.h"
+#include "qerror.h"
 #include "protocol/field.h"
 
 

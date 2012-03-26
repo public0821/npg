@@ -30,11 +30,11 @@ QString HexConverter::convert(const QString& text)
 	const char* from_str = byte_array.constData();
 	char* to_str = new char[byte_array.size() * 2 + 1];
 	to_str[byte_array.size() * 2] = '\0';
-	for(size_t i = 0u; i<byte_array.size(); i++)
+	for(int i = 0; i<byte_array.size(); i++)
 	{
 		unsigned char ch = from_str[i];
-		to_str[i * 2u] = toHex(ch / 0X10);
-		to_str[i * 2u + 1u] = toHex(ch % 0X10);
+		to_str[i * 2] = toHex(ch / 0X10);
+		to_str[i * 2 + 1] = toHex(ch % 0X10);
 	}
 	
 	QString result = QString::fromLocal8Bit(to_str);
@@ -54,11 +54,11 @@ QString HexConverter::revert(const QString& text)
 	const char* from_str = byte_array.constData();
 	char* to_str = new char[byte_array.size()/2 + 1];
 	to_str[byte_array.size() / 2] = '\0';
-	for(size_t i = 0u; i<byte_array.size()/2; i++)
+	for(int i = 0; i<byte_array.size()/2; i++)
 	{
-		const u_int8_t n1 = toUInt8(from_str[i*2u]);
-		const u_int8_t n2 = toUInt8(from_str[i*2u+1u]);
-		if (n1 == -1 || n2 == -1)
+		const u_int8_t n1 = toUInt8(from_str[i*2]);
+		const u_int8_t n2 = toUInt8(from_str[i*2+1]);
+		if (n1 == 0xFF || n2 == 0xFF)
 		{
 			delete[] to_str;
 			return "";
@@ -89,17 +89,17 @@ u_int8_t HexConverter::toUInt8(char hex)
 	else
 	{
 		SET_QERROR_STR(QObject::tr("Invalid hex char"));
-		return -1;
+		return 0xFF;
 	}
 }
 
 char HexConverter::toHex(u_int8_t ch)
 {
-	if(0 <= ch && ch < 10)
+	if(0 <= ch && ch <= 0x09)
 	{
 		return char('0' + ch);
 	}
-	else if(10 <= ch && ch < 0X10)
+	else if(0x0A <= ch && ch < 0X10)
 	{
 		return char('A' + ch - 10);
 	}

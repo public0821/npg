@@ -8,7 +8,7 @@
 #define __PROTOCOL_FACTORY_H__
 
 #include "protocol.h"
-#include "system/qerror.h"
+#include "qerror.h"
 
 class QDomElement;
 class ProtocolFactory : public QError

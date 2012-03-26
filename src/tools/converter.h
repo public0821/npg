@@ -7,7 +7,7 @@
 #ifndef	__CONVERTER_H__
 #define __CONVERTER_H__
 #include <QString>
-#include "system/qerror.h"
+#include "qerror.h"
 
 enum EConverterType
 {
