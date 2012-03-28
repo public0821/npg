@@ -52,8 +52,9 @@ void ProtocolFactory::loadXml()
 	QFile file(file_name);
 	if (!file.open(QFile::ReadOnly | QFile::Text)) 
 	{
+		file.close();
 		file_name = "./conf/npg.xml";
-		QFile file(file_name);
+		file.setFileName(file_name);
 		if (!file.open(QFile::ReadOnly | QFile::Text)) 
 		{
 			SET_QERROR_STR(QString(QObject::tr("Open config file fail:")) + file.errorString());

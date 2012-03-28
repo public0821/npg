@@ -47,7 +47,7 @@ QString HexConverter::revert(const QString& text)
 	QByteArray	byte_array = text.toLocal8Bit();
 	if (byte_array.size() % 2 == 1)
 	{
-		SET_QERROR_STR(QObject::tr("Invalid hex char length"));
+		SET_QERROR_STR(QObject::tr("Invalid hex string length"));
 		return "";
 	}
 	

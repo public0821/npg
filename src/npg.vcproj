@@ -605,7 +605,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\resource\npg_delete_32px.png;.\resource\npg_add_32px.png;.\resource\npg_ip_16px.png;.\resource\npg_category_16px.png;.\resource\npg_up_16px.png;.\resource\npg_down_16px.png;.\resource\npg.png;.\resource\npg_int_32px.png;.\resource\npg_string_32px.png;.\resource\npg_protocol_default.png;.\resource\npg_hex_32px.png;.\resource\npg_base64_32px.png;.\resource\npg_about_32px.png;.\resource\npg_mac_16px.png;.\resource\npg_time_32px.png;.\resource\npg_bit_32px.png"
+						AdditionalDependencies="$(InputPath);.\resource\npg_delete_32px.png;.\resource\npg_add_32px.png;.\resource\npg_category_16px.png;.\resource\npg_up_16px.png;.\resource\npg_down_16px.png;.\resource\npg.png;.\resource\npg_int_32px.png;.\resource\npg_string_32px.png;.\resource\npg_protocol_default.png;.\resource\npg_hex_32px.png;.\resource\npg_base64_32px.png;.\resource\npg_about_32px.png;.\resource\npg_mac_16px.png;.\resource\npg_time_32px.png;.\resource\npg_bit_32px.png;.\resource\npg_ip_32px.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -616,7 +616,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\resource\npg_delete_32px.png;.\resource\npg_add_32px.png;.\resource\npg_ip_16px.png;.\resource\npg_category_16px.png;.\resource\npg_up_16px.png;.\resource\npg_down_16px.png;.\resource\npg.png;.\resource\npg_int_32px.png;.\resource\npg_string_32px.png;.\resource\npg_protocol_default.png;.\resource\npg_hex_32px.png;.\resource\npg_base64_32px.png;.\resource\npg_about_32px.png;.\resource\npg_mac_16px.png;.\resource\npg_time_32px.png;.\resource\npg_bit_32px.png"
+						AdditionalDependencies="$(InputPath);.\resource\npg_delete_32px.png;.\resource\npg_add_32px.png;.\resource\npg_category_16px.png;.\resource\npg_up_16px.png;.\resource\npg_down_16px.png;.\resource\npg.png;.\resource\npg_int_32px.png;.\resource\npg_string_32px.png;.\resource\npg_protocol_default.png;.\resource\npg_hex_32px.png;.\resource\npg_base64_32px.png;.\resource\npg_about_32px.png;.\resource\npg_mac_16px.png;.\resource\npg_time_32px.png;.\resource\npg_bit_32px.png;.\resource\npg_ip_32px.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -867,6 +867,26 @@
 			</File>
 			<File
 				RelativePath=".\resource\npg_ip_16px.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\resource\npg_ip_32px.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"

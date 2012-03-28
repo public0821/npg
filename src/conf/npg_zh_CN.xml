@@ -26,36 +26,36 @@
             <Category Name="Header">
                 <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="硬件地址格式"/>
                 <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="协议地址格式"/>
-                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="Length of hardware address"/>
-                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="Length of protocol address"/>
-                <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP opcode (command)">
-                    <Item Value="1" Text="arp request"/>
-                    <Item Value="2" Text="arp response"/>
+                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="硬件地址长度"/>
+                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="协议地址长度"/>
+                <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP操作码">
+                    <Item Value="1" Text="arp请求"/>
+                    <Item Value="2" Text="arp响应"/>
                 </Field>
             </Category>
             <Category Name="Data">
-                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="sender hardware address"/>
-                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="sender protocol address"/>
-                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="target hardware address"/>
-                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="target protocol address"/>
+                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="发送端硬件地址(MAC)"/>
+                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="发送端协议地址(IP)"/>
+                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="目的端硬件地址(MAC)"/>
+                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="目的端协议地址(IP)"/>
             </Category>
         </Protocol>
         <Protocol Name="Ether_rarp" Dependence="ETHERNET" DependenceParam="RARP">
             <Category Name="Header">
-                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="Format of hardware address"/>
-                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="Format of protocol address"/>
-                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="Length of hardware address"/>
-                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="Length of protocol address"/>
+                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="硬件地址格式"/>
+                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="协议地址格式"/>
+                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="硬件地址长度"/>
+                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="协议地址长度"/>
                 <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP opcode (command)">
-                    <Item Value="3" Text="rarp request"/>
-                    <Item Value="4" Text="rarp response"/>
+                    <Item Value="3" Text="rarp请求"/>
+                    <Item Value="4" Text="rarp响应"/>
                 </Field>
             </Category>
             <Category Name="Data">
-                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="sender hardware address"/>
-                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="sender protocol address"/>
-                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="target hardware address"/>
-                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="target protocol address"/>
+                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="发送端硬件地址(MAC)"/>
+                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="发送端协议地址(IP)"/>
+                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="目的端硬件地址(MAC)"/>
+                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="目的端协议地址(IP)"/>
             </Category>
         </Protocol>
         <Protocol Name="ICMP" Dependence="IP" DependenceParam="ICMP">
@@ -91,13 +91,13 @@
         </Protocol>
         <Protocol Name="RAW_UDP" Dependence="IP" DependenceParam="UDP">
             <Category Name="Header">
-                <Field Name="src_port" Type="int" InputMethod="lineedit" Length="2" Tip="Source port"/>
-                <Field Name="dst_port" Type="int" InputMethod="lineedit" Length="2" Tip="Destination port"/>
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2"  Tip="It is the length in octets of this user datagram, including this header and the data. The minimum value of the length is eight."/>
-                <Field Name="checknum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="The sum of a pseudo header of information from the IP header, the UDP header and the data, padded with zero octets at the end(Can be zero)"/>
+                <Field Name="src_port" Type="int" InputMethod="lineedit" Length="2" Tip="源端口"/>
+                <Field Name="dst_port" Type="int" InputMethod="lineedit" Length="2" Tip="目的端口"/>
+                <Field Name="length" Type="int" InputMethod="lineedit" Length="2"  Tip="数据包长度，包含8字节的包头，最小长度为8"/>
+                <Field Name="checknum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="校验和（包含首部和数据）（可选的）"/>
             </Category>
             <Category Name="Data">
-                <Field Name="data" Type="string" InputMethod="textedit" Tip="Contains upper-level data information"/>
+                <Field Name="data" Type="string" InputMethod="textedit" Tip="数据"/>
             </Category>
         </Protocol>
         <Protocol Name="NETFLOW_V5" Dependence="UDP">
@@ -137,60 +137,59 @@
         </Protocol>
         <Protocol Name="DNS" Dependence="UDP" RFC="1035">
             <Category Name="Header">
-                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" DefaultValue="seq" Tip="A 16 bit identifier assigned by the program that generates any kind of query. \n This identifier is copied the corresponding reply and can be used by the requester to match up replies to outstanding queries."/>
-                <Field Name="op_flag" Type="int" InputMethod="none" Length="2"  Tip="operating flag">
-                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1"  Tip="A one bit field that specifies whether this message is a query (0), or a response (1).">
-                        <Item Value="0" Text="query"/>
-                        <Item Value="1" Text="response"/>
+                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" DefaultValue="seq" Tip="16位的唯一ID，该ID在查询中设置，并在响应中返回，便于请求端判断该响应对应哪个请求."/>
+                <Field Name="op_flag" Type="int" InputMethod="none" Length="2"  Tip="操作标记">
+                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1"  Tip="标识请求(0)、响应(1)">
+                        <Item Value="0" Text="请求"/>
+                        <Item Value="1" Text="响应"/>
                     </SubField>
-                    <SubField Name="opcode" Type="bit" InputMethod="select" Length="4"  Tip="A four bit field that specifies kind of query in this message.  This value is set by the originator of a query and copied into the response.">
-                        <Item Value="0" Text="Standard query"/>
-                        <Item Value="1" Text="inverse query"/>
-                        <Item Value="2" Text="Server status query"/>
+                    <SubField Name="opcode" Type="bit" InputMethod="select" Length="4"  Tip="查询操作类型.  该值在查询中设置，并在响应中返回">
+                        <Item Value="0" Text="标准查询"/>
+                        <Item Value="1" Text="反向查询"/>
+                        <Item Value="2" Text="服务器状态查询"/>
                     </SubField>
-                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Tip="Authoritative Answer - this bit is valid in responses, and specifies that the responding name server is an authority for the domain name in question section.
-                    Note that the contents of the answer section may have multiple owner names because of aliases.  The AA bit corresponds to the name which matches the query name, or the first owner name in the answer section">
-                        <Item Value="0" Text="no"/>
-                        <Item Value="1" Text="yes"/>
+                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Tip="授权回答 - 该名字服务器是否授权于该服务器">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
                     </SubField>
-                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Tip="TrunCation - specifies that this message was truncated due to length greater than that permitted on the transmission channel">
-                        <Item Value="0" Text="no"/>
-                        <Item Value="1" Text="yes"/>
+                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Tip="可截断 - 使用UDP时，它表示当应答的总长度超过512字节时，只返回前512字节">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
                     </SubField>
-                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1"  Tip="Recursion Desired - this bit may be set in a query and is copied into the response.  If RD is set, it directs the name server to pursue the query recursively. Recursive query support is optional.">
-                        <Item Value="0" Text="no"/>
-                        <Item Value="1" Text="yes"/>
+                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1"  Tip="期望递归 - 该值在查询中设置，并在响应中返回">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
                     </SubField>
-                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1"  Tip="Recursion Available - this be is set or cleared in a response, and denotes whether recursive query support is available in the name server.">
-                        <Item Value="0" Text="no"/>
-                        <Item Value="1" Text="yes"/>
+                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1"  Tip="可用递归-如果DNS服务器支持递归查询，则在响应中将该比特设置为1">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
                     </SubField>
-                    <SubField Name="zero" Type="bit" InputMethod="lineedit" DefaultValue="0" Editable="false" Length="3"  Tip="Reserved for future use.  Must be zero in all queries and responses."/>
-                    <SubField Name="rcode" Type="bit" InputMethod="select" Length="4"  Tip="Response code - this 4 bit field is set as part of responses">
-                        <Item Value="0" Text="No error condition"/>
-                        <Item Value="1" Text="Format error"/>
-                        <Item Value="2" Text="Server failure"/>
-                        <Item Value="3" Text="Name Error"/>
-                        <Item Value="4" Text="Not Implemented"/>
-                        <Item Value="5" Text="Refused"/>
+                    <SubField Name="zero" Type="bit" InputMethod="lineedit" DefaultValue="0" Editable="false" Length="3"  Tip="保留字段，必须为0"/>
+                    <SubField Name="rcode" Type="bit" InputMethod="select" Length="4"  Tip="返回码">
+                        <Item Value="0" Text="没有差错"/>
+                        <Item Value="1" Text="格式错误"/>
+                        <Item Value="2" Text="服务器错误"/>
+                        <Item Value="3" Text="名字错误"/>
+                        <Item Value="4" Text="未实现"/>
+                        <Item Value="5" Text="拒绝"/>
                     </SubField>
                 </Field>
-                <Field Name="QDCOUNT" Type="int" InputMethod="lineedit" Length="2" DefaultValue="1" Tip="an unsigned 16 bit integer specifying the number of entries in the question section"/>
-                <Field Name="ANCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of resource records in the answer section."/>
-                <Field Name="NSCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of name server resource records in the authority records section."/>
-                <Field Name="ARCOUNT " Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of resource records in the additional records section."/>
+                <Field Name="QDCOUNT" Type="int" InputMethod="lineedit" Length="2" DefaultValue="1" Tip="问题数"/>
+                <Field Name="ANCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="资源记录数"/>
+                <Field Name="NSCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="授权资源记录数"/>
+                <Field Name="ARCOUNT " Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="额外资源记录数"/>
             </Category>
             <Category Name="Request" Many="true">
-                <Field Name="count" Type="int" InputMethod="lineedit" Length="1" Optional="true" ShowOnStart="true" Tip="length of the following name field"/>
-                <Field Name="name" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="true" Tip="querry name"/>
-                <Field Name="count_end" Type="int" InputMethod="lineedit" Length="1" Editable="false"  DefaultValue="0" Tip="end flag of a complete querry name"/>
-                <Field Name="QTYPE" Type="int" InputMethod="select" Length="2" Tip="a two octet code which specifies the type of the query.">
+                <Field Name="count" Type="int" InputMethod="lineedit" Length="1" Optional="true" ShowOnStart="true" Tip="下一个字段（名称）的长度"/>
+                <Field Name="name" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="true" Tip="查询名称"/>
+                <Field Name="count_end" Type="int" InputMethod="lineedit" Length="1" Editable="false"  DefaultValue="0" Tip="名称结束标识"/>
+                <Field Name="QTYPE" Type="int" InputMethod="select" Length="2" Tip="查询类型">
                         <Item Value="1" Text="A(IP ADDR)"/>
                         <Item Value="12" Text="PTR"/>
                 </Field>
-                <Field Name="QCLASS" Type="int" Length="2" InputMethod="lineedit" DefaultValue="1" Tip="usually 1, refers to the Internet address"/>
+                <Field Name="QCLASS" Type="int" Length="2" InputMethod="lineedit" DefaultValue="1" Tip="查询类，通常设置为1, 表示网络地址"/>
             </Category>
-            <Category Name="Response" Many="true">
+            <Category Name="Response" Tip="响应" Many="true">
             </Category>
         </Protocol>
     </Protocols>

@@ -64,7 +64,7 @@ QString Base64Converter::revert(const QString& text)
 	QByteArray	byte_array = text.toLocal8Bit();
 	if (byte_array.size()%4 != 0)
 	{
-		return QObject::tr("Invalid length");
+		return QObject::tr("Invalid base64 string length");
 	}
 	const unsigned char* from_str = (const unsigned char*)byte_array.constData();
 	int to_str_len = byte_array.size() / 4 * 3;

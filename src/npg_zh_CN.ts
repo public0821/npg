@@ -2,6 +2,65 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="zh_CN">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="ui/about_dialog.ui" line="14"/>
+        <source>AboutDialog</source>
+        <translation>关于</translation>
+    </message>
+    <message>
+        <location filename="ui/about_dialog.ui" line="35"/>
+        <source>TextLabel</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="widget/about_dialog.cpp" line="7"/>
+        <source>About NPG</source>
+        <translation>关于NPG</translation>
+    </message>
+    <message>
+        <location filename="widget/about_dialog.cpp" line="10"/>
+        <source>  Netword packet generator(NPG) is a tool used to construct and send packets, the purpose is to help the developers of network easily constructed test data.						 
+  NPG&apos;s feature is by modifying the configuration file can support a variety of packet formats						 
+  Author:public0821@gmail.com</source>
+        <translation type="unfinished">    网络数据包生成器（NPG）是一个帮助网络程序开发人员构造并发送数据包的工具
+
+    其特点是可以通过配置XML的方法来增加对自定义协议的支持
+
+    作者：public0821@gmail.com</translation>
+    </message>
+</context>
+<context>
+    <name>ConverterDialog</name>
+    <message>
+        <location filename="ui/converter_dialog.ui" line="14"/>
+        <source>ConverterDialog</source>
+        <translation>转换工具</translation>
+    </message>
+    <message>
+        <location filename="ui/converter_dialog.ui" line="26"/>
+        <location filename="ui/converter_dialog.ui" line="39"/>
+        <source>TextLabel</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ui/converter_dialog.ui" line="52"/>
+        <source>Revert</source>
+        <translation>恢复</translation>
+    </message>
+    <message>
+        <location filename="ui/converter_dialog.ui" line="59"/>
+        <source>Convert</source>
+        <translation>转换</translation>
+    </message>
+    <message>
+        <location filename="widget/converter_dialog.cpp" line="59"/>
+        <location filename="widget/converter_dialog.cpp" line="78"/>
+        <source>tip</source>
+        <translation>提示信息</translation>
+    </message>
+</context>
+<context>
     <name>DataTabSheet</name>
     <message>
         <location filename="widget/data_tab_sheet.cpp" line="31"/>
@@ -381,6 +440,114 @@
     <message>
         <source>Load</source>
         <translation type="obsolete">加载</translation>
+    </message>
+    <message>
+        <location filename="tools/base64_converter.cpp" line="27"/>
+        <source>Base64 Converter</source>
+        <translation>BASE64转换</translation>
+    </message>
+    <message>
+        <location filename="tools/base64_converter.cpp" line="32"/>
+        <location filename="tools/hex_converter.cpp" line="19"/>
+        <source>String:</source>
+        <translation>字符串:</translation>
+    </message>
+    <message>
+        <location filename="tools/base64_converter.cpp" line="37"/>
+        <source>Base64:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="tools/base64_converter.cpp" line="67"/>
+        <source>Invalid base64 code length</source>
+        <oldsource>Invalid length</oldsource>
+        <translation>无效的BASE64编码长度</translation>
+    </message>
+    <message>
+        <location filename="tools/base64_converter.cpp" line="80"/>
+        <source>Invalid base64 code</source>
+        <translation>无效的BASE64编码</translation>
+    </message>
+    <message>
+        <location filename="tools/hex_converter.cpp" line="14"/>
+        <source>Hex Converter</source>
+        <translation>HEX转换</translation>
+    </message>
+    <message>
+        <location filename="tools/hex_converter.cpp" line="24"/>
+        <source>Hex:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="tools/hex_converter.cpp" line="50"/>
+        <source>Invalid hex string length</source>
+        <oldsource>Invalid hex char length</oldsource>
+        <translation>无效的HEX字符串长度</translation>
+    </message>
+    <message>
+        <location filename="tools/hex_converter.cpp" line="91"/>
+        <source>Invalid hex char</source>
+        <translation>无效的HEX字符</translation>
+    </message>
+    <message>
+        <location filename="tools/hex_converter.cpp" line="108"/>
+        <source>Invalid hex number</source>
+        <translation>无效的HEX数字</translation>
+    </message>
+    <message>
+        <location filename="tools/ip_converter.cpp" line="15"/>
+        <source>IP Converter</source>
+        <translation>IP转换</translation>
+    </message>
+    <message>
+        <location filename="tools/ip_converter.cpp" line="20"/>
+        <source>IP String:</source>
+        <translation>IP地址（字符串）</translation>
+    </message>
+    <message>
+        <location filename="tools/ip_converter.cpp" line="25"/>
+        <source>IP Number(Network byte order):</source>
+        <translation>IP地址（数字）</translation>
+    </message>
+    <message>
+        <location filename="tools/ip_converter.cpp" line="34"/>
+        <source>Invalid ip address</source>
+        <translation>无效的IP地址</translation>
+    </message>
+    <message>
+        <location filename="tools/ip_converter.cpp" line="48"/>
+        <source>Invalid number</source>
+        <translation>无效的数字</translation>
+    </message>
+    <message>
+        <location filename="tools/ip_converter.cpp" line="55"/>
+        <source>Invalid ip number</source>
+        <translation>无效的IP（数字）</translation>
+    </message>
+    <message>
+        <location filename="tools/time_converter.cpp" line="14"/>
+        <source>Time Converter</source>
+        <translation>时间转换</translation>
+    </message>
+    <message>
+        <location filename="tools/time_converter.cpp" line="19"/>
+        <source>TIME String(1998-02-21 12:21:00):</source>
+        <translation>时间串(1998-02-21 12:21:00):</translation>
+    </message>
+    <message>
+        <location filename="tools/time_converter.cpp" line="24"/>
+        <source>the time since the Epoch (00:00:00 UTC, January 1, 1970), measured in seconds:</source>
+        <translation>从（00:00:00 UTC，1970年1月1日）以来的经过的秒数：</translation>
+    </message>
+    <message>
+        <location filename="tools/time_converter.cpp" line="43"/>
+        <source>Invalid time format</source>
+        <translation>无效的时间格式</translation>
+    </message>
+    <message>
+        <location filename="tools/time_converter.cpp" line="63"/>
+        <source>Invalid number, maybe too long</source>
+        <translation>无效的数字，可能是太长了</translation>
     </message>
 </context>
 <context>
