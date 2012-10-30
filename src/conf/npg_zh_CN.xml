@@ -192,5 +192,119 @@
             <Category Name="Response" Tip="响应" Many="true">
             </Category>
         </Protocol>
+        <Protocol Name="YAMU_UDP" Dependence="UDP">
+            <Category Name="Header">
+                <Field Name="version" Type="int" InputMethod="lineedit" DefaultValue="1" Length="1" Tip="版本，1个字节整型，该字节为0x01"/>
+                <Field Name="cid" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0"   Tip="操作号，2个字节整型，有效值0~216，用于表示一个操作的流水号。操作的发送者必须填写CID，操作的执行者返回执行结果时，附相同的CID，表示对应该操作的执行结果。不同的操作采用不同的CID。0x0000为特殊CID，表示此报文不是会话类型报文，如数据上报。"/>
+                <Field Name="dt" Type="int" InputMethod="select" Length="1"  Tip="设备类型，1个字节整型，有效值0~28，用于标识设备类型。对于设备相关的数据，如针对某一设备的配置，在通讯时，发送方必须填写DT。0x00为特殊值，表示设备类型无关。0xff也为特殊值，表示所有设备。0x01~0xfe表示某一具体的设备类型。">
+                    <Item Value="1" Text="DNsys"/>
+                    <Item Value="2" Text="FlowExport"/>
+                    <Item Value="3" Text="AppGateway"/>
+                    <Item Value="4" Text="Recursive BIND"/>
+                    <Item Value="5" Text="Recursive CNS"/>
+                    <Item Value="6" Text="Authority DNsys"/>
+                    <Item Value="7" Text="Authority BIND"/>
+                    <Item Value="8" Text="DMS"/>
+                </Field>
+                <Field Name="did" Type="int" InputMethod="lineedit" Length="1" DefaultValue="1" Tip="设备编号，1个字节整型，有效值0~28，用于标识设备编号。0x00和0xff为特殊值。"/>
+                <Field Name="bt" Type="int" InputMethod="lineedit" Length="1" Tip="业务类型，1个字节整型，有效值1~28，用于标识业务类型。"/>
+                <Field Name="sbt" Type="int" InputMethod="lineedit" Length="2" Tip="子业务类型，2个字节整型，有效值1~216，用于标识子业务类型。BT和SBT一起，标识了该报文承担的某一具体的业务。"/>
+                <Field Name="op_rc" Type="int" InputMethod="select" Length="1" Tip="操作码或返回码，1个字节整型">
+                    <Item Value="20" Text="成功"/>
+                    <Item Value="30" Text="失败，其他格式错误"/>
+                    <Item Value="31" Text="失败，版本号不匹配，协议版本不支持"/>
+                    <Item Value="32" Text="失败，CID无效"/>
+                    <Item Value="33" Text="失败，DT不匹配"/>
+                    <Item Value="34" Text="失败，DID不匹配"/>
+                    <Item Value="35" Text="失败，BT无效或不支持"/>
+                    <Item Value="36" Text="失败，SBT无效或不支持"/>
+                    <Item Value="37" Text="失败，OP无效或不支持"/>
+                    <Item Value="38" Text="失败，BL与实际包体长度不匹配，或BL超出实现的长度"/>
+                    <Item Value="39" Text="失败，unit length出错"/>
+                    <Item Value="40" Text="其余系统错误"/>
+                    <Item Value="41" Text="系统忙"/>
+                    <Item Value="42" Text="操作超时"/>  
+                </Field>
+                <Field Name="bl" Type="int" InputMethod="lineedit" Length="4" Tip="报文体长度，4个字节整型，有效值0~232，表示该报文的报文体的长度，单位byte"/>
+                <Field Name="options" Type="string" InputMethod="lineedit" Length="7" DefaultValue="0000000" Editable="false" Tip="选项，7个字节，用于扩展。"/>
+            </Category>
+            <Category Name="Unit" Tip="报文体单元" Many="true">
+                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" Optional="true" ShowOnStart="true" Tip="单元长度"/>
+                <Field Name="content" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="false" Tip="单元内容(字符串)"/>
+                <Field Name="content" Type="int" InputMethod="lineedit" Length="2" Optional="true" ShowOnStart="false" Tip="单元内容(数字)"/>
+            </Category>
+        </Protocol>
+        <Protocol Name="YAMU_policy_zone" Dependence="TCP">
+            <Category Name="报文头">
+                <Field Name="version" Type="int" InputMethod="lineedit" DefaultValue="1" Length="1" Tip="版本，1个字节整型，该字节为0x01"/>
+                <Field Name="cid" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0"   Tip="操作号，2个字节整型，有效值0~216，用于表示一个操作的流水号。操作的发送者必须填写CID，操作的执行者返回执行结果时，附相同的CID，表示对应该操作的执行结果。不同的操作采用不同的CID。0x0000为特殊CID，表示此报文不是会话类型报文，如数据上报。"/>
+                <Field Name="dt" Type="int" InputMethod="select" Length="1"  Tip="设备类型，1个字节整型，有效值0~28，用于标识设备类型。对于设备相关的数据，如针对某一设备的配置，在通讯时，发送方必须填写DT。0x00为特殊值，表示设备类型无关。0xff也为特殊值，表示所有设备。0x01~0xfe表示某一具体的设备类型。">
+                    <Item Value="2" Text="FlowExport"/>
+                    <Item Value="1" Text="DNsys"/>
+                    <Item Value="3" Text="AppGateway"/>
+                    <Item Value="4" Text="Recursive BIND"/>
+                    <Item Value="5" Text="Recursive CNS"/>
+                    <Item Value="6" Text="Authority DNsys"/>
+                    <Item Value="7" Text="Authority BIND"/>
+                    <Item Value="8" Text="DMS"/>
+                </Field>
+                <Field Name="did" Type="int" InputMethod="lineedit" Length="1" DefaultValue="1" Tip="设备编号，1个字节整型，有效值0~28，用于标识设备编号。0x00和0xff为特殊值。"/>
+                <Field Name="bt" Type="int" InputMethod="lineedit" DefaultValue="33" Length="1" Tip="业务类型，1个字节整型，有效值1~28，用于标识业务类型。"/>
+                <Field Name="sbt" Type="int" InputMethod="lineedit" DefaultValue="257" Length="2" Tip="子业务类型，2个字节整型，有效值1~216，用于标识子业务类型。BT和SBT一起，标识了该报文承担的某一具体的业务。"/>
+                <Field Name="op_rc" Type="int" InputMethod="select" Length="1" Tip="操作码或返回码，1个字节整型">
+                <Item Value="2" Text="条目添加"/>
+                <Item Value="3" Text="条目删除"/>
+                </Field>
+                <Field Name="bl" Type="int" InputMethod="lineedit" Length="4" Tip="报文体长度，4个字节整型，有效值0~232，表示该报文的报文体的长度，单位byte"/>
+                <Field Name="options" Type="string" InputMethod="lineedit" Length="7" DefaultValue="0000000" Editable="false" Tip="选项，7个字节，用于扩展。"/>
+            </Category>
+            <Category Name="报文体">
+                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" ShowOnStart="true" Tip="单元长度"/>
+                <Field Name="sn" Type="int" InputMethod="lineedit" Length="4" DefaultValue="1" ShowOnStart="true" Tip="sn是个4字节构成的无符号整型，用于配置同步"/>
+                <Field Name="zone_name" Type="string" InputMethod="lineedit" ShowOnStart="false" Tip="策略域名称(字符串)"/>
+                <Field Name="tail" Type="int" InputMethod="lineedit" Length="1" Editable="false" DefaultValue="0" ShowOnStart="true" Tip="字符串结束标志"/>
+            </Category>
+        </Protocol>
+                <Protocol Name="YAMU_business" Dependence="TCP">
+            <Category Name="报文头">
+                <Field Name="version" Type="int" InputMethod="lineedit" DefaultValue="1" Length="1" Tip="版本，1个字节整型，该字节为0x01"/>
+                <Field Name="cid" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0"   Tip="操作号，2个字节整型"/>
+                <Field Name="dt" Type="int" InputMethod="select" Length="1"  Tip="设备类型">
+                    <Item Value="2" Text="FlowExport"/>
+                    <Item Value="1" Text="DNsys"/>
+                    <Item Value="3" Text="AppGateway"/>
+                    <Item Value="4" Text="Recursive BIND"/>
+                    <Item Value="5" Text="Recursive CNS"/>
+                    <Item Value="6" Text="Authority DNsys"/>
+                    <Item Value="7" Text="Authority BIND"/>
+                    <Item Value="8" Text="DMS"/>
+                </Field>
+                <Field Name="did" Type="int" InputMethod="lineedit" Length="1" DefaultValue="1" Tip="设备编号，1个字节整型。0x00和0xff为特殊值。"/>
+                <Field Name="bt" Type="int" InputMethod="lineedit" DefaultValue="34" Length="1" Tip="业务类型，1个字节整型，用于标识业务类型。"/>
+                <Field Name="sbt" Type="int" InputMethod="lineedit" DefaultValue="257" Length="2" Tip="子业务类型，2个字节整型，用于标识子业务类型。"/>
+                <Field Name="op_rc" Type="int" InputMethod="select" Length="1" Tip="操作码或返回码，1个字节整型">
+                <Item Value="2" Text="条目添加"/>
+                <Item Value="3" Text="条目删除"/>
+                </Field>
+                <Field Name="bl" Type="int" InputMethod="lineedit" Length="4" Tip="报文体长度，4个字节整型，表示该报文的报文体的长度，单位byte"/>
+                <Field Name="options" Type="string" InputMethod="lineedit" Length="7" DefaultValue="0000000" Editable="false" Tip="选项，7个字节，用于扩展。"/>
+            </Category>
+            <Category Name="unit1">
+                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" ShowOnStart="true" Tip="单元长度"/>
+                <Field Name="sn" Type="int" InputMethod="lineedit" Length="4" DefaultValue="1" ShowOnStart="true" Tip="sn是个4字节构成的无符号整型，用于配置同步"/>
+                <Field Name="domain_name" Type="string" InputMethod="lineedit" ShowOnStart="false" Tip="业务名称(域名)"/>
+                <Field Name="tail" Type="int" InputMethod="lineedit" Length="1" Editable="false" DefaultValue="0" ShowOnStart="true" Tip="字符串结束标志"/>
+            </Category>
+            <Category Name="unit2">
+                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" ShowOnStart="true" Tip="单元长度"/>
+                <Field Name="sn" Type="int" InputMethod="lineedit" Length="4" DefaultValue="1" ShowOnStart="true" Tip="sn是个4字节构成的无符号整型，用于配置同步"/>
+                <Field Name="sip_seg_count1" Type="int" InputMethod="lineedit" Length="2" ShowOnStart="true" Tip="包含的ip段个数"/>
+            </Category>
+            <Category Name="ip_seg" Many="true">
+            <Field Name="ip_versin" Type="int" InputMethod="lineedit" Length="1" ShowOnStart="true" Tip="ip版本"/>
+                <Field Name="subnet" Type="ip" InputMethod="lineedit" howOnStart="true" Tip="子网号"/>
+                <Field Name="netmask_" Type="int" InputMethod="lineedit" Length="1" ShowOnStart="true" Tip="掩码位数"/>
+            </Category>
+        </Protocol>
     </Protocols>
 </Npg>

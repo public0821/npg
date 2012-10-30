@@ -27,7 +27,7 @@ QString EthernetWidget::preSendData()
 	{
 		return tr("'preSendData' function has been called");//this message just for developer, End-user will not see it
 	}
-
+	m_ethernet = new Ethernet();
 	int index = ui.protocol_box->currentIndex();
 	m_protocol = ui.protocol_box->itemData(index).toInt();
 	m_dstmac = ui.to_mac_edit->text().toLocal8Bit().constData();

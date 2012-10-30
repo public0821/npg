@@ -14,7 +14,7 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 	ui.cancel_button->setText(tr("Cancel"));
 
 	connect(ui.ok_button, SIGNAL(released()), this, SLOT(onOk()));
-	connect(ui.cancel_button, SIGNAL(released()), this, SLOT(onClose()));
+	connect(ui.cancel_button, SIGNAL(released()), this, SLOT(reject()));
 	connect(ui.select_all_checkbox, SIGNAL(stateChanged(int)), this, SLOT(onSelectAllChange(int)));
 
 	ui.tree_widget->setColumnCount(4);

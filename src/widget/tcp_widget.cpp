@@ -81,9 +81,10 @@ QString TcpWidget::preSendData()
 	bool ret = m_tcp->connect(m_ip.c_str(), m_port, m_timeout);
 	if (!ret)
 	{
+		QString  temp_error(tr(m_tcp->errorString()));
 		delete m_tcp;
 		m_tcp = NULL;
-		return QString(tr(m_tcp->errorString()));
+		return temp_error;
 	}
 
 	return QString();
