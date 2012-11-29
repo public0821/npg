@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="gbk"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Npg>
     <Protocols>
         <Protocol Name="HTTP" Dependence="TCP">
@@ -24,38 +24,38 @@
         </Protocol>
         <Protocol Name="Ether_arp" Dependence="ETHERNET" DependenceParam="ARP">
             <Category Name="Header">
-                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="Ó²¼þµØÖ·¸ñÊ½"/>
-                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="Ð­ÒéµØÖ·¸ñÊ½"/>
-                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="Ó²¼þµØÖ·³¤¶È"/>
-                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="Ð­ÒéµØÖ·³¤¶È"/>
-                <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP²Ù×÷Âë">
-                    <Item Value="1" Text="arpÇëÇó"/>
-                    <Item Value="2" Text="arpÏìÓ¦"/>
+                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="ç¡¬ä»¶åœ°å€æ ¼å¼"/>
+                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="åè®®åœ°å€æ ¼å¼"/>
+                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="ç¡¬ä»¶åœ°å€é•¿åº¦"/>
+                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="åè®®åœ°å€é•¿åº¦"/>
+                <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARPæ“ä½œç ">
+                    <Item Value="1" Text="arpè¯·æ±‚"/>
+                    <Item Value="2" Text="arpå“åº”"/>
                 </Field>
             </Category>
             <Category Name="Data">
-                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="·¢ËÍ¶ËÓ²¼þµØÖ·(MAC)"/>
-                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="·¢ËÍ¶ËÐ­ÒéµØÖ·(IP)"/>
-                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="Ä¿µÄ¶ËÓ²¼þµØÖ·(MAC)"/>
-                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="Ä¿µÄ¶ËÐ­ÒéµØÖ·(IP)"/>
+                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="å‘é€ç«¯ç¡¬ä»¶åœ°å€(MAC)"/>
+                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="å‘é€ç«¯åè®®åœ°å€(IP)"/>
+                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="ç›®çš„ç«¯ç¡¬ä»¶åœ°å€(MAC)"/>
+                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="ç›®çš„ç«¯åè®®åœ°å€(IP)"/>
             </Category>
         </Protocol>
         <Protocol Name="Ether_rarp" Dependence="ETHERNET" DependenceParam="RARP">
             <Category Name="Header">
-                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="Ó²¼þµØÖ·¸ñÊ½"/>
-                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="Ð­ÒéµØÖ·¸ñÊ½"/>
-                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="Ó²¼þµØÖ·³¤¶È"/>
-                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="Ð­ÒéµØÖ·³¤¶È"/>
+                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="ç¡¬ä»¶åœ°å€æ ¼å¼"/>
+                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="åè®®åœ°å€æ ¼å¼"/>
+                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="ç¡¬ä»¶åœ°å€é•¿åº¦"/>
+                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="åè®®åœ°å€é•¿åº¦"/>
                 <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP opcode (command)">
-                    <Item Value="3" Text="rarpÇëÇó"/>
-                    <Item Value="4" Text="rarpÏìÓ¦"/>
+                    <Item Value="3" Text="rarpè¯·æ±‚"/>
+                    <Item Value="4" Text="rarpå“åº”"/>
                 </Field>
             </Category>
             <Category Name="Data">
-                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="·¢ËÍ¶ËÓ²¼þµØÖ·(MAC)"/>
-                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="·¢ËÍ¶ËÐ­ÒéµØÖ·(IP)"/>
-                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="Ä¿µÄ¶ËÓ²¼þµØÖ·(MAC)"/>
-                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="Ä¿µÄ¶ËÐ­ÒéµØÖ·(IP)"/>
+                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="å‘é€ç«¯ç¡¬ä»¶åœ°å€(MAC)"/>
+                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="å‘é€ç«¯åè®®åœ°å€(IP)"/>
+                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="ç›®çš„ç«¯ç¡¬ä»¶åœ°å€(MAC)"/>
+                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="ç›®çš„ç«¯åè®®åœ°å€(IP)"/>
             </Category>
         </Protocol>
         <Protocol Name="ICMP" Dependence="IP" DependenceParam="ICMP">
@@ -91,13 +91,13 @@
         </Protocol>
         <Protocol Name="RAW_UDP" Dependence="IP" DependenceParam="UDP">
             <Category Name="Header">
-                <Field Name="src_port" Type="int" InputMethod="lineedit" Length="2" Tip="Ô´¶Ë¿Ú"/>
-                <Field Name="dst_port" Type="int" InputMethod="lineedit" Length="2" Tip="Ä¿µÄ¶Ë¿Ú"/>
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2"  Tip="Êý¾Ý°ü³¤¶È£¬°üº¬8×Ö½ÚµÄ°üÍ·£¬×îÐ¡³¤¶ÈÎª8"/>
-                <Field Name="checknum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="Ð£ÑéºÍ£¨°üº¬Ê×²¿ºÍÊý¾Ý£©£¨¿ÉÑ¡µÄ£©"/>
+                <Field Name="src_port" Type="int" InputMethod="lineedit" Length="2" Tip="æºç«¯å£"/>
+                <Field Name="dst_port" Type="int" InputMethod="lineedit" Length="2" Tip="ç›®çš„ç«¯å£"/>
+                <Field Name="length" Type="int" InputMethod="lineedit" Length="2"  Tip="æ•°æ®åŒ…é•¿åº¦ï¼ŒåŒ…å«8å­—èŠ‚çš„åŒ…å¤´ï¼Œæœ€å°é•¿åº¦ä¸º8"/>
+                <Field Name="checknum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="æ ¡éªŒå’Œï¼ˆåŒ…å«é¦–éƒ¨å’Œæ•°æ®ï¼‰ï¼ˆå¯é€‰çš„ï¼‰"/>
             </Category>
             <Category Name="Data">
-                <Field Name="data" Type="string" InputMethod="textedit" Tip="Êý¾Ý"/>
+                <Field Name="data" Type="string" InputMethod="textedit" Tip="æ•°æ®"/>
             </Category>
         </Protocol>
         <Protocol Name="NETFLOW_V5" Dependence="UDP">
@@ -137,173 +137,59 @@
         </Protocol>
         <Protocol Name="DNS" Dependence="UDP" RFC="1035">
             <Category Name="Header">
-                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" DefaultValue="seq" Tip="16Î»µÄÎ¨Ò»ID£¬¸ÃIDÔÚ²éÑ¯ÖÐÉèÖÃ£¬²¢ÔÚÏìÓ¦ÖÐ·µ»Ø£¬±ãÓÚÇëÇó¶ËÅÐ¶Ï¸ÃÏìÓ¦¶ÔÓ¦ÄÄ¸öÇëÇó."/>
-                <Field Name="op_flag" Type="int" InputMethod="none" Length="2"  Tip="²Ù×÷±ê¼Ç">
-                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1"  Tip="±êÊ¶ÇëÇó(0)¡¢ÏìÓ¦(1)">
-                        <Item Value="0" Text="ÇëÇó"/>
-                        <Item Value="1" Text="ÏìÓ¦"/>
+                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" DefaultValue="seq" Tip="16ä½çš„å”¯ä¸€IDï¼Œè¯¥IDåœ¨æŸ¥è¯¢ä¸­è®¾ç½®ï¼Œå¹¶åœ¨å“åº”ä¸­è¿”å›žï¼Œä¾¿äºŽè¯·æ±‚ç«¯åˆ¤æ–­è¯¥å“åº”å¯¹åº”å“ªä¸ªè¯·æ±‚."/>
+                <Field Name="op_flag" Type="int" InputMethod="none" Length="2"  Tip="æ“ä½œæ ‡è®°">
+                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1"  Tip="æ ‡è¯†è¯·æ±‚(0)ã€å“åº”(1)">
+                        <Item Value="0" Text="è¯·æ±‚"/>
+                        <Item Value="1" Text="å“åº”"/>
                     </SubField>
-                    <SubField Name="opcode" Type="bit" InputMethod="select" Length="4"  Tip="²éÑ¯²Ù×÷ÀàÐÍ.  ¸ÃÖµÔÚ²éÑ¯ÖÐÉèÖÃ£¬²¢ÔÚÏìÓ¦ÖÐ·µ»Ø">
-                        <Item Value="0" Text="±ê×¼²éÑ¯"/>
-                        <Item Value="1" Text="·´Ïò²éÑ¯"/>
-                        <Item Value="2" Text="·þÎñÆ÷×´Ì¬²éÑ¯"/>
+                    <SubField Name="opcode" Type="bit" InputMethod="select" Length="4"  Tip="æŸ¥è¯¢æ“ä½œç±»åž‹.  è¯¥å€¼åœ¨æŸ¥è¯¢ä¸­è®¾ç½®ï¼Œå¹¶åœ¨å“åº”ä¸­è¿”å›ž">
+                        <Item Value="0" Text="æ ‡å‡†æŸ¥è¯¢"/>
+                        <Item Value="1" Text="åå‘æŸ¥è¯¢"/>
+                        <Item Value="2" Text="æœåŠ¡å™¨çŠ¶æ€æŸ¥è¯¢"/>
                     </SubField>
-                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Tip="ÊÚÈ¨»Ø´ð - ¸ÃÃû×Ö·þÎñÆ÷ÊÇ·ñÊÚÈ¨ÓÚ¸Ã·þÎñÆ÷">
-                        <Item Value="0" Text="·ñ"/>
-                        <Item Value="1" Text="ÊÇ"/>
+                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Tip="æŽˆæƒå›žç­” - è¯¥åå­—æœåŠ¡å™¨æ˜¯å¦æŽˆæƒäºŽè¯¥æœåŠ¡å™¨">
+                        <Item Value="0" Text="å¦"/>
+                        <Item Value="1" Text="æ˜¯"/>
                     </SubField>
-                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Tip="¿É½Ø¶Ï - Ê¹ÓÃUDPÊ±£¬Ëü±íÊ¾µ±Ó¦´ðµÄ×Ü³¤¶È³¬¹ý512×Ö½ÚÊ±£¬Ö»·µ»ØÇ°512×Ö½Ú">
-                        <Item Value="0" Text="·ñ"/>
-                        <Item Value="1" Text="ÊÇ"/>
+                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Tip="å¯æˆªæ–­ - ä½¿ç”¨UDPæ—¶ï¼Œå®ƒè¡¨ç¤ºå½“åº”ç­”çš„æ€»é•¿åº¦è¶…è¿‡512å­—èŠ‚æ—¶ï¼Œåªè¿”å›žå‰512å­—èŠ‚">
+                        <Item Value="0" Text="å¦"/>
+                        <Item Value="1" Text="æ˜¯"/>
                     </SubField>
-                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1"  Tip="ÆÚÍûµÝ¹é - ¸ÃÖµÔÚ²éÑ¯ÖÐÉèÖÃ£¬²¢ÔÚÏìÓ¦ÖÐ·µ»Ø">
-                        <Item Value="0" Text="·ñ"/>
-                        <Item Value="1" Text="ÊÇ"/>
+                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1"  Tip="æœŸæœ›é€’å½’ - è¯¥å€¼åœ¨æŸ¥è¯¢ä¸­è®¾ç½®ï¼Œå¹¶åœ¨å“åº”ä¸­è¿”å›ž">
+                        <Item Value="0" Text="å¦"/>
+                        <Item Value="1" Text="æ˜¯"/>
                     </SubField>
-                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1"  Tip="¿ÉÓÃµÝ¹é-Èç¹ûDNS·þÎñÆ÷Ö§³ÖµÝ¹é²éÑ¯£¬ÔòÔÚÏìÓ¦ÖÐ½«¸Ã±ÈÌØÉèÖÃÎª1">
-                        <Item Value="0" Text="·ñ"/>
-                        <Item Value="1" Text="ÊÇ"/>
+                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1"  Tip="å¯ç”¨é€’å½’-å¦‚æžœDNSæœåŠ¡å™¨æ”¯æŒé€’å½’æŸ¥è¯¢ï¼Œåˆ™åœ¨å“åº”ä¸­å°†è¯¥æ¯”ç‰¹è®¾ç½®ä¸º1">
+                        <Item Value="0" Text="å¦"/>
+                        <Item Value="1" Text="æ˜¯"/>
                     </SubField>
-                    <SubField Name="zero" Type="bit" InputMethod="lineedit" DefaultValue="0" Editable="false" Length="3"  Tip="±£Áô×Ö¶Î£¬±ØÐëÎª0"/>
-                    <SubField Name="rcode" Type="bit" InputMethod="select" Length="4"  Tip="·µ»ØÂë">
-                        <Item Value="0" Text="Ã»ÓÐ²î´í"/>
-                        <Item Value="1" Text="¸ñÊ½´íÎó"/>
-                        <Item Value="2" Text="·þÎñÆ÷´íÎó"/>
-                        <Item Value="3" Text="Ãû×Ö´íÎó"/>
-                        <Item Value="4" Text="Î´ÊµÏÖ"/>
-                        <Item Value="5" Text="¾Ü¾ø"/>
+                    <SubField Name="zero" Type="bit" InputMethod="lineedit" DefaultValue="0" Editable="false" Length="3"  Tip="ä¿ç•™å­—æ®µï¼Œå¿…é¡»ä¸º0"/>
+                    <SubField Name="rcode" Type="bit" InputMethod="select" Length="4"  Tip="è¿”å›žç ">
+                        <Item Value="0" Text="æ²¡æœ‰å·®é”™"/>
+                        <Item Value="1" Text="æ ¼å¼é”™è¯¯"/>
+                        <Item Value="2" Text="æœåŠ¡å™¨é”™è¯¯"/>
+                        <Item Value="3" Text="åå­—é”™è¯¯"/>
+                        <Item Value="4" Text="æœªå®žçŽ°"/>
+                        <Item Value="5" Text="æ‹’ç»"/>
                     </SubField>
                 </Field>
-                <Field Name="QDCOUNT" Type="int" InputMethod="lineedit" Length="2" DefaultValue="1" Tip="ÎÊÌâÊý"/>
-                <Field Name="ANCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="×ÊÔ´¼ÇÂ¼Êý"/>
-                <Field Name="NSCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="ÊÚÈ¨×ÊÔ´¼ÇÂ¼Êý"/>
-                <Field Name="ARCOUNT " Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="¶îÍâ×ÊÔ´¼ÇÂ¼Êý"/>
+                <Field Name="QDCOUNT" Type="int" InputMethod="lineedit" Length="2" DefaultValue="1" Tip="é—®é¢˜æ•°"/>
+                <Field Name="ANCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="èµ„æºè®°å½•æ•°"/>
+                <Field Name="NSCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="æŽˆæƒèµ„æºè®°å½•æ•°"/>
+                <Field Name="ARCOUNT " Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="é¢å¤–èµ„æºè®°å½•æ•°"/>
             </Category>
             <Category Name="Request" Many="true">
-                <Field Name="count" Type="int" InputMethod="lineedit" Length="1" Optional="true" ShowOnStart="true" Tip="ÏÂÒ»¸ö×Ö¶Î£¨Ãû³Æ£©µÄ³¤¶È"/>
-                <Field Name="name" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="true" Tip="²éÑ¯Ãû³Æ"/>
-                <Field Name="count_end" Type="int" InputMethod="lineedit" Length="1" Editable="false"  DefaultValue="0" Tip="Ãû³Æ½áÊø±êÊ¶"/>
-                <Field Name="QTYPE" Type="int" InputMethod="select" Length="2" Tip="²éÑ¯ÀàÐÍ">
+                <Field Name="count" Type="int" InputMethod="lineedit" Length="1" Optional="true" ShowOnStart="true" Tip="ä¸‹ä¸€ä¸ªå­—æ®µï¼ˆåç§°ï¼‰çš„é•¿åº¦"/>
+                <Field Name="name" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="true" Tip="æŸ¥è¯¢åç§°"/>
+                <Field Name="count_end" Type="int" InputMethod="lineedit" Length="1" Editable="false"  DefaultValue="0" Tip="åç§°ç»“æŸæ ‡è¯†"/>
+                <Field Name="QTYPE" Type="int" InputMethod="select" Length="2" Tip="æŸ¥è¯¢ç±»åž‹">
                         <Item Value="1" Text="A(IP ADDR)"/>
                         <Item Value="12" Text="PTR"/>
                 </Field>
-                <Field Name="QCLASS" Type="int" Length="2" InputMethod="lineedit" DefaultValue="1" Tip="²éÑ¯Àà£¬Í¨³£ÉèÖÃÎª1, ±íÊ¾ÍøÂçµØÖ·"/>
+                <Field Name="QCLASS" Type="int" Length="2" InputMethod="lineedit" DefaultValue="1" Tip="æŸ¥è¯¢ç±»ï¼Œé€šå¸¸è®¾ç½®ä¸º1, è¡¨ç¤ºç½‘ç»œåœ°å€"/>
             </Category>
-            <Category Name="Response" Tip="ÏìÓ¦" Many="true">
-            </Category>
-        </Protocol>
-        <Protocol Name="YAMU_UDP" Dependence="UDP">
-            <Category Name="Header">
-                <Field Name="version" Type="int" InputMethod="lineedit" DefaultValue="1" Length="1" Tip="°æ±¾£¬1¸ö×Ö½ÚÕûÐÍ£¬¸Ã×Ö½ÚÎª0x01"/>
-                <Field Name="cid" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0"   Tip="²Ù×÷ºÅ£¬2¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ0~216£¬ÓÃÓÚ±íÊ¾Ò»¸ö²Ù×÷µÄÁ÷Ë®ºÅ¡£²Ù×÷µÄ·¢ËÍÕß±ØÐëÌîÐ´CID£¬²Ù×÷µÄÖ´ÐÐÕß·µ»ØÖ´ÐÐ½á¹ûÊ±£¬¸½ÏàÍ¬µÄCID£¬±íÊ¾¶ÔÓ¦¸Ã²Ù×÷µÄÖ´ÐÐ½á¹û¡£²»Í¬µÄ²Ù×÷²ÉÓÃ²»Í¬µÄCID¡£0x0000ÎªÌØÊâCID£¬±íÊ¾´Ë±¨ÎÄ²»ÊÇ»á»°ÀàÐÍ±¨ÎÄ£¬ÈçÊý¾ÝÉÏ±¨¡£"/>
-                <Field Name="dt" Type="int" InputMethod="select" Length="1"  Tip="Éè±¸ÀàÐÍ£¬1¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ0~28£¬ÓÃÓÚ±êÊ¶Éè±¸ÀàÐÍ¡£¶ÔÓÚÉè±¸Ïà¹ØµÄÊý¾Ý£¬ÈçÕë¶ÔÄ³Ò»Éè±¸µÄÅäÖÃ£¬ÔÚÍ¨Ñ¶Ê±£¬·¢ËÍ·½±ØÐëÌîÐ´DT¡£0x00ÎªÌØÊâÖµ£¬±íÊ¾Éè±¸ÀàÐÍÎÞ¹Ø¡£0xffÒ²ÎªÌØÊâÖµ£¬±íÊ¾ËùÓÐÉè±¸¡£0x01~0xfe±íÊ¾Ä³Ò»¾ßÌåµÄÉè±¸ÀàÐÍ¡£">
-                    <Item Value="1" Text="DNsys"/>
-                    <Item Value="2" Text="FlowExport"/>
-                    <Item Value="3" Text="AppGateway"/>
-                    <Item Value="4" Text="Recursive BIND"/>
-                    <Item Value="5" Text="Recursive CNS"/>
-                    <Item Value="6" Text="Authority DNsys"/>
-                    <Item Value="7" Text="Authority BIND"/>
-                    <Item Value="8" Text="DMS"/>
-                </Field>
-                <Field Name="did" Type="int" InputMethod="lineedit" Length="1" DefaultValue="1" Tip="Éè±¸±àºÅ£¬1¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ0~28£¬ÓÃÓÚ±êÊ¶Éè±¸±àºÅ¡£0x00ºÍ0xffÎªÌØÊâÖµ¡£"/>
-                <Field Name="bt" Type="int" InputMethod="lineedit" Length="1" Tip="ÒµÎñÀàÐÍ£¬1¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ1~28£¬ÓÃÓÚ±êÊ¶ÒµÎñÀàÐÍ¡£"/>
-                <Field Name="sbt" Type="int" InputMethod="lineedit" Length="2" Tip="×ÓÒµÎñÀàÐÍ£¬2¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ1~216£¬ÓÃÓÚ±êÊ¶×ÓÒµÎñÀàÐÍ¡£BTºÍSBTÒ»Æð£¬±êÊ¶ÁË¸Ã±¨ÎÄ³Ðµ£µÄÄ³Ò»¾ßÌåµÄÒµÎñ¡£"/>
-                <Field Name="op_rc" Type="int" InputMethod="select" Length="1" Tip="²Ù×÷Âë»ò·µ»ØÂë£¬1¸ö×Ö½ÚÕûÐÍ">
-                    <Item Value="20" Text="³É¹¦"/>
-                    <Item Value="30" Text="Ê§°Ü£¬ÆäËû¸ñÊ½´íÎó"/>
-                    <Item Value="31" Text="Ê§°Ü£¬°æ±¾ºÅ²»Æ¥Åä£¬Ð­Òé°æ±¾²»Ö§³Ö"/>
-                    <Item Value="32" Text="Ê§°Ü£¬CIDÎÞÐ§"/>
-                    <Item Value="33" Text="Ê§°Ü£¬DT²»Æ¥Åä"/>
-                    <Item Value="34" Text="Ê§°Ü£¬DID²»Æ¥Åä"/>
-                    <Item Value="35" Text="Ê§°Ü£¬BTÎÞÐ§»ò²»Ö§³Ö"/>
-                    <Item Value="36" Text="Ê§°Ü£¬SBTÎÞÐ§»ò²»Ö§³Ö"/>
-                    <Item Value="37" Text="Ê§°Ü£¬OPÎÞÐ§»ò²»Ö§³Ö"/>
-                    <Item Value="38" Text="Ê§°Ü£¬BLÓëÊµ¼Ê°üÌå³¤¶È²»Æ¥Åä£¬»òBL³¬³öÊµÏÖµÄ³¤¶È"/>
-                    <Item Value="39" Text="Ê§°Ü£¬unit length³ö´í"/>
-                    <Item Value="40" Text="ÆäÓàÏµÍ³´íÎó"/>
-                    <Item Value="41" Text="ÏµÍ³Ã¦"/>
-                    <Item Value="42" Text="²Ù×÷³¬Ê±"/>  
-                </Field>
-                <Field Name="bl" Type="int" InputMethod="lineedit" Length="4" Tip="±¨ÎÄÌå³¤¶È£¬4¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ0~232£¬±íÊ¾¸Ã±¨ÎÄµÄ±¨ÎÄÌåµÄ³¤¶È£¬µ¥Î»byte"/>
-                <Field Name="options" Type="string" InputMethod="lineedit" Length="7" DefaultValue="0000000" Editable="false" Tip="Ñ¡Ïî£¬7¸ö×Ö½Ú£¬ÓÃÓÚÀ©Õ¹¡£"/>
-            </Category>
-            <Category Name="Unit" Tip="±¨ÎÄÌåµ¥Ôª" Many="true">
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" Optional="true" ShowOnStart="true" Tip="µ¥Ôª³¤¶È"/>
-                <Field Name="content" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="false" Tip="µ¥ÔªÄÚÈÝ(×Ö·û´®)"/>
-                <Field Name="content" Type="int" InputMethod="lineedit" Length="2" Optional="true" ShowOnStart="false" Tip="µ¥ÔªÄÚÈÝ(Êý×Ö)"/>
-            </Category>
-        </Protocol>
-        <Protocol Name="YAMU_policy_zone" Dependence="TCP">
-            <Category Name="±¨ÎÄÍ·">
-                <Field Name="version" Type="int" InputMethod="lineedit" DefaultValue="1" Length="1" Tip="°æ±¾£¬1¸ö×Ö½ÚÕûÐÍ£¬¸Ã×Ö½ÚÎª0x01"/>
-                <Field Name="cid" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0"   Tip="²Ù×÷ºÅ£¬2¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ0~216£¬ÓÃÓÚ±íÊ¾Ò»¸ö²Ù×÷µÄÁ÷Ë®ºÅ¡£²Ù×÷µÄ·¢ËÍÕß±ØÐëÌîÐ´CID£¬²Ù×÷µÄÖ´ÐÐÕß·µ»ØÖ´ÐÐ½á¹ûÊ±£¬¸½ÏàÍ¬µÄCID£¬±íÊ¾¶ÔÓ¦¸Ã²Ù×÷µÄÖ´ÐÐ½á¹û¡£²»Í¬µÄ²Ù×÷²ÉÓÃ²»Í¬µÄCID¡£0x0000ÎªÌØÊâCID£¬±íÊ¾´Ë±¨ÎÄ²»ÊÇ»á»°ÀàÐÍ±¨ÎÄ£¬ÈçÊý¾ÝÉÏ±¨¡£"/>
-                <Field Name="dt" Type="int" InputMethod="select" Length="1"  Tip="Éè±¸ÀàÐÍ£¬1¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ0~28£¬ÓÃÓÚ±êÊ¶Éè±¸ÀàÐÍ¡£¶ÔÓÚÉè±¸Ïà¹ØµÄÊý¾Ý£¬ÈçÕë¶ÔÄ³Ò»Éè±¸µÄÅäÖÃ£¬ÔÚÍ¨Ñ¶Ê±£¬·¢ËÍ·½±ØÐëÌîÐ´DT¡£0x00ÎªÌØÊâÖµ£¬±íÊ¾Éè±¸ÀàÐÍÎÞ¹Ø¡£0xffÒ²ÎªÌØÊâÖµ£¬±íÊ¾ËùÓÐÉè±¸¡£0x01~0xfe±íÊ¾Ä³Ò»¾ßÌåµÄÉè±¸ÀàÐÍ¡£">
-                    <Item Value="2" Text="FlowExport"/>
-                    <Item Value="1" Text="DNsys"/>
-                    <Item Value="3" Text="AppGateway"/>
-                    <Item Value="4" Text="Recursive BIND"/>
-                    <Item Value="5" Text="Recursive CNS"/>
-                    <Item Value="6" Text="Authority DNsys"/>
-                    <Item Value="7" Text="Authority BIND"/>
-                    <Item Value="8" Text="DMS"/>
-                </Field>
-                <Field Name="did" Type="int" InputMethod="lineedit" Length="1" DefaultValue="1" Tip="Éè±¸±àºÅ£¬1¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ0~28£¬ÓÃÓÚ±êÊ¶Éè±¸±àºÅ¡£0x00ºÍ0xffÎªÌØÊâÖµ¡£"/>
-                <Field Name="bt" Type="int" InputMethod="lineedit" DefaultValue="33" Length="1" Tip="ÒµÎñÀàÐÍ£¬1¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ1~28£¬ÓÃÓÚ±êÊ¶ÒµÎñÀàÐÍ¡£"/>
-                <Field Name="sbt" Type="int" InputMethod="lineedit" DefaultValue="257" Length="2" Tip="×ÓÒµÎñÀàÐÍ£¬2¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ1~216£¬ÓÃÓÚ±êÊ¶×ÓÒµÎñÀàÐÍ¡£BTºÍSBTÒ»Æð£¬±êÊ¶ÁË¸Ã±¨ÎÄ³Ðµ£µÄÄ³Ò»¾ßÌåµÄÒµÎñ¡£"/>
-                <Field Name="op_rc" Type="int" InputMethod="select" Length="1" Tip="²Ù×÷Âë»ò·µ»ØÂë£¬1¸ö×Ö½ÚÕûÐÍ">
-                <Item Value="2" Text="ÌõÄ¿Ìí¼Ó"/>
-                <Item Value="3" Text="ÌõÄ¿É¾³ý"/>
-                </Field>
-                <Field Name="bl" Type="int" InputMethod="lineedit" Length="4" Tip="±¨ÎÄÌå³¤¶È£¬4¸ö×Ö½ÚÕûÐÍ£¬ÓÐÐ§Öµ0~232£¬±íÊ¾¸Ã±¨ÎÄµÄ±¨ÎÄÌåµÄ³¤¶È£¬µ¥Î»byte"/>
-                <Field Name="options" Type="string" InputMethod="lineedit" Length="7" DefaultValue="0000000" Editable="false" Tip="Ñ¡Ïî£¬7¸ö×Ö½Ú£¬ÓÃÓÚÀ©Õ¹¡£"/>
-            </Category>
-            <Category Name="±¨ÎÄÌå">
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" ShowOnStart="true" Tip="µ¥Ôª³¤¶È"/>
-                <Field Name="sn" Type="int" InputMethod="lineedit" Length="4" DefaultValue="1" ShowOnStart="true" Tip="snÊÇ¸ö4×Ö½Ú¹¹³ÉµÄÎÞ·ûºÅÕûÐÍ£¬ÓÃÓÚÅäÖÃÍ¬²½"/>
-                <Field Name="zone_name" Type="string" InputMethod="lineedit" ShowOnStart="false" Tip="²ßÂÔÓòÃû³Æ(×Ö·û´®)"/>
-                <Field Name="tail" Type="int" InputMethod="lineedit" Length="1" Editable="false" DefaultValue="0" ShowOnStart="true" Tip="×Ö·û´®½áÊø±êÖ¾"/>
-            </Category>
-        </Protocol>
-                <Protocol Name="YAMU_business" Dependence="TCP">
-            <Category Name="±¨ÎÄÍ·">
-                <Field Name="version" Type="int" InputMethod="lineedit" DefaultValue="1" Length="1" Tip="°æ±¾£¬1¸ö×Ö½ÚÕûÐÍ£¬¸Ã×Ö½ÚÎª0x01"/>
-                <Field Name="cid" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0"   Tip="²Ù×÷ºÅ£¬2¸ö×Ö½ÚÕûÐÍ"/>
-                <Field Name="dt" Type="int" InputMethod="select" Length="1"  Tip="Éè±¸ÀàÐÍ">
-                    <Item Value="2" Text="FlowExport"/>
-                    <Item Value="1" Text="DNsys"/>
-                    <Item Value="3" Text="AppGateway"/>
-                    <Item Value="4" Text="Recursive BIND"/>
-                    <Item Value="5" Text="Recursive CNS"/>
-                    <Item Value="6" Text="Authority DNsys"/>
-                    <Item Value="7" Text="Authority BIND"/>
-                    <Item Value="8" Text="DMS"/>
-                </Field>
-                <Field Name="did" Type="int" InputMethod="lineedit" Length="1" DefaultValue="1" Tip="Éè±¸±àºÅ£¬1¸ö×Ö½ÚÕûÐÍ¡£0x00ºÍ0xffÎªÌØÊâÖµ¡£"/>
-                <Field Name="bt" Type="int" InputMethod="lineedit" DefaultValue="34" Length="1" Tip="ÒµÎñÀàÐÍ£¬1¸ö×Ö½ÚÕûÐÍ£¬ÓÃÓÚ±êÊ¶ÒµÎñÀàÐÍ¡£"/>
-                <Field Name="sbt" Type="int" InputMethod="lineedit" DefaultValue="257" Length="2" Tip="×ÓÒµÎñÀàÐÍ£¬2¸ö×Ö½ÚÕûÐÍ£¬ÓÃÓÚ±êÊ¶×ÓÒµÎñÀàÐÍ¡£"/>
-                <Field Name="op_rc" Type="int" InputMethod="select" Length="1" Tip="²Ù×÷Âë»ò·µ»ØÂë£¬1¸ö×Ö½ÚÕûÐÍ">
-                <Item Value="2" Text="ÌõÄ¿Ìí¼Ó"/>
-                <Item Value="3" Text="ÌõÄ¿É¾³ý"/>
-                </Field>
-                <Field Name="bl" Type="int" InputMethod="lineedit" Length="4" Tip="±¨ÎÄÌå³¤¶È£¬4¸ö×Ö½ÚÕûÐÍ£¬±íÊ¾¸Ã±¨ÎÄµÄ±¨ÎÄÌåµÄ³¤¶È£¬µ¥Î»byte"/>
-                <Field Name="options" Type="string" InputMethod="lineedit" Length="7" DefaultValue="0000000" Editable="false" Tip="Ñ¡Ïî£¬7¸ö×Ö½Ú£¬ÓÃÓÚÀ©Õ¹¡£"/>
-            </Category>
-            <Category Name="unit1">
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" ShowOnStart="true" Tip="µ¥Ôª³¤¶È"/>
-                <Field Name="sn" Type="int" InputMethod="lineedit" Length="4" DefaultValue="1" ShowOnStart="true" Tip="snÊÇ¸ö4×Ö½Ú¹¹³ÉµÄÎÞ·ûºÅÕûÐÍ£¬ÓÃÓÚÅäÖÃÍ¬²½"/>
-                <Field Name="domain_name" Type="string" InputMethod="lineedit" ShowOnStart="false" Tip="ÒµÎñÃû³Æ(ÓòÃû)"/>
-                <Field Name="tail" Type="int" InputMethod="lineedit" Length="1" Editable="false" DefaultValue="0" ShowOnStart="true" Tip="×Ö·û´®½áÊø±êÖ¾"/>
-            </Category>
-            <Category Name="unit2">
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" ShowOnStart="true" Tip="µ¥Ôª³¤¶È"/>
-                <Field Name="sn" Type="int" InputMethod="lineedit" Length="4" DefaultValue="1" ShowOnStart="true" Tip="snÊÇ¸ö4×Ö½Ú¹¹³ÉµÄÎÞ·ûºÅÕûÐÍ£¬ÓÃÓÚÅäÖÃÍ¬²½"/>
-                <Field Name="sip_seg_count1" Type="int" InputMethod="lineedit" Length="2" ShowOnStart="true" Tip="°üº¬µÄip¶Î¸öÊý"/>
-            </Category>
-            <Category Name="ip_seg" Many="true">
-            <Field Name="ip_versin" Type="int" InputMethod="lineedit" Length="1" ShowOnStart="true" Tip="ip°æ±¾"/>
-                <Field Name="subnet" Type="ip" InputMethod="lineedit" howOnStart="true" Tip="×ÓÍøºÅ"/>
-                <Field Name="netmask_" Type="int" InputMethod="lineedit" Length="1" ShowOnStart="true" Tip="ÑÚÂëÎ»Êý"/>
+            <Category Name="Response" Tip="å“åº”" Many="true">
             </Category>
         </Protocol>
     </Protocols>
