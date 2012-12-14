@@ -56,8 +56,8 @@ QString HexConverter::revert(const QString& text)
 	to_str[byte_array.size() / 2] = '\0';
 	for(int i = 0; i<byte_array.size()/2; i++)
 	{
-		const u_int8_t n1 = toUInt8(from_str[i*2]);
-		const u_int8_t n2 = toUInt8(from_str[i*2+1]);
+		const uint8_t n1 = toUInt8(from_str[i*2]);
+		const uint8_t n2 = toUInt8(from_str[i*2+1]);
 		if (n1 == 0xFF || n2 == 0xFF)
 		{
 			delete[] to_str;
@@ -72,7 +72,7 @@ QString HexConverter::revert(const QString& text)
 }
 
 
-u_int8_t HexConverter::toUInt8(char hex)
+uint8_t HexConverter::toUInt8(char hex)
 {
 	if('0' <= hex && hex <= '9')
 	{
@@ -93,7 +93,7 @@ u_int8_t HexConverter::toUInt8(char hex)
 	}
 }
 
-char HexConverter::toHex(u_int8_t ch)
+char HexConverter::toHex(uint8_t ch)
 {
 	if(0 <= ch && ch <= 0x09)
 	{

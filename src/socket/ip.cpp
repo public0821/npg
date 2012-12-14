@@ -1,10 +1,10 @@
 #include "ip.h"
-#include "socket_public.h"
+#include "socket.h"
 
 Ip::Ip(int protocol)
 {
 	m_sockfd = socket(AF_INET, SOCK_RAW, protocol);
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
 		SET_ERROR_NO(npg_errno);
 		return;
@@ -12,7 +12,7 @@ Ip::Ip(int protocol)
 	int optval = 1;
 	int ret = setsockopt(m_sockfd, SOL_SOCKET, SO_BROADCAST, (const char*)&optval,
 		sizeof(optval));
-	if (ret == K_SOCKET_ERROR)
+	if (ret == -1)
 	{
 		SET_ERROR_NO(npg_errno);
 		return;
@@ -21,16 +21,16 @@ Ip::Ip(int protocol)
 
 Ip::~Ip(void)
 {
-	if (K_SOCKET_ERROR != m_sockfd)
+	if (-1 != m_sockfd)
 	{
 		closesocket(m_sockfd);
 	}
 }
 
 
-bool Ip::sendto(const char* ip, const char* data, u_int16_t len)
+bool Ip::sendto(const char* ip, const char* data, uint16_t len)
 {
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
 		return false;
 	}

@@ -9,7 +9,7 @@
 #define UDPWIDGET_H
 
 #include "base_protocol_widget.h"
-#include "ui_udp_widget.h"
+#include "ui/ui_udp_widget.h"
 #include "system/types.h"
 
 class UdpWidget : public BaseProtocolWidget
@@ -22,17 +22,17 @@ public:
 public:
 	QString preSendData();
 	QString postSendData();
-    QString sendData(const char* data, u_int16_t length);
+    QString sendData(const char* data, uint16_t length);
 public:
 	void saveSettings();
 	void restoreSettings();
 private:
     Ui::UdpWidgetClass ui;
 
-	sstring m_srcip; 
-	u_int16_t m_srcport;
-	sstring m_dstip; 
-	u_int16_t m_dstport;
+	std::string m_srcip; 
+	uint16_t m_srcport;
+	std::string m_dstip; 
+	uint16_t m_dstport;
 	bool m_is_raw_socket;
 	void* m_udp;
 };

@@ -119,14 +119,14 @@
 	struct ethhdr {
 		unsigned char	h_dest[ETH_ALEN];	/* destination eth addr	*/
 		unsigned char	h_source[ETH_ALEN];	/* source ether addr	*/
-		u_int16_t		h_proto;		/* packet type ID field	*/
+		uint16_t		h_proto;		/* packet type ID field	*/
 	};
 	#pragma pack(pop)
 #else
 	struct ethhdr {
 		unsigned char	h_dest[ETH_ALEN];	/* destination eth addr	*/
 		unsigned char	h_source[ETH_ALEN];	/* source ether addr	*/
-		u_int16_t		h_proto;		/* packet type ID field	*/
+		uint16_t		h_proto;		/* packet type ID field	*/
 	} __attribute__((packed));
 #endif
 

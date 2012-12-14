@@ -17,13 +17,6 @@
 
 const size_t K_ERROR_BUF_LEN = 512;
 
-enum EErrorStatus
-{
-	E_ERROR_STATUS_NONE = 0
-	, E_ERROR_STATUS_SOCKET_CLOSED
-	, E_ERROR_STATUS_SOCKET_WOULDBLOCK
-};
-
 class Error
 {
 public:
@@ -34,29 +27,29 @@ public:
 	{
 		return m_error;
 	}
-	int error() const
+	int errorno() const
 	{
 		return m_error_no;
 	}
-	EErrorStatus status() const
-	{
-		return m_status;
-	}
+//	EErrorStatus status() const
+//	{
+//		return m_status;
+//	}
 	bool hasError() const
 	{
 		return m_has_error;
 	}
-	void setStatus(EErrorStatus status)
-	{
-		m_status = status;
-	}
+//	void setStatus(EErrorStatus status)
+//	{
+//		m_status = status;
+//	}
 protected:
 
 #define SET_ERROR_STR(error_str) {snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
 		__FILE__, __LINE__,error_str);\
 		 m_has_error = true;}
 
-	#define SET_ERROR_NO(errorno) {char buf[K_SOCKET_ERROR_BUF_LEN]; npg_strerror(errorno, buf, sizeof(buf));\
+	#define SET_ERROR_NO(errorno) {char buf[K_ERROR_BUF_LEN]; npg_strerror(errorno, buf, sizeof(buf));\
 		snprintf(m_error, sizeof(m_error), "%s(%d):%s", \
 		__FILE__, __LINE__,buf);\
 		m_error_no = errorno;\
@@ -67,7 +60,7 @@ protected:
 	char m_error[K_ERROR_BUF_LEN];
 	bool m_has_error;
 	int m_error_no;
-	EErrorStatus m_status;
+//	EErrorStatus m_status;
 };
 
 #endif /* _ERROR_H_ */

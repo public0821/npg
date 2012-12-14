@@ -1126,7 +1126,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\socket\socket_public.h"
+				RelativePath=".\socket\socket.h"
 				>
 			</File>
 			<File

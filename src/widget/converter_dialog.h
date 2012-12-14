@@ -2,7 +2,7 @@
 #define CONVERTER_DIALOG_H
 
 #include <QDialog>
-#include "ui_converter_dialog.h"
+#include "ui/ui_converter_dialog.h"
 #include "tools/converter.h"
 
 class ConverterDialog : public QDialog

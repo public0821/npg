@@ -26,7 +26,7 @@ QString TimeConverter::toTextTip()
 
 QString TimeConverter::convert(const QString& text)
 {
-	sstring temp_time_str = text.toStdString();
+	std::string temp_time_str = text.toStdString();
 	const char* time_str = temp_time_str.c_str();
 	struct tm tm1;
 	::memset(&tm1, '\0', sizeof(tm1));

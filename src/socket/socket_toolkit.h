@@ -11,7 +11,7 @@
 #include <vector>
 #include "system/error.h"
 #include "system/types.h"
-#include "socket_public.h"
+#include "socket.h"
 
 
 # define IF_HWADDRLEN	6
@@ -23,7 +23,7 @@ struct ifi_info
 	short ifi_index; /* interface index */
 //	short ifi_mtu; /* interface MTU */
 	char ifi_haddr[IF_HWADDRLEN]; /* hardware address */
-//	u_int16_t ifi_hlen; /* # bytes in hardware address: 0, 6, 8 */
+//	uint16_t ifi_hlen; /* # bytes in hardware address: 0, 6, 8 */
 	short ifi_flags; /* IFF_xxx constants from <net/if.h> */
 //	short ifi_myflags; /* our own IFI_xxx flags */
 	struct sockaddr ifi_addr; /* primary address */
@@ -39,10 +39,10 @@ public:
 	~SocketToolkit();
 public:
 	std::vector<ifi_info> ifiInfo(int family = 0, int doaliases = 0);
-	u_int16_t inCheckSum(u_int16_t * addr, size_t len);//return network byte order
+	uint16_t inCheckSum(uint16_t * addr, size_t len);//return network byte order
 	int macAddress(const char* ip, char* mac);
-	bool toMac(const char* mac_str, u_int8_t* mac);
-	void macToString(const u_int8_t* mac, char* mac_str, size_t len);
+	bool toMac(const char* mac_str, uint8_t* mac);
+	void macToString(const uint8_t* mac, char* mac_str, size_t len);
 };
 
 #endif /* SOCKET_TOOLKIT_H_ */

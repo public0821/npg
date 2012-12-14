@@ -8,7 +8,7 @@
 #define IP_WIDGET_H
 
 #include <QWidget>
-#include "ui_ip_widget.h"
+#include "ui/ui_ip_widget.h"
 #include <map>
 #include "base_protocol_widget.h"
 
@@ -23,7 +23,7 @@ public:
 public:
 	QString preSendData();
 	QString postSendData();
-	virtual QString sendData(const char* data, u_int16_t length);
+	virtual QString sendData(const char* data, uint16_t length);
 public:
 	void saveSettings();
 	void restoreSettings();
@@ -31,7 +31,7 @@ private:
 	Ui::IpWidget ui;
 	std::map<QString, int>  m_built_in_protocol;
 
-	sstring m_dstip;
+	std::string m_dstip;
 	Ip* m_ip;
 };
 

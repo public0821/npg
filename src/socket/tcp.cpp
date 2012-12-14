@@ -6,12 +6,13 @@
  */
 
 #include "tcp.h"
-#include "socket_public.h"
+#include "socket.h"
 
-Tcp::Tcp():m_blocking(true)
+Tcp::Tcp() :
+		m_blocking(true)
 {
 	m_sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
 		SET_ERROR_NO(npg_errno);
 	}
@@ -19,7 +20,7 @@ Tcp::Tcp():m_blocking(true)
 
 Tcp::~Tcp()
 {
-	if (K_SOCKET_ERROR != m_sockfd)
+	if (-1 != m_sockfd)
 	{
 		closesocket(m_sockfd);
 	}
@@ -27,7 +28,7 @@ Tcp::~Tcp()
 
 bool Tcp::send(const char* buffer, size_t buffer_len)
 {
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
 		return false;
 	}
@@ -36,7 +37,7 @@ bool Tcp::send(const char* buffer, size_t buffer_len)
 	while (len_remaining > 0)
 	{
 		int len = ::send(m_sockfd, buffer, len_remaining, 0);
-		if (len == K_SOCKET_ERROR)
+		if (len == -1)
 		{
 			SET_ERROR_NO(npg_errno);
 			return false;
@@ -52,9 +53,9 @@ bool Tcp::send(const char* buffer, size_t buffer_len)
 
 int Tcp::recv(char* buffer, size_t buffer_len)
 {
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
-		return K_SOCKET_ERROR;
+		return -1;
 	}
 
 	size_t len_remaining = buffer_len;
@@ -62,27 +63,19 @@ int Tcp::recv(char* buffer, size_t buffer_len)
 	{
 		int len = ::recv(m_sockfd, buffer, len_remaining, 0);
 		int error_no = npg_errno;
-		if (len == K_SOCKET_ERROR && (error_no == EWOULDBLOCK || error_no == EAGAIN))
-		{
-			//size_t recv_len = buffer_len - len_remaining;
-			//if (recv_len > 0)
-			//{
-			//	return recv_len;
-			//}
-			//
-			//continue;
-			setStatus(E_ERROR_STATUS_SOCKET_WOULDBLOCK);
-
-			return buffer_len - len_remaining;
-		}
-		else if (len == K_SOCKET_ERROR)
+		if (len == -1
+				&& (error_no == EWOULDBLOCK || error_no == EAGAIN))
 		{
 			SET_ERROR_NO(error_no);
-			return K_SOCKET_ERROR;
+			return buffer_len - len_remaining;
 		}
-		else if (len == 0)//the peer has performed an orderly shutdown
+		else if (len == -1)
 		{
-			setStatus(E_ERROR_STATUS_SOCKET_CLOSED);
+			SET_ERROR_NO(error_no);
+			return -1;
+		}
+		else if (len == 0) //the peer has performed an orderly shutdown
+		{
 			return buffer_len - len_remaining;
 		}
 		len_remaining -= len;
@@ -92,9 +85,9 @@ int Tcp::recv(char* buffer, size_t buffer_len)
 }
 
 //#include <iostream>
-bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
+bool Tcp::connect(const char* ip, uint16_t port, time_t timeout)
 {
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
 		return false;
 	}
@@ -114,18 +107,18 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 	serv_addr.sin_port = htons(port);
 
 	/*
-	windows
-	#define WSABASEERR              10000
-	#define WSAEWOULDBLOCK          (WSABASEERR+35)
-	#define EWOULDBLOCK             WSAEWOULDBLOCK
-	Resource temporarily unavailable.
-	This error is returned from operations on nonblocking sockets that cannot be completed immediately, for example recv when no data is queued to be read from the socket. It is a nonfatal error, and the operation should be retried later. It is normal for WSAEWOULDBLOCK to be reported as the result from calling connect on a nonblocking SOCK_STREAM socket, since some time must elapse for the connection to be established.
-	
-	linux
-	#define    EINPROGRESS    115 
-	The socket is marked as nonblocking. The connection cannot be immediately completed. The application program can
-	select the socket for writing during the connection process.
-	*/
+	 windows
+	 #define WSABASEERR              10000
+	 #define WSAEWOULDBLOCK          (WSABASEERR+35)
+	 #define EWOULDBLOCK             WSAEWOULDBLOCK
+	 Resource temporarily unavailable.
+	 This error is returned from operations on nonblocking sockets that cannot be completed immediately, for example recv when no data is queued to be read from the socket. It is a nonfatal error, and the operation should be retried later. It is normal for WSAEWOULDBLOCK to be reported as the result from calling connect on a nonblocking SOCK_STREAM socket, since some time must elapse for the connection to be established.
+
+	 linux
+	 #define    EINPROGRESS    115
+	 The socket is marked as nonblocking. The connection cannot be immediately completed. The application program can
+	 select the socket for writing during the connection process.
+	 */
 	if (timeout > 0)
 	{
 		bool ret = setBlocking(false);
@@ -134,12 +127,12 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 			return false;
 		}
 	}
-	
-	
+
 	bool ret_value = false;
 	int ret_conn = ::connect(m_sockfd, (struct sockaddr*) &serv_addr,
 			sizeof(serv_addr));
-	if (ret_conn == K_SOCKET_ERROR && (npg_errno == EINPROGRESS || npg_errno == EWOULDBLOCK))
+	if (ret_conn == -1
+			&& (npg_errno == EINPROGRESS || npg_errno == EWOULDBLOCK))
 	{
 		timeval tm;
 		fd_set set;
@@ -152,9 +145,9 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 		{
 			int error_no = -1;
 			int len = sizeof(error_no);
-			int ret = getsockopt(m_sockfd, SOL_SOCKET, SO_ERROR, (char*)&error_no,
-					(socklen_t *) &len);
-			if (ret == K_SOCKET_ERROR)
+			int ret = getsockopt(m_sockfd, SOL_SOCKET, SO_ERROR,
+					(char*) &error_no, (socklen_t *) &len);
+			if (ret == -1)
 			{
 				SET_ERROR_NO(npg_errno);
 			}
@@ -186,11 +179,10 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 			}
 		}
 	}
-	else if (ret_conn == K_SOCKET_ERROR)
+	else if (ret_conn == -1)
 	{
 		SET_ERROR_NO(npg_errno);
 	}
-
 
 	if (timeout > 0)
 	{
@@ -204,12 +196,11 @@ bool Tcp::connect(const char* ip, u_int16_t port, time_t timeout)
 	return ret_value;
 }
 
-
 bool Tcp::setBlocking(bool blocking)
 {
-	unsigned long ul = blocking ? 0:1;
+	unsigned long ul = blocking ? 0 : 1;
 	int ret_ioctl = npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set Non-blocking
-	if (ret_ioctl == K_SOCKET_ERROR)
+	if (ret_ioctl == -1)
 	{
 		SET_ERROR_NO(npg_errno);
 		return false;

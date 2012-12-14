@@ -15,7 +15,7 @@ public:
 	Ip(int protocol);
 	~Ip(void);
 public:
-	bool sendto(const char* ip, const char* data, u_int16_t len);
+	bool sendto(const char* ip, const char* data, uint16_t len);
 private:
 	int m_sockfd;
 };

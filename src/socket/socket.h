@@ -1,23 +1,19 @@
 /*
- * socket_public.h
  *
  *  Created on: 2011-8-23
  *      Author: Young <public0821@gmail.com>
  */
 
-#ifndef	__SOCKET_PUBLIC_H__
-#define __SOCKET_PUBLIC_H__
+#ifndef	__SOCKET_H__
+#define __SOCKET_H__
 
 #include "system/features.h"
 #include "system/types.h"
 #include "system/os.h"
 
-const int K_SOCKET_ERROR = -1;
-const size_t K_SOCKET_ERROR_BUF_LEN = 512;
-
 #if __BYTE_ORDER == __LITTLE_ENDIAN
-#define ntohll(n)  ((u_int64_t)ntohl((u_int64_t)(n) >> 32) |\
-					((u_int64_t)ntohl(((u_int64_t)(n) << 32)>>32))<<32)
+#define ntohll(n)  ((uint64_t)ntohl((uint64_t)(n) >> 32) |\
+					((uint64_t)ntohl(((uint64_t)(n) << 32)>>32))<<32)
 #else
 	#define ntohll(n) n
 	#define htonll(n) n
@@ -43,7 +39,7 @@ const size_t K_SOCKET_ERROR_BUF_LEN = 512;
 #define EWOULDBLOCK             WSAEWOULDBLOCK
 #define EINPROGRESS             WSAEINPROGRESS
 //#define npg_ioctl(sock, code, data, size) WSAIoctl(sock, code, data, size, NULL, 0, NULL, NULL, NULL)
-inline int npg_ioctl(int sock, int code, void* data, u_int32_t size)
+inline int npg_ioctl(int sock, int code, void* data, uint32_t size)
 {
 	DWORD bytes_returned = 0; 
 	return WSAIoctl(sock, code, data, size, NULL, 0, &bytes_returned, NULL, NULL);

@@ -16,7 +16,7 @@ public:
 	Tcp();
 	~Tcp();
 public:
-	bool connect(const char* ip, u_int16_t port, time_t timeout);
+	bool connect(const char* ip, uint16_t port, time_t timeout);
 	bool send(const char* buffer, size_t buffer_len);
 	int recv(char* buffer, size_t buffer_len);
 	bool setBlocking(bool blocking);

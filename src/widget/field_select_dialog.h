@@ -8,7 +8,7 @@
 #define FIELD_SELECT_DIALOG_H
 
 #include <QDialog>
-#include "ui_field_select_dialog.h"
+#include "ui/ui_field_select_dialog.h"
 #include "protocol/field.h"
 
 class FieldSelectDialog : public QDialog

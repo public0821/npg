@@ -1,11 +1,10 @@
 #include "protocol_builder.h"
 #include <qstring.h>
-#include "logger.h"
-#include "socket/socket_public.h"
+#include "socket/socket.h"
 #include "socket/socket_toolkit.h"
 #include <QObject>
 
-const u_int16_t BUFFER_INCREMENT =  128;
+const uint16_t BUFFER_INCREMENT =  128;
 
 ProtocolBuilder::ProtocolBuilder(void)
 :m_buffer(NULL), m_protocol_len(0), m_buf_len(0)
@@ -21,9 +20,9 @@ ProtocolBuilder::~ProtocolBuilder(void)
 	}
 }
 
-u_int32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, u_int16_t length, const QString& value)
+uint32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, uint16_t length, const QString& value)
 {
-	u_int32_t new_protocol_len;
+	uint32_t new_protocol_len;
 	switch (field_type)
 	{
 	case E_FIELD_TYPE_BIT:	
@@ -36,7 +35,7 @@ u_int32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, u_int16_t length
 		}
 		else
 		{
-			sstring value_str = value.toLocal8Bit().constData();
+			std::string value_str = value.toLocal8Bit().constData();
 			new_protocol_len = m_protocol_len + value_str.length();
 		}
 		break;
@@ -48,7 +47,7 @@ u_int32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, u_int16_t length
 	return reallocBuffer(new_protocol_len);
 }
 
-u_int32_t ProtocolBuilder::reallocBuffer(u_int32_t new_length)
+uint32_t ProtocolBuilder::reallocBuffer(uint32_t new_length)
 {
 	if (m_buffer == NULL)
 	{
@@ -58,7 +57,7 @@ u_int32_t ProtocolBuilder::reallocBuffer(u_int32_t new_length)
 
 	if( new_length > m_buf_len)
 	{
-		u_int32_t new_buffer_len = m_buf_len + ((new_length-m_buf_len)/BUFFER_INCREMENT + 1) * BUFFER_INCREMENT;
+		uint32_t new_buffer_len = m_buf_len + ((new_length-m_buf_len)/BUFFER_INCREMENT + 1) * BUFFER_INCREMENT;
 		char* new_buf = new char[new_buffer_len];
 		memcpy(new_buf, m_buffer, m_protocol_len);
 		delete[] m_buffer;
@@ -66,15 +65,15 @@ u_int32_t ProtocolBuilder::reallocBuffer(u_int32_t new_length)
 		m_buf_len = new_buffer_len;
 	}
 
-	u_int32_t old_protocol_len = m_protocol_len;
+	uint32_t old_protocol_len = m_protocol_len;
 	m_protocol_len = new_length;
 
 	return old_protocol_len;
 }
 
-bool ProtocolBuilder::append(EFiledType field_type, u_int16_t length, const QString& value)
+bool ProtocolBuilder::append(EFiledType field_type, uint16_t length, const QString& value)
 {
-	u_int32_t old_protocol_len = reallocBuffer(field_type, length, value);
+	uint32_t old_protocol_len = reallocBuffer(field_type, length, value);
 
 	return set(old_protocol_len, field_type, length, value);
 
@@ -84,12 +83,12 @@ char* ProtocolBuilder::data()const
 {
 	return m_buffer;
 }
-u_int32_t ProtocolBuilder::length()const
+uint32_t ProtocolBuilder::length()const
 {
 	return m_protocol_len;
 }
 
-bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length, const QString& value)
+bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, const QString& value)
 {
 	if (pos + length > m_protocol_len)
 	{
@@ -135,7 +134,7 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 		break;
 	case E_FIELD_TYPE_IP:
 		{
-			sstring ip = value.toLocal8Bit().constData();
+			std::string ip = value.toLocal8Bit().constData();
 			struct in_addr addr;
 			addr.s_addr = 0;
 			if (!ip.empty() && ip != "...")
@@ -152,8 +151,8 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 		break;
 	case E_FIELD_TYPE_MAC:
 		{
-			sstring mac_str = value.toLocal8Bit().constData();
-			u_int8_t mac[IF_HWADDRLEN];
+			std::string mac_str = value.toLocal8Bit().constData();
+			uint8_t mac[IF_HWADDRLEN];
 			SocketToolkit toolkit;
 			if (!toolkit.toMac(mac_str.c_str(), mac))
 			{
@@ -165,7 +164,7 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 		break;
 	case E_FIELD_TYPE_STRING:
 		{
-			sstring data = value.toLocal8Bit().constData();
+			std::string data = value.toLocal8Bit().constData();
 			int data_len = data.length(); 
 			if (length != 0)
 			{
@@ -184,9 +183,9 @@ bool ProtocolBuilder::set(u_int32_t pos, EFiledType field_type, u_int16_t length
 	return ret;
 }
 
-bool ProtocolBuilder::append(const char* buf, u_int16_t length)
+bool ProtocolBuilder::append(const char* buf, uint16_t length)
 {
-	u_int32_t pos = reallocBuffer(m_protocol_len + length);
+	uint32_t pos = reallocBuffer(m_protocol_len + length);
 	memcpy(m_buffer + pos, buf, length);
 
 	return true;

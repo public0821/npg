@@ -1,7 +1,8 @@
 #ifdef __GNUC__
 
 #include "ethernet.h"
-#include "socket_public.h"
+#include "socket.h"
+#include <string>
 
 Ethernet::Ethernet(void)
 {
@@ -14,15 +15,15 @@ Ethernet::Ethernet(void)
 
 Ethernet::~Ethernet(void)
 {
-	if (K_SOCKET_ERROR != m_sockfd)
+	if (-1 != m_sockfd)
 	{
 		closesocket(m_sockfd);
 	}
 }
 
-bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* eth_from_mac, u_int16_t protocol, const char* data, size_t len)
+bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* eth_from_mac, uint16_t protocol, const char* data, size_t len)
 {
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
 		return false;
 	}
@@ -42,7 +43,7 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	//	remote.sll_pkttype = PACKET_OTHERHOST;
 	//	memcpy(remote.sll_addr, arp->arp_sha, ETH_ALEN);
 
-	u_int32_t ethernet_size = sizeof(struct ethhdr) + sizeof(struct ether_arp);
+	uint32_t ethernet_size = sizeof(struct ethhdr) + sizeof(struct ether_arp);
 	char* buffer = new char[ethernet_size];
 	bzero(buffer, ethernet_size);
 	memcpy(buffer+sizeof(struct ethhdr), data, len);
@@ -52,12 +53,12 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	//	memset(ethhdr->h_dest, 0xFF, sizeof(ethhdr->h_dest));
 	if(!toolkit.toMac(eth_to_mac, ethhdr->h_dest))
 	{
-		SET_ERROR_STR((sstring("The format is not supported: ") +eth_to_mac).c_str());
+		SET_ERROR_STR((std::string("The format is not supported: ") +eth_to_mac).c_str());
 		return false;
 	}
 	if(!toolkit.toMac(eth_from_mac, ethhdr->h_source))
 	{
-		SET_ERROR_STR((sstring("The format is not supported: ") +eth_from_mac).c_str());
+		SET_ERROR_STR((std::string("The format is not supported: ") +eth_from_mac).c_str());
 		return false;
 	}
 	ethhdr->h_proto = htons(protocol);

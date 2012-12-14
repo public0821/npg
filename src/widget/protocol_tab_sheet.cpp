@@ -62,7 +62,7 @@ QString ProtocolTabSheet::preSendData()
 	ProtocolBuilder protocol_builder;
 
 	bool need_checknum = false;
-	u_int16_t checknum_pos = 0;
+	uint16_t checknum_pos = 0;
 	Field checknum_field("", true);
 
 	ProtocolTree* tree_widget = ui.treeWidget;
@@ -114,7 +114,7 @@ QString ProtocolTabSheet::preSendData()
 				{
 					QTreeWidgetItem* sub_field_item	= field_item->child (sub_field_index);
 					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*)tree_widget->itemWidget(sub_field_item, 1);
-					u_int32_t data = item_widget->value().toUInt();
+					uint32_t data = item_widget->value().toUInt();
 
 					QString sub_field_name = sub_field_item->data(1, Qt::UserRole).toString();
 					Field sub_field = field.subField(sub_field_name);
@@ -187,7 +187,7 @@ QString ProtocolTabSheet::preSendData()
 	if (need_checknum)
 	{
 		SocketToolkit toolkit;
-		u_int16_t checknum = toolkit.inCheckSum((u_int16_t *)protocol_builder.data(), protocol_builder.length());
+		uint16_t checknum = toolkit.inCheckSum((uint16_t *)protocol_builder.data(), protocol_builder.length());
 		checknum = ntohs(checknum);
 		QString data = QString("%1").arg(checknum);
 		protocol_builder.set(checknum_pos, checknum_field.type(), checknum_field.length(), data);

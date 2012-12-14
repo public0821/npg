@@ -17,24 +17,24 @@ public:
 	ProtocolBuilder(void);
 	~ProtocolBuilder(void);
 public:
-	bool append(EFiledType field_type, u_int16_t length, const QString& value);
-	bool append(const char* buf, u_int16_t length);
-	bool set(u_int32_t pos, EFiledType field_type, u_int16_t length, const QString& value);
+	bool append(EFiledType field_type, uint16_t length, const QString& value);
+	bool append(const char* buf, uint16_t length);
+	bool set(uint32_t pos, EFiledType field_type, uint16_t length, const QString& value);
 	char* data()const;
-	u_int32_t length()const;
+	uint32_t length()const;
 //private:
 //	int8_t toInt8(const QString& value);
 //	int16_t toInt16(const QString& value);
 //	int32_t toInt32(const QString& value);
 //	int64_t toInt64(const QString& value);
 private:
-	u_int32_t reallocBuffer(EFiledType field_type, u_int16_t length, const QString& value);
-	u_int32_t reallocBuffer(u_int32_t new_length);
+	uint32_t reallocBuffer(EFiledType field_type, uint16_t length, const QString& value);
+	uint32_t reallocBuffer(uint32_t new_length);
 private:
 	char* m_buffer;
-	u_int32_t m_protocol_len;
-	u_int32_t m_buf_len;
-	//std::vector<u_int32_t> m_field_pos;
+	uint32_t m_protocol_len;
+	uint32_t m_buf_len;
+	//std::vector<uint32_t> m_field_pos;
 };
 
 #endif

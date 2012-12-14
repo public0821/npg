@@ -11,7 +11,7 @@
 QError::QError()
 :m_has_error(false)
 ,m_error_no(0)
-,m_status(E_ERROR_STATUS_NONE)
+//,m_status(E_ERROR_STATUS_NONE)
 {
 }
 

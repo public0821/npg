@@ -3,7 +3,7 @@
 #include "socket/ip.h"
 #include <qsettings.h>
 #include "system/types.h"
-#include "socket/socket_public.h"
+#include "socket/socket.h"
 
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
 	: BaseProtocolWidget(protocol_name, parent), m_ip(NULL)
@@ -82,7 +82,7 @@ QString IpWidget::postSendData()
 	return QString();
 }
 
-QString IpWidget::sendData(const char* data, u_int16_t length)
+QString IpWidget::sendData(const char* data, uint16_t length)
 {
 	if (m_ip == NULL)
 	{

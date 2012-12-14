@@ -1,17 +1,17 @@
 #include "bit_builder.h"
 #include "system/os.h"
-#include "socket/socket_public.h"
+#include "socket/socket.h"
 
-const u_int8_t BYTE_SIZE = 8;
-const u_int8_t SHIFT = 3;
-const u_int8_t MASK = 0X07;
+const uint8_t BYTE_SIZE = 8;
+const uint8_t SHIFT = 3;
+const uint8_t MASK = 0X07;
 
 
-BitBuilder::BitBuilder(u_int16_t length) :
+BitBuilder::BitBuilder(uint16_t length) :
 		m_length(length), m_pos(0)
 {
-	m_buffer = new u_int8_t[length + sizeof(u_int32_t)];
-	bzero(m_buffer, length + sizeof(u_int32_t));
+	m_buffer = new uint8_t[length + sizeof(uint32_t)];
+	bzero(m_buffer, length + sizeof(uint32_t));
 }
 
 BitBuilder::~BitBuilder(void)
@@ -23,53 +23,53 @@ BitBuilder::~BitBuilder(void)
 	m_buffer = NULL;
 }
 
-bool BitBuilder::append(u_int32_t value, u_int16_t length)
+bool BitBuilder::append(uint32_t value, uint16_t length)
 {
 
-	if (length >= sizeof(u_int32_t) * BYTE_SIZE  //too long
+	if (length >= sizeof(uint32_t) * BYTE_SIZE  //too long
 		|| length+m_pos < m_pos) //overflow
 	{
 		SET_ERROR_STR("Out of range");
 		return false;
 	}
-	u_int32_t* start_byte = (u_int32_t*) &(m_buffer[m_pos >> SHIFT]);
-	u_int8_t start_bit = m_pos & MASK;
+	uint32_t* start_byte = (uint32_t*) &(m_buffer[m_pos >> SHIFT]);
+	uint8_t start_bit = m_pos & MASK;
 
-	u_int16_t move_len = sizeof(u_int32_t) * BYTE_SIZE - length - start_bit;
-	u_int32_t new_value = ((htonl(*start_byte) >> move_len) + value)
+	uint16_t move_len = sizeof(uint32_t) * BYTE_SIZE - length - start_bit;
+	uint32_t new_value = ((htonl(*start_byte) >> move_len) + value)
 			<< move_len;
 
 	new_value = htonl(new_value);
 
-	memcpy((u_int8_t*) start_byte, &new_value, sizeof(u_int32_t));
+	memcpy((uint8_t*) start_byte, &new_value, sizeof(uint32_t));
 
 	m_pos += length;
 
 	return true;
 }
 
-const u_int8_t* BitBuilder::data() const
+const uint8_t* BitBuilder::data() const
 {
 	return m_buffer;
 }
 
-u_int16_t BitBuilder::length() const
+uint16_t BitBuilder::length() const
 {
 	return m_length;
 }
 
 
-void BitBuilder::set(u_int16_t index)
+void BitBuilder::set(uint16_t index)
 {
 	m_buffer[index >> SHIFT] |= (1 << (index & MASK));
 }
 
-void BitBuilder::clr(u_int16_t index)
+void BitBuilder::clr(uint16_t index)
 {
 	m_buffer[index >> SHIFT] &= ~(1 << (index & MASK));
 }
 
-bool BitBuilder::test(u_int16_t index)
+bool BitBuilder::test(uint16_t index)
 {
 	return m_buffer[index >> SHIFT] & (1 << (index & MASK));
 }

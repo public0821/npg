@@ -99,7 +99,7 @@ QString TcpWidget::postSendData()
 
 	return QString();
 }
-QString TcpWidget::sendData(const char* data, u_int16_t length)
+QString TcpWidget::sendData(const char* data, uint16_t length)
 {
 //	showTip("");
 
