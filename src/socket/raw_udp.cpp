@@ -6,7 +6,7 @@
  */
 
 #include "raw_udp.h"
-#include "socket_public.h"
+#include "socket.h"
 #include "socket_toolkit.h"
 
 RawUdp::RawUdp()
@@ -18,9 +18,9 @@ RawUdp::~RawUdp()
 {
 }
 
-bool RawUdp::sendto(const char* srcip, const char* dstip, u_int16_t srcport, u_int16_t dstport, const char* data, u_int16_t datalen)
+bool RawUdp::sendto(const char* srcip, const char* dstip, uint16_t srcport, uint16_t dstport, const char* data, uint16_t datalen)
 {
-	u_int16_t len = sizeof(struct udphdr) + datalen;
+	uint16_t len = sizeof(struct udphdr) + datalen;
 	char * buf = new char[len];
 	bzero(buf, sizeof(struct udphdr));
 	memcpy(buf+sizeof(struct udphdr), data, datalen);
@@ -32,7 +32,7 @@ bool RawUdp::sendto(const char* srcip, const char* dstip, u_int16_t srcport, u_i
 //	SocketToolkit toolkit;
 //	udphdr->check = toolkit.inCheckSum((u_short *) buf, len);
 //
-//	40         if ( (ui->ui_sum = in_cksum((u_int16_t *) ui, userlen)) == 0)
+//	40         if ( (ui->ui_sum = in_cksum((uint16_t *) ui, userlen)) == 0)
 //	41              ui->ui_sum = 0xffff;
 
 	bool ret = m_ipRawSocket.sendto(srcip, dstip, IPPROTO_UDP, buf, len);

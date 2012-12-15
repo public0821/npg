@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	sa.sa_handler   =   SIG_IGN; 
 	sigaction(   SIGPIPE,   &sa,   0   );
 #endif
-    npg w;
+    Npg w;
     w.show();
     int ret = app.exec();
 #ifdef _MSC_VER

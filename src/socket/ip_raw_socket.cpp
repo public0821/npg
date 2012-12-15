@@ -6,14 +6,14 @@
  */
 
 #include "ip_raw_socket.h"
-#include "socket_public.h"
+#include "socket.h"
 
 #define TTL_OUT     64          /* outgoing TTL */
 
 IpRawSocket::IpRawSocket()
 {
 	m_sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);//IPPROTO_IP);
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
 		SET_ERROR_NO(npg_errno);
 		return;
@@ -21,7 +21,7 @@ IpRawSocket::IpRawSocket()
 	int optval = 1;
 	int ret = setsockopt(m_sockfd, IPPROTO_IP, IP_HDRINCL, (const char*)&optval,
 			sizeof(optval));
-	if (ret == K_SOCKET_ERROR)
+	if (ret == -1)
 	{
 		SET_ERROR_NO(npg_errno);
 		return;
@@ -30,16 +30,16 @@ IpRawSocket::IpRawSocket()
 
 IpRawSocket::~IpRawSocket()
 {
-	if (K_SOCKET_ERROR != m_sockfd)
+	if (-1 != m_sockfd)
 	{
 		closesocket(m_sockfd);
 	}
 }
 
-bool IpRawSocket::sendto(const char* srcip, const char* dstip, u_int8_t protocol_type,
-		const char* data, u_int16_t datalen)
+bool IpRawSocket::sendto(const char* srcip, const char* dstip, uint8_t protocol_type,
+		const char* data, uint16_t datalen)
 {
-	if (K_SOCKET_ERROR == m_sockfd)
+	if (-1 == m_sockfd)
 	{
 		return false;
 	}

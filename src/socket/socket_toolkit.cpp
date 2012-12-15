@@ -6,7 +6,7 @@
  */
 
 #include "socket_toolkit.h"
-#include "socket_public.h"
+#include "socket.h"
 
 
 SocketToolkit::SocketToolkit()
@@ -175,7 +175,7 @@ std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases)
 	/* get all device */
 	if (pcap_findalldevs(&alldevs, errbuf) == -1)
 	{
-		SET_ERROR_STR((sstring("Error in pcap_findalldevs: ") + errbuf).c_str());
+		SET_ERROR_STR((std::string("Error in pcap_findalldevs: ") + errbuf).c_str());
 		return ifi_infos;
 	}
 	if (alldevs == NULL)
@@ -245,12 +245,12 @@ int SocketToolkit::macAddress(const char* ip, char* mac)
 #endif
 
 
-u_int16_t SocketToolkit::inCheckSum(u_int16_t * addr, size_t len)
+uint16_t SocketToolkit::inCheckSum(uint16_t * addr, size_t len)
 {
 	int nleft = len;
-	u_int32_t sum = 0;
-	u_int16_t *w = addr;
-	u_int16_t answer = 0;
+	uint32_t sum = 0;
+	uint16_t *w = addr;
+	uint16_t answer = 0;
 
 	/*
 	 * Our algorithm is simple, using a 32 bit accumulator (sum), we add
@@ -276,9 +276,9 @@ u_int16_t SocketToolkit::inCheckSum(u_int16_t * addr, size_t len)
 	return (answer);
 }
 
-bool SocketToolkit::toMac(const char* mac_str, u_int8_t* mac)
+bool SocketToolkit::toMac(const char* mac_str, uint8_t* mac)
 {
-	u_int32_t temp_mac[6];
+	uint32_t temp_mac[6];
 	bzero(temp_mac, sizeof(temp_mac));
 	int n = sscanf(mac_str, "%x:%x:%x:%x:%x:%x", &temp_mac[0], &temp_mac[1], &temp_mac[2],
 		&temp_mac[3], &temp_mac[4], &temp_mac[5]);
@@ -302,11 +302,11 @@ bool SocketToolkit::toMac(const char* mac_str, u_int8_t* mac)
 	return true;
 }
 
-void SocketToolkit::macToString(const u_int8_t* mac, char* mac_str, size_t len)
+void SocketToolkit::macToString(const uint8_t* mac, char* mac_str, size_t len)
 {
 	bzero(mac_str, sizeof(len));
 	snprintf(mac_str, len, "%2.2x:%2.2x:%2.2x:%2.2x:%2.2x:%2.2x",
-			(u_int8_t) mac[0], (u_int8_t) mac[1],
-			(u_int8_t) mac[2], (u_int8_t) mac[3],
-			(u_int8_t) mac[4], (u_int8_t) mac[5]);
+			(uint8_t) mac[0], (uint8_t) mac[1],
+			(uint8_t) mac[2], (uint8_t) mac[3],
+			(uint8_t) mac[4], (uint8_t) mac[5]);
 }

@@ -37,7 +37,7 @@ public:
 	void setPrefix(const QString& prefix);
 
 	bool empty()const;
-	u_int16_t optionalFieldCount()const;
+	uint16_t optionalFieldCount()const;
 
 private:
 	std::vector<Field> m_fields;

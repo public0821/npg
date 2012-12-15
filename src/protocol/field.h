@@ -81,7 +81,7 @@ public:
 	QString defaultValue() const;
 	QString defaultValueOriginal() const;
 	int64_t minValue() const;
-	u_int64_t maxValue() const;
+	uint64_t maxValue() const;
 	QString icon()const;
 	bool isOptional()const;
 	bool empty()const;

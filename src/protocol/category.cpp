@@ -112,9 +112,9 @@ void Category::setPrefix(const QString& prefix)
 	m_prefix = prefix;
 }
 
-u_int16_t Category::optionalFieldCount() const
+uint16_t Category::optionalFieldCount() const
 {
-	u_int16_t count = 0;
+	uint16_t count = 0;
 	std::vector<Field>::const_iterator it;
 	for (it = m_fields.begin(); it != m_fields.end(); ++it)
 	{

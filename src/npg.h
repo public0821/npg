@@ -8,18 +8,18 @@
 #define NPG_H
 
 #include <QtGui/QMainWindow>
-#include "ui_npg.h"
+#include "ui/ui_npg.h"
 #include <QSplitter>
 #include "widget/main_list_widget.h"
 #include "widget/main_tab_widget.h"
 
-class npg: public QMainWindow
+class Npg: public QMainWindow
 {
 Q_OBJECT
 
 public:
-	npg(QWidget *parent = 0);
-	~npg();
+	Npg(QWidget *parent = 0);
+	~Npg();
 private slots:
 	void onItemDoubleClicked(QListWidgetItem * item);
 	void onConverterClicked();

@@ -194,7 +194,7 @@ struct arpreq_old
 struct arpd_request
   {
     unsigned short int req;		/* Request type.  */
-    u_int32_t ip;			/* IP address of entry.  */
+    uint32_t ip;			/* IP address of entry.  */
     unsigned long int dev;		/* Device entry is tied to.  */
     unsigned long int stamp;
     unsigned long int updated;
@@ -243,10 +243,10 @@ struct arpd_request
  */
 struct	ether_arp {
 	struct	arphdr ea_hdr;		/* fixed-size header */
-	u_int8_t arp_sha[ETH_ALEN];	/* sender hardware address */
-	u_int8_t arp_spa[4];		/* sender protocol address */
-	u_int8_t arp_tha[ETH_ALEN];	/* target hardware address */
-	u_int8_t arp_tpa[4];		/* target protocol address */
+	uint8_t arp_sha[ETH_ALEN];	/* sender hardware address */
+	uint8_t arp_spa[4];		/* sender protocol address */
+	uint8_t arp_tha[ETH_ALEN];	/* target hardware address */
+	uint8_t arp_tpa[4];		/* target protocol address */
 };
 #define	arp_hrd	ea_hdr.ar_hrd
 #define	arp_pro	ea_hdr.ar_pro
@@ -266,9 +266,9 @@ struct	ether_arp {
 	(enaddr)[0] = 0x01; \
 	(enaddr)[1] = 0x00; \
 	(enaddr)[2] = 0x5e; \
-	(enaddr)[3] = ((u_int8_t *)ipaddr)[1] & 0x7f; \
-	(enaddr)[4] = ((u_int8_t *)ipaddr)[2]; \
-	(enaddr)[5] = ((u_int8_t *)ipaddr)[3]; \
+	(enaddr)[3] = ((uint8_t *)ipaddr)[1] & 0x7f; \
+	(enaddr)[4] = ((uint8_t *)ipaddr)[2]; \
+	(enaddr)[5] = ((uint8_t *)ipaddr)[3]; \
 }
 
 

@@ -58,7 +58,7 @@ private:
 	QAction* m_add_action;
 	QAction* m_add_field_action;
 	Protocol m_protocol;
-	//std::map<sstring, int>  m_multi_category_count;
+	//std::map<std::string, int>  m_multi_category_count;
 	//QPoint m_start_pos;
 };
 

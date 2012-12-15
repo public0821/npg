@@ -16,7 +16,7 @@ public:
 	RawUdp();
 	~RawUdp();
 public:
-	bool sendto(const char* srcip, const char* dstip, u_int16_t srcport, u_int16_t dstport, const char* data, u_int16_t datalen);
+	bool sendto(const char* srcip, const char* dstip, uint16_t srcport, uint16_t dstport, const char* data, uint16_t datalen);
 private:
 	IpRawSocket  m_ipRawSocket;
 };

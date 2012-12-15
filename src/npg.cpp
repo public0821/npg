@@ -13,7 +13,7 @@
 #include "widget/converter_dialog.h"
 #include "widget/about_dialog.h"
 
-npg::npg(QWidget *parent) :
+Npg::Npg(QWidget *parent) :
 		QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -69,12 +69,12 @@ npg::npg(QWidget *parent) :
 //	m_tabWidget->addTab(new UdpWidget(m_tabWidget), "udp");
 }
 
-npg::~npg()
+Npg::~Npg()
 {
 
 }
 
-void npg::onItemDoubleClicked(QListWidgetItem * item)
+void Npg::onItemDoubleClicked(QListWidgetItem * item)
 {
 	if (item == NULL)
 	{
@@ -86,7 +86,7 @@ void npg::onItemDoubleClicked(QListWidgetItem * item)
 
 }
 
-void npg::saveSettings()
+void Npg::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 
@@ -96,7 +96,7 @@ void npg::saveSettings()
 	settings.endGroup();
 }
 
-void npg::restoreSettings()
+void Npg::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 
@@ -106,13 +106,13 @@ void npg::restoreSettings()
 	settings.endGroup();
 }
 
-void npg::closeEvent(QCloseEvent *event)
+void Npg::closeEvent(QCloseEvent *event)
 {
 	saveSettings();
 	QWidget::closeEvent(event);
 }
 
-void npg::onConverterClicked()
+void Npg::onConverterClicked()
 {
 	QAction* action = qobject_cast<QAction*>(sender());
 	EConverterType type = (EConverterType) action->data().toInt();
@@ -122,7 +122,7 @@ void npg::onConverterClicked()
 	dialog.exec();
 }
 
-void npg::onAbout()
+void Npg::onAbout()
 {
 	AboutDialog dialog(this);
 	dialog.exec();

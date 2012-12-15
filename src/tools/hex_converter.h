@@ -22,8 +22,8 @@ public:
 	QString convert(const QString& text);
 	QString revert(const QString& text);
 private:
-	char toHex(u_int8_t);
-	u_int8_t toUInt8(char hex);
+	char toHex(uint8_t);
+	uint8_t toUInt8(char hex);
 };
 
 #endif

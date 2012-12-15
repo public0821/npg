@@ -28,24 +28,24 @@ public:
 	{
 		return m_error_no;
 	}
-	EErrorStatus status() const
-	{
-		return m_status;
-	}
+//	EErrorStatus status() const
+//	{
+//		return m_status;
+//	}
 	bool hasError() const
 	{
 		return m_has_error;
 	}
-	void setStatus(EErrorStatus status)
-	{
-		m_status = status;
-	}
+//	void setStatus(EErrorStatus status)
+//	{
+//		m_status = status;
+//	}
 protected:
 
 #define SET_QERROR_STR(error_str) {m_error = QString("%1(%2):%3").arg(__FILE__).arg(__LINE__).arg(error_str); \
 		 m_has_error = true;}
 
-	#define SET_QERROR_NO(errorno) {char buf[K_SOCKET_ERROR_BUF_LEN]; npg_strerror(errorno, buf, sizeof(buf));\
+	#define SET_QERROR_NO(errorno) {char buf[-1_BUF_LEN]; npg_strerror(errorno, buf, sizeof(buf));\
 		SET_QERROR_STR(error_str);\
 		m_error_no = errorno;}
 
@@ -54,7 +54,7 @@ protected:
 	QString m_error;
 	bool m_has_error;
 	int m_error_no;
-	EErrorStatus m_status;
+//	EErrorStatus m_status;
 };
 
 #endif /* _QERROR_H_ */

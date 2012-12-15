@@ -8,7 +8,7 @@
 #ifndef PROTOCOL_WIDGET_H
 #define PROTOCOL_WIDGET_H
 
-#include "ui_protocol_widget.h"
+#include "ui/ui_protocol_widget.h"
 #include "tab_sheet.h"
 #include "protocol/protocol.h"
 #include "base_protocol_widget.h"
@@ -31,9 +31,9 @@ private:
 //	Ui::
     Ui::ProtocolWidgetClass ui;
 	Protocol m_protocol;
-	u_int32_t m_seq;
+	uint32_t m_seq;
 
-	sstring m_data;
+	std::string m_data;
 };
 
 #endif // DNS_WIDGET_H

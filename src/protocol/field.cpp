@@ -192,9 +192,9 @@ int64_t Field::minValue() const
 	return min;
 }
 
-u_int64_t Field::maxValue() const
+uint64_t Field::maxValue() const
 {
-	u_int64_t max;
+	uint64_t max;
 
 	switch (length())
 	{

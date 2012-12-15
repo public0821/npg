@@ -8,7 +8,7 @@
 #define ETHERNET_WIDGET_H
 
 #include <QWidget>
-#include "ui_ethernet_widget.h"
+#include "ui/ui_ethernet_widget.h"
 #include "base_protocol_widget.h"
 #include "socket/ethernet.h"
 
@@ -22,7 +22,7 @@ public:
 public:
 	QString preSendData();
 	QString postSendData();
-	virtual QString sendData(const char* data, u_int16_t length);
+	virtual QString sendData(const char* data, uint16_t length);
 public:
 	void saveSettings();
 	void restoreSettings();
@@ -34,8 +34,8 @@ private slots:
 private:
 	Ui::EthernetWidget ui;
 	int m_protocol;
-	sstring m_dstmac;
-	sstring m_srcmac;
+	std::string m_dstmac;
+	std::string m_srcmac;
 	ifi_info m_dev;
 
 	Ethernet* m_ethernet;

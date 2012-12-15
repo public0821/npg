@@ -16,7 +16,7 @@ public:
 	Ethernet(void);
 	~Ethernet(void);
 public:
-	bool sendto(const ifi_info& dev, const char* eth_to_mac, const char* eth_from_mac, u_int16_t protocol, const char* data, size_t len);
+	bool sendto(const ifi_info& dev, const char* eth_to_mac, const char* eth_from_mac, uint16_t protocol, const char* data, size_t len);
 private:
 	int m_sockfd;
 };

@@ -48,7 +48,7 @@ QString EthernetWidget::postSendData()
 	return QString();
 }
 
-QString EthernetWidget::sendData(const char* data, u_int16_t length)
+QString EthernetWidget::sendData(const char* data, uint16_t length)
 {
 
 	if (m_ethernet == NULL)
@@ -143,7 +143,7 @@ void EthernetWidget::setupInterface(QWidget *parent)
 		//inet_ntop(AF_INET, &sin->sin_addr, ip, sizeof(ip));
 		strncpy(ip, inet_ntoa(sin->sin_addr), sizeof(ip));
 		char mac[256];
-		toolkit.macToString((const u_int8_t *)it->ifi_haddr, mac, sizeof(mac));
+		toolkit.macToString((const uint8_t *)it->ifi_haddr, mac, sizeof(mac));
 		it->ifi_index = index;
 		ui.interface_box->addItem(
 			QString("%1-%2-%3").arg(it->ifi_name).arg(ip).arg(mac),
@@ -157,7 +157,7 @@ void EthernetWidget::onInterfaceChanged(int index)
 	ifi_info dev = ui.interface_box->itemData(index).value<ifi_info>();
 	char mac[256];
 	SocketToolkit toolkit;
-	toolkit.macToString((const u_int8_t *)dev.ifi_haddr, mac, sizeof(mac));
+	toolkit.macToString((const uint8_t *)dev.ifi_haddr, mac, sizeof(mac));
 
 	ui.from_mac_edit->setText(mac);
 }

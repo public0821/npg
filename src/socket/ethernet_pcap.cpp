@@ -7,7 +7,7 @@
  */
 
 #include "ethernet.h"
-#include "socket_public.h"
+#include "socket.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -24,7 +24,7 @@ Ethernet::~Ethernet()
 
 }
 
-bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* eth_from_mac, u_int16_t protocol, const char* data, size_t len)
+bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* eth_from_mac, uint16_t protocol, const char* data, size_t len)
 {
 	char errbuf[PCAP_ERRBUF_SIZE];
 	pcap_t *adhandle = NULL;
@@ -43,7 +43,7 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	}
 
 
-	u_int32_t ethernet_size = sizeof(struct ethhdr) + sizeof(struct ether_arp);
+	uint32_t ethernet_size = sizeof(struct ethhdr) + sizeof(struct ether_arp);
 	char* buffer = new char[ethernet_size];
 	bzero(buffer, ethernet_size);
 	memcpy(buffer+sizeof(struct ethhdr), data, len);
@@ -53,13 +53,13 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	//	memset(ethhdr->h_dest, 0xFF, sizeof(ethhdr->h_dest));
 	if(!toolkit.toMac(eth_to_mac, ethhdr->h_dest))
 	{
-		SET_ERROR_STR((sstring("The format is not supported: ") +eth_to_mac).c_str());
+		SET_ERROR_STR((std::string("The format is not supported: ") +eth_to_mac).c_str());
 		pcap_close(adhandle);
 		return false;
 	}
 	if(!toolkit.toMac(eth_from_mac, ethhdr->h_source))
 	{
-		SET_ERROR_STR((sstring("The format is not supported: ") +eth_from_mac).c_str());
+		SET_ERROR_STR((std::string("The format is not supported: ") +eth_from_mac).c_str());
 		pcap_close(adhandle);
 		return false;
 	}
@@ -69,7 +69,7 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	//memcpy(buffer1,buffer,  ethernet_size);
 	if (pcap_sendpacket(adhandle, (u_char*)buffer, ethernet_size) != 0)
 	{
-		SET_ERROR_STR((sstring("Error sending the packet: ") + pcap_geterr(adhandle)).c_str());
+		SET_ERROR_STR((std::string("Error sending the packet: ") + pcap_geterr(adhandle)).c_str());
 		pcap_close(adhandle);
 		delete[] buffer;
 		return false;

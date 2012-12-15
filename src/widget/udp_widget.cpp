@@ -85,7 +85,7 @@ QString UdpWidget::postSendData()
 	return QString();
 }
 
-QString UdpWidget::sendData(const char* data, u_int16_t length)
+QString UdpWidget::sendData(const char* data, uint16_t length)
 {
 	if (m_udp == NULL)
 	{

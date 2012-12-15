@@ -4,9 +4,24 @@ QT += core \
     gui \
     xml
     
+CONFIG = qt debug	#release
+RESOURCES += npg.qrc
+TRANSLATIONS = npg_zh_CN.ts 
+UI_DIR = ./ui 
+MOC_DIR = ./tmp
+OBJECTS_DIR= ./tmp
+
+
+unix{
+    QMAKE_CXXFLAGS += -std=c++0x 
+}
+
 # Input
-HEADERS += protocol/bit_builder.h \
-	protocol/category.h \
+HEADERS += socket/socket.h \
+    socket/ip_address.h \
+    qerror.h \
+    protocol/bit_builder.h \
+    protocol/category.h \
     protocol/field.h \
     protocol/protocol.h \
     protocol/protocol_factory.h \
@@ -16,7 +31,7 @@ HEADERS += protocol/bit_builder.h \
     system/os_windows.h \
     system/types.h \
     system/os_linux.h \
-    system/error.h \   
+    system/error.h \
     socket/net/ethernet.h \
     socket/net/if_arp.h \
     socket/net/if_ether.h \
@@ -26,7 +41,6 @@ HEADERS += protocol/bit_builder.h \
     socket/ethernet.h \
     socket/ip_raw_socket.h \
     socket/raw_udp.h \
-    socket/socket_public.h \
     socket/socket_toolkit.h \
     socket/tcp.h \
     socket/udp.h \
@@ -53,9 +67,7 @@ HEADERS += protocol/bit_builder.h \
     widget/tcp_widget.h \
     widget/udp_widget.h \
     npg_define.h \
- 	logger.h \  
     send_thread.h \
-    qerror.h \
     npg.h
 FORMS += ui/ethernet_widget.ui \
     ui/field_select_dialog.ui \
@@ -68,13 +80,15 @@ FORMS += ui/ethernet_widget.ui \
     ui/udp_widget.ui \
     ui/converter_dialog.ui \
     ui/about_dialog.ui
-SOURCES += protocol/bit_builder.cpp \
-	protocol/category.cpp \
+SOURCES += socket/ip_address.cpp \
+    qerror.cpp \
+    protocol/bit_builder.cpp \
+    protocol/category.cpp \
     protocol/field.cpp \
     protocol/protocol.cpp \
     protocol/protocol_factory.cpp \
     protocol/protocol_builder.cpp \
-    system/error.cpp \   
+    system/error.cpp \
     socket/ethernet.cpp \
     socket/ip_raw_socket.cpp \
     socket/raw_udp.cpp \
@@ -103,11 +117,6 @@ SOURCES += protocol/bit_builder.cpp \
     widget/tcp_response_dialog.cpp \
     widget/tcp_widget.cpp \
     widget/udp_widget.cpp \
- 	logger.cpp \  
     send_thread.cpp \
-    qerror.cpp \
     npg.cpp \
     main.cpp
-RESOURCES += npg.qrc
-
-TRANSLATIONS = npg_zh_CN.ts

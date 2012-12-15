@@ -8,7 +8,7 @@
 #ifndef TCP_WIDGET_H
 #define TCP_WIDGET_H
 
-#include "ui_tcp_widget.h"
+#include "ui/ui_tcp_widget.h"
 #include "tab_sheet.h"
 #include "base_protocol_widget.h"
 #include "system/types.h"
@@ -24,15 +24,15 @@ public:
 public:
 	QString preSendData();
 	QString postSendData();
-    QString sendData(const char* data, u_int16_t length);
+    QString sendData(const char* data, uint16_t length);
 private:
 	void saveSettings();
 	void restoreSettings();
 private:
     Ui::TcpWidgetClass ui;
 
-	sstring m_ip;
-	u_int16_t m_port;
+	std::string m_ip;
+	uint16_t m_port;
 	time_t m_timeout;
 	Tcp* m_tcp;
 	bool m_wait_for_response;
