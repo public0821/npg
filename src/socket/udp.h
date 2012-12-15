@@ -8,17 +8,16 @@
 #ifndef UDP_H_
 #define UDP_H_
 
-#include "system/error.h"
+#include "ip_address.h"
 
-class Udp: public Error
-{
+class Udp {
 public:
 //	Udp(const char* ip = NULL, uint16_t port = 0);
 	Udp();
 	~Udp();
-	public:
-	bool sendto(const char* ip, uint16_t port, const char* buffer, size_t buffer_len);
-	private:
+
+public:
+	bool sendto(const IpAddress& addr, uint16_t port, const char* buffer, size_t buffer_len);
 
 private:
 	int m_sockfd;

@@ -18,7 +18,7 @@ Udp::~Udp() {
 
 }
 
-bool Udp::sendto(const char* ip, uint16_t port, const char* buffer, size_t buffer_len) {
+bool Udp::sendto(const IpAddress& addr, uint16_t port, const char* buffer, size_t buffer_len) {
 
 	if (-1 == m_sockfd) {
 		m_sockfd = socket(AF_INET, SOCK_DGRAM, 0);

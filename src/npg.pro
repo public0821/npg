@@ -4,7 +4,7 @@ QT += core \
     gui \
     xml
     
-CONFIG = qt debug	#release
+CONFIG += qt debug	
 RESOURCES += npg.qrc
 TRANSLATIONS = npg_zh_CN.ts 
 UI_DIR = ./ui 
