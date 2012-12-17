@@ -1,6 +1,6 @@
 #include "ip.h"
-#include "socket.h"
 #include "../../logger.h"
+#include "socket.h"
 #include <qobject.h>
 
 Ip::Ip(int protocol)

@@ -8,10 +8,11 @@
 
 #include "ethernet.h"
 #include "socket.h"
-
+#include <qobject.h>
 #include <string.h>
 #include <stdio.h>
 #include "pcap.h"
+#include "logger.h"
 
 Ethernet::Ethernet()
 {
@@ -51,13 +52,13 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	//	memset(ethhdr->h_dest, 0xFF, sizeof(ethhdr->h_dest));
 	if(!toolkit.toMac(eth_to_mac, ethhdr->h_dest))
 	{
-		LOG_ERROR("The format is not supported: %s", eth_to_mac);
+		LOG_ERROR(QObject::tr("The format is not supported: %1").arg(eth_to_mac));
 		pcap_close(adhandle);
 		return false;
 	}
 	if(!toolkit.toMac(eth_from_mac, ethhdr->h_source))
 	{
-		LOG_ERROR("The format is not supported: %s", eth_from_mac);
+		LOG_ERROR(QObject::tr("The format is not supported: %1").arg(eth_from_mac));
 		pcap_close(adhandle);
 		return false;
 	}
@@ -67,7 +68,7 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	//memcpy(buffer1,buffer,  ethernet_size);
 	if (pcap_sendpacket(adhandle, (u_char*)buffer, ethernet_size) != 0)
 	{
-		LOG_ERROR( "Error sending the packet: %s", pcap_geterr(adhandle));
+		LOG_ERROR(QObject::tr("Error sending the packet:%1").arg(pcap_geterr(adhandle)));
 		pcap_close(adhandle);
 		delete[] buffer;
 		return false;

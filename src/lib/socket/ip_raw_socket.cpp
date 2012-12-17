@@ -6,8 +6,8 @@
  */
 
 #include "ip_raw_socket.h"
-#include "socket.h"
 #include "../../logger.h"
+#include "socket.h"
 #include <qobject.h>
 
 #define TTL_OUT     64          /* outgoing TTL */

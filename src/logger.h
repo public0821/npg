@@ -15,7 +15,7 @@
 class Logger {
 public:
 	enum ELevel {
-		TRACE = 1, DEBUG, INFO, WARN, ERROR
+		TRACE = 1, DEBUG, INFO, WARN, ERROR1
 	};
 
 private:

@@ -11,7 +11,6 @@
 #include <vector>
 #include "lib/types.h"
 #include "socket.h"
-#include <netinet/in.h>
 
 
 # define IF_HWADDRLEN	6

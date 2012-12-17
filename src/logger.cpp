@@ -12,6 +12,7 @@
 #include <string.h>
 #include "lib/os.h"
 #include <qobject.h>
+#include <qstring.h>
 
 const static int MAX_LOG_LENGTH = 2048;
 
@@ -83,15 +84,15 @@ void Logger::warn(const char* source_file, int line, int err_no) {
 }
 
 void Logger::error(const char* source_file, int line, int err_no) {
-	if (G_LOG_LEVEL > ERROR) {
+	if (G_LOG_LEVEL > ERROR1) {
 		return;
 	}
 	char buf[2048];
 	int buflen = sizeof(buf);
 	if (-1 == npg_strerror(err_no, buf, buflen)) {
-		log(ERROR, source_file, line, QObject::tr("get strerror failed"));
+		log(ERROR1, source_file, line, QObject::tr("get strerror failed"));
 	} else {
-		log(ERROR, source_file, line, buf);
+		log(ERROR1, source_file, line, buf);
 	}
 }
 
@@ -120,16 +121,15 @@ void Logger::warn(const char* source_file, int line, const QString& log_info) {
 	log(WARN, source_file, line, log_info);
 }
 void Logger::error(const char* source_file, int line, const QString& log_info) {
-	if (G_LOG_LEVEL > ERROR) {
+	if (G_LOG_LEVEL > ERROR1) {
 		return;
 	}
-	log(ERROR, source_file, line, log_info);
+	log(ERROR1, source_file, line, log_info);
 }
 
 void Logger::log(ELevel level, const char* source_file, int line, const QString& log_info) {
-	struct tm tm_now;
 	time_t time_now = time(NULL);
-	localtime_r(&time_now, &tm_now);
+	struct tm tm_now = *localtime(&time_now); //multithread problem
 
 	char log_head[MAX_LOG_LENGTH];
 	snprintf(log_head, sizeof(log_head), "%04d-%02d-%02d %02d:%02d:%02d", tm_now.tm_year + 1900,
@@ -150,7 +150,7 @@ void Logger::log(ELevel level, const char* source_file, int line, const QString&
 	case WARN:
 		strncat(log_head, " [WARN] ", sizeof(log_head) - tmp_buf_len);
 		break;
-	case ERROR:
+	case ERROR1:
 		strncat(log_head, " [ERROR] ", sizeof(log_head) - tmp_buf_len);
 		break;
 	default:
@@ -162,7 +162,7 @@ void Logger::log(ELevel level, const char* source_file, int line, const QString&
 			source_file, line);
 	log_head[sizeof(log_head) - 1] = '\0';
 
-	if(log_info.)
+	//if(log_info.)
 	if (m_browser != NULL) {
 		m_browser->append(QString(log_head) + log_info);
 	}

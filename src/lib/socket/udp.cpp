@@ -6,8 +6,8 @@
  */
 
 #include "udp.h"
-#include "socket.h"
 #include "../../logger.h"
+#include "socket.h"
 #include <qobject.h>
 
 Udp::Udp(const IpAddress& addr, uint16_t port) :
@@ -82,7 +82,7 @@ bool Udp::sendto(const IpAddress& ip, uint16_t port, const char* buffer, size_t 
 	return true;
 }
 
-bool Udp::new_socket(const IpAddress& ip, uint16_t port, bool nonblock) {
+int Udp::new_socket(const IpAddress& ip, uint16_t port, bool nonblock) {
 	int sockfd = socket(ip.version() == IpAddress::IPV4 ? AF_INET : AF_INET6, SOCK_DGRAM, 0);
 	if (sockfd == -1) {
 		LOG_ERROR(errno);
@@ -91,7 +91,7 @@ bool Udp::new_socket(const IpAddress& ip, uint16_t port, bool nonblock) {
 	}
 
 	int optval = 1;
-	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (const void *) &optval,
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (const char *) &optval,
 			sizeof(int)) < 0) {
 		LOG_ERROR(errno);
 		LOG_ERROR(QObject::tr("set REUSEADDR failed"));

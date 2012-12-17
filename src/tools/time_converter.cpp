@@ -1,6 +1,7 @@
 #include "time_converter.h"
 #include <QObject>
 #include "../logger.h"
+#include <time.h>
 
 TimeConverter::TimeConverter(void)
 {

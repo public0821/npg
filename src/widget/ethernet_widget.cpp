@@ -1,10 +1,11 @@
 #include "ethernet_widget.h"
+#include "../logger.h"
 #include "lib/socket/socket_toolkit.h"
 #include "tab_sheet.h"
 #include <qsettings.h>
 #include "npg_define.h"
 #include "lib/socket/ethernet.h"
-#include "../logger.h"
+
 
 Q_DECLARE_METATYPE(ifi_info)
 

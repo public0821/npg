@@ -1,7 +1,7 @@
 #include "bit_builder.h"
+#include "../logger.h"
 #include "lib/os.h"
 #include "lib/socket/socket.h"
-#include "../logger.h"
 #include <qobject.h>
 
 const uint8_t BYTE_SIZE = 8;

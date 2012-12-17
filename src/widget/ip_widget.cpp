@@ -3,8 +3,9 @@
 #include "lib/socket/ip.h"
 #include <qsettings.h>
 #include "lib/types.h"
-#include "lib/socket/socket.h"
 #include "../logger.h"
+#include "lib/socket/socket.h"
+
 
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
 :

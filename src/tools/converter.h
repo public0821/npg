@@ -6,6 +6,8 @@
  */
 #ifndef	__CONVERTER_H__
 #define __CONVERTER_H__
+
+#include "../lib/types.h"
 #include <QString>
 
 enum EConverterType

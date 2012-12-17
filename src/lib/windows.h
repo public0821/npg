@@ -13,7 +13,7 @@
 #include <process.h>
 #include <time.h>
 
-#define errno   WSAGetLastError()
+#define npg_errno   WSAGetLastError()
 
 #define bzero(buf, size)  ZeroMemory(buf,size)
 #define snprintf _snprintf

@@ -6,8 +6,8 @@
  */
 
 #include "tcp.h"
-#include "socket.h"
 #include "../../logger.h"
+#include "socket.h"
 #include <qobject.h>
 
 Tcp::Tcp() :

@@ -1,7 +1,8 @@
 #include "ip_converter.h"
 #include <QObject>
-#include "lib/socket/socket.h"
 #include "../logger.h"
+#include "lib/socket/socket.h"
+
 
 IpConverter::IpConverter(void)
 {
