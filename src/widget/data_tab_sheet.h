@@ -19,9 +19,9 @@ public:
     DataTabSheet(const QString& name, QWidget *parent);
     ~DataTabSheet();
 public:
-    QString sendData();
-	QString preSendData();
-	QString postSendData();
+    bool sendData();
+    bool preSendData();
+    bool postSendData();
 private:
 	void saveSettings();
 	void restoreSettings();

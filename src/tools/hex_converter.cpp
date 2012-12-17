@@ -1,5 +1,6 @@
 #include "hex_converter.h"
 #include <QObject>
+#include "../logger.h"
 
 HexConverter::HexConverter(void)
 {
@@ -47,7 +48,7 @@ QString HexConverter::revert(const QString& text)
 	QByteArray	byte_array = text.toLocal8Bit();
 	if (byte_array.size() % 2 == 1)
 	{
-		SET_QERROR_STR(QObject::tr("Invalid hex string length"));
+		LOG_ERROR(QObject::tr("Invalid hex string length"));
 		return "";
 	}
 	
@@ -88,7 +89,7 @@ uint8_t HexConverter::toUInt8(char hex)
 	}
 	else
 	{
-		SET_QERROR_STR(QObject::tr("Invalid hex char"));
+		LOG_ERROR(QObject::tr("Invalid hex char"));
 		return 0xFF;
 	}
 }
@@ -105,7 +106,7 @@ char HexConverter::toHex(uint8_t ch)
 	}
 	else
 	{
-		SET_QERROR_STR(QObject::tr("Invalid hex number"));
+		LOG_ERROR(QObject::tr("Invalid hex number"));
 		return '\0';
 	}
 }

@@ -1,6 +1,8 @@
 #include "bit_builder.h"
 #include "lib/os.h"
 #include "lib/socket/socket.h"
+#include "../logger.h"
+#include <qobject.h>
 
 const uint8_t BYTE_SIZE = 8;
 const uint8_t SHIFT = 3;
@@ -29,7 +31,7 @@ bool BitBuilder::append(uint32_t value, uint16_t length)
 	if (length >= sizeof(uint32_t) * BYTE_SIZE  //too long
 		|| length+m_pos < m_pos) //overflow
 	{
-		SET_ERROR_STR("Out of range");
+		LOG_ERROR(QObject::tr("Out of range"));
 		return false;
 	}
 	uint32_t* start_byte = (uint32_t*) &(m_buffer[m_pos >> SHIFT]);

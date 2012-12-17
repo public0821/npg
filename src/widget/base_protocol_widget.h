@@ -20,9 +20,9 @@ public:
 	BaseProtocolWidget(const QString& name,QWidget *parent);
 	virtual ~BaseProtocolWidget();
 public:
-	virtual QString preSendData() = 0;
-	virtual QString sendData(const char* data, uint16_t length) = 0;
-	virtual QString postSendData() = 0;
+	virtual bool preSendData() = 0;
+	virtual bool sendData(const char* data, uint16_t length) = 0;
+	virtual bool postSendData() = 0;
 	virtual void saveSettings() = 0;
 	virtual void restoreSettings() = 0;
 protected:

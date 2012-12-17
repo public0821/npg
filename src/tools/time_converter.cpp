@@ -1,5 +1,6 @@
 #include "time_converter.h"
 #include <QObject>
+#include "../logger.h"
 
 TimeConverter::TimeConverter(void)
 {
@@ -40,7 +41,7 @@ QString TimeConverter::convert(const QString& text)
 		);
 	if (nRet != 6)
 	{
-		SET_QERROR_STR(QObject::tr("Invalid time format"));
+		LOG_ERROR(QObject::tr("Invalid time format"));
 		return "";
 	}
 
@@ -60,7 +61,7 @@ QString TimeConverter::revert(const QString& text)
 	time_t time_num = text.toULong(&ok);
 	if (!ok)
 	{
-		SET_QERROR_STR(QObject::tr("Invalid number, maybe too long"));
+		LOG_ERROR(QObject::tr("Invalid number, maybe too long"));
 		return "";
 	}
 

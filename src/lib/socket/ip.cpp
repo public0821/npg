@@ -1,13 +1,14 @@
 #include "ip.h"
 #include "socket.h"
-#include "../logger.h"
+#include "../../logger.h"
+#include <qobject.h>
 
 Ip::Ip(int protocol)
 {
 	m_sockfd = socket(AF_INET, SOCK_RAW, protocol);
 	if (-1 == m_sockfd)
 	{
-		LOG_ERROR(npg_strerror(errno));
+		LOG_ERROR(errno);
 		return;
 	}
 	int optval = 1;
@@ -15,7 +16,7 @@ Ip::Ip(int protocol)
 		sizeof(optval));
 	if (ret == -1)
 	{
-		LOG_ERROR(npg_strerror(errno));
+		LOG_ERROR(errno);
 		return;
 	}
 }
@@ -53,7 +54,7 @@ bool Ip::sendto(const char* ip, const char* data, uint16_t len)
 		sizeof(serv_addr));
 	if (ret < 0)
 	{
-		LOG_ERROR(npg_strerror(errno));
+		LOG_ERROR(errno);
 		return false;
 	}
 

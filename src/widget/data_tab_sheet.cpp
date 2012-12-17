@@ -11,7 +11,7 @@
 #include "npg_define.h"
 #include "lib/socket/udp.h"
 #include "lib/socket/raw_udp.h"
-
+#include "../logger.h"
 
 DataTabSheet::DataTabSheet(const QString& name, QWidget *parent) :
 		TabSheet(name, parent, name)
@@ -23,25 +23,26 @@ DataTabSheet::~DataTabSheet()
 {
 }
 
-QString DataTabSheet::preSendData()
+bool DataTabSheet::preSendData()
 {
 	QString data = m_data_edit->toPlainText();
 	if (data.isEmpty())
 	{
-		return tr("ip and port and data must set");
+		LOG_ERROR(tr("ip and port and data must set"));
+		return false;
 	}
 	m_data = data.toLocal8Bit();
 
 	return dependProtocolWidget()->preSendData();
 }
 
-QString DataTabSheet::postSendData()
+bool DataTabSheet::postSendData()
 {
 	m_data.clear();
 	return dependProtocolWidget()->postSendData();
 }
 
-QString DataTabSheet::sendData()
+bool DataTabSheet::sendData()
 {
 	return dependProtocolWidget()->sendData(m_data.constData(), m_data.size());
 }
@@ -66,21 +67,19 @@ void DataTabSheet::restoreSettings()
 	TabSheet::restoreSettings();
 }
 
-
 void DataTabSheet::setupUi()
 {
 	QGridLayout* gridLayout = new QGridLayout(this);
 	gridLayout->setSpacing(6);
 	gridLayout->setContentsMargins(11, 11, 11, 11);
 	gridLayout->setObjectName("gridLayout_2");
-	
+
 	gridLayout->addWidget(dependProtocolWidget(), 0, 0, 1, 1);
 
 	m_data_edit = new QTextEdit(this);
 	m_data_edit->setObjectName("data_edit");
 
 	gridLayout->addWidget(m_data_edit, 1, 0, 1, 1);
-
 
 	QHBoxLayout* send_layout = new QHBoxLayout();
 	send_layout->setSpacing(6);

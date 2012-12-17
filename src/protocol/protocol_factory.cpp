@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QLocale>
 #include "npg_define.h"
+#include "../logger.h"
 
 ProtocolFactory::ProtocolFactory(void)
 {
@@ -15,7 +16,6 @@ ProtocolFactory::~ProtocolFactory(void)
 ProtocolFactory& ProtocolFactory::instance()
 {
 	static ProtocolFactory obj;
-	obj.loadXml();
 	return obj;
 }
 
@@ -35,17 +35,17 @@ Protocol ProtocolFactory::protocol(QString name)
 		}
 	}
 
-	SET_QERROR_STR(QString(QObject::tr("can't find protocol:%1")).arg(name));
+	LOG_ERROR(QObject::tr("can't find protocol:%1").arg(name));
 
 	return Protocol(true);
 }
 
-void ProtocolFactory::loadXml()
+bool ProtocolFactory::loadXml()
 {
 	static bool initialized = false;
 	if (initialized)
 	{
-		return;
+		return true;
 	}
 
 	QString file_name = "./conf/npg_" + QLocale::system().name() + ".xml";
@@ -57,8 +57,8 @@ void ProtocolFactory::loadXml()
 		file.setFileName(file_name);
 		if (!file.open(QFile::ReadOnly | QFile::Text)) 
 		{
-			SET_QERROR_STR(QString(QObject::tr("Open config file fail:")) + file.errorString());
-			return;
+			LOG_ERROR(QObject::tr("Open config file fail:") + file.errorString());
+			return false;
 		}
 	}
 
@@ -68,25 +68,25 @@ void ProtocolFactory::loadXml()
 	int error_column;
 	if (!document.setContent(&file, true, &error_str, &error_line, &error_column)) 
 	{
-				SET_QERROR_STR(QString(QObject::tr("Parse %1 error at line %2, column %3:\n%4"))
+		LOG_ERROR(QObject::tr("Parse %1 error at line %2, column %3:\n%4")
 				.arg(file_name)
 				.arg(error_line)
 				.arg(error_column)
 				.arg(error_str));
-			return;
+			return false;
 	}
 
 	QDomElement root_element = document.documentElement();
 	if (root_element.tagName() != "Npg") 
 	{
-		SET_QERROR_STR(QString(QObject::tr("The file %1 is not an npg file.")).arg(file_name));
-		return;
+		LOG_ERROR(QObject::tr("The file %1 is not an npg file.").arg(file_name));
+		return false;
 	}
 
 	QDomElement protocols_element = root_element.firstChildElement("Protocols");
 	if (protocols_element.isNull()) 
 	{
-		return;
+		return false;
 	}
 
 	QDomElement protocol_element = protocols_element.firstChildElement("Protocol");
@@ -97,6 +97,8 @@ void ProtocolFactory::loadXml()
 	}
 
 	initialized = true;
+
+	return true;
 }
 
 void ProtocolFactory::loadProtocolElement(QDomElement* element)
@@ -127,7 +129,7 @@ void ProtocolFactory::loadProtocolElement(QDomElement* element)
 	}
 	else
 	{
-		SET_QERROR_STR(QString(QObject::tr("Unknown Dependence Protocol:%1")).arg(dependence_str));
+		LOG_ERROR(QObject::tr("Unknown Dependence Protocol:%1").arg(dependence_str));
 	}
 	
 
@@ -198,7 +200,7 @@ Field ProtocolFactory::loadFieldElement(const QString& category_name, QDomElemen
 	}
 	else
 	{
-		SET_QERROR_STR(QString(QObject::tr("Unknown field type:%1")).arg(type_str));
+		LOG_ERROR(QObject::tr("Unknown field type:%1").arg(type_str));
 	}
 
 	QString input_method_str = field_element.attribute("InputMethod");
@@ -220,7 +222,7 @@ Field ProtocolFactory::loadFieldElement(const QString& category_name, QDomElemen
 	}
 	else
 	{
-		SET_QERROR_STR(QString(QObject::tr("Unknown field input method:%1")).arg(input_method_str));
+		LOG_ERROR(QObject::tr("Unknown field input method:%1").arg(input_method_str));
 	}
 
 	field.setLength(field_element.attribute("Length").toInt());

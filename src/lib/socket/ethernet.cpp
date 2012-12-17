@@ -3,14 +3,15 @@
 #include "ethernet.h"
 #include "socket.h"
 #include <string>
-#include "../logger.h"
+#include "../../logger.h"
+#include <qobject.h>
 
 Ethernet::Ethernet(void)
 {
 	m_sockfd = socket(AF_PACKET, SOCK_RAW/*SOCK_RAW*/, htons(ETH_P_ALL));
 	if (-1 == m_sockfd)
 	{
-		LOG_ERROR(npg_strerror(errno));
+		LOG_ERROR(errno);
 	}
 }
 
@@ -54,12 +55,12 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	//	memset(ethhdr->h_dest, 0xFF, sizeof(ethhdr->h_dest));
 	if(!toolkit.toMac(eth_to_mac, ethhdr->h_dest))
 	{
-		LOG_ERROR("The format is not supported: %s", eth_to_mac);
+		LOG_ERROR(QObject::tr("The format is not supported: %1").arg(eth_to_mac));
 		return false;
 	}
 	if(!toolkit.toMac(eth_from_mac, ethhdr->h_source))
 	{
-		LOG_ERROR("The format is not supported: %s", eth_from_mac);
+		LOG_ERROR(QObject::tr("The format is not supported: %1").arg(eth_from_mac));
 		return false;
 	}
 	ethhdr->h_proto = htons(protocol);
@@ -69,7 +70,7 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 		sizeof(remote));
 	if (-1 == ret)
 	{
-		LOG_ERROR(npg_strerror(errno));
+		LOG_ERROR(errno);
 		delete[] buffer;
 		return false;
 	}

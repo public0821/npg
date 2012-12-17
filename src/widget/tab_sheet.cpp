@@ -17,33 +17,33 @@
 #include "ethernet_widget.h"
 
 TabSheet::TabSheet(const QString& protocol_name
-				   , QWidget *parent
-				   , QString depend_protocol_name
-				   , QString depend_protocol_param) 
-:QWidget(parent)
-, m_protocol_name(protocol_name)
-,m_base_protocol_widget(NULL)
+		, QWidget *parent
+		, QString depend_protocol_name
+		, QString depend_protocol_param)
+:
+		QWidget(parent)
+				, m_protocol_name(protocol_name)
+				, m_base_protocol_widget(NULL)
 {
 	m_send_thread = new SendThread(this);
 
 	if (depend_protocol_name == K_PROTOCOL_UDP)
-	{
+			{
 		m_base_protocol_widget = new UdpWidget(m_protocol_name, this);
 	}
 	else if (depend_protocol_name == K_PROTOCOL_TCP)
-	{
+			{
 		m_base_protocol_widget = new TcpWidget(m_protocol_name, this);
 	}
 	else if (depend_protocol_name == K_PROTOCOL_IP)
-	{
+			{
 		m_base_protocol_widget = new IpWidget(m_protocol_name, depend_protocol_param, this);
 	}
 	else if (depend_protocol_name == K_PROTOCOL_ETHERNET)
-	{
+			{
 		m_base_protocol_widget = new EthernetWidget(m_protocol_name, depend_protocol_param, this);
 	}
 }
-
 
 TabSheet::~TabSheet()
 {
@@ -56,7 +56,7 @@ TabSheet::~TabSheet()
 }
 
 void TabSheet::setupUi(QHBoxLayout* layout)
-{
+		{
 	QHBoxLayout* simple_layout = new QHBoxLayout();
 
 	m_send_button = new QPushButton(tr("Send"));
@@ -111,19 +111,19 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 }
 
 void TabSheet::showFailedTip(const QString& tip)
-{
+		{
 	showTip(QString("<font color=red>%1</font>").arg(tip));
 }
 
-void TabSheet::showSuccessfulTip(const QString& tip)
-{
+void TabSheet::showSuccessTip(const QString& tip)
+		{
 	showTip(QString("<font color=green>%1</font>").arg(tip));
 }
 
 void TabSheet::showTip(const QString& tip)
-{
+		{
 	if (m_tip_label != NULL)
-	{
+			{
 		m_tip_label->setText(tip);
 	}
 }
@@ -152,8 +152,7 @@ void TabSheet::onSend()
 	m_status_label2->setText("");
 
 	saveSettings();
-	if (m_send_thread->isRunning()) //running
-	{
+	if (m_send_thread->isRunning()) { //running
 		m_send_button->setText(tr("Send"));
 		m_send_thread->stop();
 		m_send_thread->wait();
@@ -161,61 +160,52 @@ void TabSheet::onSend()
 	}
 
 	//not running
-	if (m_is_advanced) //multi
-	{
+	if (m_is_advanced) { //multi
 		int index = m_send_typeBox->currentIndex();
 		int count = m_count_edit->text().toInt();
 //		QMessageBox::information(this, "test", QString("%1").arg(count));
-		if (count == 0)
-		{
+		if (count == 0) {
 			showFailedTip(tr("please input a valid count"));
 			return;
 		}
 		m_send_button->setText(tr("stop"));
-		m_send_thread->start((ESendType) m_send_typeBox->itemData(index).toInt(),
-				count);
+		m_send_thread->start((ESendType) m_send_typeBox->itemData(index).toInt(), count);
 	}
-	else //singel
-	{
+	else { //single
 		m_send_button->setEnabled(false);
-		QString ret = preSendData();
-		if (!ret.isNull() && !ret.isEmpty())
-		{
-			showFailedTip(ret);
+		bool ret = preSendData();
+		if (!ret) {
+			showFailedTip();
 			goto END;
 		}
-		
+
 		ret = sendData();
-		if (!ret.isNull() && !ret.isEmpty())
-		{
-			showFailedTip(ret);
+		if (!ret) {
+			showFailedTip();
 			goto END;
 		}
 
 		ret = postSendData();
-		if (!ret.isNull() && !ret.isEmpty())
-		{
-			showFailedTip(ret);
+		if (!ret) {
+			showFailedTip();
 			goto END;
 		}
-		else
-		{
-			showSuccessfulTip(tr("Successful !"));
+		else {
+			showSuccessTip();
 		}
-END:
+
+		END:
 		m_send_button->setEnabled(true);
 	}
 }
 
-void TabSheet::onSendFinish()
-{
+void TabSheet::onSendFinish() {
 	const QString& error = m_send_thread->error();
-	if (error.isEmpty()) //thread exit successful
-	{
-		showSuccessfulTip(tr("finished"));
+	if (error.isEmpty()) { //thread exit successful
+
+		showSuccessTip(tr("finished"));
 	}
-	else
-	{
+	else {
 		showFailedTip(error);
 	}
 
@@ -223,17 +213,12 @@ void TabSheet::onSendFinish()
 
 }
 
-void TabSheet::onCounter(int count, time_t seconds)
-{
-	m_status_label1->setText(
-			QString(tr("total(time):%1(%2)")).arg(count).arg(seconds));
+void TabSheet::onCounter(int count, time_t seconds) {
+	m_status_label1->setText(QString(tr("total(time):%1(%2)")).arg(count).arg(seconds));
 	double speed = 0;
-	if (seconds == 0)
-	{
+	if (seconds == 0) {
 		speed = count;
-	}
-	else
-	{
+	} else {
 		speed = (double) count / seconds;
 	}
 	m_status_label2->setText(QString(tr("speed:%1")).arg(speed));

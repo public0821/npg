@@ -12,6 +12,7 @@
 #include <QSplitter>
 #include "widget/main_list_widget.h"
 #include "widget/main_tab_widget.h"
+#include <qtextbrowser.h>
 
 class Npg: public QMainWindow
 {
@@ -33,6 +34,8 @@ private:
 	MainListWidget* m_type_list;
 	MainTabWidget* m_tab_widget;
 	QSplitter* m_main_splitter;
+	QSplitter* m_log_splitter;
+	QTextBrowser* m_logger;
 //	QStringList m_data_types;
 };
 

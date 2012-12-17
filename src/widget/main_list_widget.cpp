@@ -26,9 +26,10 @@ MainListWidget::MainListWidget(const QMap<QString, QString>& name_icons, QWidget
 		item->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 	}
 	ProtocolFactory& protocol_factory = ProtocolFactory::instance();
-	if (protocol_factory.hasError())
+	bool ret = protocol_factory.loadXml();
+	if (!ret)
 	{
-		QMessageBox::information(this, tr("tip"), protocol_factory.errorString());
+		QMessageBox::information(this, tr("tip"), tr("load config failed"));
 	}	
 	const std::vector<Protocol>& protocols = protocol_factory.protocols();
 	std::vector<Protocol>::const_iterator it_protocol;

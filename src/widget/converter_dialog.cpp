@@ -6,7 +6,8 @@
 #include "tools/base64_converter.h"
 
 ConverterDialog::ConverterDialog(EConverterType type, const QIcon& icon, QWidget *parent)
-	:QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint)
+:
+		QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint)
 {
 	ui.setupUi(this);
 
@@ -44,22 +45,16 @@ ConverterDialog::~ConverterDialog()
 
 }
 
-
-void ConverterDialog::onConvert()
-{
+void ConverterDialog::onConvert() {
 	QString text = ui.from_edit->toPlainText();
-	if (text.isEmpty())
-	{
+	if (text.isEmpty()) {
 		return;
 	}
 
 	QString result_text = m_converter->convert(text);
-	if (result_text.isEmpty())
-	{
-		QMessageBox::information(this, tr("tip"), m_converter->errorString());
-	}
-	else
-	{
+	if (result_text.isEmpty()) {
+		QMessageBox::information(this, tr("tip"), tr("convert failed, see log area for detail"));
+	} else {
 		ui.to_edit->setText(result_text);
 	}
 }
@@ -75,7 +70,7 @@ void ConverterDialog::onRevert()
 	QString result_text = m_converter->revert(ui.to_edit->toPlainText());
 	if (result_text.isEmpty())
 	{
-		QMessageBox::information(this, tr("tip"), m_converter->errorString());
+		QMessageBox::information(this, tr("tip"), tr("revert failed, see log area for detail"));
 	}
 	else
 	{

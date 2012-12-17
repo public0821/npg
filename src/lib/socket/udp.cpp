@@ -7,7 +7,8 @@
 
 #include "udp.h"
 #include "socket.h"
-#include "../logger.h"
+#include "../../logger.h"
+#include <qobject.h>
 
 Udp::Udp(const IpAddress& addr, uint16_t port) :
 		m_sockfd(-1), m_addr(addr), m_port(port) {
@@ -43,7 +44,7 @@ bool Udp::sendto(const IpAddress& ip, uint16_t port, const char* buffer, size_t 
 		int ret = setsockopt(m_sockfd, SOL_SOCKET, SO_BROADCAST,
 				(const char *) &optval, sizeof(optval));
 		if (ret == -1) {
-			LOG_ERROR(npg_strerror(errno));
+			LOG_ERROR(errno);
 			return false;
 		}
 	}
@@ -68,13 +69,13 @@ bool Udp::sendto(const IpAddress& ip, uint16_t port, const char* buffer, size_t 
 		addr_len = sizeof(sockaddr6);
 
 	} else {
-		LOG_ERROR("unsupported ip version: %u", ip.version());
+		LOG_ERROR(QObject::tr("unsupported ip version: %1").arg(ip.version()));
 		return false;
 	}
 
 	int len = ::sendto(m_sockfd, buffer, buffer_len, 0, addr, addr_len);
 	if (len == -1) {
-		LOG_ERROR(npg_strerror(errno));
+		LOG_ERROR(errno);
 		return false;
 	}
 
@@ -84,14 +85,16 @@ bool Udp::sendto(const IpAddress& ip, uint16_t port, const char* buffer, size_t 
 bool Udp::new_socket(const IpAddress& ip, uint16_t port, bool nonblock) {
 	int sockfd = socket(ip.version() == IpAddress::IPV4 ? AF_INET : AF_INET6, SOCK_DGRAM, 0);
 	if (sockfd == -1) {
-		LOG_ERROR("create udp socket failed:%s", npg_strerror(errno).c_str());
+		LOG_ERROR(errno);
+		LOG_ERROR(QObject::tr("create udp socket failed"));
 		return -1;
 	}
 
 	int optval = 1;
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (const void *) &optval,
 			sizeof(int)) < 0) {
-		LOG_ERROR("set REUSEADDR failed:%s", npg_strerror(errno).c_str());
+		LOG_ERROR(errno);
+		LOG_ERROR(QObject::tr("set REUSEADDR failed"));
 		closesocket(sockfd);
 		return -1;
 	}
@@ -116,14 +119,15 @@ bool Udp::new_socket(const IpAddress& ip, uint16_t port, bool nonblock) {
 		addr = (struct sockaddr *) &sockaddr6;
 		len = sizeof(sockaddr6);
 	} else {
-		LOG_ERROR("unsupported ip version: %u", ip.version());
+		LOG_ERROR(QObject::tr("unsupported ip version: %1").arg(ip.version()));
 		closesocket(sockfd);
 		return -1;
 	}
 
 	int ret = bind(sockfd, addr, len);
 	if (ret == -1) {
-		LOG_ERROR("bind faild (%d):%s", port, npg_strerror(errno).c_str());
+		LOG_ERROR(errno);
+		LOG_ERROR(QObject::tr("bind faild (%d):%s").arg(port));
 		closesocket(sockfd);
 		return -1;
 	}

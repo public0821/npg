@@ -8,9 +8,8 @@
 #define __BIT_BUILDER_H__
 #include "lib/features.h"
 #include "lib/types.h"
-#include "lib/error.h"
 
-class BitBuilder:public Error
+class BitBuilder
 {
 public:
 	BitBuilder(uint16_t length);	//Identifies the number of bytes

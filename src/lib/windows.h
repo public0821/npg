@@ -38,10 +38,8 @@ inline int gettimeofday(struct timeval *tp, void *tzp)
 }
 
 
-inline std::string npg_strerror(int errorno)
+inline int npg_strerror(int errorno, char *buf, int buflen)
 {
-	char buf[2048];
-	int buflen = sizeof(buf);
 	bzero(buf, buflen);
 #define TEMP_BUF_SIZE 512
 	WCHAR tempBuf[TEMP_BUF_SIZE];
@@ -59,7 +57,7 @@ inline std::string npg_strerror(int errorno)
 
 	if (ret == 0)
 	{
-		return buf;
+		return 0;
 	}
 
 	WideCharToMultiByte( CP_ACP,
@@ -71,7 +69,7 @@ inline std::string npg_strerror(int errorno)
 			NULL,
 			NULL );
 
-	return buf;
+	return 0;
 }
 
 #endif

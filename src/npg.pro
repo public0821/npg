@@ -10,13 +10,14 @@ TRANSLATIONS = npg_zh_CN.ts
 UI_DIR = ./ui
 MOC_DIR = ./tmp
 OBJECTS_DIR = ./tmp
+
 unix:QMAKE_CXXFLAGS += -std=c++0x
 
 # Input
-HEADERS += lib/windows.h \
+HEADERS += config.h \
+    logger.h \
+    lib/windows.h \
     lib/linux.h \
-    lib/config.h \
-    lib/logger.h \
     lib/features.h \
     lib/os.h \
     lib/types.h \
@@ -35,7 +36,6 @@ HEADERS += lib/windows.h \
     lib/socket/socket_toolkit.h \
     lib/socket/tcp.h \
     lib/socket/udp.h \
-    qerror.h \
     protocol/bit_builder.h \
     protocol/category.h \
     protocol/field.h \
@@ -77,7 +77,7 @@ FORMS += ui/ethernet_widget.ui \
     ui/udp_widget.ui \
     ui/converter_dialog.ui \
     ui/about_dialog.ui
-SOURCES += lib/logger.cpp \
+SOURCES += logger.cpp \
     lib/socket/ethernet.cpp \
     lib/socket/ethernet_pcap.cpp \
     lib/socket/ip.cpp \
@@ -87,7 +87,6 @@ SOURCES += lib/logger.cpp \
     lib/socket/socket_toolkit.cpp \
     lib/socket/tcp.cpp \
     lib/socket/udp.cpp \
-    qerror.cpp \
     protocol/bit_builder.cpp \
     protocol/category.cpp \
     protocol/field.cpp \

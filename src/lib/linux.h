@@ -5,17 +5,15 @@
 #include <string.h>
 #include <string>
 
-inline std::string npg_strerror(int errorno) {
-	char buf[2048];
-	int buflen = sizeof(buf);
+inline int npg_strerror(int errorno, char *buf, int buflen) {
 	bzero(buf, buflen);
 #if  (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE
 	int ret = strerror_r(errorno, buf, buflen);
-	return buf;
+	return ret;
 #else
 	char * ret = strerror_r(errorno, buf, buflen);
 	strncpy(buf, ret, buflen);
-	return buf;
+	return 0;
 #endif
 
 }

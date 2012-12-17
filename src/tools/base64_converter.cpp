@@ -1,5 +1,6 @@
 #include "base64_converter.h"
 #include <QObject>
+#include "../logger.h"
 
 static const unsigned char encode64[]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static const unsigned char decode64[]={62, 127, 127, 127, 63
@@ -77,7 +78,7 @@ QString Base64Converter::revert(const QString& text)
 		totallen += len;
 		if (len == 0)
 		{
-			SET_QERROR_STR(QObject::tr("Invalid base64 code"));
+			LOG_ERROR(QObject::tr("Invalid base64 code"));
 			delete[] to_str;
 			return "";
 		}

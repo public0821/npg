@@ -22,9 +22,9 @@ public:
     TcpWidget(const QString& protocol_name, QWidget *parent = 0);
     ~TcpWidget();
 public:
-	QString preSendData();
-	QString postSendData();
-    QString sendData(const char* data, uint16_t length);
+	bool preSendData();
+	bool postSendData();
+	bool sendData(const char* data, uint16_t length);
 private:
 	void saveSettings();
 	void restoreSettings();

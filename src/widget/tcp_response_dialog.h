@@ -15,7 +15,7 @@
 class RecvThread;
 class TcpResponseDialog: public QDialog
 {
-	Q_OBJECT
+Q_OBJECT
 
 public:
 	TcpResponseDialog(Tcp& tcp, QWidget *parent = 0);
@@ -34,79 +34,71 @@ private:
 
 #include <qthread.h>
 class RecvThread: public QThread {
-	Q_OBJECT
+Q_OBJECT
 
 public:
 	RecvThread(Tcp& tcp) :
-			m_tcp(tcp)
-	{
+			m_tcp(tcp) {
 	}
-	;
-	~RecvThread()
-	{
+
+	~RecvThread() {
 	}
-	;
 
 public:
 	void stop() {
 		m_running = false;
 	}
 
-	const QString& error() const
-	{
-		return m_error;
+	bool error_happend() const {
+		return m_error_happend;
 	}
-	;signals:
+
+signals:
 	void recvData(const QByteArray&);
-	private:
-	void run()
-	{
+
+private:
+	void run() {
+		m_error_happend = false;
 		const size_t buff_len = 1023;
 		char buff[buff_len + 1];
 
 		bool ret = m_tcp.setBlocking(false);
-		if (!ret)
-		{
-			m_error = m_tcp.errorString();
+		if (!ret) {
+			m_error_happend = true;
 			return;
 		}
 
 		while (m_running)
 		{
 			int len = m_tcp.recv(buff, buff_len);
-			if (len == -1)
-					{
-				m_error = m_tcp.errorString();
+			if (len == -1) {
+				m_error_happend = true;
 				break;
 			}
 
 			buff[len] = '\0';
-			emit recvData(QByteArray(buff));
+			emit
+			recvData(QByteArray(buff));
 
-			if (len == 0)
-					{
-				if (m_tcp.errorno() == EWOULDBLOCK || m_tcp.errorno() == EAGAIN)
-						{
+			if (len == 0) {
+				if (m_tcp.error_no() == EWOULDBLOCK || m_tcp.error_no() == EAGAIN) {
 					sleep(1);
-				}
-				else
-				{
+				} else {
 					break;
 				}
 			}
 		}
 
 		ret = m_tcp.setBlocking(true);
-		if (!ret)
-		{
-			m_error = m_tcp.errorString();
+		if (!ret) {
+			m_error_happend = true;
 			return;
 		}
 	}
-	;
-	private:
+
+private:
 	volatile bool m_running;
-	QString m_error;
+	bool m_error_happend;
 
 	Tcp& m_tcp;
 };

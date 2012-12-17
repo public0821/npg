@@ -12,6 +12,7 @@
 #include <qmessagebox.h>
 #include "widget/converter_dialog.h"
 #include "widget/about_dialog.h"
+#include "logger.h"
 
 Npg::Npg(QWidget *parent) :
 		QMainWindow(parent)
@@ -45,6 +46,7 @@ Npg::Npg(QWidget *parent) :
 	ui.toolBar->addAction(ui.action_about);
 
 	m_main_splitter = new QSplitter(Qt::Horizontal);
+	m_log_splitter = new QSplitter(Qt::Vertical);
 
 	QMap < QString, QString > name_icons;
 	name_icons.insert(K_PROTOCOL_UDP, ":/npg/protocol_default");
@@ -55,8 +57,12 @@ Npg::Npg(QWidget *parent) :
 
 	m_type_list = new MainListWidget(name_icons);
 	m_tab_widget = new MainTabWidget(name_icons);
+	m_logger = new QTextBrowser(this);
+	m_log_splitter->addWidget(m_tab_widget);
+	m_log_splitter->addWidget(m_logger);
 	m_main_splitter->addWidget(m_type_list);
-	m_main_splitter->addWidget(m_tab_widget);
+	m_main_splitter->addWidget(m_log_splitter);
+//	m_log_splitter->setStretchFactor(1, 1);
 	m_main_splitter->setStretchFactor(1, 1);
 	setCentralWidget(m_main_splitter);
 	connect(m_type_list, SIGNAL(itemDoubleClicked(QListWidgetItem* )), this,
@@ -67,6 +73,8 @@ Npg::Npg(QWidget *parent) :
 	//resize(400, 300);
 //	/setsi
 //	m_tabWidget->addTab(new UdpWidget(m_tabWidget), "udp");
+
+	Logger::instance().bind(m_logger);
 }
 
 Npg::~Npg()

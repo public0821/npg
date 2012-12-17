@@ -7,7 +7,6 @@
 #ifndef	__CONVERTER_H__
 #define __CONVERTER_H__
 #include <QString>
-#include "qerror.h"
 
 enum EConverterType
 {
@@ -17,7 +16,7 @@ enum EConverterType
 	,E_CONVERTER_BASE64
 };
 
-class Converter : public QError
+class Converter
 {
 public:
 	Converter(void);

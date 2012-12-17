@@ -11,6 +11,7 @@
 #include "base_protocol_widget.h"
 #include "ui/ui_udp_widget.h"
 #include "lib/types.h"
+#include "../lib/socket/ip_address.h"
 
 class UdpWidget : public BaseProtocolWidget
 {
@@ -20,18 +21,18 @@ public:
     UdpWidget(const QString& protocol_name, QWidget *parent);
     ~UdpWidget();
 public:
-	QString preSendData();
-	QString postSendData();
-    QString sendData(const char* data, uint16_t length);
+	bool preSendData();
+	bool postSendData();
+	bool sendData(const char* data, uint16_t length);
 public:
 	void saveSettings();
 	void restoreSettings();
 private:
     Ui::UdpWidgetClass ui;
 
-	std::string m_srcip; 
+    IpAddress m_srcip;
 	uint16_t m_srcport;
-	std::string m_dstip; 
+	IpAddress m_dstip;
 	uint16_t m_dstport;
 	bool m_is_raw_socket;
 	void* m_udp;

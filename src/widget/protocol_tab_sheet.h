@@ -23,9 +23,9 @@ public:
 private:
 	void saveSettings();
 	void restoreSettings();
-	QString sendData();
-	QString preSendData();
-	QString postSendData();
+	bool sendData();
+	bool preSendData();
+	bool postSendData();
 	QString convertDefaultValue(const QString& default_value);
 private:
 //	Ui::

@@ -21,9 +21,13 @@ public:
 	bool send(const char* buffer, size_t buffer_len);
 	int recv(char* buffer, size_t buffer_len);
 	bool setBlocking(bool blocking);
+	int error_no()const{
+		return m_errno;
+	}
 private:
 	int m_sockfd;
 	bool m_blocking;
+	int m_errno;
 };
 
 #endif /* TCP_H_ */

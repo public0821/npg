@@ -4,12 +4,13 @@
 #include <qsettings.h>
 #include "npg_define.h"
 #include "lib/socket/ethernet.h"
-#include "lib/logger.h"
+#include "../logger.h"
 
 Q_DECLARE_METATYPE(ifi_info)
 
 EthernetWidget::EthernetWidget(const QString& protocol_name, const QString& ether_protocol_name, QWidget *parent)
-	: BaseProtocolWidget(protocol_name, parent), m_ethernet(NULL)
+:
+		BaseProtocolWidget(protocol_name, parent), m_ethernet(NULL)
 {
 	ui.setupUi(this);
 	setupInterface(parent);
@@ -22,11 +23,11 @@ EthernetWidget::~EthernetWidget()
 
 }
 
-QString EthernetWidget::preSendData()
-{
-	if (m_ethernet != NULL)
-	{
-		return tr("'preSendData' function has been called");//this message just for developer, End-user will not see it
+bool EthernetWidget::preSendData() {
+	if (m_ethernet != NULL) {
+		//this message just for developer, End-user will not see it
+		LOG_ERROR( tr("'preSendData' function has been called"));
+		return false;
 	}
 	m_ethernet = new Ethernet();
 	int index = ui.protocol_box->currentIndex();
@@ -36,31 +37,24 @@ QString EthernetWidget::preSendData()
 
 	index = ui.interface_box->currentIndex();
 	m_dev = ui.interface_box->itemData(index).value<ifi_info>();
-	return QString();
+	return true;
 }
 
-QString EthernetWidget::postSendData()
-{
-	if (m_ethernet != NULL)
-	{
+bool EthernetWidget::postSendData() {
+	if (m_ethernet != NULL) {
 		delete m_ethernet;
 		m_ethernet = NULL;
 	}
-	return QString();
+	return true;
 }
 
-QString EthernetWidget::sendData(const char* data, uint16_t length)
-{
-
-	if (m_ethernet == NULL)
-	{
-		return tr("should call 'preSendData' function first");
+bool EthernetWidget::sendData(const char* data, uint16_t length) {
+	if (m_ethernet == NULL) {
+		LOG_ERROR( tr("should call 'preSendData' function first"));
+		return false;
 	}
 
-	m_ethernet->sendto(m_dev, m_dstmac.c_str(), m_srcmac.c_str(), m_protocol, data, length);
-
-	return m_ethernet->errorString();
-
+	return m_ethernet->sendto(m_dev, m_dstmac.c_str(), m_srcmac.c_str(), m_protocol, data, length);
 }
 
 void EthernetWidget::saveSettings()
@@ -87,16 +81,16 @@ void EthernetWidget::restoreSettings()
 }
 
 void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name)
-{
-	std::map<QString, int>  built_in_protocol;
-	built_in_protocol.insert(std::make_pair(K_PROTOCOL_IP, (int)ETH_P_IP));
-	built_in_protocol.insert(std::make_pair(K_PROTOCOL_ARP, (int)ETH_P_ARP));
-	built_in_protocol.insert(std::make_pair(K_PROTOCOL_RARP, (int)ETH_P_RARP));
+		{
+	std::map<QString, int> built_in_protocol;
+	built_in_protocol.insert(std::make_pair(K_PROTOCOL_IP, (int) ETH_P_IP));
+	built_in_protocol.insert(std::make_pair(K_PROTOCOL_ARP, (int) ETH_P_ARP));
+	built_in_protocol.insert(std::make_pair(K_PROTOCOL_RARP, (int) ETH_P_RARP));
 
 	std::map<QString, int>::const_iterator it_find;
 	it_find = built_in_protocol.find(ether_protocol_name);
 	if (it_find != built_in_protocol.end())
-	{
+			{
 		QString text = QString("%1 (%2)").arg(it_find->first).arg(it_find->second);
 		ui.protocol_box->addItem(text, QVariant(it_find->second));
 		ui.protocol_box->setEditable(false);
@@ -114,17 +108,11 @@ void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name)
 	}
 }
 
-void EthernetWidget::setupInterface(QWidget *parent)
-{
+void EthernetWidget::setupInterface(QWidget *parent){
 	SocketToolkit toolkit;
 	std::vector<ifi_info> ifiInfos = toolkit.ifiInfo();
-	if(ifiInfos.size() == 0)
-	{
-		TabSheet *tab_sheet = static_cast<TabSheet *>(parent);
-		if (tab_sheet != NULL)
-		{
-			tab_sheet->showFailedTip(LOG_STRING().c_str());
-		}
+	if (ifiInfos.size() == 0){
+		LOG_ERROR(tr("get ifi info failed"));
 	}
 
 	std::vector<ifi_info>::iterator it;
@@ -133,7 +121,7 @@ void EthernetWidget::setupInterface(QWidget *parent)
 	{
 		index++;
 #ifdef __GNUC__
-		if (it->ifi_flags & IFF_LOOPBACK)// ignore loopback
+		if (it->ifi_flags & IFF_LOOPBACK) // ignore loopback
 		{
 			continue;
 		}
@@ -144,21 +132,20 @@ void EthernetWidget::setupInterface(QWidget *parent)
 		//inet_ntop(AF_INET, &sin->sin_addr, ip, sizeof(ip));
 		strncpy(ip, inet_ntoa(sin->sin_addr), sizeof(ip));
 		char mac[256];
-		toolkit.macToString((const uint8_t *)it->ifi_haddr, mac, sizeof(mac));
+		toolkit.macToString((const uint8_t *) it->ifi_haddr, mac, sizeof(mac));
 		it->ifi_index = index;
 		ui.interface_box->addItem(
-			QString("%1-%2-%3").arg(it->ifi_name).arg(ip).arg(mac),
-			QVariant::fromValue(*it));
-	}	
+				QString("%1-%2-%3").arg(it->ifi_name).arg(ip).arg(mac),
+				QVariant::fromValue(*it));
+	}
 }
 
-
 void EthernetWidget::onInterfaceChanged(int index)
-{
+		{
 	ifi_info dev = ui.interface_box->itemData(index).value<ifi_info>();
 	char mac[256];
 	SocketToolkit toolkit;
-	toolkit.macToString((const uint8_t *)dev.ifi_haddr, mac, sizeof(mac));
+	toolkit.macToString((const uint8_t *) dev.ifi_haddr, mac, sizeof(mac));
 
 	ui.from_mac_edit->setText(mac);
 }

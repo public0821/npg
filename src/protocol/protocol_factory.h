@@ -8,10 +8,9 @@
 #define __PROTOCOL_FACTORY_H__
 
 #include "protocol.h"
-#include "qerror.h"
 
 class QDomElement;
-class ProtocolFactory : public QError
+class ProtocolFactory
 {
 private:
 	ProtocolFactory(void);
@@ -20,11 +19,11 @@ public:
 
 public:
 	static ProtocolFactory& instance();
+	bool loadXml();
 public:
 	const std::vector<Protocol>& protocols() const;
 	Protocol protocol(QString name);
 private:
-	void loadXml();
 	void loadProtocolElement(QDomElement* element);
 	Category loadCategoryElement(QDomElement* element);
 	Field loadFieldElement(const QString& category_name, QDomElement* element);

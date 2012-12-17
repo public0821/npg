@@ -5,7 +5,6 @@
  *      Author: Young <public0821@gmail.com>
  */
 
-
 #include "protocol_tab_sheet.h"
 #include <qsettings.h>
 #include "npg_define.h"
@@ -14,12 +13,13 @@
 #include "udp_widget.h"
 #include "lib/socket/socket_toolkit.h"
 #include "protocol/bit_builder.h"
+#include "../logger.h"
 
-
-ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent) 
-:TabSheet(protocol.name(), parent, protocol.dependenceString(), protocol.DependenceParam())
-, m_protocol(protocol)
-,m_seq(0)
+ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent)
+:
+		TabSheet(protocol.name(), parent, protocol.dependenceString(), protocol.DependenceParam())
+				, m_protocol(protocol)
+				, m_seq(0)
 {
 	ui.setupUi(this);
 	ui.treeWidget->setup(protocol);
@@ -57,7 +57,7 @@ void ProtocolTabSheet::restoreSettings()
 	TabSheet::restoreSettings();
 }
 
-QString ProtocolTabSheet::preSendData()
+bool ProtocolTabSheet::preSendData()
 {
 	ProtocolBuilder protocol_builder;
 
@@ -66,128 +66,107 @@ QString ProtocolTabSheet::preSendData()
 	Field checknum_field("", true);
 
 	ProtocolTree* tree_widget = ui.treeWidget;
-	int	category_count = tree_widget->topLevelItemCount();
-	for (int category_index = 0; category_index < category_count; category_index++)
-	{
+	int category_count = tree_widget->topLevelItemCount();
+	for (int category_index = 0; category_index < category_count; category_index++) {
 		QTreeWidgetItem* category_item = tree_widget->topLevelItem(category_index);
 		QString category_name = category_item->data(1, Qt::UserRole).toString();
 		Category category = m_protocol.category(category_name);
 		QString category_prefix = category.prefix();
-		if (!category_prefix.isEmpty())
-		{
+		if (!category_prefix.isEmpty()) {
 			QByteArray category_prefix_array = category_prefix.toLocal8Bit();
 			int ret = protocol_builder.append(category_prefix_array.constData(), category_prefix_array.size());
-			if (ret == false)
-			{
-				return protocol_builder.errorString();
+			if (ret == false) {
+				return false;
 			}
 		}
 
 		int field_count = category_item->childCount();
-		for (int field_index = 0; field_index < field_count; field_index++)
-		{
-			QTreeWidgetItem* field_item	= category_item->child (field_index);
+		for (int field_index = 0; field_index < field_count; field_index++) {
+			QTreeWidgetItem* field_item = category_item->child(field_index);
 			QString field_name = field_item->data(1, Qt::UserRole).toString();
 			Field field = category.field(field_name);
 
 			QString field_prefix = field.prefix();
-			if (!field_prefix.isEmpty())
-			{
+			if (!field_prefix.isEmpty()) {
 				QByteArray field_prefix_array = field_prefix.toLocal8Bit();
 				int ret = protocol_builder.append(field_prefix_array.constData(), field_prefix_array.size());
-				if (ret == false)
-				{
-					return protocol_builder.errorString();
+				if (ret == false) {
+					return false;
 				}
 			}
 
 			int sub_field_count = field_item->childCount();
-			if (sub_field_count > 0)
-			{
-				if (field.length() <= 0)
-				{
-					return tr("field length must greater than 0:") + field.name();
+			if (sub_field_count > 0) {
+				if (field.length() <= 0) {
+					LOG_ERROR(tr("field length must greater than 0:") + field.name());
+					return false;
 				}
 
 				BitBuilder bit_builder(field.length());
-				for (int sub_field_index = 0; sub_field_index < sub_field_count; sub_field_index++)
-				{
-					QTreeWidgetItem* sub_field_item	= field_item->child (sub_field_index);
-					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*)tree_widget->itemWidget(sub_field_item, 1);
+				for (int sub_field_index = 0; sub_field_index < sub_field_count; sub_field_index++) {
+					QTreeWidgetItem* sub_field_item = field_item->child(sub_field_index);
+					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*) tree_widget->itemWidget(sub_field_item, 1);
 					uint32_t data = item_widget->value().toUInt();
 
 					QString sub_field_name = sub_field_item->data(1, Qt::UserRole).toString();
 					Field sub_field = field.subField(sub_field_name);
 					int ret = bit_builder.append(data, sub_field.length());
-					if (ret == false)
-					{
-						return bit_builder.errorString();
+					if (ret == false) {
+						return false;
 					}
 				}
-				int ret = protocol_builder.append((const char *)bit_builder.data(), bit_builder.length());
-				if (ret == false)
-				{
-					return protocol_builder.errorString();
+				int ret = protocol_builder.append((const char *) bit_builder.data(), bit_builder.length());
+				if (ret == false) {
+					return false;
 				}
 
-			}
-			else
-			{
-				QCheckBox* item_checkbox = (QCheckBox*)tree_widget->itemWidget(field_item, 2);
+			} else { //sub_field_count >= 0
+
+				QCheckBox* item_checkbox = (QCheckBox*) tree_widget->itemWidget(field_item, 2);
 				QString data;
-				if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Unchecked)
-				{
-					if (field.defaultValueOriginal() == K_DEFAULT_VALUE_CHECKNUM)
-					{
+				if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Unchecked) {
+					if (field.defaultValueOriginal() == K_DEFAULT_VALUE_CHECKNUM) {
 						need_checknum = true;
 						checknum_pos = protocol_builder.length();
 						checknum_field = field;
-					}	
+					}
 					data = convertDefaultValue(field.defaultValueOriginal());
-				}
-				else
-				{
-					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*)tree_widget->itemWidget(field_item, 1);
+				} else {
+					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*) tree_widget->itemWidget(field_item, 1);
 					data = item_widget->value();
 				}
 
 				bool ret = protocol_builder.append(field.type(), field.length(), data);
-				if (ret == false)
-				{
-					return protocol_builder.errorString();
+				if (ret == false) {
+					return false;
 				}
 			}
 
 			QString field_tail = field.tail();
-			if (!field_tail.isEmpty())
-			{
+			if (!field_tail.isEmpty()) {
 				QByteArray field_tail_array = field_tail.toLocal8Bit();
 				int ret = protocol_builder.append(field_tail_array.constData(), field_tail_array.size());
-				if (ret == false)
-				{
-					return protocol_builder.errorString();
+				if (ret == false) {
+					return false;
 				}
 			}
 
 		}
 
 		QString category_tail = category.tail();
-		if (!category_tail.isEmpty())
-		{
+		if (!category_tail.isEmpty()) {
 			QByteArray category_tail_array = category_tail.toLocal8Bit();
 			int ret = protocol_builder.append(category_tail_array.constData(), category_tail_array.size());
-			if (ret == false)
-			{
-				return protocol_builder.errorString();
+			if (ret == false) {
+				return false;
 			}
 		}
 
 	}
 
-	if (need_checknum)
-	{
+	if (need_checknum) {
 		SocketToolkit toolkit;
-		uint16_t checknum = toolkit.inCheckSum((uint16_t *)protocol_builder.data(), protocol_builder.length());
+		uint16_t checknum = toolkit.inCheckSum((uint16_t *) protocol_builder.data(), protocol_builder.length());
 		checknum = ntohs(checknum);
 		QString data = QString("%1").arg(checknum);
 		protocol_builder.set(checknum_pos, checknum_field.type(), checknum_field.length(), data);
@@ -198,50 +177,48 @@ QString ProtocolTabSheet::preSendData()
 	return dependProtocolWidget()->preSendData();
 }
 
-
-QString ProtocolTabSheet::postSendData()
+bool ProtocolTabSheet::postSendData()
 {
 	m_data.clear();
 	return dependProtocolWidget()->postSendData();
 }
 
 //#include <qmessagebox.h>
-QString ProtocolTabSheet::sendData()
+bool ProtocolTabSheet::sendData()
 {
 	return dependProtocolWidget()->sendData(m_data.data(), m_data.length());
 	//QMessageBox::information(this, "tip", QString("%1").arg(protocol_builder.length()));
 }
 
-
 QString ProtocolTabSheet::convertDefaultValue(const QString& default_value)
-{
+		{
 	if (default_value == K_DEFAULT_VALUE_SECOND)
-	{
+			{
 		struct timeval now;
 		gettimeofday(&now, NULL);
 		return QString("%1").arg(now.tv_sec);
 	}
 	else if (default_value == K_DEFAULT_VALUE_PID)
-	{
+			{
 		return QString("%1").arg(getpid());
 	}
 	else if (default_value == K_DEFAULT_VALUE_MILLISECOND)
-	{
+			{
 		struct timeval now;
 		gettimeofday(&now, NULL);
 		return QString("%1").arg(now.tv_usec);
 	}
 	else if (default_value == K_DEFAULT_VALUE_CHECKNUM)
-	{
+			{
 		return QString("%1").arg(0);
 	}
 	else if (default_value == K_DEFAULT_VALUE_SEQ)
-	{
+			{
 		return QString("%1").arg(++m_seq);
 	}
 	else
 	{
 		return QString("%1").arg(0);
 	}
-	
+
 }

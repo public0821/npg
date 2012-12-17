@@ -7,7 +7,8 @@
 
 #include "socket_toolkit.h"
 #include "socket.h"
-#include "../logger.h"
+#include "../../logger.h"
+#include <qobject.h>
 
 SocketToolkit::SocketToolkit()
 {
@@ -46,7 +47,7 @@ std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases)
 		{
 			if (errno != EINVAL || lastlen != 0)
 			{
-				LOG_ERROR(npg_strerror(errno));
+				LOG_ERROR(errno);
 				goto END;
 			}
 
@@ -99,7 +100,7 @@ std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases)
 		struct ifreq ifrcopy = *ifr;
 		if (ioctl(sockfd, SIOCGIFFLAGS, &ifrcopy) < 0)
 		{
-			LOG_ERROR(npg_strerror(errno));
+			LOG_ERROR(errno);
 			goto END;
 		}
 		if ((ifrcopy.ifr_flags & IFF_UP) == 0)
@@ -125,7 +126,7 @@ std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases)
 
 		if (ioctl(sockfd, SIOCGIFHWADDR, &ifrcopy) < 0)
 		{
-			LOG_ERROR(npg_strerror(errno));
+			LOG_ERROR(errno);
 			goto END;
 		}
 

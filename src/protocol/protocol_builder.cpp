@@ -3,6 +3,7 @@
 #include "lib/socket/socket.h"
 #include "lib/socket/socket_toolkit.h"
 #include <QObject>
+#include "../logger.h"
 
 const uint16_t BUFFER_INCREMENT =  128;
 
@@ -92,7 +93,7 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 {
 	if (pos + length > m_protocol_len)
 	{
-		SET_QERROR_STR(QObject::tr("Parameter length out of range"));
+		LOG_ERROR(QObject::tr("Parameter length out of range"));
 		return false;
 	}
 
@@ -142,7 +143,7 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 				addr.s_addr = inet_addr(ip.c_str());
 				if (addr.s_addr == INADDR_NONE)
 				{
-					SET_QERROR_STR(QObject::tr("IP address format error"));
+					LOG_ERROR(QObject::tr("IP address format error"));
 					ret = false;
 				}
 			}
@@ -156,7 +157,7 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 			SocketToolkit toolkit;
 			if (!toolkit.toMac(mac_str.c_str(), mac))
 			{
-				SET_QERROR_STR(QObject::tr("MAC address format error"));
+				LOG_ERROR(QObject::tr("MAC address format error"));
 				ret = false;
 			}
 			memcpy(m_buffer + pos, mac, sizeof(mac));
@@ -174,7 +175,7 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 		}
 		break;
 	default:
-		SET_QERROR_STR(QString(QObject::tr("Unsupported type:%1")).arg((int)field_type));
+		LOG_ERROR(QObject::tr("Unsupported type:%1").arg((int)field_type));
 		ret = false;
 		bzero(m_buffer + pos, length);
 		break;

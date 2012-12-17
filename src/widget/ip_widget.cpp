@@ -4,20 +4,22 @@
 #include <qsettings.h>
 #include "lib/types.h"
 #include "lib/socket/socket.h"
+#include "../logger.h"
 
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
-	: BaseProtocolWidget(protocol_name, parent), m_ip(NULL)
+:
+		BaseProtocolWidget(protocol_name, parent), m_ip(NULL)
 {
 	ui.setupUi(this);
 
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_ICMP, (int)IPPROTO_ICMP));
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_UDP, (int)IPPROTO_UDP));
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_TCP, (int)IPPROTO_TCP));
+	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_ICMP, (int) IPPROTO_ICMP));
+	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_UDP, (int) IPPROTO_UDP));
+	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_TCP, (int) IPPROTO_TCP));
 
 	std::map<QString, int>::const_iterator it_find;
 	it_find = m_built_in_protocol.find(ip_protocol_name);
 	if (it_find != m_built_in_protocol.end())
-	{
+			{
 		QString text = QString("%1 (%2)").arg(it_find->first).arg(it_find->second);
 		ui.protocol_box->addItem(text, QVariant(it_find->second));
 		ui.protocol_box->setEditable(false);
@@ -41,17 +43,16 @@ IpWidget::~IpWidget()
 
 }
 
-QString IpWidget::preSendData()
+bool IpWidget::preSendData()
 {
-	if (m_ip != NULL)
-	{
-		return tr("'preSendData' function has been called");//this message just for developer, End-user will not see it
+	if (m_ip != NULL) {
+		LOG_ERROR(tr("'preSendData' function has been called"));
+		return false;
 	}
 
 	int index = ui.protocol_box->findText(ui.protocol_box->currentText());
 	int protocol = 0;
-	if (index == -1)
-	{
+	if (index == -1) {
 		protocol = ui.protocol_box->currentText().toInt();
 	}
 	else
@@ -61,41 +62,33 @@ QString IpWidget::preSendData()
 
 	m_dstip = ui.ip_edit->text().toLocal8Bit().constData();
 
-	if (m_dstip.empty() || protocol == 0 )
-	{
-		return tr("ip and protocol must set");
+	if (m_dstip.empty() || protocol == 0) {
+		LOG_ERROR(tr("ip and protocol must set"));
+		return false;
 	}
 
 	m_ip = new Ip(protocol);
 
-	return QString();
+	return true;
 }
 
-QString IpWidget::postSendData()
+bool IpWidget::postSendData()
 {
-	if (m_ip != NULL)
-	{
+	if (m_ip != NULL) {
 		delete m_ip;
 		m_ip = NULL;
 	}
 
-	return QString();
+	return true;
 }
 
-QString IpWidget::sendData(const char* data, uint16_t length)
-{
-	if (m_ip == NULL)
-	{
-		return tr("should call 'preSendData' function first");
+bool IpWidget::sendData(const char* data, uint16_t length) {
+	if (m_ip == NULL) {
+		LOG_ERROR(tr("should call 'preSendData' function first"));
+		return false;
 	}
 
-	bool ret = m_ip->sendto(m_dstip.c_str(), data, length);
-	if (!ret)
-	{
-		return QString(m_ip->errorString());
-	}
-
-	return QString();
+	return m_ip->sendto(m_dstip.c_str(), data, length);
 }
 
 void IpWidget::saveSettings()
