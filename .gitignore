@@ -11,3 +11,5 @@ src/ui/ui_*
 src/npg
 src/.settings/
 src/tmp
+src/Makefile.Release
+src/Makefile.Debug
