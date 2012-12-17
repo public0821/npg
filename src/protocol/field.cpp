@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
-#include "system/os.h"
+#include "lib/os.h"
 
 Field::Field(const QString& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)

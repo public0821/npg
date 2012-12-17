@@ -8,7 +8,7 @@
 #include <qsettings.h>
 #include <string>
 #include "npg_define.h"
-#include "socket/tcp.h"
+#include "lib/socket/tcp.h"
 #include "tcp_response_dialog.h"
 
 TcpWidget::TcpWidget(const QString& protocol_name, QWidget *parent) :

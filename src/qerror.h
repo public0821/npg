@@ -9,10 +9,10 @@
 #define _Q_ERROR_H_
 
 #include <errno.h>
-#include "system/error.h"
+#include "lib/error.h"
 #include <QString>
-#include "system/types.h"
-#include "system/os.h"
+#include "lib/types.h"
+#include "lib/os.h"
 
 class QError
 {

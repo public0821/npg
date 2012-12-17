@@ -1,0 +1,22 @@
+#ifndef	__OS_LINUX_H__
+#define __OS_LINUX_H__
+
+#include <errno.h>
+#include <string.h>
+#include <string>
+
+inline std::string npg_strerror(int errorno) {
+	char buf[2048];
+	int buflen = sizeof(buf);
+	bzero(buf, buflen);
+#if  (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE
+	int ret = strerror_r(errorno, buf, buflen);
+	return buf;
+#else
+	char * ret = strerror_r(errorno, buf, buflen);
+	strncpy(buf, ret, buflen);
+	return buf;
+#endif
+
+}
+#endif

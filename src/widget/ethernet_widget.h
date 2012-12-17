@@ -10,7 +10,7 @@
 #include <QWidget>
 #include "ui/ui_ethernet_widget.h"
 #include "base_protocol_widget.h"
-#include "socket/ethernet.h"
+#include "lib/socket/ethernet.h"
 
 class EthernetWidget  : public BaseProtocolWidget
 {

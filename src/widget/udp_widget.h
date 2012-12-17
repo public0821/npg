@@ -10,7 +10,7 @@
 
 #include "base_protocol_widget.h"
 #include "ui/ui_udp_widget.h"
-#include "system/types.h"
+#include "lib/types.h"
 
 class UdpWidget : public BaseProtocolWidget
 {

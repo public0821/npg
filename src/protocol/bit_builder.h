@@ -6,9 +6,9 @@
  */
 #ifndef __BIT_BUILDER_H__
 #define __BIT_BUILDER_H__
-#include "system/features.h"
-#include "system/types.h"
-#include "system/error.h"
+#include "lib/features.h"
+#include "lib/types.h"
+#include "lib/error.h"
 
 class BitBuilder:public Error
 {

@@ -11,7 +11,7 @@
 #include "ui/ui_tcp_widget.h"
 #include "tab_sheet.h"
 #include "base_protocol_widget.h"
-#include "system/types.h"
+#include "lib/types.h"
 
 class Tcp;
 class TcpWidget : public BaseProtocolWidget

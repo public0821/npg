@@ -1,9 +1,9 @@
 #include "ip_widget.h"
 #include "npg_define.h"
-#include "socket/ip.h"
+#include "lib/socket/ip.h"
 #include <qsettings.h>
-#include "system/types.h"
-#include "socket/socket.h"
+#include "lib/types.h"
+#include "lib/socket/socket.h"
 
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
 	: BaseProtocolWidget(protocol_name, parent), m_ip(NULL)

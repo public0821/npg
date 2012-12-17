@@ -12,7 +12,7 @@
 #include "protocol_tree_item_widget.h"
 #include "protocol/protocol_builder.h"
 #include "udp_widget.h"
-#include "socket/socket_toolkit.h"
+#include "lib/socket/socket_toolkit.h"
 #include "protocol/bit_builder.h"
 
 

@@ -1,7 +1,7 @@
 #include "protocol_builder.h"
 #include <qstring.h>
-#include "socket/socket.h"
-#include "socket/socket_toolkit.h"
+#include "lib/socket/socket.h"
+#include "lib/socket/socket_toolkit.h"
 #include <QObject>
 
 const uint16_t BUFFER_INCREMENT =  128;

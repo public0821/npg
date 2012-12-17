@@ -9,7 +9,7 @@
 
 #include <QDialog>
 #include "ui/ui_tcp_response_dialog.h"
-#include "socket/tcp.h"
+#include "lib/socket/tcp.h"
 #include <qtextedit.h>
 
 class RecvThread;

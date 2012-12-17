@@ -8,7 +8,7 @@
 #define BASE_PROTOCOL_WIDGET_H
 
 #include <QWidget>
-#include "system/types.h"
+#include "lib/types.h"
 #include <QPushButton>
 #include <QHBoxLayout>
 

@@ -1,6 +1,6 @@
 #include "bit_builder.h"
-#include "system/os.h"
-#include "socket/socket.h"
+#include "lib/os.h"
+#include "lib/socket/socket.h"
 
 const uint8_t BYTE_SIZE = 8;
 const uint8_t SHIFT = 3;

@@ -9,8 +9,8 @@
 #include <qsettings.h>
 #include <string>
 #include "npg_define.h"
-#include "socket/udp.h"
-#include "socket/raw_udp.h"
+#include "lib/socket/udp.h"
+#include "lib/socket/raw_udp.h"
 
 
 DataTabSheet::DataTabSheet(const QString& name, QWidget *parent) :

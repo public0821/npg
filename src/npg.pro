@@ -3,22 +3,38 @@ TARGET = npg
 QT += core \
     gui \
     xml
-    
-CONFIG += qt debug	
+CONFIG += qt \
+    debug
 RESOURCES += npg.qrc
-TRANSLATIONS = npg_zh_CN.ts 
-UI_DIR = ./ui 
+TRANSLATIONS = npg_zh_CN.ts
+UI_DIR = ./ui
 MOC_DIR = ./tmp
-OBJECTS_DIR= ./tmp
-
-
-unix{
-    QMAKE_CXXFLAGS += -std=c++0x 
-}
+OBJECTS_DIR = ./tmp
+unix:QMAKE_CXXFLAGS += -std=c++0x
 
 # Input
-HEADERS += socket/socket.h \
-    socket/ip_address.h \
+HEADERS += lib/windows.h \
+    lib/linux.h \
+    lib/config.h \
+    lib/logger.h \
+    lib/features.h \
+    lib/os.h \
+    lib/types.h \
+    lib/socket/ethernet.h \
+    lib/socket/ip.h \
+    lib/socket/ip_address.h \
+    lib/socket/ip_raw_socket.h \
+    lib/socket/net/ethernet.h \
+    lib/socket/net/if_arp.h \
+    lib/socket/net/if_ether.h \
+    lib/socket/net/ip.h \
+    lib/socket/net/ip_icmp.h \
+    lib/socket/net/udp.h \
+    lib/socket/raw_udp.h \
+    lib/socket/socket.h \
+    lib/socket/socket_toolkit.h \
+    lib/socket/tcp.h \
+    lib/socket/udp.h \
     qerror.h \
     protocol/bit_builder.h \
     protocol/category.h \
@@ -26,25 +42,6 @@ HEADERS += socket/socket.h \
     protocol/protocol.h \
     protocol/protocol_factory.h \
     protocol/protocol_builder.h \
-    system/features.h \
-    system/os.h \
-    system/os_windows.h \
-    system/types.h \
-    system/os_linux.h \
-    system/error.h \
-    socket/net/ethernet.h \
-    socket/net/if_arp.h \
-    socket/net/if_ether.h \
-    socket/net/ip.h \
-    socket/net/ip_icmp.h \
-    socket/net/udp.h \
-    socket/ethernet.h \
-    socket/ip_raw_socket.h \
-    socket/raw_udp.h \
-    socket/socket_toolkit.h \
-    socket/tcp.h \
-    socket/udp.h \
-    socket/ip.h \
     tools/converter.h \
     tools/ip_converter.h \
     tools/time_converter.h \
@@ -80,7 +77,16 @@ FORMS += ui/ethernet_widget.ui \
     ui/udp_widget.ui \
     ui/converter_dialog.ui \
     ui/about_dialog.ui
-SOURCES += socket/ip_address.cpp \
+SOURCES += lib/logger.cpp \
+    lib/socket/ethernet.cpp \
+    lib/socket/ethernet_pcap.cpp \
+    lib/socket/ip.cpp \
+    lib/socket/ip_address.cpp \
+    lib/socket/ip_raw_socket.cpp \
+    lib/socket/raw_udp.cpp \
+    lib/socket/socket_toolkit.cpp \
+    lib/socket/tcp.cpp \
+    lib/socket/udp.cpp \
     qerror.cpp \
     protocol/bit_builder.cpp \
     protocol/category.cpp \
@@ -88,14 +94,6 @@ SOURCES += socket/ip_address.cpp \
     protocol/protocol.cpp \
     protocol/protocol_factory.cpp \
     protocol/protocol_builder.cpp \
-    system/error.cpp \
-    socket/ethernet.cpp \
-    socket/ip_raw_socket.cpp \
-    socket/raw_udp.cpp \
-    socket/socket_toolkit.cpp \
-    socket/tcp.cpp \
-    socket/udp.cpp \
-    socket/ip.cpp \
     tools/converter.cpp \
     tools/ip_converter.cpp \
     tools/time_converter.cpp \

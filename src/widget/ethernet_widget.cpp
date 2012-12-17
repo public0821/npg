@@ -1,9 +1,10 @@
 #include "ethernet_widget.h"
-#include "socket/socket_toolkit.h"
+#include "lib/socket/socket_toolkit.h"
 #include "tab_sheet.h"
 #include <qsettings.h>
 #include "npg_define.h"
-#include "socket/ethernet.h"
+#include "lib/socket/ethernet.h"
+#include "lib/logger.h"
 
 Q_DECLARE_METATYPE(ifi_info)
 
@@ -117,12 +118,12 @@ void EthernetWidget::setupInterface(QWidget *parent)
 {
 	SocketToolkit toolkit;
 	std::vector<ifi_info> ifiInfos = toolkit.ifiInfo();
-	if(toolkit.hasError())
+	if(ifiInfos.size() == 0)
 	{
 		TabSheet *tab_sheet = static_cast<TabSheet *>(parent);
 		if (tab_sheet != NULL)
 		{
-			tab_sheet->showFailedTip(toolkit.errorString());
+			tab_sheet->showFailedTip(LOG_STRING().c_str());
 		}
 	}
 

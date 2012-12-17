@@ -6,7 +6,7 @@
  */
 
 #include "qerror.h"
-#include "system/os.h"
+#include "lib/os.h"
 
 QError::QError()
 :m_has_error(false)

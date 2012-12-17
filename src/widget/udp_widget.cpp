@@ -9,8 +9,8 @@
 #include <qsettings.h>
 #include <string>
 #include "npg_define.h"
-#include "socket/udp.h"
-#include "socket/raw_udp.h"
+#include "lib/socket/udp.h"
+#include "lib/socket/raw_udp.h"
 
 UdpWidget::UdpWidget(const QString& protocol_name, QWidget *parent) :
 		BaseProtocolWidget(protocol_name, parent), m_udp(NULL)

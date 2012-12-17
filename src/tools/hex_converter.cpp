@@ -95,7 +95,7 @@ uint8_t HexConverter::toUInt8(char hex)
 
 char HexConverter::toHex(uint8_t ch)
 {
-	if(0 <= ch && ch <= 0x09)
+	if(ch <= 0x09)
 	{
 		return char('0' + ch);
 	}

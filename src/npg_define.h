@@ -1,7 +1,7 @@
 #ifndef	__NPG_DEFINE_H__
 #define __NPG_DEFINE_H__
 
-#include "system/types.h"
+#include "lib/types.h"
 
 const char K_SETTING_COMPANY[] = "Open Source";
 const char K_SETTING_APP[] = "NPG";
