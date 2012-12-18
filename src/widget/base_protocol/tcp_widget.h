@@ -8,7 +8,7 @@
 #ifndef TCP_WIDGET_H
 #define TCP_WIDGET_H
 
-#include "ui/ui_tcp_widget.h"
+#include "ui_tcp_widget.h"
 #include "base_protocol_widget.h"
 #include "lib/types.h"
 

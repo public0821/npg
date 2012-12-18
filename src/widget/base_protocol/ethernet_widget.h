@@ -8,7 +8,7 @@
 #define ETHERNET_WIDGET_H
 
 #include <QWidget>
-#include "ui/ui_ethernet_widget.h"
+#include "ui_ethernet_widget.h"
 #include "base_protocol_widget.h"
 #include "lib/socket/ethernet.h"
 

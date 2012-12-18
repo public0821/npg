@@ -36,7 +36,7 @@ bool Ip::sendto(const IpAddress& ip, const char* data, uint16_t len) {
 		if (ret == -1) {
 			LOG_ERROR(npg_errno);
 			LOG_ERROR(QObject::tr("bind faild "));
-			return -1;
+			return false;
 		}
 	}
 

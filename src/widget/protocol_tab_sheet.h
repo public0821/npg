@@ -8,7 +8,7 @@
 #ifndef PROTOCOL_WIDGET_H
 #define PROTOCOL_WIDGET_H
 
-#include "ui/ui_protocol_widget.h"
+#include "ui_protocol_widget.h"
 #include "tab_sheet.h"
 #include "protocol/protocol.h"
 #include "base_protocol/base_protocol_widget.h"

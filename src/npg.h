@@ -8,7 +8,7 @@
 #define NPG_H
 
 #include <QtGui/QMainWindow>
-#include "ui/ui_npg.h"
+#include "ui_npg.h"
 #include <QSplitter>
 #include "widget/main_list_widget.h"
 #include "widget/main_tab_widget.h"

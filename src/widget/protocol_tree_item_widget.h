@@ -9,7 +9,7 @@
 #define PROTOCOL_TREE_ITEM_H
 
 #include <QWidget>
-#include "ui/ui_protocol_tree_item.h"
+#include "ui_protocol_tree_item.h"
 #include "protocol/field.h"
 #include <QTreeWidgetItem>
 

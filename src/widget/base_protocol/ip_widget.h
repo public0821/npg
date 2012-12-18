@@ -8,7 +8,7 @@
 #define IP_WIDGET_H
 
 #include <QWidget>
-#include "ui/ui_ip_widget.h"
+#include "ui_ip_widget.h"
 #include <map>
 #include "base_protocol_widget.h"
 #include "lib/socket/ip_address.h"

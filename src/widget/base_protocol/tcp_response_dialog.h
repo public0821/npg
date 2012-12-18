@@ -8,7 +8,7 @@
 #define TCP_REPONSE_DIALOG_H
 
 #include <QDialog>
-#include "ui/ui_tcp_response_dialog.h"
+#include "ui_tcp_response_dialog.h"
 #include "lib/socket/tcp.h"
 #include "lib/socket/socket.h"
 #include <qtextedit.h>
