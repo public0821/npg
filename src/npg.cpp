@@ -62,7 +62,7 @@ Npg::Npg(QWidget *parent) :
 	m_log_splitter->addWidget(m_logger);
 	m_main_splitter->addWidget(m_type_list);
 	m_main_splitter->addWidget(m_log_splitter);
-//	m_log_splitter->setStretchFactor(1, 1);
+	m_log_splitter->setStretchFactor(0, 1);
 	m_main_splitter->setStretchFactor(1, 1);
 	setCentralWidget(m_main_splitter);
 	connect(m_type_list, SIGNAL(itemDoubleClicked(QListWidgetItem* )), this,
@@ -100,6 +100,7 @@ void Npg::saveSettings()
 
 	settings.beginGroup("mainWindow");
 	settings.setValue("geometry", saveGeometry());
+	settings.setValue("logSplitter", m_log_splitter->saveState());
 	settings.setValue("mainSplitter", m_main_splitter->saveState());
 	settings.endGroup();
 }
@@ -111,6 +112,7 @@ void Npg::restoreSettings()
 	settings.beginGroup("mainWindow");
 	restoreGeometry(settings.value("geometry").toByteArray());
 	m_main_splitter->restoreState(settings.value("mainSplitter").toByteArray());
+	m_log_splitter->restoreState(settings.value("logSplitter").toByteArray());
 	settings.endGroup();
 }
 

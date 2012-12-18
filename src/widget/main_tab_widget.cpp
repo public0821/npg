@@ -8,7 +8,7 @@
 #include "main_tab_widget.h"
 #include "npg_define.h"
 #include "data_tab_sheet.h"
-#include "tcp_widget.h"
+#include "base_protocol/tcp_widget.h"
 #include "protocol/protocol_factory.h"
 #include "protocol_tab_sheet.h"
 

@@ -1,5 +1,5 @@
 /*
- * socket_toolkit.h
+ * toolkit.h
  *
  *  Created on: 2011-9-20
  *      Author: Young <public0821@gmail.com>
@@ -11,6 +11,7 @@
 #include <vector>
 #include "lib/types.h"
 #include "socket.h"
+#include "ip_address.h"
 
 
 # define IF_HWADDRLEN	6
@@ -38,6 +39,7 @@ public:
 	~SocketToolkit();
 public:
 	std::vector<ifi_info> ifiInfo(int family = 0, int doaliases = 0);
+	std::vector<IpAddress> ipAddressInfo();
 	uint16_t inCheckSum(uint16_t * addr, size_t len);//return network byte order
 	int macAddress(const char* ip, char* mac);
 	bool toMac(const char* mac_str, uint8_t* mac);

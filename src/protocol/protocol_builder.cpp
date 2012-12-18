@@ -2,7 +2,7 @@
 #include <qstring.h>
 #include "../logger.h"
 #include "lib/socket/socket.h"
-#include "lib/socket/socket_toolkit.h"
+#include "lib/socket/toolkit.h"
 #include <QObject>
 
 

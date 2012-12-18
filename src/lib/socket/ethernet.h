@@ -7,7 +7,7 @@
 #ifndef ETHERNET_H_
 #define ETHERNET_H_
 
-#include "socket_toolkit.h"
+#include "toolkit.h"
 
 class Ethernet
 {

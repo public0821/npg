@@ -2256,7 +2256,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\lib\socket\socket_toolkit.h"
+					RelativePath=".\lib\socket\toolkit.h"
 					>
 				</File>
 				<File

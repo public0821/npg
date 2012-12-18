@@ -40,7 +40,7 @@ void Logger::trace(const char* source_file, int line, int err_no) {
 	if (-1 == npg_strerror(err_no, buf, buflen)) {
 		log(TRACE, source_file, line, QObject::tr("get strerror failed"));
 	} else {
-		log(TRACE, source_file, line, buf);
+		log(TRACE, source_file, line, QObject::tr(buf));
 	}
 }
 
@@ -53,7 +53,7 @@ void Logger::debug(const char* source_file, int line, int err_no) {
 	if (-1 == npg_strerror(err_no, buf, buflen)) {
 		log(DEBUG, source_file, line, QObject::tr("get strerror failed"));
 	} else {
-		log(DEBUG, source_file, line, buf);
+		log(DEBUG, source_file, line, QObject::tr(buf));
 	}
 }
 
@@ -66,7 +66,7 @@ void Logger::info(const char* source_file, int line, int err_no) {
 	if (-1 == npg_strerror(err_no, buf, buflen)) {
 		log(INFO, source_file, line, QObject::tr("get strerror failed"));
 	} else {
-		log(INFO, source_file, line, buf);
+		log(INFO, source_file, line, QObject::tr(buf));
 	}
 }
 
@@ -79,7 +79,7 @@ void Logger::warn(const char* source_file, int line, int err_no) {
 	if (-1 == npg_strerror(err_no, buf, buflen)) {
 		log(WARN, source_file, line, QObject::tr("get strerror failed"));
 	} else {
-		log(WARN, source_file, line, buf);
+		log(WARN, source_file, line, QObject::tr(buf));
 	}
 }
 
@@ -92,7 +92,7 @@ void Logger::error(const char* source_file, int line, int err_no) {
 	if (-1 == npg_strerror(err_no, buf, buflen)) {
 		log(ERROR1, source_file, line, QObject::tr("get strerror failed"));
 	} else {
-		log(ERROR1, source_file, line, buf);
+		log(ERROR1, source_file, line, QObject::tr(buf));
 	}
 }
 

@@ -12,6 +12,7 @@
 #include "ui/ui_udp_widget.h"
 #include "lib/types.h"
 #include "../lib/socket/ip_address.h"
+#include "lib/socket/udp.h"
 
 class UdpWidget : public BaseProtocolWidget
 {
@@ -29,13 +30,9 @@ public:
 	void restoreSettings();
 private:
     Ui::UdpWidgetClass ui;
-
-    IpAddress m_srcip;
-	uint16_t m_srcport;
 	IpAddress m_dstip;
 	uint16_t m_dstport;
-	bool m_is_raw_socket;
-	void* m_udp;
+	Udp* m_udp;
 };
 
 #endif // UDPWIDGET_H

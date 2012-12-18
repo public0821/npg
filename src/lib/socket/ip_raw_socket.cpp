@@ -17,7 +17,7 @@ IpRawSocket::IpRawSocket()
 	m_sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);//IPPROTO_IP);
 	if (-1 == m_sockfd)
 	{
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 		return;
 	}
 	int optval = 1;
@@ -25,7 +25,7 @@ IpRawSocket::IpRawSocket()
 			sizeof(optval));
 	if (ret == -1)
 	{
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 		return;
 	}
 }
@@ -88,7 +88,7 @@ bool IpRawSocket::sendto(const char* srcip, const char* dstip, uint8_t protocol_
 			(const sockaddr*) &serv_addr, sizeof(serv_addr));
 	if (ret < 0)
 	{
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 		delete[] buf;
 		return false;
 	}

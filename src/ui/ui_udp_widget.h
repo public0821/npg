@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'udp_widget.ui'
 **
-** Created: Mon Dec 17 16:02:58 2012
+** Created: Tue Dec 18 16:40:37 2012
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -17,13 +17,13 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include "widget/ip_combobox.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -34,23 +34,22 @@ public:
     QGroupBox *groupBox;
     QGridLayout *gridLayout;
     QLabel *src_ip_label;
-    QLineEdit *src_ip_edit;
     QLabel *label_3;
     QLineEdit *src_port_edit;
-    QCheckBox *src_ip_box;
+    QCheckBox *src_ip_checkbox;
     QSpacerItem *horizontalSpacer_3;
     QLabel *label;
     QLineEdit *dst_ip_edit;
     QLabel *label_2;
     QLineEdit *dst_port_edit;
     QSpacerItem *horizontalSpacer_2;
-    QHBoxLayout *base_layout;
+    IpComboBox *src_ip_combobox;
 
     void setupUi(QWidget *UdpWidgetClass)
     {
         if (UdpWidgetClass->objectName().isEmpty())
             UdpWidgetClass->setObjectName(QString::fromUtf8("UdpWidgetClass"));
-        UdpWidgetClass->resize(306, 124);
+        UdpWidgetClass->resize(308, 90);
         verticalLayout = new QVBoxLayout(UdpWidgetClass);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(1, 1, 1, 1);
@@ -69,11 +68,6 @@ public:
 
         gridLayout->addWidget(src_ip_label, 0, 0, 1, 1);
 
-        src_ip_edit = new QLineEdit(groupBox);
-        src_ip_edit->setObjectName(QString::fromUtf8("src_ip_edit"));
-
-        gridLayout->addWidget(src_ip_edit, 0, 1, 1, 1);
-
         label_3 = new QLabel(groupBox);
         label_3->setObjectName(QString::fromUtf8("label_3"));
         label_3->setLayoutDirection(Qt::LeftToRight);
@@ -86,10 +80,10 @@ public:
 
         gridLayout->addWidget(src_port_edit, 0, 3, 1, 1);
 
-        src_ip_box = new QCheckBox(groupBox);
-        src_ip_box->setObjectName(QString::fromUtf8("src_ip_box"));
+        src_ip_checkbox = new QCheckBox(groupBox);
+        src_ip_checkbox->setObjectName(QString::fromUtf8("src_ip_checkbox"));
 
-        gridLayout->addWidget(src_ip_box, 0, 4, 1, 1);
+        gridLayout->addWidget(src_ip_checkbox, 0, 4, 1, 1);
 
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -123,23 +117,13 @@ public:
 
         gridLayout->addItem(horizontalSpacer_2, 1, 4, 1, 2);
 
-        src_ip_label->raise();
-        src_ip_edit->raise();
-        label_3->raise();
-        src_port_edit->raise();
-        src_ip_box->raise();
-        label->raise();
-        dst_ip_edit->raise();
-        label_2->raise();
-        dst_port_edit->raise();
+        src_ip_combobox = new IpComboBox(groupBox);
+        src_ip_combobox->setObjectName(QString::fromUtf8("src_ip_combobox"));
+
+        gridLayout->addWidget(src_ip_combobox, 0, 1, 1, 1);
+
 
         verticalLayout->addWidget(groupBox);
-
-        base_layout = new QHBoxLayout();
-        base_layout->setSpacing(6);
-        base_layout->setObjectName(QString::fromUtf8("base_layout"));
-
-        verticalLayout->addLayout(base_layout);
 
 
         retranslateUi(UdpWidgetClass);
@@ -153,7 +137,7 @@ public:
         groupBox->setTitle(QApplication::translate("UdpWidgetClass", "UDP", 0, QApplication::UnicodeUTF8));
         src_ip_label->setText(QApplication::translate("UdpWidgetClass", "SRC_IP", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("UdpWidgetClass", "SRC_PORT ", 0, QApplication::UnicodeUTF8));
-        src_ip_box->setText(QApplication::translate("UdpWidgetClass", "default", 0, QApplication::UnicodeUTF8));
+        src_ip_checkbox->setText(QApplication::translate("UdpWidgetClass", "default", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("UdpWidgetClass", "DST_IP", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("UdpWidgetClass", "DST_PORT ", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

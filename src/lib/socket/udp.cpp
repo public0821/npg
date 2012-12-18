@@ -9,6 +9,7 @@
 #include "../../logger.h"
 #include "socket.h"
 #include <qobject.h>
+#include "socket_address.h"
 
 Udp::Udp(const IpAddress& addr, uint16_t port) :
 		m_sockfd(-1), m_addr(addr), m_port(port) {
@@ -16,7 +17,7 @@ Udp::Udp(const IpAddress& addr, uint16_t port) :
 }
 
 Udp::Udp() :
-		m_sockfd(-1) {
+		m_sockfd(-1), m_port(0) {
 }
 
 Udp::~Udp() {
@@ -36,7 +37,7 @@ bool Udp::sendto(const IpAddress& ip, uint16_t port, const char* buffer, size_t 
 		if (!m_addr.isvalid()) {
 			m_addr.set_version(ip.version());
 		}
-		m_sockfd = new_socket(m_addr, m_port, 0);
+		m_sockfd = new_socket(m_addr, m_port);
 		if (-1 == m_sockfd) {
 			return false;
 		}
@@ -44,48 +45,25 @@ bool Udp::sendto(const IpAddress& ip, uint16_t port, const char* buffer, size_t 
 		int ret = setsockopt(m_sockfd, SOL_SOCKET, SO_BROADCAST,
 				(const char *) &optval, sizeof(optval));
 		if (ret == -1) {
-			LOG_ERROR(errno);
+			LOG_ERROR(npg_errno);
 			return false;
 		}
 	}
 
-	struct sockaddr_in sockaddr4;
-	struct sockaddr_in6 sockaddr6;
-	struct sockaddr *addr = NULL;
-	socklen_t addr_len;
-	if (ip.version() == IpAddress::IPV4) {
-		bzero(&sockaddr4, sizeof(sockaddr4));
-		sockaddr4.sin_family = AF_INET;
-		sockaddr4.sin_port = htons(port);
-		sockaddr4.sin_addr.s_addr = ip.ipv4();
-		addr = (struct sockaddr *) &sockaddr4;
-		addr_len = sizeof(sockaddr4);
-	} else if (ip.version() == IpAddress::IPV6) {
-		bzero(&sockaddr6, sizeof(sockaddr6));
-		sockaddr6.sin6_family = AF_INET6;
-		sockaddr6.sin6_port = htons(port);
-		memcpy(&sockaddr6.sin6_addr, ip.ipv6(), sizeof(sockaddr6.sin6_addr));
-		addr = (struct sockaddr *) &sockaddr6;
-		addr_len = sizeof(sockaddr6);
-
-	} else {
-		LOG_ERROR(QObject::tr("unsupported ip version: %1").arg(ip.version()));
-		return false;
-	}
-
-	int len = ::sendto(m_sockfd, buffer, buffer_len, 0, addr, addr_len);
+	SocketAddress sockaddr(ip, port);
+	int len = ::sendto(m_sockfd, buffer, buffer_len, 0, sockaddr.addr(), sockaddr.addrlen());
 	if (len == -1) {
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 		return false;
 	}
 
 	return true;
 }
 
-int Udp::new_socket(const IpAddress& ip, uint16_t port, bool nonblock) {
+int Udp::new_socket(const IpAddress& ip, uint16_t port) {
 	int sockfd = socket(ip.version() == IpAddress::IPV4 ? AF_INET : AF_INET6, SOCK_DGRAM, 0);
 	if (sockfd == -1) {
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 		LOG_ERROR(QObject::tr("create udp socket failed"));
 		return -1;
 	}
@@ -93,51 +71,20 @@ int Udp::new_socket(const IpAddress& ip, uint16_t port, bool nonblock) {
 	int optval = 1;
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (const char *) &optval,
 			sizeof(int)) < 0) {
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 		LOG_ERROR(QObject::tr("set REUSEADDR failed"));
 		closesocket(sockfd);
 		return -1;
 	}
 
-	struct sockaddr_in sockaddr4;
-	struct sockaddr_in6 sockaddr6;
-	struct sockaddr *addr;
-	socklen_t len;
-
-	if (ip.version() == IpAddress::IPV4) {
-		bzero(&sockaddr4, sizeof(sockaddr4));
-		sockaddr4.sin_family = AF_INET;
-		sockaddr4.sin_port = htons(port);
-		sockaddr4.sin_addr.s_addr = ip.ipv4();
-		addr = (struct sockaddr *) &sockaddr4;
-		len = sizeof(sockaddr4);
-	} else if (ip.version() == IpAddress::IPV6) {
-		bzero(&sockaddr6, sizeof(sockaddr6));
-		sockaddr6.sin6_family = AF_INET6;
-		sockaddr6.sin6_port = htons(port);
-		memcpy(&sockaddr6.sin6_addr, ip.ipv6(), sizeof(sockaddr6.sin6_addr));
-		addr = (struct sockaddr *) &sockaddr6;
-		len = sizeof(sockaddr6);
-	} else {
-		LOG_ERROR(QObject::tr("unsupported ip version: %1").arg(ip.version()));
-		closesocket(sockfd);
-		return -1;
-	}
-
-	int ret = bind(sockfd, addr, len);
+	SocketAddress sockaddr(ip, port);
+	int ret = bind(sockfd, sockaddr.addr(), sockaddr.addrlen());
 	if (ret == -1) {
-		LOG_ERROR(errno);
-		LOG_ERROR(QObject::tr("bind faild (%d):%s").arg(port));
+		LOG_ERROR(npg_errno);
+		LOG_ERROR(QObject::tr("bind faild (%1)").arg(port));
 		closesocket(sockfd);
 		return -1;
 	}
-
-//	if (nonblock) {
-//		if (!socket_set_blocking(sockfd, false)) {
-//			close(sockfd);
-//			return -1;
-//		}
-//	}
 
 	return sockfd;
 }

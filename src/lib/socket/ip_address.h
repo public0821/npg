@@ -9,6 +9,8 @@
 
 #include "lib/types.h"
 #include <string>
+#include <string.h>
+#include "socket.h"
 
 class IpAddress {
 public:
@@ -19,10 +21,11 @@ public:
 	IpAddress();
 	IpAddress(const IpAddress&);
 
-	bool isvalid() {
-		return m_version != 0;
+	bool isvalid() const {
+		return m_version == IPV4 || m_version == IPV6;
 	}
-	std::string to_string();
+
+	std::string to_string() const;
 	bool from_string(const std::string& ip);
 
 public:
@@ -37,8 +40,16 @@ public:
 		return m_ipv4;
 	}
 
+	void set_ipv4(uint32_t ipv4) {
+		m_ipv4 = ipv4;
+	}
+
 	const char* ipv6() const {
 		return m_ipv6;
+	}
+
+	void set_ipv6(const char* ipv6) {
+		memcpy(m_ipv6, ipv6, sizeof(m_ipv6));
 	}
 
 private:

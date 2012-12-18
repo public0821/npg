@@ -5,6 +5,8 @@
 #include <string.h>
 #include <string>
 
+#define npg_errno   errno
+
 inline int npg_strerror(int errorno, char *buf, int buflen) {
 	bzero(buf, buflen);
 #if  (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE

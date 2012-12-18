@@ -10,11 +10,11 @@
 #include <QVBoxLayout>
 #include "send_thread.h"
 #include <qmessagebox.h>
-#include "udp_widget.h"
-#include "tcp_widget.h"
+#include "base_protocol/udp_widget.h"
+#include "base_protocol/tcp_widget.h"
 #include "npg_define.h"
-#include "ip_widget.h"
-#include "ethernet_widget.h"
+#include "base_protocol/ip_widget.h"
+#include "base_protocol/ethernet_widget.h"
 
 TabSheet::TabSheet(const QString& protocol_name
 		, QWidget *parent
@@ -181,6 +181,7 @@ void TabSheet::onSend()
 
 		ret = sendData();
 		if (!ret) {
+			postSendData();
 			showFailedTip();
 			goto END;
 		}
@@ -189,8 +190,7 @@ void TabSheet::onSend()
 		if (!ret) {
 			showFailedTip();
 			goto END;
-		}
-		else {
+		} else {
 			showSuccessTip();
 		}
 
@@ -202,7 +202,6 @@ void TabSheet::onSend()
 void TabSheet::onSendFinish() {
 	const QString& error = m_send_thread->error();
 	if (error.isEmpty()) { //thread exit successful
-
 		showSuccessTip(tr("finished"));
 	}
 	else {

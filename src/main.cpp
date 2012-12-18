@@ -15,8 +15,10 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    //QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));//("UTF-8"));
-	//QMessageBox::about(NULL, QObject::tr("tip"), QLocale::system().name());
+//    QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));//("UTF-8"));
+    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+//	QMessageBox::about(NULL, QObject::tr("tip"), QLocale::system().name());
+
 	QTranslator app_translator;
 	app_translator.load("npg_"+QLocale::system().name());
 	app.installTranslator(&app_translator);

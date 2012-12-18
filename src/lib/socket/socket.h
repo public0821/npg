@@ -39,8 +39,6 @@
 #define EINPROGRESS             WSAEINPROGRESS
 #define EAGAIN					EWOULDBLOCK
 
-#define inet_ntop(a, b, c, d)		WSAAddressToString(a,b,NULL, c,d)
-#define inet_pton(a, b, c, d)		WSAStringToAddress(a,b,NULL, c,d)
 //#define npg_ioctl(sock, code, data, size) WSAIoctl(sock, code, data, size, NULL, 0, NULL, NULL, NULL)
 inline int npg_ioctl(int sock, int code, void* data, uint32_t size)
 {

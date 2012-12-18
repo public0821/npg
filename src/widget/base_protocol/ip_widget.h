@@ -11,6 +11,7 @@
 #include "ui/ui_ip_widget.h"
 #include <map>
 #include "base_protocol_widget.h"
+#include "lib/socket/ip_address.h"
 
 class Ip;
 class IpWidget : public BaseProtocolWidget
@@ -31,7 +32,7 @@ private:
 	Ui::IpWidget ui;
 	std::map<QString, int>  m_built_in_protocol;
 
-	std::string m_dstip;
+	IpAddress m_dstip;
 	Ip* m_ip;
 };
 

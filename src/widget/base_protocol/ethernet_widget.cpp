@@ -1,26 +1,21 @@
 #include "ethernet_widget.h"
 #include "../logger.h"
-#include "lib/socket/socket_toolkit.h"
-#include "tab_sheet.h"
+#include "lib/socket/toolkit.h"
 #include <qsettings.h>
 #include "npg_define.h"
 #include "lib/socket/ethernet.h"
 
-
 Q_DECLARE_METATYPE(ifi_info)
 
-EthernetWidget::EthernetWidget(const QString& protocol_name, const QString& ether_protocol_name, QWidget *parent)
-:
-		BaseProtocolWidget(protocol_name, parent), m_ethernet(NULL)
-{
+EthernetWidget::EthernetWidget(const QString& protocol_name, const QString& ether_protocol_name, QWidget *parent) :
+		BaseProtocolWidget(protocol_name, parent), m_ethernet(NULL) {
 	ui.setupUi(this);
 	setupInterface(parent);
 	setupEtherProtocol(ether_protocol_name);
 	connect(ui.interface_box, SIGNAL(currentIndexChanged (int)), this, SLOT(onInterfaceChanged(int)));
 }
 
-EthernetWidget::~EthernetWidget()
-{
+EthernetWidget::~EthernetWidget() {
 
 }
 
@@ -58,8 +53,7 @@ bool EthernetWidget::sendData(const char* data, uint16_t length) {
 	return m_ethernet->sendto(m_dev, m_dstmac.c_str(), m_srcmac.c_str(), m_protocol, data, length);
 }
 
-void EthernetWidget::saveSettings()
-{
+void EthernetWidget::saveSettings() {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 	settings.beginGroup(protocolName());
 	settings.setValue("ether_interface", ui.interface_box->currentIndex());
@@ -70,8 +64,7 @@ void EthernetWidget::saveSettings()
 	//		int op = ui.operationBox->itemData(index).toInt();
 	settings.endGroup();
 }
-void EthernetWidget::restoreSettings()
-{
+void EthernetWidget::restoreSettings() {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 	settings.beginGroup(protocolName());
 	ui.interface_box->setCurrentIndex(settings.value("ether_interface").toInt());
@@ -81,8 +74,7 @@ void EthernetWidget::restoreSettings()
 	settings.endGroup();
 }
 
-void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name)
-		{
+void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name) {
 	std::map<QString, int> built_in_protocol;
 	built_in_protocol.insert(std::make_pair(K_PROTOCOL_IP, (int) ETH_P_IP));
 	built_in_protocol.insert(std::make_pair(K_PROTOCOL_ARP, (int) ETH_P_ARP));
@@ -90,18 +82,14 @@ void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name)
 
 	std::map<QString, int>::const_iterator it_find;
 	it_find = built_in_protocol.find(ether_protocol_name);
-	if (it_find != built_in_protocol.end())
-			{
+	if (it_find != built_in_protocol.end()) {
 		QString text = QString("%1 (%2)").arg(it_find->first).arg(it_find->second);
 		ui.protocol_box->addItem(text, QVariant(it_find->second));
 		ui.protocol_box->setEditable(false);
-	}
-	else
-	{
+	} else {
 		std::map<QString, int>::const_iterator it;
 		it = built_in_protocol.begin();
-		for (; it != built_in_protocol.end(); ++it)
-		{
+		for (; it != built_in_protocol.end(); ++it) {
 			QString text = QString("%1 (%2)").arg(it->first).arg(it->second);
 			ui.protocol_box->addItem(text, QVariant(it->second));
 		}
@@ -109,17 +97,16 @@ void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name)
 	}
 }
 
-void EthernetWidget::setupInterface(QWidget *parent){
+void EthernetWidget::setupInterface(QWidget *parent) {
 	SocketToolkit toolkit;
 	std::vector<ifi_info> ifiInfos = toolkit.ifiInfo();
-	if (ifiInfos.size() == 0){
+	if (ifiInfos.size() == 0) {
 		LOG_ERROR(tr("get ifi info failed"));
 	}
 
 	std::vector<ifi_info>::iterator it;
 	int index = 0;
-	for (it = ifiInfos.begin(); it != ifiInfos.end(); ++it)
-	{
+	for (it = ifiInfos.begin(); it != ifiInfos.end(); ++it) {
 		index++;
 #ifdef __GNUC__
 		if (it->ifi_flags & IFF_LOOPBACK) // ignore loopback
@@ -141,8 +128,7 @@ void EthernetWidget::setupInterface(QWidget *parent){
 	}
 }
 
-void EthernetWidget::onInterfaceChanged(int index)
-		{
+void EthernetWidget::onInterfaceChanged(int index) {
 	ifi_info dev = ui.interface_box->itemData(index).value<ifi_info>();
 	char mac[256];
 	SocketToolkit toolkit;

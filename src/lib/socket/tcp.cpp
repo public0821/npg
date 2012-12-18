@@ -9,13 +9,15 @@
 #include "../../logger.h"
 #include "socket.h"
 #include <qobject.h>
+#include "socket_address.h"
+
+Tcp::Tcp(const IpAddress& addr, uint16_t port) :
+		m_sockfd(-1), m_blocking(true), m_addr(addr), m_port(port) {
+
+}
 
 Tcp::Tcp() :
-		m_blocking(true) {
-	m_sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (-1 == m_sockfd) {
-		LOG_ERROR(errno);
-	}
+		m_sockfd(-1), m_blocking(true), m_port(0) {
 }
 
 Tcp::~Tcp() {
@@ -33,7 +35,7 @@ bool Tcp::send(const char* buffer, size_t buffer_len) {
 	while (len_remaining > 0) {
 		int len = ::send(m_sockfd, buffer, len_remaining, 0);
 		if (len == -1) {
-			LOG_ERROR(errno);
+			LOG_ERROR(npg_errno);
 			return false;
 		}
 		if (!m_blocking) {
@@ -52,12 +54,12 @@ int Tcp::recv(char* buffer, size_t buffer_len) {
 	size_t len_remaining = buffer_len;
 	while (len_remaining > 0) {
 		int len = ::recv(m_sockfd, buffer, len_remaining, 0);
-		m_errno = errno;
+		m_errno = npg_errno;
 		if (len == -1 && (m_errno == EWOULDBLOCK || m_errno == EAGAIN)) {
-			LOG_ERROR(errno);
+			LOG_ERROR(npg_errno);
 			return buffer_len - len_remaining;
 		} else if (len == -1) {
-			LOG_ERROR(errno);
+			LOG_ERROR(npg_errno);
 			return -1;
 		}
 		else if (len == 0) { //the peer has performed an orderly shutdown
@@ -70,24 +72,22 @@ int Tcp::recv(char* buffer, size_t buffer_len) {
 }
 
 //#include <iostream>
-bool Tcp::connect(const char* ip, uint16_t port, time_t timeout) {
+bool Tcp::connect(const IpAddress& ip, uint16_t port, time_t timeout) {
 	if (-1 == m_sockfd) {
-		return false;
+		if (m_addr.isvalid() && ip.version() != m_addr.version()) {
+			LOG_ERROR("incorrect bind ip version");
+			return false;
+		}
+		if (!m_addr.isvalid()) {
+			m_addr.set_version(ip.version());
+		}
+		m_sockfd = new_socket(m_addr, m_port);
+		if (-1 == m_sockfd) {
+			return false;
+		}
 	}
 
-	struct in_addr addr;
-	addr.s_addr = inet_addr(ip);
-	if (addr.s_addr == INADDR_NONE) {
-		LOG_ERROR(("Not in presentation format"));
-		return false;
-	}
-
-	struct sockaddr_in serv_addr;
-	bzero(&serv_addr, sizeof(serv_addr));
-	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_addr.s_addr = addr.s_addr;
-	serv_addr.sin_port = htons(port);
-
+	SocketAddress sockaddr(ip, port);
 	/*
 	 windows
 	 #define WSABASEERR              10000
@@ -109,8 +109,8 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout) {
 	}
 
 	bool ret_value = false;
-	int ret_conn = ::connect(m_sockfd, (struct sockaddr*) &serv_addr, sizeof(serv_addr));
-	if (ret_conn == -1 && (errno == EINPROGRESS || errno == EWOULDBLOCK)) {
+	int ret_conn = ::connect(m_sockfd, sockaddr.addr(), sockaddr.addrlen());
+	if (ret_conn == -1 && (npg_errno == EINPROGRESS || npg_errno == EWOULDBLOCK)) {
 		timeval tm;
 		fd_set set;
 		tm.tv_sec = timeout;
@@ -124,7 +124,7 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout) {
 			int ret = getsockopt(m_sockfd, SOL_SOCKET, SO_ERROR,
 					(char*) &temp_error_no, (socklen_t *) &len);
 			if (ret == -1) {
-				LOG_ERROR(errno);
+				LOG_ERROR(npg_errno);
 			} else {
 				if (temp_error_no == 0) {
 					ret_value = true;
@@ -135,15 +135,15 @@ bool Tcp::connect(const char* ip, uint16_t port, time_t timeout) {
 		} else if (ret_select == 0) { //timeout
 			LOG_ERROR("timeout");
 		} else { //error
-			if (errno == EINPROGRESS || errno == EWOULDBLOCK) {
+			if (npg_errno == EINPROGRESS || npg_errno == EWOULDBLOCK) {
 				LOG_ERROR("timeout");
 			} else {
-				LOG_ERROR(errno);
+				LOG_ERROR(npg_errno);
 			}
 		}
 	}
 	else if (ret_conn == -1) {
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 	}
 
 	if (timeout > 0) {
@@ -160,9 +160,40 @@ bool Tcp::setBlocking(bool blocking) {
 	unsigned long ul = blocking ? 0 : 1;
 	int ret_ioctl = npg_ioctl(m_sockfd, FIONBIO, &ul, sizeof(ul)); //set Non-blocking
 	if (ret_ioctl == -1) {
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 		return false;
 	};
 
 	return true;
 }
+
+int Tcp::new_socket(const IpAddress& ip, uint16_t port) {
+	int domain = ip.version() == IpAddress::IPV4 ? AF_INET : AF_INET6;
+	int sockfd = socket(domain, SOCK_STREAM, 0);
+	if (sockfd == -1) {
+		LOG_ERROR(npg_errno);
+		LOG_ERROR(QObject::tr("create udp socket failed"));
+		return -1;
+	}
+
+	int optval = 1;
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (const char *) &optval,
+			sizeof(int)) < 0) {
+		LOG_ERROR(npg_errno);
+		LOG_ERROR(QObject::tr("set REUSEADDR failed"));
+		closesocket(sockfd);
+		return -1;
+	}
+
+	SocketAddress sockaddr(ip, port);
+	int ret = bind(sockfd, sockaddr.addr(), sockaddr.addrlen());
+	if (ret == -1) {
+		LOG_ERROR(npg_errno);
+		LOG_ERROR(QObject::tr("bind faild (%1)").arg(port));
+		closesocket(sockfd);
+		return -1;
+	}
+
+	return sockfd;
+}
+

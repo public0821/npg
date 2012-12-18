@@ -18,7 +18,33 @@ IpAddress::IpAddress(const IpAddress& addr) {
 	memcpy(m_ipv6, addr.m_ipv6, sizeof(m_ipv6));
 }
 
-std::string IpAddress::to_string() {
+#if defined(WIN32) && (WINVER < 0x0600)
+std::string IpAddress::to_string() const{
+	if (m_version == IpAddress::IPV4) {
+		char *address = inet_ntoa(&m_ipv4);  //multithread problem
+		if (address == NULL){
+			return std::string();
+		}
+		return address;
+	} else {
+		LOG_ERROR(tr("unsupport ipv6 in this platform, windows version must Windows Vista or later"));
+		return "";
+	}
+}
+
+bool IpAddress::from_string(const std::string& ip) {
+	char address[16];
+	uint32_t ipv4 = inet_addr(ip.c_str());
+	if (ipv4 == INADDR_NONE) {
+		return false;
+	}
+	m_version = IPV4;
+	m_ipv4 = ipv4;
+	return true;
+
+}
+#else
+std::string IpAddress::to_string()const {
 	if (m_version == IpAddress::IPV4) {
 		char address[INET_ADDRSTRLEN];
 		if (inet_ntop(AF_INET, &m_ipv4, address, INET_ADDRSTRLEN) == NULL)
@@ -45,3 +71,4 @@ bool IpAddress::from_string(const std::string& ip) {
 	}
 	return false;
 }
+#endif

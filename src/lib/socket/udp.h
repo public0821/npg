@@ -18,7 +18,7 @@ public:
 
 public:
 	bool sendto(const IpAddress& ip, uint16_t port, const char* buffer, size_t buffer_len);
-	int new_socket(const IpAddress& ip, uint16_t port, bool nonblock);
+	int new_socket(const IpAddress& ip, uint16_t port);
 private:
 	int m_sockfd;
 	IpAddress m_addr;

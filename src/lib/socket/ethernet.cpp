@@ -11,7 +11,7 @@ Ethernet::Ethernet(void)
 	m_sockfd = socket(AF_PACKET, SOCK_RAW/*SOCK_RAW*/, htons(ETH_P_ALL));
 	if (-1 == m_sockfd)
 	{
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 	}
 }
 
@@ -70,7 +70,7 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 		sizeof(remote));
 	if (-1 == ret)
 	{
-		LOG_ERROR(errno);
+		LOG_ERROR(npg_errno);
 		delete[] buffer;
 		return false;
 	}

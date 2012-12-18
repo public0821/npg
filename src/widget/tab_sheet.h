@@ -16,7 +16,7 @@
 #include <qlineedit.h>
 #include <QHBoxLayout>
 #include <QGroupBox>
-#include "base_protocol_widget.h"
+#include "base_protocol/base_protocol_widget.h"
 
 class SendThread;
 class TabSheet: public QWidget

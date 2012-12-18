@@ -6,7 +6,6 @@
 #include "../logger.h"
 #include "lib/socket/socket.h"
 
-
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
 :
 		BaseProtocolWidget(protocol_name, parent), m_ip(NULL)
@@ -61,10 +60,15 @@ bool IpWidget::preSendData()
 		protocol = ui.protocol_box->itemData(index).toInt();
 	}
 
-	m_dstip = ui.ip_edit->text().toLocal8Bit().constData();
+	std::string dstip = ui.ip_edit->text().toLocal8Bit().constData();
 
-	if (m_dstip.empty() || protocol == 0) {
+	if (dstip.empty() || protocol == 0) {
 		LOG_ERROR(tr("ip and protocol must set"));
+		return false;
+	}
+
+	if (!m_dstip.from_string(dstip)) {
+		LOG_ERROR(tr("invaild ip: %1").arg(dstip.c_str()));
 		return false;
 	}
 
@@ -89,7 +93,7 @@ bool IpWidget::sendData(const char* data, uint16_t length) {
 		return false;
 	}
 
-	return m_ip->sendto(m_dstip.c_str(), data, length);
+	return m_ip->sendto(m_dstip, data, length);
 }
 
 void IpWidget::saveSettings()

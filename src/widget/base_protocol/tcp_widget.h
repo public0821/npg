@@ -9,7 +9,6 @@
 #define TCP_WIDGET_H
 
 #include "ui/ui_tcp_widget.h"
-#include "tab_sheet.h"
 #include "base_protocol_widget.h"
 #include "lib/types.h"
 
@@ -31,8 +30,6 @@ private:
 private:
     Ui::TcpWidgetClass ui;
 
-	std::string m_ip;
-	uint16_t m_port;
 	time_t m_timeout;
 	Tcp* m_tcp;
 	bool m_wait_for_response;
