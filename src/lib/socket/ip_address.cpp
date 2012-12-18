@@ -6,6 +6,8 @@
 
 #include "ip_address.h"
 #include "socket.h"
+#include "logger.h"
+#include <qobject.h>
 
 IpAddress::IpAddress() :
 		m_version(0), m_ipv4(0) {
@@ -18,16 +20,16 @@ IpAddress::IpAddress(const IpAddress& addr) {
 	memcpy(m_ipv6, addr.m_ipv6, sizeof(m_ipv6));
 }
 
-#if defined(WIN32) && (WINVER < 0x0600)
+#if defined(WIN32) && (WINVER <= 0x0600)
 std::string IpAddress::to_string() const{
 	if (m_version == IpAddress::IPV4) {
-		char *address = inet_ntoa(&m_ipv4);  //multithread problem
+		char *address = inet_ntoa((*(in_addr*)&m_ipv4));  //multithread problem
 		if (address == NULL){
 			return std::string();
 		}
 		return address;
 	} else {
-		LOG_ERROR(tr("unsupport ipv6 in this platform, windows version must Windows Vista or later"));
+		LOG_ERROR(QObject::tr("unsupport ipv6 in this platform, windows version must Windows Vista or later"));
 		return "";
 	}
 }

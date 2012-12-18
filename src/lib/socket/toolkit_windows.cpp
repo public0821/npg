@@ -89,4 +89,12 @@ int SocketToolkit::macAddress(const char* ip, char* mac)
 
 	return -1;
 }
+
+std::vector<IpAddress> SocketToolkit::ipAddressInfo()
+{
+	std::vector<IpAddress> ipaddrs;
+	
+	return ipaddrs;
+}
+
 #endif
