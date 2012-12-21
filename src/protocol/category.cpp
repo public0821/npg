@@ -68,9 +68,9 @@ QString Category::text() const
 	return m_text;
 }
 
-QString Category::tail() const
+QString Category::suffix() const
 {
-	return m_tail;
+	return m_suffix;
 }
 QString Category::prefix() const
 {
@@ -102,9 +102,9 @@ void Category::setTip(const QString& tip)
 	m_tip = tip;
 }
 
-void Category::setTail(const QString& tail)
+void Category::setSuffix(const QString& suffix)
 {
-	m_tail = tail;
+	m_suffix = suffix;
 }
 
 void Category::setPrefix(const QString& prefix)
@@ -127,7 +127,20 @@ uint16_t Category::optionalFieldCount() const
 	return count;
 }
 
+QString Category::refProtocol()const{
+	return m_ref;
+}
+
+
+void Category::setRefProtocol(const QString& ref){
+	m_ref = ref;
+}
+
 bool Category::empty()const
 {
 	return m_empty;
+}
+
+void Category::clear(){
+	m_empty = true;
 }

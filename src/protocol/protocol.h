@@ -11,7 +11,8 @@
 
 enum EBaseProtocol
 {
-	E_BASE_PROTOCOL_UDP = 0
+	E_BASE_PROTOCOL_UNKNOWN = 0
+	, E_BASE_PROTOCOL_UDP
 	, E_BASE_PROTOCOL_TCP
 	, E_BASE_PROTOCOL_IP
 	,E_BASE_PROTOCOL_ETHERNET
@@ -31,14 +32,16 @@ public:
 	QString name() const;
 	EBaseProtocol dependence() const;
 	QString dependenceString() const;
-	QString DependenceParam()const;
+	QString dependenceParam()const;
 	QString icon() const;
+	bool needShow()const ;
 
 	void setName(const QString& name);
 	void setDependenceString(const QString& dependence);
 	void setDependence(EBaseProtocol dependence);
 	void setDependenceParam(const QString& dependence_param);
 	void setIcon(const QString& icon);
+	void setNeedShow(bool need_show);
 
 	bool empty()const;
 
@@ -51,5 +54,8 @@ private:
 	QString m_icon;
 	bool m_empty;
 	QString m_dependence_param;
+	bool m_need_show;
+
+	friend class ProtocolFactory;
 };
 #endif

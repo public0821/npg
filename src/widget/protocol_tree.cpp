@@ -12,6 +12,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QTextStream>
+#include "qresource.h"
 
 const int FIELD_COUNT = 6;
 const int INDEX_FIELD_NAME = 0;
@@ -48,13 +49,13 @@ void ProtocolTree::setup(Protocol protocol)
 	setDragDropMode(NoDragDrop);
 	//setDragDropMode(InternalMove);
 
-	m_delete_action = new QAction(QIcon(":/npg/category_delete"),
+	m_delete_action = new QAction(QIcon(ICON_CATEGORY_DELETE),
 			tr("Delete(&D)"), this);
 	m_delete_action->setShortcut(QKeySequence::fromString("Ctrl+D"));
-	m_add_action = new QAction(QIcon(":/npg/category_add"), tr("Add(&A)"),
+	m_add_action = new QAction(QIcon(ICON_CATEGORY_ADD), tr("Add(&A)"),
 			this);
 	m_add_action->setShortcut(QKeySequence::fromString("Ctrl+A"));
-	m_add_field_action = new QAction(QIcon(":/npg/category_add"),
+	m_add_field_action = new QAction(QIcon(ICON_CATEGORY_ADD),
 			tr("Add Field(&A)"), this);
 	m_delete_action->setIconVisibleInMenu(true);
 	m_add_action->setIconVisibleInMenu(true);
@@ -370,7 +371,7 @@ QTreeWidgetItem * ProtocolTree::addSingleCategoryItem(QTreeWidget * parent, QTre
 	category_item->setText(INDEX_FIELD_TIP, category.tip());
 	category_item->setData(ROLEDATA_FIELDTYPE, Qt::UserRole, QVariant(E_ITEM_TYPE_CATEGORY));
 	category_item->setData(ROLEDATA_FIELDNAME, Qt::UserRole, QVariant(category.name()));
-	category_item->setIcon(0, QIcon(":/npg/category"));
+	category_item->setIcon(0, QIcon(ICON_CATEGORY));
 
 	return category_item;
 }
@@ -411,7 +412,7 @@ void ProtocolTree::onSaveSettings()
 	}
 
 	QDomDocument document;
-	document.setContent(QString("<?xml version=\"1.0\" encoding=\"gbk\"?>"));
+	document.setContent(QString("<?xml version=\"1.0\" encoding=\"utf-8\"?>"));
 	QDomElement root = document.createElement("Protocol");
 	document.appendChild(root);
 

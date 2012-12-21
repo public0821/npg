@@ -49,3 +49,29 @@ bool Ip::sendto(const IpAddress& ip, const char* data, uint16_t len) {
 
 	return true;
 }
+
+uint16_t Ip::checksum(const char* data, uint16_t len) {
+	/* Compute Internet Checksum for "count" bytes
+	 * beginning at location "addr".
+	 */
+	const unsigned char * addr = (const unsigned char *)data;
+	int count = len;
+	uint32_t sum = 0;
+
+	while (count > 1) {
+		/* This is the inner loop */
+		sum += *((unsigned short*) (addr));
+		addr += 2;
+		count -= 2;
+	}
+
+	/* Add left-over byte, if any */
+	if (count > 0)
+		sum += *addr;
+
+	/* Fold 32-bit sum to 16 bits */
+	while (sum >> 16)
+		sum = (sum & 0xffff) + (sum >> 16);
+
+	return ~sum;
+}

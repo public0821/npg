@@ -25,19 +25,24 @@ public:
 	bool isMany() const;
 	QString text() const;
 	QString tip() const;
-	QString tail()const;
+	QString suffix()const;
 	QString prefix()const;
+	QString refProtocol()const;
 
 
 	void setName(const QString& name);
 	void setMany(bool is_many);
 	void setText(const QString& text);
 	void setTip(const QString& tip);
-	void setTail(const QString& tail);
+	void setSuffix(const QString& suffix);
 	void setPrefix(const QString& prefix);
+	void setRefProtocol(const QString& ref);
 
 	bool empty()const;
 	uint16_t optionalFieldCount()const;
+
+	void clear();
+
 
 private:
 	std::vector<Field> m_fields;
@@ -46,8 +51,9 @@ private:
 	bool m_is_many;
 	QString m_tip;
 	bool m_empty;
-	QString m_tail;
+	QString m_suffix;
 	QString m_prefix;
+	QString m_ref;
 
 };
 #endif

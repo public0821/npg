@@ -1,7 +1,7 @@
 #include "base_protocol_widget.h"
 
-BaseProtocolWidget::BaseProtocolWidget(const QString& name,QWidget *parent)
-	: QWidget(parent), m_name(name)
+BaseProtocolWidget::BaseProtocolWidget(const QString& full_protocol_name, QWidget *parent)
+	: QWidget(parent), m_full_protocol_name(full_protocol_name)
 {
 
 }
@@ -22,7 +22,7 @@ BaseProtocolWidget::~BaseProtocolWidget()
 //	connect(m_show_button, SIGNAL(released(void)), this, SLOT(onShowButton(void)));
 //	m_show = true;
 //	m_show_widget = show_widget;
-//	m_show_button->setIcon(QIcon(":/npg/up"));
+//	m_show_button->setIcon(QIcon(ICON_UP));
 //}
 //
 //void BaseProtocolWidget::onShowButton()
@@ -31,12 +31,12 @@ BaseProtocolWidget::~BaseProtocolWidget()
 //	{
 //		m_show_widget->setVisible(false);
 //		m_show = false;
-//		m_show_button->setIcon(QIcon(":/npg/down"));
+//		m_show_button->setIcon(QIcon(ICON_DOWN));
 //	}
 //	else
 //	{
 //		m_show_widget->setVisible(true);
 //		m_show = true;
-//		m_show_button->setIcon(QIcon(":/npg/up"));
+//		m_show_button->setIcon(QIcon(ICON_UP));
 //	}
 //}

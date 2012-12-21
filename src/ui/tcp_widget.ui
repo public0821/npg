@@ -89,7 +89,7 @@
       <item row="1" column="4">
        <widget class="QCheckBox" name="src_ip_box">
         <property name="text">
-         <string>system asign</string>
+         <string>default</string>
         </property>
        </widget>
       </item>

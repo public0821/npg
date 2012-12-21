@@ -3,8 +3,10 @@ TARGET = npg
 QT += core \
     gui \
     xml
+    
 CONFIG += qt \
     debug
+    
 RESOURCES += npg.qrc
 TRANSLATIONS = npg_zh_CN.ts
 UI_DIR = ./ui
@@ -13,7 +15,8 @@ OBJECTS_DIR = ./tmp
 unix:QMAKE_CXXFLAGS += -std=c++0x
 
 # Input
-HEADERS += lib/socket/socket_address.h \
+HEADERS += qresource.h \
+    lib/socket/socket_address.h \
     lib/socket/toolkit.h \
     widget/ip_combobox.h \
     widget/base_protocol/ip_widget.h \

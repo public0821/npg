@@ -34,7 +34,7 @@ TcpWidget::~TcpWidget()
 void TcpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(protocolName());
+	settings.beginGroup(fullProtocolName());
 	settings.setValue("tcp_dip", ui.dip_edit->text());
 	settings.setValue("tcp_dport", ui.dport_edit->text());
 	settings.setValue("tcp_sport", ui.sport_edit->text());
@@ -48,7 +48,7 @@ void TcpWidget::saveSettings()
 void TcpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(protocolName());
+	settings.beginGroup(fullProtocolName());
 	ui.dip_edit->setText(settings.value("tcp_dip").toString());
 	ui.dport_edit->setText(settings.value("tcp_dport").toString());
 	ui.sport_edit->setText(settings.value("tcp_sport").toString());
@@ -56,7 +56,6 @@ void TcpWidget::restoreSettings()
 	ui.timeout_edit->setText(settings.value("tcp_timeout").toString());
 	ui.wait_for_response_box->setCheckState((Qt::CheckState) settings.value("tcp_wait_for_response").toInt());
 	Qt::CheckState state = (Qt::CheckState) settings.value("src_ip_box").toInt();
-//	ui.default_box->setCheckState(state);
 	if(state == Qt::Checked){
 		ui.src_ip_box->click();
 	}

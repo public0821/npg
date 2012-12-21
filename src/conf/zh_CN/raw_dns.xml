@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Protocols>
+	<Protocol Name="RAW_DNS" Dependence="ETHERNET" DependenceParam="IP" RFC="1035">
+		<Category Ref="IP"/>
+            <Category Ref="UDP"/>
+            <Category Ref="DNS"/>
+        </Protocol>
+</Protocols>

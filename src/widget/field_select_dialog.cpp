@@ -1,4 +1,5 @@
 #include "field_select_dialog.h"
+#include "qresource.h"
 
 FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, QWidget *parent)
 	: QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint)
@@ -7,7 +8,7 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 {
 	ui.setupUi(this);
 	setWindowTitle(tr("Select Field"));
-	setWindowIcon(QIcon(":/npg/npg"));
+	setWindowIcon(QIcon(ICON_NPG));
 
 	ui.select_all_checkbox->setText(tr("Select All"));
 	ui.ok_button->setText(tr("OK"));

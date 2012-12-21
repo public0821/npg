@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Protocols>
+	<Protocol Name="RAW_UDP" Dependence="ETHERNET" DependenceParam="IP" RFC="1035">
+		<Category Ref="IP"/>
+            <Category Ref="UDP"/>
+            <Category Name="data">
+		<Field Name="data" Type="string" InputMethod="lineedit" Tip="数据"/>
+	    </Category>
+        </Protocol>
+</Protocols>

@@ -30,13 +30,14 @@
      <x>0</x>
      <y>0</y>
      <width>794</width>
-     <height>19</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File(&amp;F)</string>
     </property>
+    <addaction name="action_new"/>
     <addaction name="action_quit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -80,11 +81,7 @@
    </attribute>
    <addaction name="separator"/>
   </widget>
-  <action name="action_test">
-   <property name="icon">
-    <iconset resource="../npg.qrc">
-     <normaloff>:/npg/category_add</normaloff>:/npg/category_add</iconset>
-   </property>
+  <action name="action_new">
    <property name="text">
     <string>New(&amp;N)</string>
    </property>
@@ -99,10 +96,6 @@
    </property>
   </action>
   <action name="action_quit">
-   <property name="icon">
-    <iconset resource="../npg.qrc">
-     <normaloff>:/npg/category_delete</normaloff>:/npg/category_delete</iconset>
-   </property>
    <property name="text">
     <string>Quit(&amp;Q)</string>
    </property>
@@ -114,46 +107,26 @@
    </property>
   </action>
   <action name="action_tool_hex">
-   <property name="icon">
-    <iconset resource="../npg.qrc">
-     <normaloff>:/npg/field_hex</normaloff>:/npg/field_hex</iconset>
-   </property>
    <property name="text">
     <string>Hex</string>
    </property>
   </action>
   <action name="action_tool_ip">
-   <property name="icon">
-    <iconset resource="../npg.qrc">
-     <normaloff>:/npg/field_ip</normaloff>:/npg/field_ip</iconset>
-   </property>
    <property name="text">
     <string>IP</string>
    </property>
   </action>
   <action name="action_tool_time">
-   <property name="icon">
-    <iconset resource="../npg.qrc">
-     <normaloff>:/npg/field_time</normaloff>:/npg/field_time</iconset>
-   </property>
    <property name="text">
     <string>Time</string>
    </property>
   </action>
   <action name="action_tool_base64">
-   <property name="icon">
-    <iconset resource="../npg.qrc">
-     <normaloff>:/npg/field_base64</normaloff>:/npg/field_base64</iconset>
-   </property>
    <property name="text">
     <string>Base64</string>
    </property>
   </action>
   <action name="action_about">
-   <property name="icon">
-    <iconset resource="../npg.qrc">
-     <normaloff>:/npg/about</normaloff>:/npg/about</iconset>
-   </property>
    <property name="text">
     <string>About</string>
    </property>

@@ -18,8 +18,8 @@
 
 TabSheet::TabSheet(const QString& protocol_name
 		, QWidget *parent
-		, QString depend_protocol_name
-		, QString depend_protocol_param)
+		, QString base_protocol_name
+		, QString base_protocol_param)
 :
 		QWidget(parent)
 				, m_protocol_name(protocol_name)
@@ -27,21 +27,17 @@ TabSheet::TabSheet(const QString& protocol_name
 {
 	m_send_thread = new SendThread(this);
 
-	if (depend_protocol_name == K_PROTOCOL_UDP)
-			{
+	if (base_protocol_name == K_PROTOCOL_UDP) {
 		m_base_protocol_widget = new UdpWidget(m_protocol_name, this);
 	}
-	else if (depend_protocol_name == K_PROTOCOL_TCP)
-			{
+	else if (base_protocol_name == K_PROTOCOL_TCP) {
 		m_base_protocol_widget = new TcpWidget(m_protocol_name, this);
 	}
-	else if (depend_protocol_name == K_PROTOCOL_IP)
-			{
-		m_base_protocol_widget = new IpWidget(m_protocol_name, depend_protocol_param, this);
+	else if (base_protocol_name == K_PROTOCOL_IP) {
+		m_base_protocol_widget = new IpWidget(m_protocol_name, base_protocol_param, this);
 	}
-	else if (depend_protocol_name == K_PROTOCOL_ETHERNET)
-			{
-		m_base_protocol_widget = new EthernetWidget(m_protocol_name, depend_protocol_param, this);
+	else if (base_protocol_name == K_PROTOCOL_ETHERNET) {
+		m_base_protocol_widget = new EthernetWidget(m_protocol_name, base_protocol_param, this);
 	}
 }
 

@@ -17,7 +17,7 @@ class BaseProtocolWidget : public QWidget
 	Q_OBJECT
 
 public:
-	BaseProtocolWidget(const QString& name,QWidget *parent);
+	BaseProtocolWidget(const QString& full_protocol_name,QWidget *parent);
 	virtual ~BaseProtocolWidget();
 public:
 	virtual bool preSendData() = 0;
@@ -26,12 +26,12 @@ public:
 	virtual void saveSettings() = 0;
 	virtual void restoreSettings() = 0;
 protected:
-	QString protocolName()const{return m_name;};
+	QString fullProtocolName()const{return m_full_protocol_name;};
 	//void setupUi(QHBoxLayout* layout, QWidget* show_widget);
 //protected slots:
 //	void onShowButton();
 private:
-	QString m_name;
+	QString m_full_protocol_name;
 	QPushButton* m_show_button;
 	QWidget* m_show_widget;
 	bool m_show;

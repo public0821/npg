@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Protocols>
+ 	        <Protocol Name="DNS" Dependence="UDP" RFC="1035">
+            <Category Name="Header">
+                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" DefaultValue="seq" Tip="16位的唯一ID，该ID在查询中设置，并在响应中返回，便于请求端判断该响应对应哪个请求."/>
+                <Field Name="op_flag" Type="int" InputMethod="none" Length="2"  Tip="操作标记">
+                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1"  Tip="标识请求(0)、响应(1)">
+                        <Item Value="0" Text="请求"/>
+                        <Item Value="1" Text="响应"/>
+                    </SubField>
+                    <SubField Name="opcode" Type="bit" InputMethod="select" Length="4"  Tip="查询操作类型.  该值在查询中设置，并在响应中返回">
+                        <Item Value="0" Text="标准查询"/>
+                        <Item Value="1" Text="反向查询"/>
+                        <Item Value="2" Text="服务器状态查询"/>
+                    </SubField>
+                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Tip="授权回答 - 该名字服务器是否授权于该服务器">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Tip="可截断 - 使用UDP时，它表示当应答的总长度超过512字节时，只返回前512字节">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1"  Tip="期望递归 - 该值在查询中设置，并在响应中返回">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1"  Tip="可用递归-如果DNS服务器支持递归查询，则在响应中将该比特设置为1">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+                    <SubField Name="zero" Type="bit" InputMethod="lineedit" DefaultValue="0" Editable="false" Length="3"  Tip="保留字段，必须为0"/>
+                    <SubField Name="rcode" Type="bit" InputMethod="select" Length="4"  Tip="返回码">
+                        <Item Value="0" Text="没有差错"/>
+                        <Item Value="1" Text="格式错误"/>
+                        <Item Value="2" Text="服务器错误"/>
+                        <Item Value="3" Text="名字错误"/>
+                        <Item Value="4" Text="未实现"/>
+                        <Item Value="5" Text="拒绝"/>
+                    </SubField>
+                </Field>
+                <Field Name="QDCOUNT" Type="int" InputMethod="lineedit" Length="2" DefaultValue="1" Tip="问题数"/>
+                <Field Name="ANCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="资源记录数"/>
+                <Field Name="NSCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="授权资源记录数"/>
+                <Field Name="ARCOUNT " Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="额外资源记录数"/>
+            </Category>
+            <Category Name="Request" Many="true">
+                <Field Name="count" Type="int" InputMethod="lineedit" Length="1" Optional="true" ShowOnStart="true" Tip="下一个字段（名称）的长度"/>
+                <Field Name="name" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="true" Tip="查询名称"/>
+                <Field Name="count_end" Type="int" InputMethod="lineedit" Length="1" Editable="false"  DefaultValue="0" Tip="名称结束标识"/>
+                <Field Name="QTYPE" Type="int" InputMethod="select" Length="2" Tip="查询类型">
+                        <Item Value="1" Text="A(IP ADDR)"/>
+                        <Item Value="12" Text="PTR"/>
+                </Field>
+                <Field Name="QCLASS" Type="int" Length="2" InputMethod="lineedit" DefaultValue="1" Tip="查询类，通常设置为1, 表示网络地址"/>
+            </Category>
+            <Category Name="Response" Tip="响应" Many="true">
+            </Category>
+        </Protocol>
+</Protocols>

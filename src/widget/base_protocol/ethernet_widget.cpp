@@ -55,7 +55,7 @@ bool EthernetWidget::sendData(const char* data, uint16_t length) {
 
 void EthernetWidget::saveSettings() {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(protocolName());
+	settings.beginGroup(fullProtocolName());
 	settings.setValue("ether_interface", ui.interface_box->currentIndex());
 	settings.setValue("ether_to_mac", ui.to_mac_edit->text());
 	settings.setValue("ether_from_mac", ui.from_mac_edit->text());
@@ -66,7 +66,7 @@ void EthernetWidget::saveSettings() {
 }
 void EthernetWidget::restoreSettings() {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(protocolName());
+	settings.beginGroup(fullProtocolName());
 	ui.interface_box->setCurrentIndex(settings.value("ether_interface").toInt());
 	ui.to_mac_edit->setText(settings.value("ether_to_mac").toString());
 	ui.from_mac_edit->setText(settings.value("ether_from_mac").toString());

@@ -17,7 +17,7 @@
 
 ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent)
 :
-		TabSheet(protocol.name(), parent, protocol.dependenceString(), protocol.DependenceParam())
+		TabSheet(protocol.name(), parent, protocol.dependenceString(), protocol.dependenceParam())
 				, m_protocol(protocol)
 				, m_seq(0)
 {
@@ -61,9 +61,9 @@ bool ProtocolTabSheet::preSendData()
 {
 	ProtocolBuilder protocol_builder;
 
-	bool need_checknum = false;
-	uint16_t checknum_pos = 0;
-	Field checknum_field("", true);
+	bool need_checksum = false;
+	uint16_t checksum_pos = 0;
+	Field checksum_field("", true);
 
 	ProtocolTree* tree_widget = ui.treeWidget;
 	int category_count = tree_widget->topLevelItemCount();
@@ -126,9 +126,9 @@ bool ProtocolTabSheet::preSendData()
 				QString data;
 				if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Unchecked) {
 					if (field.defaultValueOriginal() == K_DEFAULT_VALUE_CHECKNUM) {
-						need_checknum = true;
-						checknum_pos = protocol_builder.length();
-						checknum_field = field;
+						need_checksum = true;
+						checksum_pos = protocol_builder.length();
+						checksum_field = field;
 					}
 					data = convertDefaultValue(field.defaultValueOriginal());
 				} else {
@@ -142,10 +142,10 @@ bool ProtocolTabSheet::preSendData()
 				}
 			}
 
-			QString field_tail = field.tail();
-			if (!field_tail.isEmpty()) {
-				QByteArray field_tail_array = field_tail.toLocal8Bit();
-				int ret = protocol_builder.append(field_tail_array.constData(), field_tail_array.size());
+			QString field_suffix = field.suffix();
+			if (!field_suffix.isEmpty()) {
+				QByteArray field_suffix_array = field_suffix.toLocal8Bit();
+				int ret = protocol_builder.append(field_suffix_array.constData(), field_suffix_array.size());
 				if (ret == false) {
 					return false;
 				}
@@ -153,10 +153,10 @@ bool ProtocolTabSheet::preSendData()
 
 		}
 
-		QString category_tail = category.tail();
-		if (!category_tail.isEmpty()) {
-			QByteArray category_tail_array = category_tail.toLocal8Bit();
-			int ret = protocol_builder.append(category_tail_array.constData(), category_tail_array.size());
+		QString category_suffix = category.suffix();
+		if (!category_suffix.isEmpty()) {
+			QByteArray category_suffix_array = category_suffix.toLocal8Bit();
+			int ret = protocol_builder.append(category_suffix_array.constData(), category_suffix_array.size());
 			if (ret == false) {
 				return false;
 			}
@@ -164,12 +164,12 @@ bool ProtocolTabSheet::preSendData()
 
 	}
 
-	if (need_checknum) {
+	if (need_checksum) {
 		SocketToolkit toolkit;
-		uint16_t checknum = toolkit.inCheckSum((uint16_t *) protocol_builder.data(), protocol_builder.length());
-		checknum = ntohs(checknum);
-		QString data = QString("%1").arg(checknum);
-		protocol_builder.set(checknum_pos, checknum_field.type(), checknum_field.length(), data);
+		uint16_t checksum = toolkit.inCheckSum((uint16_t *) protocol_builder.data(), protocol_builder.length());
+		checksum = ntohs(checksum);
+		QString data = QString("%1").arg(checksum);
+		protocol_builder.set(checksum_pos, checksum_field.type(), checksum_field.length(), data);
 	}
 
 	m_data.assign(protocol_builder.data(), protocol_builder.length());

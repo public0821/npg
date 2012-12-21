@@ -8,8 +8,7 @@
 
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
 :
-		BaseProtocolWidget(protocol_name, parent), m_ip(NULL)
-{
+		BaseProtocolWidget(protocol_name, parent), m_ip(NULL) {
 	ui.setupUi(this);
 
 	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_ICMP, (int) IPPROTO_ICMP));
@@ -18,33 +17,30 @@ IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name
 
 	std::map<QString, int>::const_iterator it_find;
 	it_find = m_built_in_protocol.find(ip_protocol_name);
-	if (it_find != m_built_in_protocol.end())
-			{
+	if (it_find != m_built_in_protocol.end()) {
 		QString text = QString("%1 (%2)").arg(it_find->first).arg(it_find->second);
 		ui.protocol_box->addItem(text, QVariant(it_find->second));
 		ui.protocol_box->setEditable(false);
-	}
-	else
-	{
+	} else {
 		std::map<QString, int>::const_iterator it;
 		it = m_built_in_protocol.begin();
-		for (; it != m_built_in_protocol.end(); ++it)
-		{
+		for (; it != m_built_in_protocol.end(); ++it) {
 			QString text = QString("%1 (%2)").arg(it->first).arg(it->second);
 			ui.protocol_box->addItem(text, QVariant(it->second));
 		}
 		ui.protocol_box->setEditable(true);
 	}
 
-}
-
-IpWidget::~IpWidget()
-{
+	connect(ui.default_box, SIGNAL(clicked ( bool)), ui.sip_box,
+			SLOT( setDisabled(bool)));
 
 }
 
-bool IpWidget::preSendData()
-{
+IpWidget::~IpWidget() {
+
+}
+
+bool IpWidget::preSendData() {
 	if (m_ip != NULL) {
 		LOG_ERROR(tr("'preSendData' function has been called"));
 		return false;
@@ -54,13 +50,11 @@ bool IpWidget::preSendData()
 	int protocol = 0;
 	if (index == -1) {
 		protocol = ui.protocol_box->currentText().toInt();
-	}
-	else
-	{
+	} else {
 		protocol = ui.protocol_box->itemData(index).toInt();
 	}
 
-	std::string dstip = ui.ip_edit->text().toLocal8Bit().constData();
+	std::string dstip = ui.dip_edit->text().toLocal8Bit().constData();
 
 	if (dstip.empty() || protocol == 0) {
 		LOG_ERROR(tr("ip and protocol must set"));
@@ -99,19 +93,24 @@ bool IpWidget::sendData(const char* data, uint16_t length) {
 void IpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(protocolName());
-	settings.setValue("ip", ui.ip_edit->text());
+	settings.beginGroup(fullProtocolName());
+	settings.setValue("dip", ui.dip_edit->text());
 	settings.setValue("protocol", ui.protocol_box->currentText());
-//	settings.setValue("protocol_index", ui.protocol_box->currentIndex());
+	settings.setValue("sip", ui.sip_box->currentIndex());
+	settings.setValue("default_box", ui.default_box->checkState());
 	settings.endGroup();
 }
 
 void IpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(protocolName());
-	ui.ip_edit->setText(settings.value("ip").toString());
+	settings.beginGroup(fullProtocolName());
+	ui.dip_edit->setText(settings.value("dip").toString());
 	ui.protocol_box->setEditText(settings.value("protocol").toString());
-//	ui.protocol_box->setCurrentIndex(settings.value("protocol_index").toInt());
+	ui.sip_box->setCurrentIndex(settings.value("sip").toInt());
+	Qt::CheckState state = (Qt::CheckState) settings.value("default_box").toInt();
+	if (state == Qt::Checked) {
+		ui.default_box->click();
+	}
 	settings.endGroup();
 }

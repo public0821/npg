@@ -1,4 +1,5 @@
 #include "protocol.h"
+#include "qresource.h"
 
 Protocol::Protocol(bool empty)
 :m_empty(empty)
@@ -30,7 +31,7 @@ EBaseProtocol Protocol::dependence() const
 	return m_dependence;
 }
 
-QString Protocol::DependenceParam()const
+QString Protocol::dependenceParam()const
 {
 	return m_dependence_param;
 }
@@ -39,11 +40,15 @@ QString Protocol::dependenceString() const
 	return m_dependence_string;
 }
 
+bool Protocol::needShow()const {
+	return m_need_show;
+}
+
 QString Protocol::icon() const
 {
 	if (m_icon.isEmpty())
 	{
-		return ":/npg/protocol_default";
+		return ICON_PROTOCOL_DEFAULT;
 	}
 	return m_icon;
 }
@@ -90,4 +95,8 @@ Category  Protocol::category(const QString& name)const
 void Protocol::setDependenceParam(const QString& dependence_param)
 {
 	m_dependence_param = dependence_param;
+}
+
+void Protocol::setNeedShow(bool need_show){
+	m_need_show = need_show;
 }

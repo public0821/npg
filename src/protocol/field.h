@@ -32,7 +32,7 @@ enum EFiledInputMethod
 const char K_DEFAULT_VALUE_SECOND[] = "second";
 const char K_DEFAULT_VALUE_PID[] = "pid";
 const char K_DEFAULT_VALUE_MILLISECOND[] = "millisecond";
-const char K_DEFAULT_VALUE_CHECKNUM[] = "checknum";
+const char K_DEFAULT_VALUE_CHECKNUM[] = "checksum";
 const char K_DEFAULT_VALUE_SEQ[] = "seq";
 
 const char K_DEFAULT_VALUE_DEFAULT[] = "default";
@@ -68,7 +68,7 @@ public:
 	void setEditable(bool editable);
 	void setShowOnStart(bool show_on_start);
 	void addSubField(const Field& sub_field);
-	void setTail(const QString& tail);
+	void setSuffix(const QString& suffix);
 	void setPrefix(const QString& prefix);
 
 	QString name() const;
@@ -91,8 +91,10 @@ public:
 	bool isShowOnStart()const;
 	const std::vector<Field>& subFields()const;
 	Field subField(const QString& sub_field_name)const;
-	QString tail()const;
+	QString suffix()const;
 	QString prefix()const;
+
+	void clear();
 private:
 	QString m_name;
 	EFiledType m_type;
@@ -109,7 +111,7 @@ private:
 	QString m_category_name;
 	bool m_show_on_start;
 	std::vector<Field> m_sub_fields;
-	QString m_tail;
+	QString m_suffix;
 	QString m_prefix;
 };
 

@@ -80,7 +80,7 @@ bool UdpWidget::sendData(const char* data, uint16_t length) {
 void UdpWidget::saveSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(protocolName());
+	settings.beginGroup(fullProtocolName());
 	settings.setValue("src_ip_combobox", ui.src_ip_combobox->currentIndex());
 	settings.setValue("dstip", ui.dst_ip_edit->text());
 	settings.setValue("srcport", ui.src_port_edit->text());
@@ -92,7 +92,7 @@ void UdpWidget::saveSettings()
 void UdpWidget::restoreSettings()
 {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
-	settings.beginGroup(protocolName());
+	settings.beginGroup(fullProtocolName());
 	ui.src_ip_combobox->setCurrentIndex(settings.value("src_ip_combobox").toInt());
 	ui.dst_ip_edit->setText(settings.value("dstip").toString());
 	ui.src_port_edit->setText(settings.value("srcport").toString());

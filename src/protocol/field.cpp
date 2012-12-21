@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "lib/os.h"
+#include "qresource.h"
 
 Field::Field(const QString& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)
@@ -88,9 +89,9 @@ void Field::addSubField(const Field& sub_field)
 	m_sub_fields.push_back(sub_field);
 }
 
-void Field::setTail(const QString& tail)
+void Field::setSuffix(const QString& suffix)
 {
-	m_tail = tail;
+	m_suffix = suffix;
 }
 
 void Field::setPrefix(const QString& prefix)
@@ -225,19 +226,19 @@ QString Field::icon() const
 	switch (type())
 	{
 	case E_FIELD_TYPE_INT:
-		icon = ":/npg/field_int";
+		icon = ICON_FIELD_INT;
 		break;
 	case E_FIELD_TYPE_STRING:
-		icon = ":/npg/field_string";
+		icon = ICON_FIELD_STRING;
 		break;
 	case E_FIELD_TYPE_IP:
-		icon = ":/npg/field_ip";
+		icon = ICON_FIELD_IP;
 		break;
 	case E_FIELD_TYPE_MAC:
-		icon = ":/npg/field_mac";
+		icon = ICON_FIELD_MAC;
 		break;
 	case E_FIELD_TYPE_BIT:
-		icon = ":/npg/field_bit";
+		icon = ICON_FIELD_BIT;
 		break;
 	default:
 		break;
@@ -295,13 +296,17 @@ Field Field::subField(const QString& sub_field_name) const
 	return Field(m_name, true);
 }
 
-QString Field::tail() const
+QString Field::suffix() const
 {
-	return m_tail;
+	return m_suffix;
 }
 
 
 QString Field::prefix() const
 {
 	return m_prefix;
+}
+
+void Field::clear(){
+	m_empty = true;
 }

@@ -13,6 +13,8 @@
 #include "widget/converter_dialog.h"
 #include "widget/about_dialog.h"
 #include "logger.h"
+#include "qresource.h"
+#include "protocol/protocol_factory.h"
 
 Npg::Npg(QWidget *parent) :
 		QMainWindow(parent)
@@ -22,11 +24,21 @@ Npg::Npg(QWidget *parent) :
 	connect(ui.action_quit, SIGNAL(triggered(bool)), this, SLOT(close()));
 	connect(ui.action_about, SIGNAL(triggered(bool)), this, SLOT(onAbout()));
 
+	ui.action_new->setIcon(QIcon(ICON_CATEGORY_ADD));
+	ui.action_quit->setIcon(QIcon(ICON_QUIT));
+	ui.action_tool_ip->setIcon(QIcon(ICON_FIELD_IP));
+	ui.action_tool_hex->setIcon(QIcon(ICON_FIELD_HEX));
+	ui.action_tool_time->setIcon(QIcon(ICON_FIELD_TIME));
+	ui.action_tool_base64->setIcon(QIcon(ICON_FIELD_BASE64));
+	ui.action_about->setIcon(QIcon(ICON_ABOUT));
+
 	ui.action_tool_ip->setData((int) E_CONVERTER_IP);
 	ui.action_tool_hex->setData((int) E_CONVERTER_HEX);
 	ui.action_tool_time->setData((int) E_CONVERTER_TIME);
 	ui.action_tool_base64->setData((int) E_CONVERTER_BASE64);
 
+	ui.action_new->setIconVisibleInMenu(true);
+	ui.action_quit->setIconVisibleInMenu(true);
 	ui.action_tool_ip->setIconVisibleInMenu(true);
 	ui.action_tool_hex->setIconVisibleInMenu(true);
 	ui.action_tool_time->setIconVisibleInMenu(true);
@@ -38,6 +50,7 @@ Npg::Npg(QWidget *parent) :
 	connect(ui.action_tool_time, SIGNAL(triggered(bool)), this, SLOT(onConverterClicked()));
 	connect(ui.action_tool_base64, SIGNAL(triggered(bool)), this, SLOT(onConverterClicked()));
 
+	ui.toolBar->addAction(ui.action_new);
 	ui.toolBar->addAction(ui.action_quit);
 	ui.toolBar->addAction(ui.action_tool_ip);
 	ui.toolBar->addAction(ui.action_tool_hex);
@@ -48,16 +61,23 @@ Npg::Npg(QWidget *parent) :
 	m_main_splitter = new QSplitter(Qt::Horizontal);
 	m_log_splitter = new QSplitter(Qt::Vertical);
 
-	QMap < QString, QString > name_icons;
-	name_icons.insert(K_PROTOCOL_UDP, ":/npg/protocol_default");
-	name_icons.insert(K_PROTOCOL_TCP, ":/npg/protocol_default");
-	//name_icons.insert(K_PROTOCOL_ICMP, ":/npg/protocol_default");
-	//name_icons.insert(K_PROTOCOL_ARP, ":/npg/protocol_default");
-	//name_icons.insert(K_PROTOCOL_DNS, ":/npg/protocol_default");
+	QMap<QString, QString> name_icons;
+	name_icons.insert(K_PROTOCOL_UDP, ICON_PROTOCOL_DEFAULT);
+	name_icons.insert(K_PROTOCOL_TCP, ICON_PROTOCOL_DEFAULT);
+	//name_icons.insert(K_PROTOCOL_ICMP, ICON_PROTOCOL_DEFAULT);
+	//name_icons.insert(K_PROTOCOL_ARP, ICON_PROTOCOL_DEFAULT);
+	//name_icons.insert(K_PROTOCOL_DNS, ICON_PROTOCOL_DEFAULT);
+	m_logger = new QTextBrowser(this);
+	Logger::instance().bind(m_logger);
+
+	bool ret = ProtocolFactory::instance().loadXml();
+	if (!ret) {
+		QMessageBox::information(this, tr("tip"), tr("load config failed"));
+	}
 
 	m_type_list = new MainListWidget(name_icons);
 	m_tab_widget = new MainTabWidget(name_icons);
-	m_logger = new QTextBrowser(this);
+
 	m_log_splitter->addWidget(m_tab_widget);
 	m_log_splitter->addWidget(m_logger);
 	m_main_splitter->addWidget(m_type_list);
@@ -74,18 +94,14 @@ Npg::Npg(QWidget *parent) :
 //	/setsi
 //	m_tabWidget->addTab(new UdpWidget(m_tabWidget), "udp");
 
-	Logger::instance().bind(m_logger);
 }
 
-Npg::~Npg()
-{
+Npg::~Npg() {
 
 }
 
-void Npg::onItemDoubleClicked(QListWidgetItem * item)
-{
-	if (item == NULL)
-	{
+void Npg::onItemDoubleClicked(QListWidgetItem * item) {
+	if (item == NULL) {
 		return;
 	}
 
@@ -94,8 +110,7 @@ void Npg::onItemDoubleClicked(QListWidgetItem * item)
 
 }
 
-void Npg::saveSettings()
-{
+void Npg::saveSettings() {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 
 	settings.beginGroup("mainWindow");
@@ -105,8 +120,7 @@ void Npg::saveSettings()
 	settings.endGroup();
 }
 
-void Npg::restoreSettings()
-{
+void Npg::restoreSettings() {
 	QSettings settings(K_SETTING_COMPANY, K_SETTING_APP);
 
 	settings.beginGroup("mainWindow");
@@ -116,14 +130,12 @@ void Npg::restoreSettings()
 	settings.endGroup();
 }
 
-void Npg::closeEvent(QCloseEvent *event)
-{
+void Npg::closeEvent(QCloseEvent *event) {
 	saveSettings();
 	QWidget::closeEvent(event);
 }
 
-void Npg::onConverterClicked()
-{
+void Npg::onConverterClicked() {
 	QAction* action = qobject_cast<QAction*>(sender());
 	EConverterType type = (EConverterType) action->data().toInt();
 
@@ -132,8 +144,7 @@ void Npg::onConverterClicked()
 	dialog.exec();
 }
 
-void Npg::onAbout()
-{
+void Npg::onAbout() {
 	AboutDialog dialog(this);
 	dialog.exec();
 }

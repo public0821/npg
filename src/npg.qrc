@@ -1,20 +1,18 @@
 <RCC>
     <qresource prefix="/npg">
-        <file alias="category_delete">resource/npg_delete_32px.png</file>
-        <file alias="category_add">resource/npg_add_32px.png</file>
-        <file alias="category">resource/npg_category_16px.png</file>
-        <file alias="up">resource/npg_up_16px.png</file>
-        <file alias="down">resource/npg_down_16px.png</file>
+        <file alias="category_delete">resource/npg_delete.png</file>
+        <file alias="category_add">resource/npg_add.png</file>
+        <file alias="category">resource/npg_category.png</file>
         <file alias="npg">resource/npg.png</file>
-        <file alias="field_int">resource/npg_int_32px.png</file>
-        <file alias="field_string">resource/npg_string_32px.png</file>
+        <file alias="field_int">resource/npg_int.png</file>
+        <file alias="field_string">resource/npg_string.png</file>
         <file alias="protocol_default">resource/npg_protocol_default.png</file>
-        <file alias="field_hex">resource/npg_hex_32px.png</file>
-        <file alias="field_base64">resource/npg_base64_32px.png</file>
-        <file alias="about">resource/npg_about_32px.png</file>
-        <file alias="field_mac">resource/npg_mac_16px.png</file>
-        <file alias="field_time">resource/npg_time_32px.png</file>
-        <file alias="field_bit">resource/npg_bit_32px.png</file>
-        <file alias="field_ip">resource/npg_ip_32px.png</file>
+        <file alias="field_hex">resource/npg_hex.png</file>
+        <file alias="field_base64">resource/npg_base64.png</file>
+        <file alias="about">resource/npg_about.png</file>
+        <file alias="field_mac">resource/npg_mac.png</file>
+        <file alias="field_time">resource/npg_time.png</file>
+        <file alias="field_bit">resource/npg_bit.png</file>
+        <file alias="field_ip">resource/npg_ip.png</file>
     </qresource>
 </RCC>

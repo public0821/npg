@@ -1,4 +1,5 @@
 #include "tcp_response_dialog.h"
+#include "qresource.h"
 
 TcpResponseDialog::TcpResponseDialog(Tcp& tcp, QWidget *parent)
 :
@@ -8,7 +9,7 @@ TcpResponseDialog::TcpResponseDialog(Tcp& tcp, QWidget *parent)
 
 	ui.setupUi(this);
 	setWindowTitle(tr("Response from server"));
-	setWindowIcon(QIcon(":/npg/npg"));
+	setWindowIcon(QIcon(ICON_NPG));
 
 	m_text_edit = new QTextEdit(this);
 	ui.layout->addWidget(m_text_edit);

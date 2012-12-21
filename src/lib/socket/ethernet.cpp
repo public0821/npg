@@ -5,6 +5,7 @@
 #include <string>
 #include "../../logger.h"
 #include <qobject.h>
+#include "ip.h"
 
 Ethernet::Ethernet(void)
 {
@@ -45,7 +46,7 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	//	remote.sll_pkttype = PACKET_OTHERHOST;
 	//	memcpy(remote.sll_addr, arp->arp_sha, ETH_ALEN);
 
-	uint32_t ethernet_size = sizeof(struct ethhdr) + sizeof(struct ether_arp);
+	uint32_t ethernet_size = sizeof(struct ethhdr) + len;
 	char* buffer = new char[ethernet_size];
 	bzero(buffer, ethernet_size);
 	memcpy(buffer+sizeof(struct ethhdr), data, len);
@@ -65,7 +66,9 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	}
 	ethhdr->h_proto = htons(protocol);
 
-
+	if(protocol == ETH_P_IP){
+		addChecknum(buffer+sizeof(struct ethhdr), len);
+	}
 	int ret = ::sendto(m_sockfd, buffer, ethernet_size, 0, (struct sockaddr*) &remote,
 		sizeof(remote));
 	if (-1 == ret)
@@ -79,4 +82,20 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 
 	return true;
 }
+
+void Ethernet::addChecknum( const char* data, size_t len){
+	if(len < sizeof(struct iphdr)){
+		return;
+	}
+
+	struct iphdr* iphdr = (struct iphdr*)data;
+	if(iphdr->ihl*4 > len){
+		return;
+	}
+	if(iphdr->check == 0){
+		iphdr->check = Ip::checksum(data, iphdr->ihl*4);
+		LOG_TRACE(QObject::tr("ip checksum :%1").arg(iphdr->check));
+	}
+}
+
 #endif
