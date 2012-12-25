@@ -1,67 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Npg>
     <Protocols>
-        <Protocol Name="UDP" Dependence="IP" DependenceParam="UDP">
+        <Protocol Name="UDP" Dependence="IPV4" DependenceParam="UDP">
             <Category Name="UDP">
-                <Field Name="src_port" Type="int" InputMethod="lineedit" Length="2" Tip="源端口"/>
-                <Field Name="dst_port" Type="int" InputMethod="lineedit" Length="2" Tip="目的端口"/>
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2"  Tip="数据包长度，包含8字节的包头，最小长度为8"/>
-                <Field Name="checksum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="0" Tip="校验和（包含首部和数据）（可选的）"/>
+                <Field Name="src_port" Type="int" Length="2" Tip="源端口"/>
+                <Field Name="dst_port" Type="int" Length="2" Tip="目的端口"/>
+                <Field Name="length" Type="int" Length="2"  Tip="数据包长度，包含8字节的包头，最小长度为8"/>
+                <Field Name="checksum" Type="int" Length="2" DefaultValue="checksum" Tip="校验和（包含首部和数据）（可选的）"/>
             </Category>
         </Protocol>
-	<Protocol Name="IP" Dependence="ETHERNET" DependenceParam="IP">
-            <Category Name="IP">
-		<Field Name="ver_len" Type="int" InputMethod="none" Length="1"  Tip="">
-		    <SubField Name="version" Type="bit" InputMethod="select" Length="4"  Tip="版本">
-                        <Item Value="4" Text="IPV4"/>
-                        <Item Value="6" Text="IPV6"/>
-                    </SubField>
-	            <SubField Name="head_length" Type="bit" InputMethod="lineedit" DefaultValue="5" Length="4"  Tip="IP包头长度"/>
+	<Protocol Name="IPV4" Dependence="ETHERNET" DependenceParam="IPV4">
+            <Category Name="IPV4">
+		<Field Name="ver_len" Type="int"  Length="1"  Tip="">
+		    <SubField Name="version" Type="bit" DefaultValue="4" Editable="false" Length="4"  Tip="版本"/>
+ 	            <SubField Name="head_length" Type="bit" DefaultValue="5" Length="4"  Tip="IP包头长度"/>
 		</Field>
-                <Field Name="tos" Type="int" InputMethod="none" Length="1" Tip="服务类型">
-		    <SubField Name="priority" Type="bit" InputMethod="lineedit" Length="3" DefaultValue="0" Tip="优先权"/>
-	            <SubField Name="minimum_delay" Type="bit" InputMethod="select" Length="1"  Tip="最小时延">
+                <Field Name="tos" Type="int"  Length="1" Tip="服务类型">
+		    <SubField Name="priority" Type="bit" Length="3" DefaultValue="0" Tip="优先权"/>
+	            <SubField Name="minimum_delay" Type="bit"  Length="1"  Tip="最小时延">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>
-		    <SubField Name="maximum_throughput" Type="bit" InputMethod="select" Length="1"  Tip="最大吞吐量">
+		    <SubField Name="maximum_throughput" Type="bit"  Length="1"  Tip="最大吞吐量">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>
-		    <SubField Name="highest_reliability" Type="bit" InputMethod="select" Length="1"  Tip="最高可靠性">
+		    <SubField Name="highest_reliability" Type="bit"  Length="1"  Tip="最高可靠性">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>
-		    <SubField Name="minimum_cost" Type="bit" InputMethod="select" Length="1"  Tip="最小费用">
+		    <SubField Name="minimum_cost" Type="bit"  Length="1"  Tip="最小费用">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>
-		    <SubField Name="zero" Type="bit" InputMethod="lineedit" Length="1" DefaultValue="0" Editable="false" Tip="保留"/>
+		    <SubField Name="zero" Type="bit" Length="1" DefaultValue="0" Editable="false" Tip="保留"/>
 		</Field>
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2" Tip="总长度，包含包头长度"/>
-                <Field Name="id" Type="int" InputMethod="lineedit" DefaultValue="seq"  Length="2"  Tip="标识"/>
-		<Field Name="flag_offset" Type="int" InputMethod="none" Length="2"  Tip="">
-		    <SubField Name="zero" Type="bit" InputMethod="lineedit" DefaultValue="0" Editable="false" Length="1"  Tip="保留"/>
-		    <SubField Name="don't_fragment" Type="bit" InputMethod="select" Length="1"  Tip="不允许分片标志">
+                <Field Name="length" Type="int" Length="2" Tip="总长度，包含包头长度"/>
+                <Field Name="id" Type="int" DefaultValue="seq"  Length="2"  Tip="标识"/>
+		<Field Name="flag_offset" Type="int"  Length="2"  Tip="">
+		    <SubField Name="zero" Type="bit" DefaultValue="0" Editable="false" Length="1"  Tip="保留"/>
+		    <SubField Name="don't_fragment" Type="bit"  Length="1"  Tip="不允许分片标志">
                         <Item Value="1" Text="是"/>
                         <Item Value="0" Text="否"/>
                     </SubField>
-		    <SubField Name="more_fragments" Type="bit" InputMethod="select" Length="1"  Tip="更多分片标志">
+		    <SubField Name="more_fragments" Type="bit"  Length="1"  Tip="更多分片标志">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>
-	           <SubField Name="offset" Type="bit" InputMethod="lineedit" DefaultValue="0" Length="13"  Tip="片偏移"/>
+	           <SubField Name="offset" Type="bit" DefaultValue="0" Length="13"  Tip="片偏移"/>
 		</Field>
-                <Field Name="ttl" Type="int" InputMethod="lineedit" Length="1" DefaultValue="128" Tip="生存时间"/>
-		<Field Name="protocol" Type="int" InputMethod="select" Length="1"  Tip="上层协议">
+                <Field Name="ttl" Type="int" Length="1" DefaultValue="128" Tip="生存时间"/>
+		<Field Name="protocol" Type="int"  Length="1"  Tip="上层协议">
 			<Item Value="1" Text="ICMP"/>
                         <Item Value="2" Text="IGMP6"/>
 			<Item Value="6" Text="TCP"/>
 			<Item Value="17" Text="UDP"/>
                 </Field>
-		<Field Name="checksum" Type="int" InputMethod="lineedit"  Length="2" Tip="首部校验和"/>
-		<Field Name="src_ip" Type="ip" InputMethod="lineedit" Tip="源IP地址"/>
-		<Field Name="dst_ip" Type="ip" InputMethod="lineedit" Tip="目的IP地址"/>
+		<Field Name="checksum" Type="int"  DefaultValue="checksum" Length="2" Tip="首部校验和"/>
+		<Field Name="src_ip" Type="ip" Tip="源IP地址"/>
+		<Field Name="dst_ip" Type="ip" Tip="目的IP地址"/>
+            </Category>
+        </Protocol>
+	<Protocol Name="IPV6" Dependence="ETHERNET" DependenceParam="IPV6">
+            <Category Name="IPV6">
+		<Field Name="ver_len" Type="int"  Length="1"  Tip="">
+		    <SubField Name="version" Type="bit" DefaultValue="6" Editable="false"  Length="4"  Tip="版本"/>
+ 	            <SubField Name="head_length" Type="bit" DefaultValue="5" Length="4"  Tip="IP包头长度"/>
+		</Field>
+                <Field Name="tos" Type="int"  Length="1" Tip="服务类型">
+		    <SubField Name="priority" Type="bit" Length="3" DefaultValue="0" Tip="优先权"/>
+	            <SubField Name="minimum_delay" Type="bit"  Length="1"  Tip="最小时延">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+		    <SubField Name="maximum_throughput" Type="bit"  Length="1"  Tip="最大吞吐量">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+		    <SubField Name="highest_reliability" Type="bit"  Length="1"  Tip="最高可靠性">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+		    <SubField Name="minimum_cost" Type="bit"  Length="1"  Tip="最小费用">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+		    <SubField Name="zero" Type="bit" Length="1" DefaultValue="0" Editable="false" Tip="保留"/>
+		</Field>
+                <Field Name="length" Type="int" Length="2" Tip="总长度，包含包头长度"/>
+                <Field Name="id" Type="int" DefaultValue="seq"  Length="2"  Tip="标识"/>
+		<Field Name="flag_offset" Type="int"  Length="2"  Tip="">
+		    <SubField Name="zero" Type="bit" DefaultValue="0" Editable="false" Length="1"  Tip="保留"/>
+		    <SubField Name="don't_fragment" Type="bit"  Length="1"  Tip="不允许分片标志">
+                        <Item Value="1" Text="是"/>
+                        <Item Value="0" Text="否"/>
+                    </SubField>
+		    <SubField Name="more_fragments" Type="bit"  Length="1"  Tip="更多分片标志">
+                        <Item Value="0" Text="否"/>
+                        <Item Value="1" Text="是"/>
+                    </SubField>
+	           <SubField Name="offset" Type="bit" DefaultValue="0" Length="13"  Tip="片偏移"/>
+		</Field>
+                <Field Name="ttl" Type="int" Length="1" DefaultValue="128" Tip="生存时间"/>
+		<Field Name="protocol" Type="int"  Length="1"  Tip="上层协议">
+			<Item Value="1" Text="ICMP"/>
+                        <Item Value="2" Text="IGMP6"/>
+			<Item Value="6" Text="TCP"/>
+			<Item Value="17" Text="UDP"/>
+                </Field>
+		<Field Name="checksum" Type="int"  DefaultValue="checksum" Length="2" Tip="首部校验和"/>
+		<Field Name="src_ip" Type="ip" Tip="源IP地址"/>
+		<Field Name="dst_ip" Type="ip" Tip="目的IP地址"/>
             </Category>
         </Protocol>
     </Protocols>

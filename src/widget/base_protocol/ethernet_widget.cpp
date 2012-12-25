@@ -76,8 +76,10 @@ void EthernetWidget::restoreSettings() {
 
 void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name) {
 	std::map<QString, int> built_in_protocol;
-	built_in_protocol.insert(std::make_pair(K_PROTOCOL_IP, (int) ETH_P_IP));
+	built_in_protocol.insert(std::make_pair(K_PROTOCOL_IPV4, (int) ETH_P_IP));
+	built_in_protocol.insert(std::make_pair(K_PROTOCOL_IPV6, (int) ETH_P_IPV6));
 	built_in_protocol.insert(std::make_pair(K_PROTOCOL_ARP, (int) ETH_P_ARP));
+	built_in_protocol.insert(std::make_pair(K_PROTOCOL_RARP, (int) ETH_P_RARP));
 	built_in_protocol.insert(std::make_pair(K_PROTOCOL_RARP, (int) ETH_P_RARP));
 
 	std::map<QString, int>::const_iterator it_find;

@@ -21,21 +21,19 @@ enum EFiledType
 	, E_FIELD_TYPE_MAC
 };
 
-enum EFiledInputMethod
-{
-	E_FIELD_INPUT_METHOD_NONE = 0
-	, E_FIELD_INPUT_METHOD_LINEEDIT
-	, E_FIELD_INPUT_METHOD_TEXTEDIT
-	, E_FIELD_INPUT_METHOD_SELECT
-};
+//enum EFiledInputMethod
+//{
+//	E_FIELD_INPUT_METHOD_NONE = 0
+//	, E_FIELD_INPUT_METHOD_LINEEDIT
+//	, E_FIELD_INPUT_METHOD_TEXTEDIT
+//	, E_FIELD_INPUT_METHOD_SELECT
+//};
 
 const char K_DEFAULT_VALUE_SECOND[] = "second";
 const char K_DEFAULT_VALUE_PID[] = "pid";
 const char K_DEFAULT_VALUE_MILLISECOND[] = "millisecond";
 const char K_DEFAULT_VALUE_CHECKNUM[] = "checksum";
 const char K_DEFAULT_VALUE_SEQ[] = "seq";
-
-const char K_DEFAULT_VALUE_DEFAULT[] = "default";
 
 class FieldItem
 {
@@ -58,7 +56,7 @@ public:
 	void setName(const QString& name);
 	void setType(EFiledType type);
 	void setTypeString(QString type_string);
-	void setInputMethod(EFiledInputMethod input_method);
+//	void setInputMethod(EFiledInputMethod input_method);
 	void setLength(size_t length);
 	void setText(const QString& text);
 	void setTip(const QString& tip);
@@ -74,7 +72,7 @@ public:
 	QString name() const;
 	EFiledType type() const;
 	QString typeString() const;
-	EFiledInputMethod inputMethod() const;
+//	EFiledInputMethod inputMethod() const;
 	size_t length() const;
 	QString text() const;
 	QString tip() const;
@@ -86,10 +84,12 @@ public:
 	bool isOptional()const;
 	bool empty()const;
 	const std::vector<FieldItem>& items()const;
+	bool isItemsEmpty()const;
 	bool editable()const;
 	QString categoryName()const;
 	bool isShowOnStart()const;
 	const std::vector<Field>& subFields()const;
+	bool isSubFieldsEmpty()const ;
 	Field subField(const QString& sub_field_name)const;
 	QString suffix()const;
 	QString prefix()const;
@@ -98,7 +98,7 @@ public:
 private:
 	QString m_name;
 	EFiledType m_type;
-	EFiledInputMethod m_input_method;
+//	EFiledInputMethod m_input_method;
 	size_t m_length;
 	QString m_text;
 	QString m_default_value;

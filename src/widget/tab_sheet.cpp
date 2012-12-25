@@ -33,7 +33,7 @@ TabSheet::TabSheet(const QString& protocol_name
 	else if (base_protocol_name == K_PROTOCOL_TCP) {
 		m_base_protocol_widget = new TcpWidget(m_protocol_name, this);
 	}
-	else if (base_protocol_name == K_PROTOCOL_IP) {
+	else if (base_protocol_name == K_PROTOCOL_IPV4) {
 		m_base_protocol_widget = new IpWidget(m_protocol_name, base_protocol_param, this);
 	}
 	else if (base_protocol_name == K_PROTOCOL_ETHERNET) {

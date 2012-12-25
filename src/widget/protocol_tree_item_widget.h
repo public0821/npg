@@ -12,6 +12,7 @@
 #include "ui_protocol_tree_item.h"
 #include "protocol/field.h"
 #include <QTreeWidgetItem>
+#include <qcombobox.h>
 
 class ProtocolTreeItemWidget : public QWidget
 {
@@ -21,11 +22,15 @@ public:
 	ProtocolTreeItemWidget(QTreeWidgetItem *item, const Field& field, QWidget *parent = 0);
 	~ProtocolTreeItemWidget();
 public:
+	QString value(); //use by sender
+
+	//use by loader
 	void setText(const QString& value);
-	QString value();
 	QString text();
 private:
 	QWidget* getFieldWidget(const Field& field);
+	QWidget* getComboBoxWidget(const Field& field);
+	void addDataToComboBox(QComboBox* combobox, const Field& field);
 public:
 signals:
 	void textChange(QTreeWidgetItem *, int);

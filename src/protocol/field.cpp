@@ -7,7 +7,6 @@
 
 Field::Field(const QString& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)
-, m_input_method(E_FIELD_INPUT_METHOD_NONE)
 , m_length(0)
 , m_empty(empty)
 , m_optional(false)
@@ -44,11 +43,6 @@ void Field::setOptional(bool optional)
 void Field::setTypeString(QString type_string)
 {
 	m_type_string = type_string;
-}
-
-void Field::setInputMethod(EFiledInputMethod input_method)
-{
-	m_input_method = input_method;
 }
 
 void Field::setLength(size_t length)
@@ -111,11 +105,6 @@ EFiledType Field::type() const
 	return m_type;
 }
 
-EFiledInputMethod Field::inputMethod() const
-{
-	return m_input_method;
-}
-
 size_t Field::length() const
 {
 	if (m_length == 0 && type() == E_FIELD_TYPE_IP)
@@ -165,59 +154,6 @@ QString Field::defaultValueOriginal() const
 QString Field::tip() const
 {
 	return m_tip;
-}
-
-int64_t Field::minValue() const
-{
-	int64_t min;
-
-	switch (length())
-	{
-	case 0:
-		min = 0;
-		break;
-	case 1:
-		min = INT8_MIN;
-		break;
-	case 2:
-		min = INT16_MIN;
-		break;
-	case 4:
-		min = INT32_MIN;
-		break;
-	case 8:
-	default:
-		min = INT64_MIN;
-		break;
-	}
-	return min;
-}
-
-uint64_t Field::maxValue() const
-{
-	uint64_t max;
-
-	switch (length())
-	{
-	case 0:
-		max = 0;
-		break;
-	case 1:
-		max = UINT8_MAX;
-		break;
-	case 2:
-		max = UINT16_MAX;
-		break;
-	case 4:
-		max = UINT32_MAX;
-		break;
-	case 8:
-	default:
-		max = UINT64_MAX;
-		break;
-	}
-
-	return max;
 }
 
 QString Field::icon() const
@@ -310,3 +246,67 @@ QString Field::prefix() const
 void Field::clear(){
 	m_empty = true;
 }
+
+bool Field::isItemsEmpty()const{
+	return m_items.size() == 0;
+}
+
+bool Field::isSubFieldsEmpty()const{
+	return m_sub_fields.size() == 0;
+}
+
+
+int64_t Field::minValue() const
+{
+	int64_t min;
+
+	switch (length())
+	{
+	case 0:
+		min = 0;
+		break;
+	case 1:
+		min = INT8_MIN;
+		break;
+	case 2:
+		min = INT16_MIN;
+		break;
+	case 4:
+		min = INT32_MIN;
+		break;
+	case 8:
+		default:
+		min = INT64_MIN;
+		break;
+	}
+	return min;
+}
+
+uint64_t Field::maxValue() const
+{
+	uint64_t max;
+
+	switch (length())
+	{
+	case 0:
+		max = 0;
+		break;
+	case 1:
+		max = UINT8_MAX;
+		break;
+	case 2:
+		max = UINT16_MAX;
+		break;
+	case 4:
+		max = UINT32_MAX;
+		break;
+	case 8:
+	default:
+		max = UINT64_MAX;
+		break;
+	}
+
+	return max;
+}
+
+

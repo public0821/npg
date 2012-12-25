@@ -61,10 +61,6 @@ bool ProtocolTabSheet::preSendData()
 {
 	ProtocolBuilder protocol_builder;
 
-	bool need_checksum = false;
-	uint16_t checksum_pos = 0;
-	Field checksum_field("", true);
-
 	ProtocolTree* tree_widget = ui.treeWidget;
 	int category_count = tree_widget->topLevelItemCount();
 	for (int category_index = 0; category_index < category_count; category_index++) {
@@ -120,16 +116,11 @@ bool ProtocolTabSheet::preSendData()
 					return false;
 				}
 
-			} else { //sub_field_count >= 0
+			} else { //sub_field_count == 0
 
 				QCheckBox* item_checkbox = (QCheckBox*) tree_widget->itemWidget(field_item, 2);
 				QString data;
 				if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Unchecked) {
-					if (field.defaultValueOriginal() == K_DEFAULT_VALUE_CHECKNUM) {
-						need_checksum = true;
-						checksum_pos = protocol_builder.length();
-						checksum_field = field;
-					}
 					data = convertDefaultValue(field.defaultValueOriginal());
 				} else {
 					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*) tree_widget->itemWidget(field_item, 1);
@@ -164,14 +155,6 @@ bool ProtocolTabSheet::preSendData()
 
 	}
 
-	if (need_checksum) {
-		SocketToolkit toolkit;
-		uint16_t checksum = toolkit.inCheckSum((uint16_t *) protocol_builder.data(), protocol_builder.length());
-		checksum = ntohs(checksum);
-		QString data = QString("%1").arg(checksum);
-		protocol_builder.set(checksum_pos, checksum_field.type(), checksum_field.length(), data);
-	}
-
 	m_data.assign(protocol_builder.data(), protocol_builder.length());
 
 	return dependProtocolWidget()->preSendData();
@@ -190,34 +173,22 @@ bool ProtocolTabSheet::sendData()
 	//QMessageBox::information(this, "tip", QString("%1").arg(protocol_builder.length()));
 }
 
-QString ProtocolTabSheet::convertDefaultValue(const QString& default_value)
-		{
-	if (default_value == K_DEFAULT_VALUE_SECOND)
-			{
+QString ProtocolTabSheet::convertDefaultValue(const QString& default_value) {
+	if (default_value == K_DEFAULT_VALUE_SECOND) {
 		struct timeval now;
 		gettimeofday(&now, NULL);
 		return QString("%1").arg(now.tv_sec);
-	}
-	else if (default_value == K_DEFAULT_VALUE_PID)
-			{
+	} else if (default_value == K_DEFAULT_VALUE_PID) {
 		return QString("%1").arg(getpid());
-	}
-	else if (default_value == K_DEFAULT_VALUE_MILLISECOND)
-			{
+	} else if (default_value == K_DEFAULT_VALUE_MILLISECOND) {
 		struct timeval now;
 		gettimeofday(&now, NULL);
 		return QString("%1").arg(now.tv_usec);
-	}
-	else if (default_value == K_DEFAULT_VALUE_CHECKNUM)
-			{
+	} else if (default_value == K_DEFAULT_VALUE_CHECKNUM) {
 		return QString("%1").arg(0);
-	}
-	else if (default_value == K_DEFAULT_VALUE_SEQ)
-			{
+	} else if (default_value == K_DEFAULT_VALUE_SEQ) {
 		return QString("%1").arg(++m_seq);
-	}
-	else
-	{
+	} else {
 		return QString("%1").arg(0);
 	}
 

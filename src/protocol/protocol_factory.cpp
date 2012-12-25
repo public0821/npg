@@ -196,7 +196,7 @@ void ProtocolFactory::loadProtocolElement(QDomElement* element, bool need_show) 
 		protocol.setDependence(E_BASE_PROTOCOL_UDP);
 	} else if (dependence_str == K_PROTOCOL_TCP) {
 		protocol.setDependence(E_BASE_PROTOCOL_TCP);
-	} else if (dependence_str == K_PROTOCOL_IP) {
+	} else if (dependence_str == K_PROTOCOL_IPV4) {
 		protocol.setDependence(E_BASE_PROTOCOL_IP);
 	} else if (dependence_str == K_PROTOCOL_ETHERNET) {
 		protocol.setDependence(E_BASE_PROTOCOL_ETHERNET);
@@ -273,21 +273,6 @@ Field ProtocolFactory::loadFieldElement(const QString& category_name, QDomElemen
 		field.setType(E_FIELD_TYPE_BIT);
 	} else {
 		LOG_ERROR(QObject::tr("Unknown field type:%1").arg(type_str));
-		field.clear();
-		return field;
-	}
-
-	QString input_method_str = field_element.attribute("InputMethod");
-	if (input_method_str == "lineedit") {
-		field.setInputMethod(E_FIELD_INPUT_METHOD_LINEEDIT);
-	} else if (input_method_str == "textedit") {
-		field.setInputMethod(E_FIELD_INPUT_METHOD_TEXTEDIT);
-	} else if (input_method_str == "none") {
-		field.setInputMethod(E_FIELD_INPUT_METHOD_NONE);
-	} else if (input_method_str == "select") {
-		field.setInputMethod(E_FIELD_INPUT_METHOD_SELECT);
-	} else {
-		LOG_ERROR(QObject::tr("Unknown field input method:%1").arg(input_method_str));
 		field.clear();
 		return field;
 	}

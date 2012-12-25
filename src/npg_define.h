@@ -12,7 +12,8 @@ const char K_PROTOCOL_ICMP[] = "ICMP";
 const char K_PROTOCOL_ARP[] = "ARP";
 const char K_PROTOCOL_RARP[] = "RARP";
 const char K_PROTOCOL_DNS[] = "DNS";
-const char K_PROTOCOL_IP[] = "IP";
+const char K_PROTOCOL_IPV4[] = "IPV4";
+const char K_PROTOCOL_IPV6[] = "IPV6";
 const char K_PROTOCOL_ETHERNET[] = "ETHERNET";
 
 #endif
