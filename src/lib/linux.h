@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <string.h>
 #include <string>
+#include <sys/time.h>
 
 #define npg_errno   errno
 

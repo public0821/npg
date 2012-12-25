@@ -5,6 +5,13 @@
 #include "lib/os.h"
 #include "qresource.h"
 
+
+QString FieldDefaultValue::SECOND = "second";
+QString FieldDefaultValue::PID = "pid";
+QString FieldDefaultValue::MILLISECOND = "millisecond";
+QString FieldDefaultValue::CHECKNUM = "checksum";
+QString FieldDefaultValue::SEQ = "seq";
+
 Field::Field(const QString& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)
 , m_length(0)
@@ -129,27 +136,13 @@ QString Field::text() const
 
 QString Field::defaultValue() const
 {
-	if (m_default_value == K_DEFAULT_VALUE_SECOND
-			|| m_default_value == K_DEFAULT_VALUE_PID
-			|| m_default_value == K_DEFAULT_VALUE_MILLISECOND
-			|| m_default_value == K_DEFAULT_VALUE_CHECKNUM
-			|| m_default_value == K_DEFAULT_VALUE_SEQ)
-	{
-		//time_t now = time(NULL);
-		//char buf[64];
-		//bzero(buf, sizeof(buf));
-		//snprintf(buf, sizeof(buf), "%ld", now);
-		//return buf;
-		return K_DEFAULT_VALUE_DEFAULT;
-	}
-	return m_default_value;
-
-}
-
-QString Field::defaultValueOriginal() const
-{
 	return m_default_value;
 }
+
+//QString Field::defaultValueOriginal() const
+//{
+//	return m_default_value;
+//}
 
 QString Field::tip() const
 {

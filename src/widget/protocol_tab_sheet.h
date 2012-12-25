@@ -26,7 +26,6 @@ private:
 	bool sendData();
 	bool preSendData();
 	bool postSendData();
-	QString convertDefaultValue(const QString& default_value);
 private:
 //	Ui::
     Ui::ProtocolWidgetClass ui;

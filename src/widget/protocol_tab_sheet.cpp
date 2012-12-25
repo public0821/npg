@@ -121,7 +121,7 @@ bool ProtocolTabSheet::preSendData()
 				QCheckBox* item_checkbox = (QCheckBox*) tree_widget->itemWidget(field_item, 2);
 				QString data;
 				if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Unchecked) {
-					data = convertDefaultValue(field.defaultValueOriginal());
+					data = FieldDefaultValue::instance().calcValue(field.defaultValue());
 				} else {
 					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*) tree_widget->itemWidget(field_item, 1);
 					data = item_widget->value();
@@ -170,26 +170,4 @@ bool ProtocolTabSheet::postSendData()
 bool ProtocolTabSheet::sendData()
 {
 	return dependProtocolWidget()->sendData(m_data.data(), m_data.length());
-	//QMessageBox::information(this, "tip", QString("%1").arg(protocol_builder.length()));
-}
-
-QString ProtocolTabSheet::convertDefaultValue(const QString& default_value) {
-	if (default_value == K_DEFAULT_VALUE_SECOND) {
-		struct timeval now;
-		gettimeofday(&now, NULL);
-		return QString("%1").arg(now.tv_sec);
-	} else if (default_value == K_DEFAULT_VALUE_PID) {
-		return QString("%1").arg(getpid());
-	} else if (default_value == K_DEFAULT_VALUE_MILLISECOND) {
-		struct timeval now;
-		gettimeofday(&now, NULL);
-		return QString("%1").arg(now.tv_usec);
-	} else if (default_value == K_DEFAULT_VALUE_CHECKNUM) {
-		return QString("%1").arg(0);
-	} else if (default_value == K_DEFAULT_VALUE_SEQ) {
-		return QString("%1").arg(++m_seq);
-	} else {
-		return QString("%1").arg(0);
-	}
-
 }

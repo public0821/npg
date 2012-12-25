@@ -22,6 +22,10 @@ ProtocolTreeItemWidget::ProtocolTreeItemWidget(QTreeWidgetItem *item, const Fiel
 			this->setEnabled(false);
 		}
 	}
+
+	if(field.defaultValue().length() > 0){
+		setText(field.defaultValue());
+	}
 }
 
 ProtocolTreeItemWidget::~ProtocolTreeItemWidget()
@@ -174,6 +178,6 @@ void ProtocolTreeItemWidget::onCheckBoxStateChange(int state) {
 		setText("");
 	} else {
 		this->setEnabled(false);
-		setText(K_DEFAULT_VALUE_DEFAULT);
+		setText(this->m_field.defaultValue());
 	}
 }
