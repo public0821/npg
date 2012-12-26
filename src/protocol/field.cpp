@@ -251,7 +251,10 @@ bool Field::isSubFieldsEmpty()const{
 
 int64_t Field::minValue() const
 {
-	int64_t min;
+	if(type() == E_FIELD_TYPE_BIT){
+		return INT64_MIN;
+	}
+	int64_t min = 0;
 
 	switch (length())
 	{
@@ -268,16 +271,20 @@ int64_t Field::minValue() const
 		min = INT32_MIN;
 		break;
 	case 8:
-		default:
+    default:
 		min = INT64_MIN;
 		break;
 	}
 	return min;
 }
 
-uint64_t Field::maxValue() const
+int64_t Field::maxValue() const
 {
-	uint64_t max;
+	if(type() == E_FIELD_TYPE_BIT){
+		return INT64_MAX;
+	}
+
+	uint64_t max = 0;
 
 	switch (length())
 	{
@@ -295,7 +302,7 @@ uint64_t Field::maxValue() const
 		break;
 	case 8:
 	default:
-		max = UINT64_MAX;
+		max = INT64_MAX;
 		break;
 	}
 

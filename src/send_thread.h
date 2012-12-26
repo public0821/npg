@@ -11,6 +11,7 @@
 #include <qthread.h>
 #include <qtimer.h>
 
+
 enum ESendType
 {
 	E_SEND_TYPE_SPEED = 1, E_SEND_TYPE_TOTAL
@@ -30,18 +31,13 @@ public:
 	}
 	void start(ESendType type, int count);
 
-	const QString& error() const
-	{
-		return m_error;
-	}
-	;
 //	bool isRunning() const
 //	{
 //		return m_running;
 //	}
 signals:
 //	void error(const QString&);
-	void counter(int, time_t);
+	void counter(int, int);
 private slots:
 	void onTimer();
 	void onSendFinish();
@@ -52,13 +48,12 @@ private:
 private:
 	TabSheet* m_parent;
 	volatile bool m_running;
-	QString m_error;
 
 	ESendType m_type;
 	int m_count;
 
 	int m_total_send;
-	time_t m_time_consuming;
+	int m_time_consuming;
 	QTimer m_timer;
 };
 #endif /* SENDTHREAD_H_ */

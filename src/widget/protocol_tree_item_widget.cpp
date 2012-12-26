@@ -45,7 +45,7 @@ QWidget* ProtocolTreeItemWidget::getFieldWidget(const Field& field) {
 		label->setAlignment(Qt::AlignCenter);
 		widget = label;
 	} else if (field.type() == E_FIELD_TYPE_INT || field.type() == E_FIELD_TYPE_BIT) {
-		widget = new NumberEdit(field);
+		widget = new NumberEdit(field.minValue(), field.maxValue(), this);
 	} else if (field.type() == E_FIELD_TYPE_STRING) {
 		QLineEdit* edit = new QLineEdit(field.defaultValue());
 		connect(edit, SIGNAL(textChanged ( const QString & )), this, SLOT(onTextChange()));
@@ -71,7 +71,7 @@ QWidget* ProtocolTreeItemWidget::getComboBoxWidget(const Field& field) {
 	QWidget* widget = NULL;
 
 	if (field.type() == E_FIELD_TYPE_INT || field.type() == E_FIELD_TYPE_BIT) {
-		widget = new NumberComboBox(field);
+		widget = new NumberComboBox(field.items(), this);
 	} else if (field.type() == E_FIELD_TYPE_STRING) {
 		QComboBox* combobox = new QComboBox();
 		addDataToComboBox(combobox, field);
@@ -111,7 +111,7 @@ QString ProtocolTreeItemWidget::value()
 	QLineEdit * line_edit;
 	QComboBox * combobox;
 	if ((number_box = dynamic_cast<NumberComboBox*>(m_child)) != NULL) {
-		return number_box->getIntValue();
+		return number_box->getIntStrValue();
 	} else if ((number_edit = dynamic_cast<NumberEdit*>(m_child)) != NULL) {
 		return number_edit->getIntValue();
 	} else if ((line_edit = dynamic_cast<QLineEdit*>(m_child)) != NULL) {

@@ -8,13 +8,17 @@
 
 #include <qstringlist.h>
 #include <qsettings.h>
-#include "npg_define.h"
+#include "config.h"
 #include <qmessagebox.h>
 #include "widget/converter_dialog.h"
 #include "widget/about_dialog.h"
 #include "logger.h"
 #include "qresource.h"
 #include "protocol/protocol_factory.h"
+
+
+const static char K_INTERNAL_PROTOCOL_UDP[] = "UDP";
+const static char K_INTERNAL_PROTOCOL_TCP[] = "TCP";
 
 Npg::Npg(QWidget *parent) :
 		QMainWindow(parent)
@@ -61,12 +65,9 @@ Npg::Npg(QWidget *parent) :
 	m_main_splitter = new QSplitter(Qt::Horizontal);
 	m_log_splitter = new QSplitter(Qt::Vertical);
 
-	QMap<QString, QString> name_icons;
-	name_icons.insert(K_PROTOCOL_UDP, ICON_PROTOCOL_DEFAULT);
-	name_icons.insert(K_PROTOCOL_TCP, ICON_PROTOCOL_DEFAULT);
-	//name_icons.insert(K_PROTOCOL_ICMP, ICON_PROTOCOL_DEFAULT);
-	//name_icons.insert(K_PROTOCOL_ARP, ICON_PROTOCOL_DEFAULT);
-	//name_icons.insert(K_PROTOCOL_DNS, ICON_PROTOCOL_DEFAULT);
+	QMap<QString, QString> internal_protocol;
+	internal_protocol.insert(K_INTERNAL_PROTOCOL_UDP, ICON_PROTOCOL_DEFAULT);
+	internal_protocol.insert(K_INTERNAL_PROTOCOL_TCP, ICON_PROTOCOL_DEFAULT);
 	m_logger = new QTextBrowser(this);
 	Logger::instance().bind(m_logger);
 
@@ -75,8 +76,8 @@ Npg::Npg(QWidget *parent) :
 		QMessageBox::information(this, tr("tip"), tr("load config failed"));
 	}
 
-	m_type_list = new MainListWidget(name_icons);
-	m_tab_widget = new MainTabWidget(name_icons);
+	m_type_list = new MainListWidget(internal_protocol);
+	m_tab_widget = new MainTabWidget(internal_protocol);
 
 	m_log_splitter->addWidget(m_tab_widget);
 	m_log_splitter->addWidget(m_logger);

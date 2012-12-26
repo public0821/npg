@@ -6,15 +6,15 @@
  */
 
 #include "main_tab_widget.h"
-#include "npg_define.h"
+#include "config.h"
 #include "data_tab_sheet.h"
 #include "base_protocol/tcp_widget.h"
 #include "protocol/protocol_factory.h"
 #include "protocol_tab_sheet.h"
 
-MainTabWidget::MainTabWidget(const QMap<QString, QString>& name_icons,  QWidget* parent)
-:QTabWidget(parent), m_name_icons(name_icons)
-{
+MainTabWidget::MainTabWidget(const QMap<QString, QString>& internal_protocol, QWidget* parent)
+:
+		QTabWidget(parent), m_internal_protocol(internal_protocol) {
 	setTabsClosable(true);
 	setMovable(true);
 
@@ -22,63 +22,33 @@ MainTabWidget::MainTabWidget(const QMap<QString, QString>& name_icons,  QWidget*
 			SLOT(onCloseTab (int)));
 }
 
-MainTabWidget::~MainTabWidget()
-{
+MainTabWidget::~MainTabWidget() {
 }
 
-void MainTabWidget::onCloseTab(int index)
-{
+void MainTabWidget::onCloseTab(int index) {
 	removeTab(index);
 	delete m_tabs[index];
 	m_tabs.remove(index);
 }
 
-int MainTabWidget::addTab(const QString &type)
-{
+int MainTabWidget::addTab(const QString &type) {
 	int index = -1;
 	TabSheet* sheet = NULL;
 
-	if (type == K_PROTOCOL_UDP)
-	{
-		sheet = new DataTabSheet(K_PROTOCOL_UDP, this);
-	}
-	else if (type == K_PROTOCOL_TCP)
-	{
-		sheet = new DataTabSheet(K_PROTOCOL_TCP, this);
-	}
-//	else if (type == K_PROTOCOL_ICMP)
-//	{
-//		sheet = new IcmpWidget(type, this);
-//	}
-	//else if (type == K_PROTOCOL_ARP)
-	//{
-	//	sheet = new ArpWidget(type, this);
-	//}
-	//else if (type == K_PROTOCOL_DNS)
-	//{
-	//	sheet = new DnsWidget(type, this);
-	//}
-	else
-	{
+	QMap<QString, QString>::const_iterator it = m_internal_protocol.find(type);
+	if (it != m_internal_protocol.end()) {
+		sheet = new DataTabSheet(type, this);
+		index = QTabWidget::addTab(sheet, QIcon(it.value()), it.key());
+	} else {
 		Protocol protocol = ProtocolFactory::instance().protocol(type);
-		if (!protocol.empty())
-		{
+		if (!protocol.empty()) {
 			sheet = new ProtocolTabSheet(protocol, this);
-			index = QTabWidget::addTab(sheet,
-				QIcon(protocol.icon()), type);
+			index = QTabWidget::addTab(sheet, QIcon(protocol.icon()), type);
 		}
-		
+
 	}
 
-	QMap<QString, QString>::const_iterator it = m_name_icons.find(type);
-	if (it != m_name_icons.end())
-	{
-		index = QTabWidget::addTab(sheet,
-			QIcon(it.value()), it.key());
-	}
-	
-	if (index != -1)
-	{
+	if (index != -1) {
 		m_tabs.push_back(sheet);
 		setCurrentIndex(index);
 	}

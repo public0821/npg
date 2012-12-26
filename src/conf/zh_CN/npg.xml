@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Npg>
     <Protocols>
-        <Protocol Name="UDP" Dependence="IPV4" DependenceParam="UDP">
+        <Protocol Name="UDP" Dependence="IP" DependenceParam="UDP">
             <Category Name="UDP">
                 <Field Name="src_port" Type="int" Length="2" Tip="源端口"/>
                 <Field Name="dst_port" Type="int" Length="2" Tip="目的端口"/>

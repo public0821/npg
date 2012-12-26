@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Protocols>
- 	<Protocol Name="ICMP_PING" Dependence="IPV4" DependenceParam="ICMP">
+ 	<Protocol Name="ICMP_PING" Dependence="IP" DependenceParam="ICMP">
             <Category Name="Header">
                 <Field Name="type" Type="int" InputMethod="select" Editable = "false" Length="1" Tip="type">
                     <Item Value="0" Text="ping response"/>

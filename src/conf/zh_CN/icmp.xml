@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Protocols>
-	<Protocol Name="ICMP" Dependence="IPV4" DependenceParam="ICMP">
+	<Protocol Name="ICMP" Dependence="IP" DependenceParam="ICMP">
             <Category Name="Header">
                 <Field Name="type" Type="int" InputMethod="lineedit" Length="1" Tip="type"/>
                 <Field Name="code" Type="int" InputMethod="lineedit" Length="1" Tip="code"/>

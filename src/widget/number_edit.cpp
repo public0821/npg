@@ -8,20 +8,19 @@
 #include "number_edit.h"
 #include <qvalidator.h>
 #include "logger.h"
-#include "number_validator.h"
 
-NumberEdit::NumberEdit(const Field& field, QWidget* parent) :
-		QLineEdit(parent), m_field(field) {
-	//}
-	//	edit->setValidator(new QIntValidator(this));
-	//			break;
-	//		case E_FIELD_TYPE_INT:
-	this->setValidator(new NumberValidator(this));
+NumberEdit::NumberEdit(int64_t bottom, int64_t top, QWidget* parent) :
+		QLineEdit(parent), m_validator(bottom, top, this) {
+	this->setValidator(&m_validator);
+}
+NumberEdit::NumberEdit(QWidget* parent) :
+		QLineEdit(parent), m_validator(this) {
+	this->setValidator(&m_validator);
 }
 
 NumberEdit::~NumberEdit() {
 }
 
 QString NumberEdit::getIntValue() {
-	return "";
+	return QString("%1").arg(m_validator.value(text()));
 }

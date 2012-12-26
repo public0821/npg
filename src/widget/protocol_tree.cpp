@@ -36,8 +36,7 @@ ProtocolTree::~ProtocolTree()
 
 }
 
-void ProtocolTree::setup(Protocol protocol)
-		{
+void ProtocolTree::setup(Protocol protocol) {
 	m_protocol = protocol;
 	setColumnCount(6);
 	QStringList head_list;
@@ -69,8 +68,7 @@ void ProtocolTree::setup(Protocol protocol)
 	std::vector<Category>::const_iterator it_category;
 	QTreeWidgetItem *preceding = NULL;
 	for (it_category = categorys.begin(); it_category != categorys.end();
-			++it_category)
-			{
+			++it_category) {
 		preceding = addCategoryItem(this, preceding, *it_category);
 	}
 
@@ -90,40 +88,32 @@ void ProtocolTree::adjust()
 	}
 }
 
-void ProtocolTree::onShowPopup(const QPoint &pos)
-		{
+void ProtocolTree::onShowPopup(const QPoint &pos) {
 	QTreeWidgetItem * item = itemAt(pos);
 
-	if (item != NULL)
-			{
+	if (item != NULL) {
 		EItemType item_type = (EItemType) item->data(ROLEDATA_FIELDTYPE, Qt::UserRole).toInt();
-		if (item_type == E_ITEM_TYPE_CATEGORY)
-				{
+		if (item_type == E_ITEM_TYPE_CATEGORY) {
 			QString name = item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 			Category category = m_protocol.category(name);
 
 			QMenu menu(this);
-			if (category.isMany())
-			{
+			if (category.isMany()) {
 				menu.addAction(m_add_action);
 				m_add_action->setEnabled(true);
 
 				menu.addAction(m_delete_action);
 				m_delete_action->setEnabled(true);
 			}
-			if (category.optionalFieldCount() > 0)
-					{
+			if (category.optionalFieldCount() > 0) {
 				menu.addAction(m_add_field_action);
 				m_add_field_action->setEnabled(true);
 			}
-			if (!menu.isEmpty())
-			{
+			if (!menu.isEmpty()) {
 				menu.exec(mapToGlobal(pos));
 			}
 
-		}
-		else if (item_type == E_ITEM_TYPE_FIELD)
-				{
+		} else if (item_type == E_ITEM_TYPE_FIELD) {
 			QString category_name =
 					item->parent()->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 			QString field_name =
@@ -131,21 +121,18 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 			Category category = m_protocol.category(category_name);
 			Field field = category.field(field_name);
 			QMenu menu(this);
-			if (field.isOptional())
-			{
+			if (field.isOptional()) {
 				menu.addAction(m_add_action);
 				m_add_action->setEnabled(true);
 
 				menu.addAction(m_delete_action);
 				m_delete_action->setEnabled(true);
 			}
-			if (category.optionalFieldCount() > 0)
-					{
+			if (category.optionalFieldCount() > 0) {
 				menu.addAction(m_add_field_action);
 				m_add_field_action->setEnabled(true);
 			}
-			if (!menu.isEmpty())
-			{
+			if (!menu.isEmpty()) {
 				menu.exec(mapToGlobal(pos));
 			}
 		}
@@ -155,20 +142,17 @@ void ProtocolTree::onShowPopup(const QPoint &pos)
 void ProtocolTree::onAdd()
 {
 	QTreeWidgetItem* item = getSelectedItem();
-	if (item == NULL)
-			{
+	if (item == NULL) {
 		return;
 	}
 
 	EItemType item_type = (EItemType) item->data(ROLEDATA_FIELDTYPE, Qt::UserRole).toInt();
-	if (item_type == E_ITEM_TYPE_CATEGORY)
-			{
+	if (item_type == E_ITEM_TYPE_CATEGORY) {
 		QString name = item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		Category category = m_protocol.category(name);
 		addCategoryItem(this, item, category);
 	}
-	else if (item_type == E_ITEM_TYPE_FIELD)
-			{
+	else if (item_type == E_ITEM_TYPE_FIELD) {
 		QString category_name =
 				item->parent()->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		QString field_name =
@@ -182,8 +166,7 @@ void ProtocolTree::onAdd()
 void ProtocolTree::onAddField()
 {
 	QTreeWidgetItem* item = getSelectedItem();
-	if (item == NULL)
-			{
+	if (item == NULL) {
 		return;
 	}
 
@@ -191,29 +174,23 @@ void ProtocolTree::onAddField()
 	Category category;
 	QTreeWidgetItem* category_item;
 	QTreeWidgetItem* preceding;
-	if (item_type == E_ITEM_TYPE_CATEGORY)
-			{
+	if (item_type == E_ITEM_TYPE_CATEGORY) {
 		QString name = item->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		category = m_protocol.category(name);
 		category_item = item;
 		preceding = item->child(item->childCount() - 1);
-	}
-	else if (item_type == E_ITEM_TYPE_FIELD)
-			{
+	} else if (item_type == E_ITEM_TYPE_FIELD) {
 		QString category_name =
 				item->parent()->data(ROLEDATA_FIELDNAME, Qt::UserRole).toString();
 		category = m_protocol.category(category_name);
 		category_item = item->parent();
 		preceding = item;
-	}
-	else
-	{
+	} else {
 		return;
 	}
 
 	std::vector<Field> optional_fields = category.optionalFields();
-	if (optional_fields.size() == 0)
-			{
+	if (optional_fields.size() == 0) {
 		return;
 	}
 	FieldSelectDialog field_select_dialog(optional_fields);
@@ -221,8 +198,7 @@ void ProtocolTree::onAddField()
 
 	std::vector<Field> selected_fields = field_select_dialog.selectedFields();
 	std::vector<Field>::const_iterator it;
-	for (it = selected_fields.begin(); it != selected_fields.end(); ++it)
-	{
+	for (it = selected_fields.begin(); it != selected_fields.end(); ++it) {
 		preceding = addFieldItem(category_item, preceding, *it);
 	}
 
@@ -233,21 +209,17 @@ void ProtocolTree::onAddField()
 void ProtocolTree::onDelete()
 {
 	QTreeWidgetItem* item = getSelectedItem();
-	if (item == NULL)
-			{
+	if (item == NULL) {
 		return;
 	}
 
 	EItemType item_type = (EItemType) item->data(ROLEDATA_FIELDTYPE, Qt::UserRole).toInt();
-	if (item_type == E_ITEM_TYPE_CATEGORY)
-			{
+	if (item_type == E_ITEM_TYPE_CATEGORY) {
 	}
-	else if (item_type == E_ITEM_TYPE_FIELD)
-			{
+	else if (item_type == E_ITEM_TYPE_FIELD) {
 		//
 	}
-	else
-	{
+	else {
 		return;
 	}
 
@@ -257,20 +229,18 @@ void ProtocolTree::onDelete()
 QTreeWidgetItem* ProtocolTree::getSelectedItem()
 {
 	QList<QTreeWidgetItem*> items = selectedItems();
-	if (items.count() == 0)
-			{
+	if (items.count() == 0) {
 		QMessageBox::information(this, tr("tip"), tr("please select a node"));
 		return NULL;
 	}
-	if (items.count() > 1)
-			{
-		QMessageBox::information(this, tr("tip"),
-				tr("only can select one node"));
+	if (items.count() > 1) {
+		QMessageBox::information(this, tr("tip"), tr("only can select one node"));
 		return NULL;
 	}
 
 	return items.at(0);
 }
+
 QTreeWidgetItem* ProtocolTree::addSingleFieldItem(QTreeWidgetItem* parent, QTreeWidgetItem * preceding, const Field& field) {
 	QTreeWidgetItem *item = new QTreeWidgetItem(parent, preceding);
 	item->setText(INDEX_FIELD_NAME, field.text());
@@ -301,6 +271,7 @@ QTreeWidgetItem* ProtocolTree::addSingleFieldItem(QTreeWidgetItem* parent, QTree
 
 	return item;
 }
+
 QTreeWidgetItem* ProtocolTree::addFieldItem(QTreeWidgetItem* parent,
 		QTreeWidgetItem * preceding, const Field& field) {
 //	QStringList text_list;

@@ -8,7 +8,7 @@
 #include <qmessagebox.h>
 #include <qsettings.h>
 #include <string>
-#include "npg_define.h"
+#include "config.h"
 #include "lib/socket/udp.h"
 #include "lib/socket/raw_udp.h"
 #include "../logger.h"

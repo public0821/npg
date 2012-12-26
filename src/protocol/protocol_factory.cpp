@@ -2,7 +2,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QLocale>
-#include "npg_define.h"
+#include "config.h"
 #include "../logger.h"
 #include <qdir.h>
 
@@ -192,13 +192,13 @@ void ProtocolFactory::loadProtocolElement(QDomElement* element, bool need_show) 
 	protocol.setDependenceParam(protocol_element.attribute("DependenceParam"));
 	QString dependence_str = protocol_element.attribute("Dependence");
 	protocol.setDependenceString(dependence_str);
-	if (dependence_str == K_PROTOCOL_UDP) {
+	if (dependence_str == K_BASE_PROTOCOL_UDP) {
 		protocol.setDependence(E_BASE_PROTOCOL_UDP);
-	} else if (dependence_str == K_PROTOCOL_TCP) {
+	} else if (dependence_str == K_BASE_PROTOCOL_TCP) {
 		protocol.setDependence(E_BASE_PROTOCOL_TCP);
-	} else if (dependence_str == K_PROTOCOL_IPV4) {
+	} else if (dependence_str == K_BASE_PROTOCOL_IP) {
 		protocol.setDependence(E_BASE_PROTOCOL_IP);
-	} else if (dependence_str == K_PROTOCOL_ETHERNET) {
+	} else if (dependence_str == K_BASE_PROTOCOL_ETHERNET) {
 		protocol.setDependence(E_BASE_PROTOCOL_ETHERNET);
 	} else if (dependence_str.length() == 0) {
 		protocol.setDependence(E_BASE_PROTOCOL_UNKNOWN);

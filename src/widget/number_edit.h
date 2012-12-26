@@ -10,10 +10,12 @@
 
 #include <qlineedit.h>
 #include "protocol/field.h"
+#include "number_validator.h"
 
 class NumberEdit: public QLineEdit {
 public:
-	NumberEdit(const Field& field, QWidget* parent=NULL);
+	NumberEdit(QWidget* parent=NULL);
+	NumberEdit(int64_t bottom, int64_t top, QWidget* parent=NULL);
 	virtual ~NumberEdit();
 public:
 	QString getIntValue();
@@ -22,7 +24,7 @@ public:
 //	int32_t getInt32Number();
 //	int64_t getInt64Number();
 private:
-	const Field& m_field;
+	NumberValidator m_validator;
 };
 
 #endif /* NUMBER_EDIT_H_ */

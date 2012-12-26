@@ -18,6 +18,10 @@ enum EBaseProtocol
 	,E_BASE_PROTOCOL_ETHERNET
 };
 
+const char K_BASE_PROTOCOL_UDP[] = "UDP";
+const char K_BASE_PROTOCOL_TCP[] = "TCP";
+const char K_BASE_PROTOCOL_IP[] = "IP";
+const char K_BASE_PROTOCOL_ETHERNET[] = "ETHERNET";
 
 class Protocol
 {

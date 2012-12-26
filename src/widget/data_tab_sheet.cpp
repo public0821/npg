@@ -8,7 +8,7 @@
 #include <qmessagebox.h>
 #include <qsettings.h>
 #include <string>
-#include "npg_define.h"
+#include "config.h"
 #include "lib/socket/udp.h"
 #include "lib/socket/raw_udp.h"
 #include "../logger.h"
@@ -87,4 +87,7 @@ void DataTabSheet::setupUi()
 	gridLayout->addLayout(send_layout, 2, 0, 1, 1);
 
 	TabSheet::setupUi(send_layout);
+
+	m_load_config_button->setVisible(false);
+	m_save_config_button->setVisible(false);
 } // setupUi

@@ -10,14 +10,20 @@
 
 #include <qcombobox.h>
 #include "protocol/field.h"
+#include "number_validator.h"
 
 class NumberComboBox: public QComboBox {
 public:
-	NumberComboBox(const Field& field, QWidget* parent=NULL);
+	NumberComboBox(QWidget* parent = NULL);
+	NumberComboBox(const std::vector<FieldItem>& field_items, QWidget* parent = NULL);
 	virtual ~NumberComboBox();
-	QString getIntValue();
+	QString getIntStrValue();
+    void addItems(const std::vector<FieldItem>& field_items);
+    void addItem(int value, QString text="", int base=10);
+    void addItem(QString value, QString text="" );
+
 private:
-	const Field& m_field;
+//	NumberValidator m_validator;
 };
 
 #endif /* NUMBER_COMBOBOX_H_ */

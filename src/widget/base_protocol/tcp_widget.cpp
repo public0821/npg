@@ -7,7 +7,7 @@
 #include "tcp_widget.h"
 #include <qsettings.h>
 #include <string>
-#include "npg_define.h"
+#include "config.h"
 #include "lib/socket/tcp.h"
 #include "tcp_response_dialog.h"
 #include "../logger.h"

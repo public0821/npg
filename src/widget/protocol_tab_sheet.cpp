@@ -7,7 +7,7 @@
 
 #include "protocol_tab_sheet.h"
 #include <qsettings.h>
-#include "npg_define.h"
+#include "config.h"
 #include "protocol_tree_item_widget.h"
 #include "protocol/protocol_builder.h"
 #include "base_protocol/udp_widget.h"
@@ -26,8 +26,6 @@ ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent)
 	setupUi(ui.advanced_layout);
 	ui.protocol_layout->addWidget(dependProtocolWidget());
 	//ui.group_box->setTitle(protocol.dependenceString().c_str());
-	connect(ui.load_config_button, SIGNAL(released()), ui.treeWidget, SLOT(onRestoreSettings()));
-	connect(ui.save_config_button, SIGNAL(released()), ui.treeWidget, SLOT(onSaveSettings()));
 }
 
 ProtocolTabSheet::~ProtocolTabSheet()

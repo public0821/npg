@@ -14,4 +14,10 @@
 		<Field Name="data" Type="string"  Tip="数据"/>
 	    </Category>
         </Protocol>
+	<Protocol Name="RAW_UDP" Dependence="IP" DependenceParam="UDP" >
+            <Category Ref="UDP"/>
+            <Category Name="data">
+		<Field Name="data" Type="string"  Tip="数据"/>
+	    </Category>
+        </Protocol>
 </Protocols>

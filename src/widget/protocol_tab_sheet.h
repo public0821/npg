@@ -20,6 +20,13 @@ class ProtocolTabSheet : public TabSheet
 public:
     ProtocolTabSheet(const Protocol& protocol, QWidget *parent = 0);
     ~ProtocolTabSheet();
+
+	void onSaveSettings(){
+		ui.treeWidget->onSaveSettings();
+	}
+	void onRestoreSettings(){
+		ui.treeWidget->onRestoreSettings();
+	}
 private:
 	void saveSettings();
 	void restoreSettings();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>407</width>
-    <height>96</height>
+    <width>413</width>
+    <height>122</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,7 +80,7 @@
        </widget>
       </item>
       <item row="1" column="5">
-       <widget class="QComboBox" name="protocol_box"/>
+       <widget class="NumberComboBox" name="protocol_box"/>
       </item>
       <item row="1" column="6">
        <spacer name="horizontalSpacer_2">
@@ -101,6 +101,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>NumberComboBox</class>
+   <extends>QComboBox</extends>
+   <header>widget/number_combobox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

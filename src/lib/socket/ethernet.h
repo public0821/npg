@@ -17,7 +17,7 @@ public:
 public:
 	bool sendto(const ifi_info& dev, const char* eth_to_mac, const char* eth_from_mac, uint16_t protocol, const char* data, size_t len);
 private:
-	void addChecknum(const char* data, size_t len);
+	void addChecksum(const char* data, size_t len);
 private:
 	int m_sockfd;
 };

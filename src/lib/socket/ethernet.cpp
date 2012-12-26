@@ -66,11 +66,11 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	}
 	ethhdr->h_proto = htons(protocol);
 
-	if(protocol == ETH_P_IP){
-		addChecknum(buffer+sizeof(struct ethhdr), len);
+	if(protocol == ETH_P_IP) {
+		addChecksum(buffer+sizeof(struct ethhdr), len);
 	}
 	int ret = ::sendto(m_sockfd, buffer, ethernet_size, 0, (struct sockaddr*) &remote,
-		sizeof(remote));
+			sizeof(remote));
 	if (-1 == ret)
 	{
 		LOG_ERROR(npg_errno);
@@ -83,19 +83,22 @@ bool Ethernet::sendto(const ifi_info& dev, const char* eth_to_mac, const char* e
 	return true;
 }
 
-void Ethernet::addChecknum( const char* data, size_t len){
-	if(len < sizeof(struct iphdr)){
+void Ethernet::addChecksum( const char* data, size_t len) {
+	if(len < sizeof(struct iphdr)) {
 		return;
 	}
 
 	struct iphdr* iphdr = (struct iphdr*)data;
-	if(iphdr->ihl*4 > len){
+	size_t iph_len = iphdr->ihl*4;
+	if(iph_len > len) {
 		return;
 	}
-	if(iphdr->check == 0){
+	if(iphdr->check == 0) {
 		iphdr->check = Ip::checksum(data, iphdr->ihl*4);
-		LOG_TRACE(QObject::tr("ip checksum :%1").arg(iphdr->check));
 	}
+
+	Ip::addChecksum(iphdr->protocol, data+iph_len, len-iph_len);
+//	Ip::addChecksum(iphdr->saddr, iphdr->daddr, iphdr->protocol, data+iph_len, len-iph_len);
 }
 
 #endif

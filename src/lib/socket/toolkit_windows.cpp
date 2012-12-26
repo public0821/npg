@@ -21,7 +21,7 @@ std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases)
 	/* get all device */
 	if (pcap_findalldevs(&alldevs, errbuf) == -1)
 	{
-		LOG_ERROR(QObject::tr( "Error in pcap_findalldevs: %s").arg( errbuf));
+		LOG_ERROR(QObject::tr( "Error in pcap_findalldevs: %1").arg( errbuf));
 		return ifi_infos;
 	}
 	if (alldevs == NULL)

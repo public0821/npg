@@ -68,7 +68,6 @@ HEADERS += widget/number_validator.h \
     widget/protocol_tree_item_widget.h \
     widget/protocol_tree.h \
     widget/tab_sheet.h \
-    npg_define.h \
     send_thread.h \
     npg.h
 FORMS += ui/ethernet_widget.ui \
