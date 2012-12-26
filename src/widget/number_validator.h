@@ -9,6 +9,7 @@
 #define NUMBER_VALIDATOR_H_
 
 #include <qvalidator.h>
+#include "lib/types.h"
 
 class NumberValidator: public QValidator {
 public:

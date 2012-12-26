@@ -120,7 +120,7 @@ std::vector<IpAddress> SocketToolkit::ipAddressInfo() {
 			} else if(local_address->addr->sa_family == AF_INET6) {
 				addr.set_version(IpAddress::IPV6);
 				struct sockaddr_in6 * sin = (struct sockaddr_in6 *)local_address->addr;
-				addr.set_ipv6(&sin->sin6_addr);
+				addr.set_ipv6((char*)&sin->sin6_addr);
 				ipaddrs.push_back(addr);
 			}
 		}
