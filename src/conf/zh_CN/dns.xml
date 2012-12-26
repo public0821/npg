@@ -4,7 +4,7 @@
             <Category Name="Header">
                 <Field Name="id" Type="int" InputMethod="lineedit" Length="2" DefaultValue="seq" Tip="16位的唯一ID，该ID在查询中设置，并在响应中返回，便于请求端判断该响应对应哪个请求."/>
                 <Field Name="op_flag" Type="int" InputMethod="none" Length="2"  Tip="操作标记">
-                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1"  Tip="标识请求(0)、响应(1)">
+                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1" Editable="false" Tip="标识请求(0)、响应(1)">
                         <Item Value="0" Text="请求"/>
                         <Item Value="1" Text="响应"/>
                     </SubField>
@@ -13,19 +13,19 @@
                         <Item Value="1" Text="反向查询"/>
                         <Item Value="2" Text="服务器状态查询"/>
                     </SubField>
-                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Tip="授权回答 - 该名字服务器是否授权于该服务器">
+                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Editable="false" Tip="授权回答 - 该名字服务器是否授权于该服务器">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>
-                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Tip="可截断 - 使用UDP时，它表示当应答的总长度超过512字节时，只返回前512字节">
+                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Editable="false" Tip="可截断 - 使用UDP时，它表示当应答的总长度超过512字节时，只返回前512字节">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>
-                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1"  Tip="期望递归 - 该值在查询中设置，并在响应中返回">
+                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1" Editable="false" Tip="期望递归 - 该值在查询中设置，并在响应中返回">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>
-                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1"  Tip="可用递归-如果DNS服务器支持递归查询，则在响应中将该比特设置为1">
+                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1" Editable="false" Tip="可用递归-如果DNS服务器支持递归查询，则在响应中将该比特设置为1">
                         <Item Value="0" Text="否"/>
                         <Item Value="1" Text="是"/>
                     </SubField>

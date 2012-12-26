@@ -137,8 +137,10 @@ void Logger::log(ELevel level, const char* source_file, int line, const QString&
 			tm_now.tm_sec);
 
 	size_t tmp_buf_len = strlen(log_head);
+	QString wrapper = QString("%1%2");
 	switch (level) {
 	case TRACE:
+		wrapper = QString("<font color=green>%1%2</font>");
 		strncat(log_head, " [TRACE] ", sizeof(log_head) - tmp_buf_len);
 		break;
 	case DEBUG:
@@ -152,6 +154,7 @@ void Logger::log(ELevel level, const char* source_file, int line, const QString&
 		break;
 	case ERROR1:
 		strncat(log_head, " [ERROR] ", sizeof(log_head) - tmp_buf_len);
+		wrapper = QString("<font color=red>%1%2</font>");
 		break;
 	default:
 		break;
@@ -164,6 +167,6 @@ void Logger::log(ELevel level, const char* source_file, int line, const QString&
 
 	//if(log_info.)
 	if (m_browser != NULL) {
-		m_browser->append(QString(log_head) + log_info);
+		m_browser->append(wrapper.arg(log_head).arg(log_info));
 	}
 }

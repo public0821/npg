@@ -14,15 +14,18 @@
 class Ip
 {
 public:
+	Ip(int protocol, const IpAddress& addr);
 	Ip(int protocol);
 	~Ip(void);
 public:
 	bool sendto(const IpAddress& ip, const char* data, uint16_t len);
 public:
 	static uint16_t checksum(const char* data, uint16_t len);
+	static void addChecksum(int protocol, const char* data, uint16_t len);
 private:
 	int m_sockfd;
 	int m_protocol;
+	IpAddress m_addr;
 };
 
 #endif

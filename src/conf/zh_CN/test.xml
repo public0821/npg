@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Protocols>
+  <Protocol Name="TEST" Dependence="IP" RFC="1035">
+            <Category Name="TEST">
+                <Field Name="id1" Type="int"  Length="1"  Tip="测试"/>
+<Field Name="id2" Type="int"  Length="2"  Tip="测试"/>
+<Field Name="id4" Type="int"  Length="4"  Tip="测试"/>
+<Field Name="id8" Type="int"  Length="8"  Tip="测试"/>
+            </Category>
+        </Protocol>
+</Protocols>

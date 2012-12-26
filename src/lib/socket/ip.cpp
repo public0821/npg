@@ -3,7 +3,12 @@
 #include "socket.h"
 #include <qobject.h>
 #include "socket_address.h"
+#include <qobject.h>
 
+Ip::Ip(int protocol, const IpAddress& addr) :
+		m_sockfd(-1), m_protocol(protocol), m_addr(addr) {
+
+}
 Ip::Ip(int protocol) :
 		m_sockfd(-1), m_protocol(protocol) {
 }
@@ -29,15 +34,19 @@ bool Ip::sendto(const IpAddress& ip, const char* data, uint16_t len) {
 			return false;
 		}
 
-		IpAddress addr;
-		addr.from_string("10.0.2.15");
-		SocketAddress sockaddr(addr, 0);
-		ret = bind(m_sockfd, sockaddr.addr(), sockaddr.addrlen());
-		if (ret == -1) {
-			LOG_ERROR(npg_errno);
-			LOG_ERROR(QObject::tr("bind faild "));
-			return false;
+		if (m_addr.isvalid()) {
+			SocketAddress sockaddr(m_addr, 0);
+			ret = bind(m_sockfd, sockaddr.addr(), sockaddr.addrlen());
+			if (ret == -1) {
+				LOG_ERROR(npg_errno);
+				LOG_ERROR(QObject::tr("bind faild "));
+				return false;
+			}
 		}
+	}
+
+	if (ip.version() == IpAddress::IPV4) {
+		addChecksum(m_protocol, data, len);
 	}
 
 	SocketAddress sockaddr(ip, 0);
@@ -50,11 +59,50 @@ bool Ip::sendto(const IpAddress& ip, const char* data, uint16_t len) {
 	return true;
 }
 
+void Ip::addChecksum(int protocol, const char* data, uint16_t len) {
+	switch (protocol) {
+	case IPPROTO_IGMP:
+		//TODO
+		break;
+	case IPPROTO_ICMP: {
+		if (len < sizeof(struct icmphdr)) {
+			return;
+		}
+		struct icmp *icmp = (struct icmp*) data;
+		if (icmp->icmp_cksum == 0) {
+			icmp->icmp_cksum = checksum(data, len);
+		}
+		break;
+	}
+	case IPPROTO_UDP: {
+		//TODO pseudo-header
+//		if (len < sizeof(struct udphdr)) {
+//			return;
+//		}
+//		struct udphdr *udp = (struct udphdr*) data;
+//		if (udp->check == 0) {
+//			udp->check = checksum(data, len);
+//		}
+		break;
+	}
+	case IPPROTO_TCP:
+		//TODO
+		break;
+	default:
+		break;
+	}
+
+//	if(protocol == ip->ip_p){
+//
+//	}
+//	const struct ip* ip = data;
+}
+
 uint16_t Ip::checksum(const char* data, uint16_t len) {
 	/* Compute Internet Checksum for "count" bytes
 	 * beginning at location "addr".
 	 */
-	const unsigned char * addr = (const unsigned char *)data;
+	const unsigned char * addr = (const unsigned char *) data;
 	int count = len;
 	uint32_t sum = 0;
 

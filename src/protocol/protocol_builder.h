@@ -18,7 +18,7 @@ public:
 public:
 	bool append(EFiledType field_type, uint16_t length, const QString& value);
 	bool append(const char* buf, uint16_t length);
-	bool set(uint32_t pos, EFiledType field_type, uint16_t length, const QString& value);
+
 	char* data()const;
 	uint32_t length()const;
 //private:
@@ -29,6 +29,7 @@ public:
 private:
 	uint32_t reallocBuffer(EFiledType field_type, uint16_t length, const QString& value);
 	uint32_t reallocBuffer(uint32_t new_length);
+	bool set(uint32_t pos, EFiledType field_type, uint16_t length, const QString& value);
 private:
 	char* m_buffer;
 	uint32_t m_protocol_len;

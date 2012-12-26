@@ -15,7 +15,7 @@ class MainListWidget: public QListWidget
 	Q_OBJECT
 
 public:
-	MainListWidget(const QMap<QString, QString>& name_icons,  QWidget* parent = NULL);
+	MainListWidget(const QMap<QString, QString>& internal_protocol,  QWidget* parent = NULL);
 	~MainListWidget();
 };
 

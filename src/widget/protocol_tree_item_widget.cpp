@@ -3,23 +3,28 @@
 #include <qtextedit.h>
 #include <qlabel.h>
 #include <QComboBox>
+#include "number_combobox.h"
+#include "number_edit.h"
+#include "logger.h"
 
 ProtocolTreeItemWidget::ProtocolTreeItemWidget(QTreeWidgetItem *item, const Field& field, QWidget *parent)
-	:QWidget(parent), m_field(field), m_item(item)
+:
+		QWidget(parent), m_field(field), m_item(item)
 {
 	ui.setupUi(this);
 	m_child = getFieldWidget(m_field);
 	ui.layout->addWidget(m_child, 0, 0);
-	if (!field.editable())
-	{
-		if (field.inputMethod() == E_FIELD_INPUT_METHOD_SELECT)
-		{
-			((QComboBox*)m_child)->setEditable(false);
-		}
-		else
-		{
+	if (!field.editable()) {
+		QComboBox* widget = dynamic_cast<QComboBox*>(m_child);
+		if (widget != NULL) {
+			widget->setEditable(false);
+		} else {
 			this->setEnabled(false);
 		}
+	}
+
+	if(field.defaultValue().length() > 0){
+		setText(field.defaultValue());
 	}
 }
 
@@ -28,65 +33,60 @@ ProtocolTreeItemWidget::~ProtocolTreeItemWidget()
 
 }
 
-QWidget* ProtocolTreeItemWidget::getFieldWidget(const Field& field)
-{
+QWidget* ProtocolTreeItemWidget::getFieldWidget(const Field& field) {
+	if (!field.isItemsEmpty()) {
+		return getComboBoxWidget(field);
+	}
+
 	QWidget* widget = NULL;
 
-	if (field.inputMethod() == E_FIELD_INPUT_METHOD_LINEEDIT)
-	{
+	if (!field.isSubFieldsEmpty()) {
+		QLabel* label = new QLabel(field.defaultValue());
+		label->setAlignment(Qt::AlignCenter);
+		widget = label;
+	} else if (field.type() == E_FIELD_TYPE_INT || field.type() == E_FIELD_TYPE_BIT) {
+		widget = new NumberEdit(field.minValue(), field.maxValue(), this);
+	} else if (field.type() == E_FIELD_TYPE_STRING) {
 		QLineEdit* edit = new QLineEdit(field.defaultValue());
-		switch (field.type())
-		{
-			
-		case E_FIELD_TYPE_BIT://No precise limits, the excess part will be truncated
-			edit->setValidator(new QIntValidator(this));	
-			break;
-		case E_FIELD_TYPE_INT:
-			edit->setValidator(new QIntValidator(field.minValue(), field.maxValue(), this));	
-			break;
-		case E_FIELD_TYPE_IP:
-			edit->setInputMask("000.000.000.000");
-			break;
-		case E_FIELD_TYPE_MAC:
-			//edit->setInputMask("NN:NN:NN:NN:NN:NN");
-			break;
-		default:
-			break;
-		}
+		connect(edit, SIGNAL(textChanged ( const QString & )), this, SLOT(onTextChange()));
 		widget = edit;
-		if (field.type() == E_FIELD_TYPE_STRING)
-		{
-			connect(edit, SIGNAL(textChanged ( const QString &  )), this, SLOT(onTextChange()));
-		}	
-	}
-	else if (field.inputMethod() == E_FIELD_INPUT_METHOD_TEXTEDIT)
-	{
-		QTextEdit* edit = new QTextEdit(field.defaultValue());
+	} else if (field.type() == E_FIELD_TYPE_MAC) {
+		QLineEdit* edit = new QLineEdit(field.defaultValue());
 		widget = edit;
-		if (field.type() == E_FIELD_TYPE_STRING)
-		{
-			connect(edit, SIGNAL(textChanged ()), this, SLOT(onTextChange()));
-		}
+	} else if (field.type() == E_FIELD_TYPE_IP) {
+		QLineEdit* edit = new QLineEdit(field.defaultValue());
+		edit->setInputMask("000.000.000.000");
+		widget = edit;
+	} else {
+		QLabel* label = new QLabel(field.defaultValue());
+		label->setAlignment(Qt::AlignCenter);
+		widget = label;
+		LOG_ERROR(tr("invaild field type: %1").arg(field.type()));
 	}
-	else if(field.inputMethod() == E_FIELD_INPUT_METHOD_SELECT) 
-	{
-		QComboBox* combo_box = new QComboBox(this);
-		const std::vector<FieldItem>& field_items = field.items();
-		std::vector<FieldItem>::const_iterator it;
-		for (it = field_items.begin(); it != field_items.end(); ++it)
-		{
-			QString text = it->text();
-			if (field.type() != E_FIELD_TYPE_STRING)
-			{
-				text = QString("%1 (%2)").arg(it->text()).arg(it->value());
-			}
-			combo_box->addItem(text, QVariant(it->value()));
-		}
-		combo_box->setEditable(true);
-		widget = combo_box;
-	}
-	else
-	{
+
+	return widget;
+}
+
+QWidget* ProtocolTreeItemWidget::getComboBoxWidget(const Field& field) {
+	QWidget* widget = NULL;
+
+	if (field.type() == E_FIELD_TYPE_INT || field.type() == E_FIELD_TYPE_BIT) {
+		widget = new NumberComboBox(field.items(), this);
+	} else if (field.type() == E_FIELD_TYPE_STRING) {
+		QComboBox* combobox = new QComboBox();
+		addDataToComboBox(combobox, field);
+		connect(combobox, SIGNAL(textChanged ( const QString & )), this, SLOT(onTextChange()));
+		widget = combobox;
+	} else if (field.type() == E_FIELD_TYPE_MAC) {
+		QComboBox* combobox = new QComboBox();
+		addDataToComboBox(combobox, field);
+		widget = combobox;
+	} else if (field.type() == E_FIELD_TYPE_IP) {
+		QComboBox* combobox = new QComboBox();
+//		combobox->setInputMask("000.000.000.000");
+		addDataToComboBox(combobox, field);
+		widget = combobox;
+	} else {
 		QLabel* label = new QLabel(field.defaultValue());
 		label->setAlignment(Qt::AlignCenter);
 		widget = label;
@@ -95,119 +95,89 @@ QWidget* ProtocolTreeItemWidget::getFieldWidget(const Field& field)
 	return widget;
 }
 
+void ProtocolTreeItemWidget::addDataToComboBox(QComboBox* combobox, const Field& field) {
+	const std::vector<FieldItem>& field_items = field.items();
+	std::vector<FieldItem>::const_iterator it;
+	for (it = field_items.begin(); it != field_items.end(); ++it) {
+		combobox->addItem(it->value());
+	}
+	combobox->setEditable(true);
+}
+
 QString ProtocolTreeItemWidget::value()
 {
-	QString value;
-
-	switch (m_field.inputMethod())
-	{
-	case E_FIELD_INPUT_METHOD_LINEEDIT:
-		value = ((QLineEdit*)m_child)->text();
-		break;
-	case E_FIELD_INPUT_METHOD_TEXTEDIT:
-		value = ((QTextEdit*)m_child)->toPlainText();
-		break;
-	case E_FIELD_INPUT_METHOD_SELECT:
-		{
-			QComboBox* child = (QComboBox*)m_child;
-			int index = child->findText(child->currentText());
-			if (index == -1)
-			{
-				value = child->currentText();
-			}
-			else
-			{
-				value = child->itemData(index).toString();
-			}
-		}
-		break;
-	default:
-		value = ((QLabel*)m_child)->text();
-		break;
+	NumberComboBox * number_box;
+	NumberEdit * number_edit;
+	QLineEdit * line_edit;
+	QComboBox * combobox;
+	if ((number_box = dynamic_cast<NumberComboBox*>(m_child)) != NULL) {
+		return number_box->getIntStrValue();
+	} else if ((number_edit = dynamic_cast<NumberEdit*>(m_child)) != NULL) {
+		return number_edit->getIntValue();
+	} else if ((line_edit = dynamic_cast<QLineEdit*>(m_child)) != NULL) {
+		return line_edit->text();
+	} else if ((combobox = dynamic_cast<QComboBox*>(m_child)) != NULL) {
+		return combobox->currentText();
+	} else {
+		return ((QLabel*) m_child)->text();
 	}
-
-	return value;
 }
 
 QString ProtocolTreeItemWidget::text()
 {
-	QString value;
-
-	switch (m_field.inputMethod())
-	{
-	case E_FIELD_INPUT_METHOD_SELECT:
-		value = ((QComboBox*)m_child)->currentText();
-		break;
-	default:
-		value = this->value();
-		break;
+	QLineEdit * line_edit;
+	QComboBox * combobox;
+	if ((line_edit = dynamic_cast<QLineEdit*>(m_child)) != NULL) {
+		return line_edit->text();
+	} else if ((combobox = dynamic_cast<QComboBox*>(m_child)) != NULL) {
+		return combobox->currentText();
+	} else {
+		return ((QLabel*) m_child)->text();
 	}
 
-	return value;
 }
 
-void ProtocolTreeItemWidget::setText(const QString& value)
-{
-	switch (m_field.inputMethod())
-	{
-	case E_FIELD_INPUT_METHOD_LINEEDIT:
-		((QLineEdit*)m_child)->setText(value);
-		break;
-	case E_FIELD_INPUT_METHOD_SELECT:
-		{
-			QComboBox* child = (QComboBox*)m_child;
-			if (m_field.editable())
-			{
-				child->setEditText(value);
-			}
-			else
-			{
-				int index = child->findText(value);
-				if (index != -1)
-				{
-					child->setCurrentIndex(index);
-				}	
+void ProtocolTreeItemWidget::setText(const QString& value) {
+	QLineEdit * line_edit;
+	QComboBox * combobox;
+	if ((line_edit = dynamic_cast<QLineEdit*>(m_child)) != NULL) {
+		line_edit->setText(value);
+	} else if ((combobox = dynamic_cast<QComboBox*>(m_child)) != NULL) {
+		if (m_field.editable()) {
+			combobox->setEditText(value);
+		} else {
+			int index = combobox->findText(value);
+			if (index != -1) {
+				combobox->setCurrentIndex(index);
 			}
 		}
-		break;
-	case E_FIELD_INPUT_METHOD_TEXTEDIT:
-		((QTextEdit*)m_child)->setText(value);
-		break;
-	default:
-		((QLabel*)m_child)->setText(value);
-		break;
+	} else {
+		((QLabel*) m_child)->setText(value);
 	}
 }
 
 void ProtocolTreeItemWidget::onTextChange()
 {
 	QTextEdit* text_edit = dynamic_cast<QTextEdit*>(m_child);
-	if (text_edit != NULL)
-	{
+	if (text_edit != NULL) {
 		emit textChange(m_item, text_edit->toPlainText().length());
 		return;
 	}
 
 	QLineEdit* line_edit = dynamic_cast<QLineEdit*>(m_child);
-	if (line_edit != NULL)
-	{
+	if (line_edit != NULL) {
 		emit textChange(m_item, line_edit->text().length());
 		return;
 	}
-	
+
 }
 
-
-void ProtocolTreeItemWidget::onCheckBoxStateChange(int state)
-{
-	if (state == Qt::Checked)
-	{
+void ProtocolTreeItemWidget::onCheckBoxStateChange(int state) {
+	if (state == Qt::Checked) {
 		this->setEnabled(true);
 		setText("");
-	}
-	else
-	{
+	} else {
 		this->setEnabled(false);
-		setText(K_DEFAULT_VALUE_DEFAULT);
+		setText(this->m_field.defaultValue());
 	}
 }

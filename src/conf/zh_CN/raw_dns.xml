@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Protocols>
-	<Protocol Name="RAW_DNS" Dependence="ETHERNET" DependenceParam="IP" RFC="1035">
-		<Category Ref="IP"/>
+	<Protocol Name="RAW_DNS_IPV4" Dependence="ETHERNET" DependenceParam="IPV4" RFC="1035">
+	    <Category Ref="IPV4"/>
+            <Category Ref="UDP"/>
+            <Category Ref="DNS"/>
+        </Protocol>
+	<Protocol Name="RAW_DNS_IPV6" Dependence="ETHERNET" DependenceParam="IPV6" RFC="1035">
+	    <Category Ref="IPV6"/>
             <Category Ref="UDP"/>
             <Category Ref="DNS"/>
         </Protocol>

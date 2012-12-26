@@ -20,11 +20,9 @@ SendThread::~SendThread()
 {
 }
 
-void SendThread::start(ESendType type, int count)
-{
+void SendThread::start(ESendType type, int count) {
 	m_type = type;
 	m_count = count;
-	m_error.clear();
 	m_running = true;
 	m_timer.start(1000); //1 second
 	QThread::start();
@@ -35,15 +33,13 @@ void SendThread::run()
 	m_total_send = 0;
 	m_time_consuming = 0;
 
-	m_error = m_parent->preSendData();
-	if (!m_error.isEmpty())
-	{
+	bool ret = m_parent->preSendData();
+	if (!ret) {
 		m_running = false;
 		return;
 	}
 
-	switch (m_type)
-	{
+	switch (m_type) {
 	case E_SEND_TYPE_TOTAL:
 		sendTotal(m_count);
 		break;
@@ -59,49 +55,39 @@ void SendThread::run()
 
 	m_running = false;
 
-	m_error = m_parent->postSendData();
+	m_parent->postSendData();
 }
 
-void SendThread::sendTotal(int count)
-{
-	for (m_total_send = 0; m_total_send < count; m_total_send++)
-	{
-		if (!m_running)
-		{
+void SendThread::sendTotal(int count) {
+	for (m_total_send = 0; m_total_send < count; m_total_send++) {
+		if (!m_running) {
 			break;
 		}
-		m_error = m_parent->sendData();
-		if (!m_error.isEmpty())
-		{
+		bool ret = m_parent->sendData();
+		if (!ret) {
 			break;
 		}
 	}
 
 }
 
-void SendThread::sendPerSeconds(int count)
-{
+void SendThread::sendPerSeconds(int count) {
 	QTime time;
-	while (true)
-	{
+	while (true) {
 		time.start();
-		for (int i = 0; i < count; i++)
-		{
-			if (!m_running)
-			{
+		for (int i = 0; i < count; i++) {
+			if (!m_running) {
 				return;
 			}
-			m_error = m_parent->sendData();
+			bool ret = m_parent->sendData();
 			m_total_send++;
-			if (!m_error.isEmpty())
-			{
+			if (!ret) {
 				break;
 			}
 			int time_elapsed = time.elapsed();
 			const int MILLISECOND_SECOND = 1000;
-			int more_time = (double) MILLISECOND_SECOND / count * (i+1) - time_elapsed;
-			if (more_time > 0)
-			{
+			int more_time = (double) MILLISECOND_SECOND / count * (i + 1) - time_elapsed;
+			if (more_time > 0)					{
 				msleep(more_time);
 			}
 		}

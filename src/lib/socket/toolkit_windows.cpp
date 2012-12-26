@@ -21,7 +21,7 @@ std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases)
 	/* get all device */
 	if (pcap_findalldevs(&alldevs, errbuf) == -1)
 	{
-		LOG_ERROR(QObject::tr( "Error in pcap_findalldevs: %s").arg( errbuf));
+		LOG_ERROR(QObject::tr( "Error in pcap_findalldevs: %1").arg( errbuf));
 		return ifi_infos;
 	}
 	if (alldevs == NULL)
@@ -90,10 +90,44 @@ int SocketToolkit::macAddress(const char* ip, char* mac)
 	return -1;
 }
 
-std::vector<IpAddress> SocketToolkit::ipAddressInfo()
-{
+std::vector<IpAddress> SocketToolkit::ipAddressInfo() {
 	std::vector<IpAddress> ipaddrs;
-	
+
+	char errbuf[PCAP_ERRBUF_SIZE];
+	pcap_if_t *alldevs = NULL;
+
+	/* get all device */
+	if (pcap_findalldevs(&alldevs, errbuf) == -1) {
+		LOG_ERROR(QObject::tr( "Error in pcap_findalldevs: %1").arg( errbuf));
+		return ipaddrs;
+	}
+	if (alldevs == NULL) {
+		LOG_ERROR("No interfaces found! Make sure WinPcap is installed.");
+		return ipaddrs;
+	}
+
+	pcap_if_t *device = NULL;
+	for (device = alldevs; device; device = device->next) {
+		IpAddress addr;
+		pcap_addr_t *local_address;
+		//get ip address
+		for (local_address = device->addresses; local_address != NULL; local_address = local_address->next) {
+			if (local_address->addr->sa_family == AF_INET) {
+				addr.set_version(IpAddress::IPV4);
+				struct sockaddr_in * sin = (struct sockaddr_in *)local_address->addr;
+				addr.set_ipv4(sin->sin_addr.s_addr);
+				ipaddrs.push_back(addr);
+			} else if(local_address->addr->sa_family == AF_INET6) {
+				addr.set_version(IpAddress::IPV6);
+				struct sockaddr_in6 * sin = (struct sockaddr_in6 *)local_address->addr;
+				addr.set_ipv6(&sin->sin6_addr);
+				ipaddrs.push_back(addr);
+			}
+		}
+	}
+
+	pcap_freealldevs(alldevs);
+
 	return ipaddrs;
 }
 

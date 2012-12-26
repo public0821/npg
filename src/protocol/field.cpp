@@ -5,9 +5,15 @@
 #include "lib/os.h"
 #include "../qresource.h"
 
+
+QString FieldDefaultValue::SECOND = "second";
+QString FieldDefaultValue::PID = "pid";
+QString FieldDefaultValue::MILLISECOND = "millisecond";
+QString FieldDefaultValue::CHECKNUM = "checksum";
+QString FieldDefaultValue::SEQ = "seq";
+
 Field::Field(const QString& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)
-, m_input_method(E_FIELD_INPUT_METHOD_NONE)
 , m_length(0)
 , m_empty(empty)
 , m_optional(false)
@@ -44,11 +50,6 @@ void Field::setOptional(bool optional)
 void Field::setTypeString(QString type_string)
 {
 	m_type_string = type_string;
-}
-
-void Field::setInputMethod(EFiledInputMethod input_method)
-{
-	m_input_method = input_method;
 }
 
 void Field::setLength(size_t length)
@@ -111,11 +112,6 @@ EFiledType Field::type() const
 	return m_type;
 }
 
-EFiledInputMethod Field::inputMethod() const
-{
-	return m_input_method;
-}
-
 size_t Field::length() const
 {
 	if (m_length == 0 && type() == E_FIELD_TYPE_IP)
@@ -140,84 +136,17 @@ QString Field::text() const
 
 QString Field::defaultValue() const
 {
-	if (m_default_value == K_DEFAULT_VALUE_SECOND
-			|| m_default_value == K_DEFAULT_VALUE_PID
-			|| m_default_value == K_DEFAULT_VALUE_MILLISECOND
-			|| m_default_value == K_DEFAULT_VALUE_CHECKNUM
-			|| m_default_value == K_DEFAULT_VALUE_SEQ)
-	{
-		//time_t now = time(NULL);
-		//char buf[64];
-		//bzero(buf, sizeof(buf));
-		//snprintf(buf, sizeof(buf), "%ld", now);
-		//return buf;
-		return K_DEFAULT_VALUE_DEFAULT;
-	}
-	return m_default_value;
-
-}
-
-QString Field::defaultValueOriginal() const
-{
 	return m_default_value;
 }
+
+//QString Field::defaultValueOriginal() const
+//{
+//	return m_default_value;
+//}
 
 QString Field::tip() const
 {
 	return m_tip;
-}
-
-int64_t Field::minValue() const
-{
-	int64_t min;
-
-	switch (length())
-	{
-	case 0:
-		min = 0;
-		break;
-	case 1:
-		min = INT8_MIN;
-		break;
-	case 2:
-		min = INT16_MIN;
-		break;
-	case 4:
-		min = INT32_MIN;
-		break;
-	case 8:
-	default:
-		min = INT64_MIN;
-		break;
-	}
-	return min;
-}
-
-uint64_t Field::maxValue() const
-{
-	uint64_t max;
-
-	switch (length())
-	{
-	case 0:
-		max = 0;
-		break;
-	case 1:
-		max = UINT8_MAX;
-		break;
-	case 2:
-		max = UINT16_MAX;
-		break;
-	case 4:
-		max = UINT32_MAX;
-		break;
-	case 8:
-	default:
-		max = UINT64_MAX;
-		break;
-	}
-
-	return max;
 }
 
 QString Field::icon() const
@@ -310,3 +239,74 @@ QString Field::prefix() const
 void Field::clear(){
 	m_empty = true;
 }
+
+bool Field::isItemsEmpty()const{
+	return m_items.size() == 0;
+}
+
+bool Field::isSubFieldsEmpty()const{
+	return m_sub_fields.size() == 0;
+}
+
+
+int64_t Field::minValue() const
+{
+	if(type() == E_FIELD_TYPE_BIT){
+		return INT64_MIN;
+	}
+	int64_t min = 0;
+
+	switch (length())
+	{
+	case 0:
+		min = 0;
+		break;
+	case 1:
+		min = INT8_MIN;
+		break;
+	case 2:
+		min = INT16_MIN;
+		break;
+	case 4:
+		min = INT32_MIN;
+		break;
+	case 8:
+    default:
+		min = INT64_MIN;
+		break;
+	}
+	return min;
+}
+
+int64_t Field::maxValue() const
+{
+	if(type() == E_FIELD_TYPE_BIT){
+		return INT64_MAX;
+	}
+
+	uint64_t max = 0;
+
+	switch (length())
+	{
+	case 0:
+		max = 0;
+		break;
+	case 1:
+		max = UINT8_MAX;
+		break;
+	case 2:
+		max = UINT16_MAX;
+		break;
+	case 4:
+		max = UINT32_MAX;
+		break;
+	case 8:
+	default:
+		max = INT64_MAX;
+		break;
+	}
+
+	return max;
+}
+
+

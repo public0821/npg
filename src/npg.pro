@@ -3,10 +3,8 @@ TARGET = npg
 QT += core \
     gui \
     xml
-    
 CONFIG += qt \
     debug
-    
 RESOURCES += npg.qrc
 TRANSLATIONS = npg_zh_CN.ts
 UI_DIR = ./ui
@@ -15,7 +13,10 @@ OBJECTS_DIR = ./tmp
 unix:QMAKE_CXXFLAGS += -std=c++0x
 
 # Input
-HEADERS += qresource.h \
+HEADERS += widget/number_validator.h \
+    widget/number_combobox.h \
+    widget/number_edit.h \
+    qresource.h \
     lib/socket/socket_address.h \
     lib/socket/toolkit.h \
     widget/ip_combobox.h \
@@ -67,7 +68,6 @@ HEADERS += qresource.h \
     widget/protocol_tree_item_widget.h \
     widget/protocol_tree.h \
     widget/tab_sheet.h \
-    npg_define.h \
     send_thread.h \
     npg.h
 FORMS += ui/ethernet_widget.ui \
@@ -81,7 +81,10 @@ FORMS += ui/ethernet_widget.ui \
     ui/udp_widget.ui \
     ui/converter_dialog.ui \
     ui/about_dialog.ui
-SOURCES += lib/socket/socket_address.cpp \
+SOURCES += widget/number_validator.cpp \
+    widget/number_combobox.cpp \
+    widget/number_edit.cpp \
+    lib/socket/socket_address.cpp \
     lib/socket/toolkit.cpp \
     lib/socket/toolkit_linux.cpp \
     lib/socket/toolkit_windows.cpp \

@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Protocols>
-	<Protocol Name="RAW_UDP" Dependence="ETHERNET" DependenceParam="IP" RFC="1035">
-		<Category Ref="IP"/>
+	<Protocol Name="RAW_UDP_IPV4" Dependence="ETHERNET" DependenceParam="IPV4" RFC="1035">
+	    <Category Ref="IPV4"/>
             <Category Ref="UDP"/>
             <Category Name="data">
-		<Field Name="data" Type="string" InputMethod="lineedit" Tip="数据"/>
+		<Field Name="data" Type="string"  Tip="数据"/>
+	    </Category>
+        </Protocol>
+	<Protocol Name="RAW_UDP_IPV6" Dependence="ETHERNET" DependenceParam="IPV6" RFC="1035">
+	    <Category Ref="IPV6"/>
+            <Category Ref="UDP"/>
+            <Category Name="data">
+		<Field Name="data" Type="string"  Tip="数据"/>
+	    </Category>
+        </Protocol>
+	<Protocol Name="RAW_UDP" Dependence="IP" DependenceParam="UDP" >
+            <Category Ref="UDP"/>
+            <Category Name="data">
+		<Field Name="data" Type="string"  Tip="数据"/>
 	    </Category>
         </Protocol>
 </Protocols>

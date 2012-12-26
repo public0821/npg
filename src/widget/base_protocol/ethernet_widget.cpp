@@ -2,10 +2,15 @@
 #include "../logger.h"
 #include "lib/socket/toolkit.h"
 #include <qsettings.h>
-#include "npg_define.h"
+#include "config.h"
 #include "lib/socket/ethernet.h"
 
 Q_DECLARE_METATYPE(ifi_info)
+
+const static char K_ETHERNET_IPV4[] = "IPV4";
+const static char K_ETHERNET_IPV6[] = "IPV6";
+const static char K_ETHERNET_ARP[] = "ARP";
+const static char K_ETHERNET_RARP[] = "RARP";
 
 EthernetWidget::EthernetWidget(const QString& protocol_name, const QString& ether_protocol_name, QWidget *parent) :
 		BaseProtocolWidget(protocol_name, parent), m_ethernet(NULL) {
@@ -26,12 +31,11 @@ bool EthernetWidget::preSendData() {
 		return false;
 	}
 	m_ethernet = new Ethernet();
-	int index = ui.protocol_box->currentIndex();
-	m_protocol = ui.protocol_box->itemData(index).toInt();
+	m_protocol = ui.protocol_box->getIntStrValue().toInt();
 	m_dstmac = ui.to_mac_edit->text().toLocal8Bit().constData();
 	m_srcmac = ui.from_mac_edit->text().toLocal8Bit().constData();
 
-	index = ui.interface_box->currentIndex();
+	int index = ui.interface_box->currentIndex();
 	m_dev = ui.interface_box->itemData(index).value<ifi_info>();
 	return true;
 }
@@ -76,22 +80,21 @@ void EthernetWidget::restoreSettings() {
 
 void EthernetWidget::setupEtherProtocol(const QString& ether_protocol_name) {
 	std::map<QString, int> built_in_protocol;
-	built_in_protocol.insert(std::make_pair(K_PROTOCOL_IP, (int) ETH_P_IP));
-	built_in_protocol.insert(std::make_pair(K_PROTOCOL_ARP, (int) ETH_P_ARP));
-	built_in_protocol.insert(std::make_pair(K_PROTOCOL_RARP, (int) ETH_P_RARP));
+	built_in_protocol.insert(std::make_pair(K_ETHERNET_IPV4, (int) ETH_P_IP));
+	built_in_protocol.insert(std::make_pair(K_ETHERNET_IPV6, (int) ETH_P_IPV6));
+	built_in_protocol.insert(std::make_pair(K_ETHERNET_ARP, (int) ETH_P_ARP));
+	built_in_protocol.insert(std::make_pair(K_ETHERNET_RARP, (int) ETH_P_RARP));
 
 	std::map<QString, int>::const_iterator it_find;
 	it_find = built_in_protocol.find(ether_protocol_name);
 	if (it_find != built_in_protocol.end()) {
-		QString text = QString("%1 (%2)").arg(it_find->first).arg(it_find->second);
-		ui.protocol_box->addItem(text, QVariant(it_find->second));
+		ui.protocol_box->addItem(it_find->second, it_find->first, 16);
 		ui.protocol_box->setEditable(false);
 	} else {
 		std::map<QString, int>::const_iterator it;
 		it = built_in_protocol.begin();
 		for (; it != built_in_protocol.end(); ++it) {
-			QString text = QString("%1 (%2)").arg(it->first).arg(it->second);
-			ui.protocol_box->addItem(text, QVariant(it->second));
+			ui.protocol_box->addItem(it->second, it->first, 16);
 		}
 		ui.protocol_box->setEditable(true);
 	}

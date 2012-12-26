@@ -42,9 +42,6 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 	ui.tree_widget->resizeColumnToContents(1);
 	ui.tree_widget->resizeColumnToContents(2);
 	ui.tree_widget->resizeColumnToContents(3);
-
-	//TODO
-	//connect(ui.checkbox)
 }
 
 FieldSelectDialog::~FieldSelectDialog()

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Protocols>
+	<Protocol Name="RAW_IPV4" Dependence="ETHERNET" DependenceParam="IPV4" >
+	    <Category Ref="IPV4"/>
+               <Category Name="data">
+		<Field Name="data" Type="string"  Tip="数据"/>
+	    </Category>
+        </Protocol>
+</Protocols>

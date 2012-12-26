@@ -12,9 +12,11 @@
 #include <qmessagebox.h>
 #include "base_protocol/udp_widget.h"
 #include "base_protocol/tcp_widget.h"
-#include "npg_define.h"
+#include "config.h"
 #include "base_protocol/ip_widget.h"
 #include "base_protocol/ethernet_widget.h"
+#include "protocol/protocol.h"
+#include "logger.h"
 
 TabSheet::TabSheet(const QString& protocol_name
 		, QWidget *parent
@@ -27,16 +29,16 @@ TabSheet::TabSheet(const QString& protocol_name
 {
 	m_send_thread = new SendThread(this);
 
-	if (base_protocol_name == K_PROTOCOL_UDP) {
+	if (base_protocol_name == K_BASE_PROTOCOL_UDP) {
 		m_base_protocol_widget = new UdpWidget(m_protocol_name, this);
 	}
-	else if (base_protocol_name == K_PROTOCOL_TCP) {
+	else if (base_protocol_name == K_BASE_PROTOCOL_TCP) {
 		m_base_protocol_widget = new TcpWidget(m_protocol_name, this);
 	}
-	else if (base_protocol_name == K_PROTOCOL_IP) {
+	else if (base_protocol_name == K_BASE_PROTOCOL_IP) {
 		m_base_protocol_widget = new IpWidget(m_protocol_name, base_protocol_param, this);
 	}
-	else if (base_protocol_name == K_PROTOCOL_ETHERNET) {
+	else if (base_protocol_name == K_BASE_PROTOCOL_ETHERNET) {
 		m_base_protocol_widget = new EthernetWidget(m_protocol_name, base_protocol_param, this);
 	}
 }
@@ -51,19 +53,20 @@ TabSheet::~TabSheet()
 	delete m_send_thread;
 }
 
-void TabSheet::setupUi(QHBoxLayout* layout)
-		{
+void TabSheet::setupUi(QHBoxLayout* layout) {
 	QHBoxLayout* simple_layout = new QHBoxLayout();
 
+	m_load_config_button = new QPushButton(tr("Load"));
+	m_save_config_button = new QPushButton(tr("Save"));
 	m_send_button = new QPushButton(tr("Send"));
 	m_advanced_button = new QPushButton(tr("Advanced"));
-	m_tip_label = new QLabel();
 	m_status_label1 = new QLabel();
 	m_status_label2 = new QLabel();
 	QSpacerItem *horizontal_spacer = new QSpacerItem(40, 20,
 			QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-	simple_layout->addWidget(m_tip_label);
+	simple_layout->addWidget(m_load_config_button);
+	simple_layout->addWidget(m_save_config_button);
 	simple_layout->addWidget(m_status_label1);
 	simple_layout->addWidget(m_status_label2);
 	simple_layout->addItem(horizontal_spacer);
@@ -83,8 +86,7 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 	m_count_edit = new QLineEdit();
 	advance_layout->addWidget(m_count_edit);
 	advance_layout->addItem(
-			new QSpacerItem(40, 20, QSizePolicy::Expanding,
-					QSizePolicy::Minimum));
+			new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	QVBoxLayout* vboxlayout = new QVBoxLayout();
 	vboxlayout->addWidget(m_advanced_group);
@@ -96,32 +98,26 @@ void TabSheet::setupUi(QHBoxLayout* layout)
 
 	connect(m_send_button, SIGNAL(released(void)), this, SLOT(onSend(void)));
 //	connect(m_advanceButton, SIGNAL(toggled(bool)), m_advanceGroup, SLOT(setVisible(bool)));
-	connect(m_advanced_button, SIGNAL(released(void)), this,
-			SLOT(onAdvanced(void)));
-	connect(m_send_thread, SIGNAL(finished(void)), this,
-			SLOT(onSendFinish(void)));
-	connect(m_send_thread, SIGNAL(counter(int, time_t)), this,
-			SLOT(onCounter(int, time_t)));
+	connect(m_advanced_button, SIGNAL(released(void)), this, SLOT(onAdvanced(void)));
+	connect(m_send_thread, SIGNAL(finished(void)), this, SLOT(onSendFinish(void)));
+	connect(m_send_thread, SIGNAL(counter(int, int)), this, SLOT(onCounter(int, int)));
+
+	connect(m_load_config_button, SIGNAL(released()), this, SLOT(onRestoreSettings()));
+	connect(m_save_config_button, SIGNAL(released()), this, SLOT(onSaveSettings()));
 
 	restoreSettings();
 }
 
-void TabSheet::showFailedTip(const QString& tip)
-		{
-	showTip(QString("<font color=red>%1</font>").arg(tip));
+void TabSheet::showFailedTip(const QString& tip) {
+	LOG_ERROR(tip);
 }
 
-void TabSheet::showSuccessTip(const QString& tip)
-		{
-	showTip(QString("<font color=green>%1</font>").arg(tip));
+void TabSheet::showSuccessTip(const QString& tip) {
+	LOG_TRACE(tip);
 }
 
-void TabSheet::showTip(const QString& tip)
-		{
-	if (m_tip_label != NULL)
-			{
-		m_tip_label->setText(tip);
-	}
+void TabSheet::showTip(const QString& tip) {
+	LOG_INFO(tip);
 }
 
 void TabSheet::onAdvanced()
@@ -143,7 +139,6 @@ void TabSheet::onAdvanced()
 
 void TabSheet::onSend()
 {
-	m_tip_label->setText("");
 	m_status_label1->setText("");
 	m_status_label2->setText("");
 
@@ -196,19 +191,14 @@ void TabSheet::onSend()
 }
 
 void TabSheet::onSendFinish() {
-	const QString& error = m_send_thread->error();
-	if (error.isEmpty()) { //thread exit successful
-		showSuccessTip(tr("finished"));
-	}
-	else {
-		showFailedTip(error);
-	}
+
+	showSuccessTip(tr("finished"));
 
 	m_send_button->setText(tr("Send"));
 
 }
 
-void TabSheet::onCounter(int count, time_t seconds) {
+void TabSheet::onCounter(int count, int seconds) {
 	m_status_label1->setText(QString(tr("total(time):%1(%2)")).arg(count).arg(seconds));
 	double speed = 0;
 	if (seconds == 0) {

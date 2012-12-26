@@ -70,15 +70,24 @@ public:
 	virtual bool sendData()=0;
 	virtual bool postSendData()=0;
 
+
+
 protected slots:
 	void onAdvanced();
 	void onSend();
 	void onSendFinish();
-	void onCounter(int count, time_t seconds);
-	private:
+	void onCounter(int count, int seconds);
+	virtual void onSaveSettings() = 0;
+	virtual void onRestoreSettings() = 0;
+
+protected:
+	QPushButton *m_load_config_button;
+	QPushButton *m_save_config_button;
+
+private:
 	QPushButton *m_send_button;
 	QPushButton *m_advanced_button;
-	QLabel *m_tip_label;
+	//	QLabel *m_tip_label;
 	QLabel *m_status_label1;
 	QLabel *m_status_label2;
 

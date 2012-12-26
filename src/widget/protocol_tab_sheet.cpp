@@ -7,7 +7,7 @@
 
 #include "protocol_tab_sheet.h"
 #include <qsettings.h>
-#include "npg_define.h"
+#include "config.h"
 #include "protocol_tree_item_widget.h"
 #include "protocol/protocol_builder.h"
 #include "base_protocol/udp_widget.h"
@@ -26,8 +26,6 @@ ProtocolTabSheet::ProtocolTabSheet(const Protocol& protocol, QWidget *parent)
 	setupUi(ui.advanced_layout);
 	ui.protocol_layout->addWidget(dependProtocolWidget());
 	//ui.group_box->setTitle(protocol.dependenceString().c_str());
-	connect(ui.load_config_button, SIGNAL(released()), ui.treeWidget, SLOT(onRestoreSettings()));
-	connect(ui.save_config_button, SIGNAL(released()), ui.treeWidget, SLOT(onSaveSettings()));
 }
 
 ProtocolTabSheet::~ProtocolTabSheet()
@@ -60,10 +58,6 @@ void ProtocolTabSheet::restoreSettings()
 bool ProtocolTabSheet::preSendData()
 {
 	ProtocolBuilder protocol_builder;
-
-	bool need_checksum = false;
-	uint16_t checksum_pos = 0;
-	Field checksum_field("", true);
 
 	ProtocolTree* tree_widget = ui.treeWidget;
 	int category_count = tree_widget->topLevelItemCount();
@@ -120,17 +114,12 @@ bool ProtocolTabSheet::preSendData()
 					return false;
 				}
 
-			} else { //sub_field_count >= 0
+			} else { //sub_field_count == 0
 
 				QCheckBox* item_checkbox = (QCheckBox*) tree_widget->itemWidget(field_item, 2);
 				QString data;
 				if (item_checkbox != NULL && item_checkbox->checkState() == Qt::Unchecked) {
-					if (field.defaultValueOriginal() == K_DEFAULT_VALUE_CHECKNUM) {
-						need_checksum = true;
-						checksum_pos = protocol_builder.length();
-						checksum_field = field;
-					}
-					data = convertDefaultValue(field.defaultValueOriginal());
+					data = FieldDefaultValue::instance().calcValue(field.defaultValue());
 				} else {
 					ProtocolTreeItemWidget* item_widget = (ProtocolTreeItemWidget*) tree_widget->itemWidget(field_item, 1);
 					data = item_widget->value();
@@ -164,14 +153,6 @@ bool ProtocolTabSheet::preSendData()
 
 	}
 
-	if (need_checksum) {
-		SocketToolkit toolkit;
-		uint16_t checksum = toolkit.inCheckSum((uint16_t *) protocol_builder.data(), protocol_builder.length());
-		checksum = ntohs(checksum);
-		QString data = QString("%1").arg(checksum);
-		protocol_builder.set(checksum_pos, checksum_field.type(), checksum_field.length(), data);
-	}
-
 	m_data.assign(protocol_builder.data(), protocol_builder.length());
 
 	return dependProtocolWidget()->preSendData();
@@ -187,38 +168,4 @@ bool ProtocolTabSheet::postSendData()
 bool ProtocolTabSheet::sendData()
 {
 	return dependProtocolWidget()->sendData(m_data.data(), m_data.length());
-	//QMessageBox::information(this, "tip", QString("%1").arg(protocol_builder.length()));
-}
-
-QString ProtocolTabSheet::convertDefaultValue(const QString& default_value)
-		{
-	if (default_value == K_DEFAULT_VALUE_SECOND)
-			{
-		struct timeval now;
-		gettimeofday(&now, NULL);
-		return QString("%1").arg(now.tv_sec);
-	}
-	else if (default_value == K_DEFAULT_VALUE_PID)
-			{
-		return QString("%1").arg(getpid());
-	}
-	else if (default_value == K_DEFAULT_VALUE_MILLISECOND)
-			{
-		struct timeval now;
-		gettimeofday(&now, NULL);
-		return QString("%1").arg(now.tv_usec);
-	}
-	else if (default_value == K_DEFAULT_VALUE_CHECKNUM)
-			{
-		return QString("%1").arg(0);
-	}
-	else if (default_value == K_DEFAULT_VALUE_SEQ)
-			{
-		return QString("%1").arg(++m_seq);
-	}
-	else
-	{
-		return QString("%1").arg(0);
-	}
-
 }

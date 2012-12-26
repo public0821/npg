@@ -1,32 +1,37 @@
 #include "ip_widget.h"
-#include "npg_define.h"
+#include "config.h"
 #include "lib/socket/ip.h"
 #include <qsettings.h>
 #include "lib/types.h"
 #include "../logger.h"
 #include "lib/socket/socket.h"
 
+const static char K_IP_UDP[] = "UDP";
+const static char K_IP_TCP[] = "TCP";
+const static char K_IP_ICMP[] = "ICMP";
+const static char K_IP_IGMP[] = "IGMP";
+
 IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name, QWidget *parent)
 :
 		BaseProtocolWidget(protocol_name, parent), m_ip(NULL) {
 	ui.setupUi(this);
 
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_ICMP, (int) IPPROTO_ICMP));
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_UDP, (int) IPPROTO_UDP));
-	m_built_in_protocol.insert(std::make_pair(K_PROTOCOL_TCP, (int) IPPROTO_TCP));
+	m_built_in_protocol.insert(std::make_pair(K_IP_IGMP, (int) IPPROTO_IGMP));
+	m_built_in_protocol.insert(std::make_pair(K_IP_ICMP, (int) IPPROTO_ICMP));
+	m_built_in_protocol.insert(std::make_pair(K_IP_UDP, (int) IPPROTO_UDP));
+	m_built_in_protocol.insert(std::make_pair(K_IP_TCP, (int) IPPROTO_TCP));
 
 	std::map<QString, int>::const_iterator it_find;
 	it_find = m_built_in_protocol.find(ip_protocol_name);
 	if (it_find != m_built_in_protocol.end()) {
-		QString text = QString("%1 (%2)").arg(it_find->first).arg(it_find->second);
-		ui.protocol_box->addItem(text, QVariant(it_find->second));
+		ui.protocol_box->addItem(it_find->second, it_find->first);
 		ui.protocol_box->setEditable(false);
 	} else {
 		std::map<QString, int>::const_iterator it;
 		it = m_built_in_protocol.begin();
 		for (; it != m_built_in_protocol.end(); ++it) {
-			QString text = QString("%1 (%2)").arg(it->first).arg(it->second);
-			ui.protocol_box->addItem(text, QVariant(it->second));
+			ui.protocol_box->addItem(it->second, it->first);
+			ui.protocol_box->setEditable(false);
 		}
 		ui.protocol_box->setEditable(true);
 	}
@@ -46,13 +51,7 @@ bool IpWidget::preSendData() {
 		return false;
 	}
 
-	int index = ui.protocol_box->findText(ui.protocol_box->currentText());
-	int protocol = 0;
-	if (index == -1) {
-		protocol = ui.protocol_box->currentText().toInt();
-	} else {
-		protocol = ui.protocol_box->itemData(index).toInt();
-	}
+	int protocol = ui.protocol_box->getIntStrValue().toInt();
 
 	std::string dstip = ui.dip_edit->text().toLocal8Bit().constData();
 
