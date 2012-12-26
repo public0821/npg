@@ -1,5 +1,5 @@
 #include "tcp_response_dialog.h"
-#include "qresource.h"
+#include "../../qresource.h"
 
 TcpResponseDialog::TcpResponseDialog(Tcp& tcp, QWidget *parent)
 :

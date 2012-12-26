@@ -1,5 +1,5 @@
 #include "protocol.h"
-#include "qresource.h"
+#include "../qresource.h"
 
 Protocol::Protocol(bool empty)
 :m_empty(empty)

@@ -12,7 +12,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QTextStream>
-#include "qresource.h"
+#include "../qresource.h"
 
 const int FIELD_COUNT = 6;
 const int INDEX_FIELD_NAME = 0;

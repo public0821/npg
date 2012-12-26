@@ -247,6 +247,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\qresource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\resource.h"
 				>
 			</File>

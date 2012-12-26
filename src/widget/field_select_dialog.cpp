@@ -1,5 +1,5 @@
 #include "field_select_dialog.h"
-#include "qresource.h"
+#include "../qresource.h"
 
 FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, QWidget *parent)
 	: QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint)

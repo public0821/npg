@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "lib/os.h"
-#include "qresource.h"
+#include "../qresource.h"
 
 Field::Field(const QString& category_name, bool empty)
 :m_type(E_FIELD_TYPE_INT)
