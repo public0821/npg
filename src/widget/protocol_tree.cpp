@@ -367,6 +367,7 @@ void ProtocolTree::onSaveSettings() {
 
 	QDomDocument document;
 	document.setContent(QString("<?xml version=\"1.0\" encoding=\"utf-8\"?>"));
+	//document.setContent(QString("<?xml version=\"1.0\"?>"));
 	QDomElement root = document.createElement("Protocol");
 	document.appendChild(root);
 
@@ -413,7 +414,7 @@ void ProtocolTree::onSaveSettings() {
 	QFile file(file_name);
 	file.open(QIODevice::WriteOnly);
 	QTextStream t(&file);
-	t << document.toString();
+	document.save(t, 4);
 	file.close();
 }
 

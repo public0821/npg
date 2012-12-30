@@ -54,7 +54,7 @@ Npg::Npg(QWidget *parent) :
 	connect(ui.action_tool_time, SIGNAL(triggered(bool)), this, SLOT(onConverterClicked()));
 	connect(ui.action_tool_base64, SIGNAL(triggered(bool)), this, SLOT(onConverterClicked()));
 
-	ui.toolBar->addAction(ui.action_new);
+	//ui.toolBar->addAction(ui.action_new);
 	ui.toolBar->addAction(ui.action_quit);
 	ui.toolBar->addAction(ui.action_tool_ip);
 	ui.toolBar->addAction(ui.action_tool_hex);
@@ -90,11 +90,6 @@ Npg::Npg(QWidget *parent) :
 			SLOT(onItemDoubleClicked(QListWidgetItem* )));
 
 	restoreSettings();
-	//m_main_splitter->setGeometry (100,100,400,300 );
-	//resize(400, 300);
-//	/setsi
-//	m_tabWidget->addTab(new UdpWidget(m_tabWidget), "udp");
-
 }
 
 Npg::~Npg() {

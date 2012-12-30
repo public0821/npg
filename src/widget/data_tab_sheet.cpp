@@ -8,6 +8,11 @@
 #include <qmessagebox.h>
 #include <qsettings.h>
 #include <string>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QFile>
+#include <QTextStream>
+#include <QTextCodec>
 #include "config.h"
 #include "lib/socket/udp.h"
 #include "lib/socket/raw_udp.h"
@@ -26,13 +31,18 @@ DataTabSheet::~DataTabSheet()
 bool DataTabSheet::preSendData()
 {
 	QString data = m_data_edit->toPlainText();
-	if (data.isEmpty())
-	{
+	if (data.isEmpty())	{
 		LOG_ERROR(tr("ip and port and data must set"));
 		return false;
 	}
-	m_data = data.toLocal8Bit();
 
+	if (m_default_encoding_box->checkState() == Qt::Checked)	{
+		m_data = data.toLocal8Bit();
+	}else{
+		QTextCodec * codec = QTextCodec::codecForName(m_encoding_box->currentText().toStdString().c_str());
+		m_data = codec->fromUnicode(data);
+	}
+	
 	return dependProtocolWidget()->preSendData();
 }
 
@@ -88,6 +98,41 @@ void DataTabSheet::setupUi()
 
 	TabSheet::setupUi(send_layout);
 
-	m_load_config_button->setVisible(false);
-	m_save_config_button->setVisible(false);
+	//m_load_config_button->setVisible(false);
+	//m_save_config_button->setVisible(false);
 } // setupUi
+
+
+
+
+void DataTabSheet::onRestoreSettings(){
+	QString file_name = QFileDialog::getOpenFileName(this, tr("Select file"), QDir::currentPath(), tr("all files (*)"));
+	if (file_name.isEmpty()) {
+		return;
+	}
+
+	QFile file(file_name);
+	if (!file.open(QFile::ReadOnly )) {
+		QString errorString = tr("Error: Cannot read file %1: %2");
+		errorString = errorString.arg(file_name, file.errorString());
+		QMessageBox::critical(NULL, tr("tip"), errorString);
+		return;
+	}
+
+	QTextStream in(&file);
+
+	m_data_edit->setText(in.readAll());
+}
+
+void DataTabSheet::onSaveSettings() {
+	QString file_name = QFileDialog::getSaveFileName(this, tr("Select file"), QDir::currentPath(), tr("all files (*)"));
+	if (file_name.isEmpty()) {
+		return;
+	}
+	QFile file(file_name);
+	file.open(QIODevice::WriteOnly);
+	QTextStream t(&file);
+	t << m_data_edit->toPlainText();
+	file.close();
+
+}

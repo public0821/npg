@@ -10,6 +10,7 @@
 #include <QVBoxLayout>
 #include "send_thread.h"
 #include <qmessagebox.h>
+#include <QTextCodec>
 #include "base_protocol/udp_widget.h"
 #include "base_protocol/tcp_widget.h"
 #include "config.h"
@@ -53,23 +54,38 @@ TabSheet::~TabSheet()
 	delete m_send_thread;
 }
 
+void TabSheet::setupEncoding(QComboBox *encoding_box) {
+	QList<QByteArray> codecs = QTextCodec::availableCodecs ();
+	for(uint i = 0; i < codecs.size(); i++){
+		encoding_box->addItem(QString(codecs.at(i)));
+	}
+}
+
 void TabSheet::setupUi(QHBoxLayout* layout) {
 	QHBoxLayout* simple_layout = new QHBoxLayout();
 
+	QLabel *lable = new QLabel(tr("CharacterSet"));
+	m_default_encoding_box = new QCheckBox(tr("Default"));
 	m_load_config_button = new QPushButton(tr("Load"));
 	m_save_config_button = new QPushButton(tr("Save"));
 	m_send_button = new QPushButton(tr("Send"));
 	m_advanced_button = new QPushButton(tr("Advanced"));
 	m_status_label1 = new QLabel();
 	m_status_label2 = new QLabel();
+	m_encoding_box = new QComboBox();
 	QSpacerItem *horizontal_spacer = new QSpacerItem(40, 20,
 			QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+	setupEncoding(m_encoding_box);
 
 	simple_layout->addWidget(m_load_config_button);
 	simple_layout->addWidget(m_save_config_button);
 	simple_layout->addWidget(m_status_label1);
 	simple_layout->addWidget(m_status_label2);
 	simple_layout->addItem(horizontal_spacer);
+	simple_layout->addWidget(lable);
+	simple_layout->addWidget(m_encoding_box);
+	simple_layout->addWidget(m_default_encoding_box);
 	simple_layout->addWidget(m_advanced_button);
 	simple_layout->addWidget(m_send_button);
 
@@ -104,6 +120,9 @@ void TabSheet::setupUi(QHBoxLayout* layout) {
 
 	connect(m_load_config_button, SIGNAL(released()), this, SLOT(onRestoreSettings()));
 	connect(m_save_config_button, SIGNAL(released()), this, SLOT(onSaveSettings()));
+	connect(m_default_encoding_box, SIGNAL(clicked ( bool)), m_encoding_box, SLOT( setDisabled(bool)));
+	m_default_encoding_box->click();
+	m_encoding_box->setEditable(false);
 
 	restoreSettings();
 }

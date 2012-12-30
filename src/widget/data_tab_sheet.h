@@ -26,10 +26,8 @@ public:
 	void saveSettings();
 	void restoreSettings();
 	void setupUi();
-	void onSaveSettings() {
-	}
-	void onRestoreSettings() {
-	}
+	void onSaveSettings();
+	void onRestoreSettings();
 private:
 	QTextEdit* m_data_edit;
 	QByteArray m_data;

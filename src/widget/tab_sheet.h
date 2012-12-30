@@ -16,6 +16,7 @@
 #include <qlineedit.h>
 #include <QHBoxLayout>
 #include <QGroupBox>
+#include <QCheckBox>
 #include "base_protocol/base_protocol_widget.h"
 
 class SendThread;
@@ -80,9 +81,14 @@ protected slots:
 	virtual void onSaveSettings() = 0;
 	virtual void onRestoreSettings() = 0;
 
+private:
+	void setupEncoding(QComboBox *encoding_box);
+
 protected:
 	QPushButton *m_load_config_button;
 	QPushButton *m_save_config_button;
+	QComboBox *m_encoding_box;
+	QCheckBox *m_default_encoding_box;
 
 private:
 	QPushButton *m_send_button;
