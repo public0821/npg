@@ -25,6 +25,10 @@ UdpWidget::UdpWidget(const QString& protocol_name, QWidget *parent) :
 			SLOT( setDisabled(bool)));
 	connect(ui.src_ip_checkbox, SIGNAL(clicked ( bool)), ui.src_port_edit,
 			SLOT( setDisabled(bool)));
+
+//	ui.dst_ip_edit->setWhatsThis(tr("Multiple IP separated by commas"));
+//	ui.dst_ip_edit->setStatusTip(tr("Multiple IP separated by commas"));
+	ui.dst_ip_edit->setToolTip(tr("Multiple IP separated by commas"));
 }
 
 UdpWidget::~UdpWidget()

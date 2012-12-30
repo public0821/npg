@@ -73,9 +73,31 @@
 <context>
     <name>DataTabSheet</name>
     <message>
-        <location filename="widget/data_tab_sheet.cpp" line="31"/>
+        <location filename="widget/data_tab_sheet.cpp" line="35"/>
         <source>ip and port and data must set</source>
         <translation>IP、端口以及要发送的数据不能为空</translation>
+    </message>
+    <message>
+        <location filename="widget/data_tab_sheet.cpp" line="109"/>
+        <location filename="widget/data_tab_sheet.cpp" line="128"/>
+        <source>Select file</source>
+        <translation>选择文件</translation>
+    </message>
+    <message>
+        <location filename="widget/data_tab_sheet.cpp" line="109"/>
+        <location filename="widget/data_tab_sheet.cpp" line="128"/>
+        <source>all files (*)</source>
+        <translation>所有文件(*)</translation>
+    </message>
+    <message>
+        <location filename="widget/data_tab_sheet.cpp" line="116"/>
+        <source>Error: Cannot read file %1: %2</source>
+        <translation>错误：无法读取文件 %1: %2</translation>
+    </message>
+    <message>
+        <location filename="widget/data_tab_sheet.cpp" line="118"/>
+        <source>tip</source>
+        <translation>提示信息</translation>
     </message>
 </context>
 <context>
@@ -296,9 +318,9 @@
         <location filename="widget/protocol_tree.cpp" line="233"/>
         <location filename="widget/protocol_tree.cpp" line="237"/>
         <location filename="widget/protocol_tree.cpp" line="292"/>
-        <location filename="widget/protocol_tree.cpp" line="431"/>
-        <location filename="widget/protocol_tree.cpp" line="442"/>
-        <location filename="widget/protocol_tree.cpp" line="448"/>
+        <location filename="widget/protocol_tree.cpp" line="432"/>
+        <location filename="widget/protocol_tree.cpp" line="443"/>
+        <location filename="widget/protocol_tree.cpp" line="449"/>
         <source>tip</source>
         <translation>提示信息</translation>
     </message>
@@ -339,28 +361,28 @@
     </message>
     <message>
         <location filename="widget/protocol_tree.cpp" line="363"/>
-        <location filename="widget/protocol_tree.cpp" line="422"/>
+        <location filename="widget/protocol_tree.cpp" line="423"/>
         <source>Select config file</source>
         <translation>选择配置文件</translation>
     </message>
     <message>
         <location filename="widget/protocol_tree.cpp" line="363"/>
-        <location filename="widget/protocol_tree.cpp" line="422"/>
+        <location filename="widget/protocol_tree.cpp" line="423"/>
         <source>XML files (*.xml)</source>
         <translation>XML文件(*.xml)</translation>
     </message>
     <message>
-        <location filename="widget/protocol_tree.cpp" line="429"/>
+        <location filename="widget/protocol_tree.cpp" line="430"/>
         <source>Error: Cannot read file %1: %2</source>
         <translation>错误：读取文件%1失败:%2</translation>
     </message>
     <message>
-        <location filename="widget/protocol_tree.cpp" line="440"/>
+        <location filename="widget/protocol_tree.cpp" line="441"/>
         <source>Error: Parse error at line %1, column %2: %3</source>
         <translation>解析XML文件错误(行(%1)列(%2)):%3</translation>
     </message>
     <message>
-        <location filename="widget/protocol_tree.cpp" line="448"/>
+        <location filename="widget/protocol_tree.cpp" line="449"/>
         <source>The file %1 is not an config file.</source>
         <translation>%1不是正确的协议配置文件</translation>
     </message>
@@ -665,6 +687,7 @@
     </message>
     <message>
         <location filename="lib/socket/toolkit_windows.cpp" line="24"/>
+        <location filename="lib/socket/toolkit_windows.cpp" line="101"/>
         <source>Error in pcap_findalldevs: %1</source>
         <oldsource>Error in pcap_findalldevs: %s</oldsource>
         <translation>调用pcap_findalldevs发生错误：%1</translation>
@@ -687,66 +710,76 @@
 <context>
     <name>TabSheet</name>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="59"/>
+        <location filename="widget/tab_sheet.cpp" line="68"/>
+        <source>CharacterSet</source>
+        <translation>字符集</translation>
+    </message>
+    <message>
+        <location filename="widget/tab_sheet.cpp" line="69"/>
+        <source>Default</source>
+        <translation>默认</translation>
+    </message>
+    <message>
+        <location filename="widget/tab_sheet.cpp" line="70"/>
         <source>Load</source>
         <translation>加载</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="60"/>
+        <location filename="widget/tab_sheet.cpp" line="71"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="61"/>
-        <location filename="widget/tab_sheet.cpp" line="147"/>
-        <location filename="widget/tab_sheet.cpp" line="197"/>
+        <location filename="widget/tab_sheet.cpp" line="72"/>
+        <location filename="widget/tab_sheet.cpp" line="167"/>
+        <location filename="widget/tab_sheet.cpp" line="217"/>
         <source>Send</source>
         <translation>发送</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="62"/>
-        <location filename="widget/tab_sheet.cpp" line="129"/>
+        <location filename="widget/tab_sheet.cpp" line="73"/>
+        <location filename="widget/tab_sheet.cpp" line="149"/>
         <source>Advanced</source>
         <oldsource>Advance</oldsource>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="76"/>
+        <location filename="widget/tab_sheet.cpp" line="93"/>
         <source>advance:</source>
         <translation>高级:</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="80"/>
+        <location filename="widget/tab_sheet.cpp" line="97"/>
         <source>Sendtype:</source>
         <translation>发送方式:</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="82"/>
+        <location filename="widget/tab_sheet.cpp" line="99"/>
         <source>Total</source>
         <translation>合计</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="83"/>
+        <location filename="widget/tab_sheet.cpp" line="100"/>
         <source>Per second</source>
         <translation>每秒</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="85"/>
+        <location filename="widget/tab_sheet.cpp" line="102"/>
         <source>Count:</source>
         <translation>数量:</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="135"/>
+        <location filename="widget/tab_sheet.cpp" line="155"/>
         <source>Simple</source>
         <translation>简单</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="159"/>
+        <location filename="widget/tab_sheet.cpp" line="179"/>
         <source>please input a valid count</source>
         <translation>请输入一个合法的数字</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="162"/>
+        <location filename="widget/tab_sheet.cpp" line="182"/>
         <source>stop</source>
         <translation>停止</translation>
     </message>
@@ -755,27 +788,27 @@
         <translation type="obsolete">操作成功！</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="195"/>
+        <location filename="widget/tab_sheet.cpp" line="215"/>
         <source>finished</source>
         <translation>操作完成</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="202"/>
+        <location filename="widget/tab_sheet.cpp" line="222"/>
         <source>total(time):%1(%2)</source>
         <translation>总数（时间):%1(%2)</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.cpp" line="209"/>
+        <location filename="widget/tab_sheet.cpp" line="229"/>
         <source>speed:%1</source>
         <translation>发送速度:%1</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.h" line="31"/>
+        <location filename="widget/tab_sheet.h" line="32"/>
         <source>success</source>
         <translation>操作成功</translation>
     </message>
     <message>
-        <location filename="widget/tab_sheet.h" line="32"/>
+        <location filename="widget/tab_sheet.h" line="33"/>
         <source>failed</source>
         <translation>操作失败</translation>
     </message>
@@ -901,22 +934,27 @@
 <context>
     <name>UdpWidget</name>
     <message>
-        <location filename="widget/base_protocol/udp_widget.cpp" line="36"/>
+        <location filename="widget/base_protocol/udp_widget.cpp" line="31"/>
+        <source>Multiple IP separated by commas</source>
+        <translation>多个IP请用逗号隔开</translation>
+    </message>
+    <message>
+        <location filename="widget/base_protocol/udp_widget.cpp" line="40"/>
         <source>&apos;preSendData&apos; function has been called</source>
         <translation>&apos;preSendData&apos;函数已经被调用过了</translation>
     </message>
     <message>
-        <location filename="widget/base_protocol/udp_widget.cpp" line="43"/>
+        <location filename="widget/base_protocol/udp_widget.cpp" line="47"/>
         <source>ip and port and data must set</source>
         <translation>IP、端口以及要发送的数据不能为空</translation>
     </message>
     <message>
-        <location filename="widget/base_protocol/udp_widget.cpp" line="48"/>
+        <location filename="widget/base_protocol/udp_widget.cpp" line="52"/>
         <source>invaild dst ip: %1</source>
         <translation>无效的目的IP地址:%1</translation>
     </message>
     <message>
-        <location filename="widget/base_protocol/udp_widget.cpp" line="73"/>
+        <location filename="widget/base_protocol/udp_widget.cpp" line="77"/>
         <source>should call &apos;preSendData&apos; function first</source>
         <oldsource>should call &apos;preSendData&apos; function before</oldsource>
         <translation>应该先调用&apos;preSendData&apos;函数</translation>
