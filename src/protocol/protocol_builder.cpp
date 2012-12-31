@@ -110,9 +110,9 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 			int64_t number = 0;
 			QString value_str(value);
 			if (value_str.length() > 0 && value_str[0] == '-') {
-				int64_t number = (int64_t) value_str.toLongLong();
+				number = (int64_t) value_str.toLongLong();
 			}else{
-				int64_t number = (int64_t) value_str.toULongLong();
+				number = (int64_t) value_str.toULongLong();
 			}
 			number = ntohll(number);
 			memcpy(m_buffer + pos, &number, sizeof(number));

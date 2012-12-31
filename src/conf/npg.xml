@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Npg>
     <Protocols>
-        <Protocol Name="RAW_UDP">
+        <Protocol Name="UDP">
             <Category Name="UDP">
-                <Field Name="src_port" Type="int" InputMethod="lineedit" Length="2" Tip="Source port"/>
-                <Field Name="dst_port" Type="int" InputMethod="lineedit" Length="2" Tip="Destination port"/>
-                <Field Name="length" Type="int" InputMethod="lineedit" Length="2"  Tip="It is the length in octets of this user datagram, including this header and the data. The minimum value of the length is eight."/>
-                <Field Name="checksum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="checksum" Tip="The sum of a pseudo header of information from the IP header, the UDP header and the data, padded with zero octets at the end(Can be zero)"/>
+                <Field Name="src_port" Type="int"  Length="2" Tip="Source port"/>
+                <Field Name="dst_port" Type="int"  Length="2" Tip="Destination port"/>
+                <Field Name="length" Type="int"  Length="2"  Tip="It is the length in octets of this user datagram, including this header and the data. The minimum value of the length is eight."/>
+                <Field Name="checksum" Type="int"  Length="2" DefaultValue="checksum" Tip="The sum of a pseudo header of information from the IP header, the UDP header and the data, padded with zero octets at the end(Can be zero)"/>
             </Category>
         </Protocol>
     </Protocols>

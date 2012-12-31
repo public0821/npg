@@ -2,16 +2,16 @@
 <Protocols>
 	<Protocol Name="ICMP" Dependence="IP" DependenceParam="ICMP">
             <Category Name="Header">
-                <Field Name="type" Type="int" InputMethod="lineedit" Length="1" Tip="type"/>
-                <Field Name="code" Type="int" InputMethod="lineedit" Length="1" Tip="code"/>
-                <Field Name="checksum" Type="int" InputMethod="lineedit" Length="2" DefaultValue="checksum" Tip="The sum of a pseudo header of information from the icmp header and the data,\n padded with zero octets at the end(If zero, the program will automatically generate)"/>
+                <Field Name="type" Type="int"  Length="1" Tip="type"/>
+                <Field Name="code" Type="int"  Length="1" Tip="code"/>
+                <Field Name="checksum" Type="int"  Length="2" DefaultValue="checksum" Tip="The sum of a pseudo header of information from the icmp header and the data,\n padded with zero octets at the end(If zero, the program will automatically generate)"/>
             </Category>
             <Category Name="Data">
-                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" Optional="true" ShowOnStart="true" DefaultValue="pid" Tip="Unique id for this process"/>
-                <Field Name="seq" Type="int" InputMethod="lineedit" Length="2" Optional="true" ShowOnStart="true" DefaultValue="seq" Tip="Sequence"/>
-                <Field Name="otime" Type="int" InputMethod="lineedit" Length="4" Optional="true" ShowOnStart="true" DefaultValue="second" Tip="seconds from 1970-1-1"/>
-                <Field Name="rtime" Type="int" InputMethod="lineedit" Length="4" Optional="true" ShowOnStart="true" DefaultValue="millisecond" Tip="millisecond from the start of this second"/>
-                <Field Name="other" Type="int" InputMethod="lineedit" Length="2" Optional="true" Tip="User defined field"/>
+                <Field Name="id" Type="int"  Length="2" Optional="true" ShowOnStart="true" DefaultValue="pid" Tip="Unique id for this process"/>
+                <Field Name="seq" Type="int"  Length="2" Optional="true" ShowOnStart="true" DefaultValue="seq" Tip="Sequence"/>
+                <Field Name="otime" Type="int"  Length="4" Optional="true" ShowOnStart="true" DefaultValue="second" Tip="seconds from 1970-1-1"/>
+                <Field Name="rtime" Type="int"  Length="4" Optional="true" ShowOnStart="true" DefaultValue="millisecond" Tip="millisecond from the start of this second"/>
+                <Field Name="other" Type="int"  Length="2" Optional="true" Tip="User defined field"/>
             </Category>
         </Protocol>
 </Protocols>

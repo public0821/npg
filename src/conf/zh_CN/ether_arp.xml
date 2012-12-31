@@ -2,11 +2,11 @@
 <Protocols>
         <Protocol Name="Ether_rarp" Dependence="ETHERNET">
             <Category Name="Header">
-                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="硬件地址格式"/>
-                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="协议地址格式"/>
-                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="硬件地址长度"/>
-                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="协议地址长度"/>
-                <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP opcode (command)">
+                <Field Name="ar_hrd" Type="int"  Length="2" Editable = "false" DefaultValue="1" Tip="硬件地址格式"/>
+                <Field Name="ar_pro" Type="int"  Length="2"  Editable = "false" DefaultValue="2048" Tip="协议地址格式"/>
+                <Field Name="ar_hln" Type="int"  Length="1"  Editable = "false" DefaultValue="6" Tip="硬件地址长度"/>
+                <Field Name="ar_pln" Type="int"  Length="1"  Editable = "false" DefaultValue="4" Tip="协议地址长度"/>
+                <Field Name="ar_op" Type="int"   Length="2" Editable = "false" Tip="ARP opcode (command)">
 		    <Item Value="1" Text="arp请求"/>
                     <Item Value="2" Text="arp响应"/>
                     <Item Value="3" Text="rarp请求"/>
@@ -14,10 +14,10 @@
                 </Field>
             </Category>
             <Category Name="Data">
-                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="发送端硬件地址(MAC)"/>
-                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="发送端协议地址(IP)"/>
-                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="目的端硬件地址(MAC)"/>
-                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="目的端协议地址(IP)"/>
+                <Field Name="arp_sha" Type="mac"  Tip="发送端硬件地址(MAC)"/>
+                <Field Name="arp_spa" Type="ip"  Tip="发送端协议地址(IP)"/>
+                <Field Name="arp_tha" Type="mac"  Tip="目的端硬件地址(MAC)"/>
+                <Field Name="arp_tpa" Type="ip"  Tip="目的端协议地址(IP)"/>
             </Category>
         </Protocol>
 </Protocols>

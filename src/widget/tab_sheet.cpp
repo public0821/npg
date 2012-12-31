@@ -57,7 +57,7 @@ TabSheet::~TabSheet()
 void TabSheet::setupEncoding(QComboBox *encoding_box) {
 	QList<QByteArray> codecs = QTextCodec::availableCodecs ();
 	qSort(codecs);
-	for(uint i = 0; i < codecs.size(); i++){
+	for(int i = 0; i < codecs.size(); i++){
 		encoding_box->addItem(QString(codecs.at(i)));
 	}
 }

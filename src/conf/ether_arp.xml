@@ -2,11 +2,11 @@
 <Protocols>
 	<Protocol Name="Ether_arp" Dependence="ETHERNET">
             <Category Name="Header">
-                <Field Name="ar_hrd" Type="int" InputMethod="lineedit" Length="2" Editable = "false" DefaultValue="1" Tip="Format of hardware address"/>
-                <Field Name="ar_pro" Type="int" InputMethod="lineedit" Length="2"  Editable = "false" DefaultValue="2048" Tip="Format of protocol address"/>
-                <Field Name="ar_hln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="6" Tip="Length of hardware address"/>
-                <Field Name="ar_pln" Type="int" InputMethod="lineedit" Length="1"  Editable = "false" DefaultValue="4" Tip="Length of protocol address"/>
-                <Field Name="ar_op" Type="int" InputMethod="select" Length="2" Editable = "false" Tip="ARP opcode (command)">
+                <Field Name="ar_hrd" Type="int"  Length="2" Editable = "false" DefaultValue="1" Tip="Format of hardware address"/>
+                <Field Name="ar_pro" Type="int"  Length="2"  Editable = "false" DefaultValue="2048" Tip="Format of protocol address"/>
+                <Field Name="ar_hln" Type="int"  Length="1"  Editable = "false" DefaultValue="6" Tip="Length of hardware address"/>
+                <Field Name="ar_pln" Type="int"  Length="1"  Editable = "false" DefaultValue="4" Tip="Length of protocol address"/>
+                <Field Name="ar_op" Type="int"  Length="2" Editable = "false" Tip="ARP opcode (command)">
                     <Item Value="1" Text="arp request"/>
                     <Item Value="2" Text="arp response"/>
 		    <Item Value="3" Text="rarp request"/>
@@ -14,10 +14,10 @@
                 </Field>
             </Category>
             <Category Name="Data">
-                <Field Name="arp_sha" Type="mac" InputMethod="lineedit" Tip="sender hardware address"/>
-                <Field Name="arp_spa" Type="ip" InputMethod="lineedit" Tip="sender protocol address"/>
-                <Field Name="arp_tha" Type="mac" InputMethod="lineedit" Tip="target hardware address"/>
-                <Field Name="arp_tpa" Type="ip" InputMethod="lineedit" Tip="target protocol address"/>
+                <Field Name="arp_sha" Type="mac"  Tip="sender hardware address"/>
+                <Field Name="arp_spa" Type="ip"  Tip="sender protocol address"/>
+                <Field Name="arp_tha" Type="mac"  Tip="target hardware address"/>
+                <Field Name="arp_tpa" Type="ip"  Tip="target protocol address"/>
             </Category>
         </Protocol>
 </Protocols>

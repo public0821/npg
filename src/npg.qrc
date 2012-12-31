@@ -14,5 +14,6 @@
         <file alias="field_time">resource/npg_time.png</file>
         <file alias="field_bit">resource/npg_bit.png</file>
         <file alias="field_ip">resource/npg_ip.png</file>
+        <file alias="quit">resource/npg_quit.png</file>
     </qresource>
 </RCC>

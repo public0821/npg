@@ -2,23 +2,23 @@
 <Protocols>
 	<Protocol Name="HTTP" Dependence="TCP">
 	    <Category Name="Request line" Suffix="&#13;&#10;">
-		<Field Name="type" Type="string" InputMethod="select" Suffix="&#32;">
+		<Field Name="type" Type="string"  Suffix="&#32;">
 		    <Item Value="GET" Text="GET"/> 
 		    <Item Value="POST" Text="POST"/> 
 		    <Item Value="DELETE" Text="DELETE"/> 
 		    <Item Value="UPDATE" Text="UPDATE"/> 
 		</Field>
-		<Field Name="uri" Type="string" InputMethod="lineedit" DefaultValue="/" Suffix="&#32;"/>
-		<Field Name="version" Type="string" InputMethod="lineedit" DefaultValue="HTTP/1.1"/>
+		<Field Name="uri" Type="string"  DefaultValue="/" Suffix="&#32;"/>
+		<Field Name="version" Type="string"  DefaultValue="HTTP/1.1"/>
 	    </Category>
 	    <Category Name="Header" Suffix="&#13;&#10;">
-		<Field Name="host" Type="string" InputMethod="lineedit" Prefix="HOST:" Suffix="&#13;&#10;"/>
+		<Field Name="host" Type="string"  Prefix="HOST:" Suffix="&#13;&#10;"/>
 	    </Category>
 	    <Category Name="Data">
-		<Field Name="Content-Type" Type="string" InputMethod="lineedit" Prefix="Content-Type:" Optional="true" DefaultValue="application/x-www-form-urlencoded" Suffix="&#13;&#10;"/>
-		<Field Name="Content-Length" Type="string" InputMethod="lineedit" Prefix="Content-Length:"   Optional="true" Suffix="&#13;&#10;"/>
-		<Field Name="Connection" Type="string" InputMethod="lineedit" Prefix="Connection:" Optional="true" DefaultValue="close" Suffix="&#13;&#10;"/>
-		<Field Name="Data" Type="string" InputMethod="textedit" Optional="true" Suffix="&#13;&#10;"/>
+		<Field Name="Content-Type" Type="string"  Prefix="Content-Type:" Optional="true" DefaultValue="application/x-www-form-urlencoded" Suffix="&#13;&#10;"/>
+		<Field Name="Content-Length" Type="string"  Prefix="Content-Length:"   Optional="true" Suffix="&#13;&#10;"/>
+		<Field Name="Connection" Type="string"  Prefix="Connection:" Optional="true" DefaultValue="close" Suffix="&#13;&#10;"/>
+		<Field Name="Data" Type="string"  Optional="true" Suffix="&#13;&#10;"/>
 	    </Category>
 	</Protocol>
 </Protocols>

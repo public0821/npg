@@ -2,36 +2,36 @@
 <Protocols>
  	<Protocol Name="DNS" Dependence="UDP" RFC="1035">
             <Category Name="Header">
-                <Field Name="id" Type="int" InputMethod="lineedit" Length="2" DefaultValue="seq" Tip="A 16 bit identifier assigned by the program that generates any kind of query. \n This identifier is copied the corresponding reply and can be used by the requester to match up replies to outstanding queries."/>
-                <Field Name="op_flag" Type="int" InputMethod="none" Length="2"  Tip="operating flag">
-                    <SubField Name="qr" Type="bit" InputMethod="select" Length="1"  Tip="A one bit field that specifies whether this message is a query (0), or a response (1).">
+                <Field Name="id" Type="int"  Length="2" DefaultValue="seq" Tip="A 16 bit identifier assigned by the program that generates any kind of query. \n This identifier is copied the corresponding reply and can be used by the requester to match up replies to outstanding queries."/>
+                <Field Name="op_flag" Type="int"  Length="2"  Tip="operating flag">
+                    <SubField Name="qr" Type="bit"  Length="1"  Tip="A one bit field that specifies whether this message is a query (0), or a response (1).">
                         <Item Value="0" Text="query"/>
                         <Item Value="1" Text="response"/>
                     </SubField>
-                    <SubField Name="opcode" Type="bit" InputMethod="select" Length="4"  Tip="A four bit field that specifies kind of query in this message.  This value is set by the originator of a query and copied into the response.">
+                    <SubField Name="opcode" Type="bit"  Length="4"  Tip="A four bit field that specifies kind of query in this message.  This value is set by the originator of a query and copied into the response.">
                         <Item Value="0" Text="Standard query"/>
                         <Item Value="1" Text="inverse query"/>
                         <Item Value="2" Text="Server status query"/>
                     </SubField>
-                    <SubField Name="aa" Type="bit" InputMethod="select" Length="1"  Tip="Authoritative Answer - this bit is valid in responses, and specifies that the responding name server is an authority for the domain name in question section.
+                    <SubField Name="aa" Type="bit"  Length="1"  Tip="Authoritative Answer - this bit is valid in responses, and specifies that the responding name server is an authority for the domain name in question section.
                     Note that the contents of the answer section may have multiple owner names because of aliases.  The AA bit corresponds to the name which matches the query name, or the first owner name in the answer section">
                         <Item Value="0" Text="no"/>
                         <Item Value="1" Text="yes"/>
                     </SubField>
-                    <SubField Name="tc" Type="bit" InputMethod="select" Length="1"  Tip="TrunCation - specifies that this message was truncated due to length greater than that permitted on the transmission channel">
+                    <SubField Name="tc" Type="bit"  Length="1"  Tip="TrunCation - specifies that this message was truncated due to length greater than that permitted on the transmission channel">
                         <Item Value="0" Text="no"/>
                         <Item Value="1" Text="yes"/>
                     </SubField>
-                    <SubField Name="rd" Type="bit" InputMethod="select" Length="1"  Tip="Recursion Desired - this bit may be set in a query and is copied into the response.  If RD is set, it directs the name server to pursue the query recursively. Recursive query support is optional.">
+                    <SubField Name="rd" Type="bit"  Length="1"  Tip="Recursion Desired - this bit may be set in a query and is copied into the response.  If RD is set, it directs the name server to pursue the query recursively. Recursive query support is optional.">
                         <Item Value="0" Text="no"/>
                         <Item Value="1" Text="yes"/>
                     </SubField>
-                    <SubField Name="ra" Type="bit" InputMethod="select" Length="1"  Tip="Recursion Available - this be is set or cleared in a response, and denotes whether recursive query support is available in the name server.">
+                    <SubField Name="ra" Type="bit"  Length="1"  Tip="Recursion Available - this be is set or cleared in a response, and denotes whether recursive query support is available in the name server.">
                         <Item Value="0" Text="no"/>
                         <Item Value="1" Text="yes"/>
                     </SubField>
-                    <SubField Name="zero" Type="bit" InputMethod="lineedit" DefaultValue="0" Editable="false" Length="3"  Tip="Reserved for future use.  Must be zero in all queries and responses."/>
-                    <SubField Name="rcode" Type="bit" InputMethod="select" Length="4"  Tip="Response code - this 4 bit field is set as part of responses">
+                    <SubField Name="zero" Type="bit"  DefaultValue="0" Editable="false" Length="3"  Tip="Reserved for future use.  Must be zero in all queries and responses."/>
+                    <SubField Name="rcode" Type="bit"  Length="4"  Tip="Response code - this 4 bit field is set as part of responses">
                         <Item Value="0" Text="No error condition"/>
                         <Item Value="1" Text="Format error"/>
                         <Item Value="2" Text="Server failure"/>
@@ -40,20 +40,20 @@
                         <Item Value="5" Text="Refused"/>
                     </SubField>
                 </Field>
-                <Field Name="QDCOUNT" Type="int" InputMethod="lineedit" Length="2" DefaultValue="1" Tip="an unsigned 16 bit integer specifying the number of entries in the question section"/>
-                <Field Name="ANCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of resource records in the answer section."/>
-                <Field Name="NSCOUNT" Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of name server resource records in the authority records section."/>
-                <Field Name="ARCOUNT " Type="int" InputMethod="lineedit" Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of resource records in the additional records section."/>
+                <Field Name="QDCOUNT" Type="int"  Length="2" DefaultValue="1" Tip="an unsigned 16 bit integer specifying the number of entries in the question section"/>
+                <Field Name="ANCOUNT" Type="int"  Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of resource records in the answer section."/>
+                <Field Name="NSCOUNT" Type="int"  Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of name server resource records in the authority records section."/>
+                <Field Name="ARCOUNT " Type="int"  Length="2"  DefaultValue="0" Tip="an unsigned 16 bit integer specifying the number of resource records in the additional records section."/>
             </Category>
             <Category Name="Request" Many="true">
-                <Field Name="count" Type="int" InputMethod="lineedit" Length="1" Optional="true" ShowOnStart="true" Tip="length of the following name field"/>
-                <Field Name="name" Type="string" InputMethod="lineedit" Optional="true" ShowOnStart="true" Tip="querry name"/>
-                <Field Name="count_end" Type="int" InputMethod="lineedit" Length="1" Editable="false"  DefaultValue="0" Tip="end flag of a complete querry name"/>
-                <Field Name="QTYPE" Type="int" InputMethod="select" Length="2" Tip="a two octet code which specifies the type of the query.">
+                <Field Name="count" Type="int"  Length="1" Optional="true" ShowOnStart="true" Tip="length of the following name field"/>
+                <Field Name="name" Type="string"  Optional="true" ShowOnStart="true" Tip="querry name"/>
+                <Field Name="count_end" Type="int"  Length="1" Editable="false"  DefaultValue="0" Tip="end flag of a complete querry name"/>
+                <Field Name="QTYPE" Type="int"  Length="2" Tip="a two octet code which specifies the type of the query.">
                         <Item Value="1" Text="A(IP ADDR)"/>
                         <Item Value="12" Text="PTR"/>
                 </Field>
-                <Field Name="QCLASS" Type="int" Length="2" InputMethod="lineedit" DefaultValue="1" Tip="usually 1, refers to the Internet address"/>
+                <Field Name="QCLASS" Type="int" Length="2"  DefaultValue="1" Tip="usually 1, refers to the Internet address"/>
             </Category>
             <Category Name="Response" Many="true">
             </Category>
