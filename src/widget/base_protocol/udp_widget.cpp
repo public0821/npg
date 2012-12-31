@@ -26,8 +26,6 @@ UdpWidget::UdpWidget(const QString& protocol_name, QWidget *parent) :
 	connect(ui.src_ip_checkbox, SIGNAL(clicked ( bool)), ui.src_port_edit,
 			SLOT( setDisabled(bool)));
 
-//	ui.dst_ip_edit->setWhatsThis(tr("Multiple IP separated by commas"));
-//	ui.dst_ip_edit->setStatusTip(tr("Multiple IP separated by commas"));
 	ui.dst_ip_edit->setToolTip(tr("Multiple IP separated by commas"));
 }
 
@@ -41,18 +39,27 @@ bool UdpWidget::preSendData() {
 		return false;
 	}
 
-	std::string dstip = ui.dst_ip_edit->text().toLocal8Bit().constData();
+	QString all_dstip = ui.dst_ip_edit->text();
+	QStringList dstip_list = all_dstip.split(',');
+	m_dstip.clear();
+	for (int i = 0; i < dstip_list.size(); i++) {
+		std::string dstip = dstip_list[i].toLocal8Bit().constData();
+		if(dstip.empty()){
+			continue;
+		}
+		IpAddress addr;
+		bool ret = addr.from_string(dstip);
+		if (!ret) {
+			LOG_ERROR(tr("invaild dst ip: %1").arg(dstip.c_str()));
+			return false;
+		}
+		m_dstip.push_back(addr);
+	}
 	m_dstport = ui.dst_port_edit->text().toUShort();
-	if (dstip.empty() || m_dstport <= 0) {
+	if (m_dstip.size() == 0 || m_dstport <= 0) {
 		LOG_ERROR(tr("ip and port and data must set"));
 		return false;
 	}
-	bool ret = m_dstip.from_string(dstip);
-	if (!ret) {
-		LOG_ERROR(tr("invaild dst ip: %1").arg(dstip.c_str()));
-		return false;
-	}
-
 	if (ui.src_ip_checkbox->checkState() == Qt::Checked) {
 		m_udp = new Udp();
 	} else {
@@ -78,7 +85,13 @@ bool UdpWidget::sendData(const char* data, uint16_t length) {
 		return false;
 	}
 
-	return m_udp->sendto(m_dstip, m_dstport, data, length);
+	for (size_t i = 0; i < m_dstip.size(); i++) {
+		bool ret = m_udp->sendto(m_dstip.at(i), m_dstport, data, length);
+		if (!ret) {
+			return false;
+		}
+	}
+	return true;
 }
 
 void UdpWidget::saveSettings()

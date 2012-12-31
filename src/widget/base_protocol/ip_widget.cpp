@@ -39,6 +39,8 @@ IpWidget::IpWidget(const QString& protocol_name, const QString& ip_protocol_name
 	connect(ui.default_box, SIGNAL(clicked ( bool)), ui.sip_box,
 			SLOT( setDisabled(bool)));
 
+	ui.dip_edit->setToolTip(tr("Multiple IP separated by commas"));
+
 }
 
 IpWidget::~IpWidget() {
@@ -53,19 +55,34 @@ bool IpWidget::preSendData() {
 
 	int protocol = ui.protocol_box->getIntStrValue().toInt();
 
-	std::string dstip = ui.dip_edit->text().toLocal8Bit().constData();
+	QString all_dstip = ui.dip_edit->text();
+	QStringList dstip_list = all_dstip.split(',');
+	m_dstip.clear();
+	for (int i = 0; i < dstip_list.size(); i++) {
+		std::string dstip = dstip_list[i].toLocal8Bit().constData();
+		if (dstip.empty()) {
+			continue;
+		}
+		IpAddress addr;
+		bool ret = addr.from_string(dstip);
+		if (!ret) {
+			LOG_ERROR(tr("invaild dst ip: %1").arg(dstip.c_str()));
+			return false;
+		}
+		m_dstip.push_back(addr);
+	}
 
-	if (dstip.empty() || protocol == 0) {
+	if (m_dstip.size() == 0 || protocol == 0) {
 		LOG_ERROR(tr("ip and protocol must set"));
 		return false;
 	}
 
-	if (!m_dstip.from_string(dstip)) {
-		LOG_ERROR(tr("invaild ip: %1").arg(dstip.c_str()));
-		return false;
+	if (ui.default_box->checkState() == Qt::Checked) {
+		m_ip = new Ip(protocol);
+	} else {
+		IpAddress src_addr = ui.sip_box->getIpAddress();
+		m_ip = new Ip(protocol, src_addr);
 	}
-
-	m_ip = new Ip(protocol);
 
 	return true;
 }
@@ -86,7 +103,14 @@ bool IpWidget::sendData(const char* data, uint16_t length) {
 		return false;
 	}
 
-	return m_ip->sendto(m_dstip, data, length);
+	for (size_t i = 0; i < m_dstip.size(); i++) {
+		bool ret = m_ip->sendto(m_dstip.at(i), data, length);
+		if (!ret) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void IpWidget::saveSettings()

@@ -7,6 +7,7 @@
 
 #include "protocol_tab_sheet.h"
 #include <qsettings.h>
+#include <QTextCodec>
 #include "config.h"
 #include "protocol_tree_item_widget.h"
 #include "protocol/protocol_builder.h"
@@ -125,7 +126,13 @@ bool ProtocolTabSheet::preSendData()
 					data = item_widget->value();
 				}
 
-				bool ret = protocol_builder.append(field.type(), field.length(), data);
+				bool ret;
+				if (m_default_encoding_box->checkState() == Qt::Checked) {
+					ret = protocol_builder.append(field.type(), field.length(), data.toLocal8Bit());
+				} else {
+					QTextCodec * codec = QTextCodec::codecForName(m_encoding_box->currentText().toStdString().c_str());
+					ret = protocol_builder.append(field.type(), field.length(), codec->fromUnicode(data));
+				}
 				if (ret == false) {
 					return false;
 				}

@@ -19,7 +19,7 @@ ProtocolBuilder::~ProtocolBuilder(void) {
 	}
 }
 
-uint32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, uint16_t length, const QString& value)
+uint32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, uint16_t length, const QByteArray& value)
 		{
 	uint32_t new_protocol_len;
 	switch (field_type) {
@@ -30,8 +30,7 @@ uint32_t ProtocolBuilder::reallocBuffer(EFiledType field_type, uint16_t length, 
 		if (length != 0) {
 			new_protocol_len = m_protocol_len + length;
 		} else {
-			std::string value_str = value.toLocal8Bit().constData();
-			new_protocol_len = m_protocol_len + value_str.length();
+			new_protocol_len = m_protocol_len + value.length();
 		}
 		break;
 	default:
@@ -63,7 +62,7 @@ uint32_t ProtocolBuilder::reallocBuffer(uint32_t new_length) {
 	return old_protocol_len;
 }
 
-bool ProtocolBuilder::append(EFiledType field_type, uint16_t length, const QString& value) {
+bool ProtocolBuilder::append(EFiledType field_type, uint16_t length, const QByteArray& value) {
 	uint32_t old_protocol_len = reallocBuffer(field_type, length, value);
 
 	return set(old_protocol_len, field_type, length, value);
@@ -79,7 +78,7 @@ uint32_t ProtocolBuilder::length() const
 	return m_protocol_len;
 }
 
-bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, const QString& value) {
+bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, const QByteArray& value) {
 	if (pos + length > m_protocol_len) {
 		LOG_ERROR(QObject::tr("Parameter length out of range"));
 		return false;
@@ -90,18 +89,18 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 	case E_FIELD_TYPE_INT:
 		switch (length) {
 		case 1: {
-			int8_t number = (int8_t) value.toLongLong();
+			int8_t number = (int8_t) QString(value).toLongLong();
 			memcpy(m_buffer + pos, &number, sizeof(number));
 		}
 			break;
 		case 2: {
-			int16_t number = (int16_t) value.toLongLong();
+			int16_t number = (int16_t) QString(value).toLongLong();
 			number = htons(number);
 			memcpy(m_buffer + pos, &number, sizeof(number));
 		}
 			break;
 		case 4: {
-			int32_t number = (int32_t) value.toLongLong();
+			int32_t number = (int32_t) QString(value).toLongLong();
 			number = htonl(number);
 			memcpy(m_buffer + pos, &number, sizeof(number));
 		}
@@ -109,10 +108,11 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 		case 8:
 			default: {
 			int64_t number = 0;
-			if (value.length() > 0 && value[0] == '-') {
-				int64_t number = (int64_t) value.toLongLong();
+			QString value_str(value);
+			if (value_str.length() > 0 && value_str[0] == '-') {
+				int64_t number = (int64_t) value_str.toLongLong();
 			}else{
-				int64_t number = (int64_t) value.toULongLong();
+				int64_t number = (int64_t) value_str.toULongLong();
 			}
 			number = ntohll(number);
 			memcpy(m_buffer + pos, &number, sizeof(number));
@@ -121,7 +121,7 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 		}
 		break;
 	case E_FIELD_TYPE_IP:		{
-		std::string ip = value.toLocal8Bit().constData();
+		std::string ip = value.constData();
 		struct in_addr addr;
 		addr.s_addr = 0;
 		if (!ip.empty() && ip != "...")				{
@@ -135,7 +135,7 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 	}
 		break;
 	case E_FIELD_TYPE_MAC:		{
-		std::string mac_str = value.toLocal8Bit().constData();
+		std::string mac_str = value.constData();
 		uint8_t mac[IF_HWADDRLEN];
 		SocketToolkit toolkit;
 		if (!toolkit.toMac(mac_str.c_str(), mac))				{
@@ -146,7 +146,7 @@ bool ProtocolBuilder::set(uint32_t pos, EFiledType field_type, uint16_t length, 
 	}
 		break;
 	case E_FIELD_TYPE_STRING:		{
-		std::string data = value.toLocal8Bit().constData();
+		std::string data = value.constData();
 		int data_len = data.length();
 		if (length != 0)				{
 			data_len = length;

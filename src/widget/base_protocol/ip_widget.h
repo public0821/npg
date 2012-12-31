@@ -10,6 +10,7 @@
 #include <QWidget>
 #include "ui_ip_widget.h"
 #include <map>
+#include <vector>
 #include "base_protocol_widget.h"
 #include "lib/socket/ip_address.h"
 
@@ -32,7 +33,7 @@ private:
 	Ui::IpWidget ui;
 	std::map<QString, int>  m_built_in_protocol;
 
-	IpAddress m_dstip;
+	std::vector<IpAddress> m_dstip;
 	Ip* m_ip;
 };
 

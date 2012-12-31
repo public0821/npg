@@ -16,7 +16,7 @@ public:
 	ProtocolBuilder(void);
 	~ProtocolBuilder(void);
 public:
-	bool append(EFiledType field_type, uint16_t length, const QString& value);
+	bool append(EFiledType field_type, uint16_t length, const QByteArray& value);
 	bool append(const char* buf, uint16_t length);
 
 	char* data()const;
@@ -27,9 +27,9 @@ public:
 //	int32_t toInt32(const QString& value);
 //	int64_t toInt64(const QString& value);
 private:
-	uint32_t reallocBuffer(EFiledType field_type, uint16_t length, const QString& value);
+	uint32_t reallocBuffer(EFiledType field_type, uint16_t length, const QByteArray& value);
 	uint32_t reallocBuffer(uint32_t new_length);
-	bool set(uint32_t pos, EFiledType field_type, uint16_t length, const QString& value);
+	bool set(uint32_t pos, EFiledType field_type, uint16_t length, const QByteArray& value);
 private:
 	char* m_buffer;
 	uint32_t m_protocol_len;

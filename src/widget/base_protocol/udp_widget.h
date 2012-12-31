@@ -13,6 +13,7 @@
 #include "lib/types.h"
 #include "../lib/socket/ip_address.h"
 #include "lib/socket/udp.h"
+#include <vector>
 
 class UdpWidget : public BaseProtocolWidget
 {
@@ -30,7 +31,7 @@ public:
 	void restoreSettings();
 private:
     Ui::UdpWidgetClass ui;
-	IpAddress m_dstip;
+	std::vector<IpAddress> m_dstip;
 	uint16_t m_dstport;
 	Udp* m_udp;
 };
