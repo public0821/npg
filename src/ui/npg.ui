@@ -123,7 +123,7 @@
   </action>
   <action name="action_tool_base64">
    <property name="text">
-    <string>Base64</string>
+    <string>B64</string>
    </property>
   </action>
   <action name="action_about">
