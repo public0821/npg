@@ -5,9 +5,4 @@
             <Category Ref="UDP"/>
             <Category Ref="DNS"/>
         </Protocol>
-	<Protocol Name="RAW_DNS_IPV6" Dependence="ETHERNET" DependenceParam="IPV6" RFC="1035">
-	    <Category Ref="IPV6"/>
-            <Category Ref="UDP"/>
-            <Category Ref="DNS"/>
-        </Protocol>
 </Protocols>

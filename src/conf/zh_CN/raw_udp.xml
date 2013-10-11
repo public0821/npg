@@ -7,14 +7,7 @@
 		<Field Name="data" Type="string"  Tip="数据"/>
 	    </Category>
         </Protocol>
-	<Protocol Name="RAW_UDP_IPV6" Dependence="ETHERNET" DependenceParam="IPV6" RFC="1035">
-	    <Category Ref="IPV6"/>
-            <Category Ref="UDP"/>
-            <Category Name="data">
-		<Field Name="data" Type="string"  Tip="数据"/>
-	    </Category>
-        </Protocol>
-	<Protocol Name="RAW_UDP" Dependence="IP" DependenceParam="UDP" >
+    <Protocol Name="RAW_UDP" Dependence="IP" DependenceParam="UDP" >
             <Category Ref="UDP"/>
             <Category Name="data">
 		<Field Name="data" Type="string"  Tip="数据"/>
