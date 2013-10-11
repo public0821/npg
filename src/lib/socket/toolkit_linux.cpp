@@ -54,20 +54,7 @@ std::vector<ifi_info> SocketToolkit::ifiInfo(int family, int doaliases) {
 		struct ifi_info ifi_info;
 		bzero(&ifi_info, sizeof(ifi_info));
 		struct ifreq * ifr = (struct ifreq *) ptr;
-#ifdef   HAVE_SOCKADDR_SA_LEN
-		len = max(sizeof(struct sockaddr), ifr->ifr_addr.sa_len);
-#else
-		switch (ifr->ifr_addr.sa_family) {
-			case AF_INET6:
-			len = sizeof(struct sockaddr_in6);
-			break;
-			case AF_INET:
-			default:
-			len = sizeof(struct sockaddr);
-			break;
-		}
-#endif   /* HAVE_SOCKADDR_SA_LEN */
-		ptr += sizeof(ifr->ifr_name) + len; /* for next one in buffer */
+        ptr += sizeof(struct ifreq); /* for next one in buffer */
 
 //		if (ifr->ifr_addr.sa_family != family)
 //			continue; /* ignore if not desired address family */
