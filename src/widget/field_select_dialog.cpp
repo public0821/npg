@@ -31,7 +31,7 @@ FieldSelectDialog::FieldSelectDialog(const std::vector<Field>& optional_fields, 
 		text_list << field.text() <<field.typeString()<< QString("%1").arg(field.length())<< field.tip();
 		QTreeWidgetItem *item = new QTreeWidgetItem(ui.tree_widget, text_list);
 		item->setIcon(0, QIcon(field.icon()));
-		item->setData(0, Qt::UserRole, QVariant(index));
+        item->setData(0, Qt::UserRole, QVariant((uint)index));
 		item->setTextAlignment(2, Qt::AlignHCenter | Qt::AlignVCenter);
 		item->setFlags(item->flags()|Qt::ItemIsUserCheckable);
 		item->setCheckState(0, Qt::Unchecked);
