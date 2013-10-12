@@ -26,7 +26,7 @@ Network packet generator(NPG) 是一个数据包生成和发送工具，主要�
     sudo apt-get install libqt4-dev
 - 然后获取源代码
 
-    git clone git@github.com:public0821/npg.git
+    git clone https://github.com/public0821/npg.git
 - 编译
 
     cd npg/src
